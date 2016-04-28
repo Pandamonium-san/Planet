@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Planet
 {
-    class Actor : GameObject
+    public class Actor : GameObject
     {
         public Actor(Vector2 pos)
             : base(pos)

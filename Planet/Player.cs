@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Planet
 {
-    class Player
+    public class Player
     {
         PlayerIndex playerIndex;
         PlayerController pc;
@@ -17,8 +17,8 @@ namespace Planet
         {
             pc = new PlayerController(index);
 
-            pc.SetBinding(PlayerInput.Up, "Forward", true);
-            pc.SetBinding(PlayerInput.Down, "Backward", true);
+            pc.SetBinding(PlayerInput.Up, "Up", true);
+            pc.SetBinding(PlayerInput.Down, "Down", true);
             pc.SetBinding(PlayerInput.Right, "Right", true);
             pc.SetBinding(PlayerInput.Left, "Left", true);
             pc.SetBinding(PlayerInput.Yellow, "Fire1", true);
@@ -36,6 +36,11 @@ namespace Planet
         {
             ship = a;
             pc.SetActor(a);
+        }
+
+        public Ship GetShip()
+        {
+            return ship;
         }
     }
 }

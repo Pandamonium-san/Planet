@@ -13,6 +13,8 @@ namespace Planet
     {
         List<GameObject> gameObjects;
 
+        AIController ai;
+
         Player player1;
         Ship go;
 
@@ -20,11 +22,12 @@ namespace Planet
         {
             gameObjects = new List<GameObject>();
 
-            go = new PumpkinShip(new Vector2(500, 500));
+            go = new TesekShip(new Vector2(500, 500));
             PostGameObj(go);
 
-            Ship s = new Ship(new Vector2(800, 500));
-            s.color = Color.Red;
+            Ship s = new PumpkinShip(new Vector2(800, 500));
+            ai = new AIController();
+            ai.SetActor(s);
             PostGameObj(s);
 
             player1 = new Player(PlayerIndex.One);
@@ -34,6 +37,7 @@ namespace Planet
         public void Update(GameTime gt)
         {
             player1.Update(gt);
+            ai.Update(gt);
             for (int i = 0; i < gameObjects.Count(); i++)
             {
                 GameObject go = gameObjects[i];
@@ -54,6 +58,13 @@ namespace Planet
                     --i;
                 }
             }
+        }
+
+        public List<Player> GetPlayers()
+        {
+            List<Player> result = new List<Player>();
+            result.Add(player1);
+            return result;
         }
 
         public void PostGameObj(GameObject go)

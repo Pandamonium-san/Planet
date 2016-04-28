@@ -16,11 +16,13 @@ namespace Planet
         public PumpkinShip(Vector2 pos)
             : base(pos)
         {
+            SetTexture(AssetManager.GetTexture("pumpkin"));
             shotsPerSecond = 3;
             reloadTime = 5;
             reloadDelay = 0;
             volleyAmount = 4;
             currentVolleyAmount = volleyAmount;
+            layer = Layer.ENEMY;
         }
         public override void Update(GameTime gt)
         {

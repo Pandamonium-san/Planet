@@ -10,7 +10,8 @@ namespace Planet
     {
         public TesekShip(Vector2 pos):base(pos)
         {
-
+            layer = Layer.PLAYER;
+            rotationSpeed = 15;
         }
 
         public override void Fire1()

@@ -20,8 +20,9 @@ namespace Planet
             AssetManager.Content = content;
 
             AddTexture("Fill", "Filltexture");
-            AddTexture("Ship1", "Image1");
+            AddTexture("Ship1", "ship_temp");
             AddTexture("Proj1", "Image2");
+            AddTexture("pumpkin", "pumpkin");
 
             AddFont("font1", "font1");
         }

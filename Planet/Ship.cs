@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Planet
 {
-    class Ship : Actor
+    public class Ship : Actor
     {
         protected Vector2 currentVelocity;
         protected float currentRotationSpeed;
@@ -30,15 +30,18 @@ namespace Planet
         public override void Update(GameTime gt)
         {
             DoAiming();
-            shotDelay -= (float)gt.ElapsedGameTime.TotalSeconds; 
-            
+            shotDelay -= (float)gt.ElapsedGameTime.TotalSeconds;
+
             CalculateCurrentVelocity();
             pos += currentVelocity * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
-            currentVelocity = Vector2.Zero;
 
             CalculateCurrentRotation();
             rotation += currentRotationSpeed * rotationModifier * (float)gt.ElapsedGameTime.TotalSeconds;
+
+            currentVelocity = Vector2.Zero;
             currentRotationSpeed = 0;
+            speedModifier = 1.0f;
+            rotationModifier = 1.0f;
 
             base.Update(gt);
         }
@@ -47,14 +50,9 @@ namespace Planet
         {
             if (aiming)
             {
-                speedModifier = 0.5f;
-                rotationModifier = 0.0f;
+                speedModifier -= 0.5f;
+                rotationModifier -= 1.0f;
                 aiming = false;
-            }
-            else
-            {
-                speedModifier = 1.0f;
-                rotationModifier = 1.0f;
             }
         }
 
@@ -70,7 +68,8 @@ namespace Planet
 
         protected virtual void CalculateCurrentRotation()
         {
-            TurnTowardsPoint(currentVelocity);
+            if (currentVelocity != Vector2.Zero)
+                TurnTowardsPoint(currentVelocity);
         }
 
         public override void DoCollision(GameObject other)
@@ -102,12 +101,12 @@ namespace Planet
         public virtual void Fire3()
         {
         }
-        public virtual void Forward()
+        public virtual void Up()
         {
             Vector2 direction = -Vector2.UnitY;
             AddVelocity(direction * baseSpeed);
         }
-        public virtual void Backward()
+        public virtual void Down()
         {
             Vector2 direction = Vector2.UnitY;
             AddVelocity(direction * baseSpeed);
@@ -133,6 +132,11 @@ namespace Planet
             currentVelocity += v;
         }
 
+        public void Move(Vector2 direction)
+        {
+            currentVelocity += direction * baseSpeed;
+        }
+
         protected void TurnTowardsPoint(Vector2 point)
         {
             float desiredAngle = Utility.Vector2ToAngle(point);
@@ -143,11 +147,11 @@ namespace Planet
 
             angleToTarget = MathHelper.WrapAngle(angleToTarget);
 
-            if (angleToTarget > 0.1f)
+            if (angleToTarget > 0.5f)
             {
                 currentRotationSpeed += rotationSpeed;
             }
-            else if (angleToTarget < -0.1f)
+            else if (angleToTarget < -0.5f)
             {
                 currentRotationSpeed -= rotationSpeed;
             }

@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Planet
 {
-    class Projectile : GameObject
+    public class Projectile : GameObject
     {
-        const float LifeTime = 10;
+        protected const float LifeTime = 10;
         Vector2 dir;
         Vector2 velocity;
         GameObject instigator;
@@ -17,7 +17,8 @@ namespace Planet
         float speed;
         float currentLifeTime;
 
-        public Projectile(Vector2 pos, Vector2 dir, float speed, float lifeTime = LifeTime, GameObject instigator = null):base(pos)
+        public Projectile(Vector2 pos, Vector2 dir, float speed, float lifeTime = LifeTime, GameObject instigator = null)
+            : base(pos)
         {
             this.SetTexture(AssetManager.GetTexture("Proj1"));
 
@@ -29,8 +30,17 @@ namespace Planet
 
             currentLifeTime = LifeTime;
             velocity = dir * speed;
-            layer = Layer.PLAYER_PROJECTILE;
-            layerMask = (Layer.ENEMY | Layer.ENEMY_PROJECTILE | Layer.PLAYER);
+
+            if(instigator.layer == Layer.PLAYER)
+            {
+                layer = Layer.PLAYER_PROJECTILE;
+                layerMask = (Layer.ENEMY | Layer.ENEMY_PROJECTILE);
+            }
+            else if (instigator.layer == Layer.ENEMY)
+            {
+                layer = Layer.ENEMY_PROJECTILE;
+                layerMask = (Layer.PLAYER | Layer.PLAYER_PROJECTILE);
+            }
         }
 
         public override void Update(GameTime gt)

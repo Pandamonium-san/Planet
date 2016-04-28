@@ -10,22 +10,19 @@ namespace Planet
     {
         public static Vector2 AngleToVector2(float angle)
         {
-            angle += (float)Math.PI / 2f;
+            //angle += (float)Math.PI / 2f;
             return new Vector2((float)Math.Sin(angle), (float)-Math.Cos(angle));
         }
 
         public static float Vector2ToAngle(Vector2 v)
         {
-            double x = Math.Atan2(v.Y, v.X);
-            if (x != 0)
-                x = 0;
-            return (float)Math.Atan2(v.Y, v.X);
+
+            return (float)Math.Atan2(v.Y, v.X) + (float)Math.PI / 2f; ;
         }
 
-        public static float Wrap(float value, float max, float min)
+        public static float Distance(Vector2 v1, Vector2 v2)
         {
-
-            return value;
+            return (v2 - v1).Length();
         }
     }
 }
