@@ -9,22 +9,24 @@ namespace Planet
 {
     public class Player
     {
-        PlayerIndex playerIndex;
-        PlayerController pc;
-        Ship ship;
+        private PlayerIndex playerIndex;
+        private PlayerController pc;
+        private Ship ship;
 
         public Player(PlayerIndex index)
         {
+            playerIndex = index;
             pc = new PlayerController(index);
 
-            pc.SetBinding(PlayerInput.Up, "Up", true);
-            pc.SetBinding(PlayerInput.Down, "Down", true);
-            pc.SetBinding(PlayerInput.Right, "Right", true);
-            pc.SetBinding(PlayerInput.Left, "Left", true);
-            pc.SetBinding(PlayerInput.Yellow, "Fire1", true);
-            pc.SetBinding(PlayerInput.Green, "Fire2", false);
-            pc.SetBinding(PlayerInput.Blue, "Fire3", false);
-            pc.SetBinding(PlayerInput.Red, "Aim", true);
+            pc.SetBinding(PlayerInput.Up, "Move", -Vector2.UnitY, true);
+            pc.SetBinding(PlayerInput.Down, "Move", Vector2.UnitY, true);
+            pc.SetBinding(PlayerInput.Right, "Move", Vector2.UnitX, true);
+            pc.SetBinding(PlayerInput.Left, "Move", -Vector2.UnitX, true);
+
+            pc.SetBinding(PlayerInput.Yellow, "Fire1", null, true);
+            pc.SetBinding(PlayerInput.Red, "Fire2", null, false);
+            pc.SetBinding(PlayerInput.Blue, "Fire3", null, false);
+            pc.SetBinding(PlayerInput.A, "Aim", null, true);
         }
 
         public void Update(GameTime gt)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -15,6 +16,7 @@ namespace Planet
 #else
 		public override string GameDisplayName { get { return "Planet"; } }
 #endif
+        public static Random rnd = new Random();
         public static ObjectManager objMgr;
 
         public Game1()
@@ -23,7 +25,6 @@ namespace Planet
             graphics = new GraphicsDeviceManager(this);
 #endif
         }
-
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic

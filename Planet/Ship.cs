@@ -13,8 +13,7 @@ namespace Planet
         protected float currentRotationSpeed;
         protected float baseSpeed = 400;
         protected float rotationSpeed = 10;
-        protected float shotsPerSecond = 5;
-        protected float shotDelay;
+
         protected bool aiming;
 
         public float fireRateModifier = 1.0f;
@@ -30,7 +29,6 @@ namespace Planet
         public override void Update(GameTime gt)
         {
             DoAiming();
-            shotDelay -= (float)gt.ElapsedGameTime.TotalSeconds;
 
             CalculateCurrentVelocity();
             pos += currentVelocity * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
@@ -79,47 +77,27 @@ namespace Planet
 
         public virtual void Fire1()
         {
-            if (shotDelay < 0)
-            {
-                Vector2 dir = Utility.AngleToVector2(rotation);
-                Vector2 pos1 = new Vector2(dir.Y, -dir.X) * 5;
-                Vector2 pos2 = new Vector2(dir.Y, -dir.X) * -5;
-                Projectile p = new Projectile(pos + pos1, dir, 750, 10, this);
-                Projectile q = new Projectile(pos + pos2, dir, 750, 10, this);
-                Projectile r = new Projectile(pos + pos1, dir + Utility.AngleToVector2(rotation + -0.5f), 750, 10, this);
-                Projectile s = new Projectile(pos + pos1, dir + Utility.AngleToVector2(rotation + 0.5f), 750, 10, this);
-                Game1.objMgr.PostGameObj(s);
-                Game1.objMgr.PostGameObj(r);
-                Game1.objMgr.PostGameObj(p);
-                Game1.objMgr.PostGameObj(q);
-                shotDelay = 1 / shotsPerSecond;
-            }
+            //if (shotDelay < 0)
+            //{
+            //    Vector2 dir = Utility.AngleToVector2(rotation);
+            //    Vector2 pos1 = new Vector2(dir.Y, -dir.X) * 5;
+            //    Vector2 pos2 = new Vector2(dir.Y, -dir.X) * -5;
+
+            //    AddProjectile(new Projectile(pos + pos1, dir, 750, this));
+            //    AddProjectile(new Projectile(pos + pos2, dir, 750, this));
+            //    AddProjectile(new Projectile(pos + pos1, dir + Utility.AngleToVector2(rotation + -0.5f), 750, this));
+            //    AddProjectile(new Projectile(pos + pos1, dir + Utility.AngleToVector2(rotation + 0.5f), 750, this));
+
+            //    shotDelay = 1 / shotsPerSecond;
+            //}
         }
         public virtual void Fire2()
         {
+
         }
+
         public virtual void Fire3()
         {
-        }
-        public virtual void Up()
-        {
-            Vector2 direction = -Vector2.UnitY;
-            AddVelocity(direction * baseSpeed);
-        }
-        public virtual void Down()
-        {
-            Vector2 direction = Vector2.UnitY;
-            AddVelocity(direction * baseSpeed);
-        }
-        public virtual void Right()
-        {
-            Vector2 direction = Vector2.UnitX;
-            AddVelocity(direction * baseSpeed);
-        }
-        public virtual void Left()
-        {
-            Vector2 direction = -Vector2.UnitX;
-            AddVelocity(direction * baseSpeed);
         }
 
         public virtual void Aim()
@@ -139,26 +117,16 @@ namespace Planet
 
         protected void TurnTowardsPoint(Vector2 point)
         {
-            float desiredAngle = Utility.Vector2ToAngle(point);
-            desiredAngle = MathHelper.WrapAngle(desiredAngle);
             rotation = MathHelper.WrapAngle(rotation);
 
-            float angleToTarget = desiredAngle - rotation;
+            float desiredAngle = Utility.Vector2ToAngle(point);
+            desiredAngle = MathHelper.WrapAngle(desiredAngle);
 
+            // Calculate angle to target and use it to lerp rotationspeed. Lerping rotation->desiredAngle does not wrap properly.
+            float angleToTarget = desiredAngle - rotation;
             angleToTarget = MathHelper.WrapAngle(angleToTarget);
 
-            if (angleToTarget > 0.5f)
-            {
-                currentRotationSpeed += rotationSpeed;
-            }
-            else if (angleToTarget < -0.5f)
-            {
-                currentRotationSpeed -= rotationSpeed;
-            }
-            else
-            {
-                rotation = desiredAngle;
-            }
+            currentRotationSpeed += MathHelper.Lerp(0, angleToTarget, rotationSpeed);
         }
 
         protected void AddProjectile(Projectile p)

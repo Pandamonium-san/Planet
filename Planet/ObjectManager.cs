@@ -11,18 +11,18 @@ namespace Planet
 {
     public class ObjectManager
     {
-        List<GameObject> gameObjects;
+        private List<GameObject> gameObjects;
 
-        AIController ai;
+        private AIController ai;
 
-        Player player1;
-        Ship go;
+        private Player player1;
+        private Ship go;
 
         public ObjectManager()
         {
             gameObjects = new List<GameObject>();
 
-            go = new TesekShip(new Vector2(500, 500));
+            go = new BlinkerShip(new Vector2(500, 500));
             PostGameObj(go);
 
             Ship s = new PumpkinShip(new Vector2(800, 500));

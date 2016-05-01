@@ -19,7 +19,7 @@ namespace Planet
 
         public void Update(GameTime gt)
         {
-            ship.speedModifier -= 0.8f;
+            ship.speedModifier -= 0.85f;
             target = FindNearestTarget();
             Vector2 direction = target.GetShip().pos - ship.pos;
             direction.Normalize();

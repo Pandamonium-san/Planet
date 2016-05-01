@@ -8,10 +8,9 @@ namespace Planet
 {
     public static class Utility
     {
-        public static Vector2 AngleToVector2(float angle)
+        public static Vector2 AngleToVector2(float radians)
         {
-            //angle += (float)Math.PI / 2f;
-            return new Vector2((float)Math.Sin(angle), (float)-Math.Cos(angle));
+            return new Vector2((float)Math.Sin(radians), (float)-Math.Cos(radians));
         }
 
         public static float Vector2ToAngle(Vector2 v)
@@ -23,6 +22,12 @@ namespace Planet
         public static float Distance(Vector2 v1, Vector2 v2)
         {
             return (v2 - v1).Length();
+        }
+
+        public static Vector2 RotateVector2(Vector2 v, float radians)
+        {
+            Matrix rot = Matrix.CreateRotationZ(radians);
+            return Vector2.Transform(v, rot);
         }
     }
 }
