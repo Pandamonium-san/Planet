@@ -28,7 +28,7 @@ namespace Planet
             Ship s = new PumpkinShip(new Vector2(800, 500));
             ai = new AIController();
             ai.SetActor(s);
-            PostGameObj(s);
+            //PostGameObj(s);
 
             player1 = new Player(PlayerIndex.One);
             player1.SetShip(go);

@@ -16,6 +16,7 @@ namespace Planet
         protected Vector2 velocity;
         protected float speed;
         protected float currentLifeTime;
+        protected Vector2 acceleration;
 
         public Projectile(
             Vector2 pos,
@@ -64,8 +65,14 @@ namespace Planet
             dir = Utility.RotateVector2(dir, MathHelper.ToRadians(deviation));
         }
 
+        protected virtual void CalculateAcceleration()
+        {
+        }
+
         public override void Update(GameTime gt)
         {
+            CalculateAcceleration();
+            velocity += acceleration * (float)gt.ElapsedGameTime.TotalSeconds;
             pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
             currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
             if (currentLifeTime <= 0)

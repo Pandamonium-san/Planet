@@ -18,7 +18,7 @@ namespace Planet
         protected float inaccuracy;
         protected float speedVariance;
         protected float volleyReloadTime;
-        protected float volleyReloadDelay;
+        protected float currentReloadTime;
         protected int volleyAmount;
         protected int currentVolleyAmount;
 
@@ -42,17 +42,19 @@ namespace Planet
             this.speedVariance = speedVariance;
             this.volleyReloadTime = volleyReloadTime;
             this.volleyAmount = volleyAmount;
+            this.currentVolleyAmount = volleyAmount;
         }
-
+        
         public virtual void Update(GameTime gt)
         {
             shotDelay -= (float)gt.ElapsedGameTime.TotalSeconds;
-            volleyReloadDelay -= (float)gt.ElapsedGameTime.TotalSeconds;
+            if(currentVolleyAmount < volleyAmount)
+                currentReloadTime -= (float)gt.ElapsedGameTime.TotalSeconds;
         }
 
         public virtual void Fire()
         {
-            if (volleyReloadDelay <= 0 && currentVolleyAmount > 0)
+            if (currentVolleyAmount > 0)
             {
                 if (shotDelay < 0)
                 {
@@ -65,9 +67,9 @@ namespace Planet
                     currentVolleyAmount--;
                 }
             }
-            else if (currentVolleyAmount <= 0)
+            if (currentReloadTime <= 0)
             {
-                volleyReloadDelay = volleyReloadTime;
+                currentReloadTime = volleyReloadTime;
                 currentVolleyAmount = volleyAmount;
             }
         }

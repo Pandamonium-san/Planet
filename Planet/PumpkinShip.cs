@@ -16,7 +16,7 @@ namespace Planet
             SetTexture(AssetManager.GetTexture("pumpkin"));
             layer = Layer.ENEMY;
 
-            wpn = new RadialWeapon<Projectile>(this, 1, 7, 350, 45, 10, 8, 0, 0, 5, 30);
+            wpn = new RadialWeapon<Projectile>(this, 1, 7, 350, 45, 10, 8, 0, 0, 5, 10);
         }
         public override void Update(GameTime gt)
         {
