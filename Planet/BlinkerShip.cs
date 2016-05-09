@@ -13,22 +13,21 @@ namespace Planet
         public BlinkerShip(Vector2 pos)
             : base(pos)
         {
+            SetTexture(AssetManager.GetTexture("Parasite"));
             layer = Layer.PLAYER;
             rotationSpeed = 15;
-            //wpn = new RadialWeapon<Projectile>(this, 1, 3, 500, 10, 0, 5, 0, 0, 2, 5);
-            //wpn = new Weapon<Projectile>(this, 1, 3, 500, 10, 10, 5, 2, 5);
-            wpn2 = new Weapon<Projectile>(this, 1, 30, 500, 1, 0, 0, 0, 1);
-            //wpn2 = new RadialWeapon<Projectile>(this, 1, 3, 500, -10, 0, 5, 0, 0, 2, 5);
+            wpn = new RadialWeapon<Projectile>(this, 1, 5, 500, 5, 1, 5, 0, 0, 2, 20);
+            wpn2 = new RadialWeapon<Projectile>(this, 1, 5, 500, -5, -1, 5, 0, 0, 2, 20);
         }
         public override void Update(GameTime gt)
         {
-            //wpn.Update(gt);
+            wpn.Update(gt);
             wpn2.Update(gt);
             base.Update(gt);
         }
         public override void Fire1()
         {
-            //wpn.Fire();
+            wpn.Fire();
             wpn2.Fire();
         }
 

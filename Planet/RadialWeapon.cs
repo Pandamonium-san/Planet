@@ -34,7 +34,7 @@ namespace Planet
         //only 3 lines more than base;
         public override void Fire()
         {
-            if (currentReloadTime <= 0 && currentVolleyAmount > 0)
+            if (currentVolleyAmount > 0)
             {
                 if (shotDelay < 0)
                 {
@@ -49,7 +49,7 @@ namespace Planet
                     currentVolleyAmount--;
                 }
             }
-            else if (currentVolleyAmount <= 0)
+            if (currentReloadTime <= 0)
             {
                 currentReloadTime = volleyReloadTime;
                 currentVolleyAmount = volleyAmount;

@@ -21,9 +21,13 @@ namespace Planet
         {
             ship.speedModifier -= 0.85f;
             target = FindNearestTarget();
-            Vector2 direction = target.GetShip().pos - ship.pos;
-            direction.Normalize();
-            ship.Move(direction);
+            Vector2 direction;
+            if (target != null)
+            {
+                direction = target.GetShip().pos - ship.pos;
+                direction.Normalize();
+                ship.Move(direction);
+            }
 
             ship.Invoke("Fire1");
         }

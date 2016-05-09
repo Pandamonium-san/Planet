@@ -23,6 +23,7 @@ namespace Planet
             AddTexture("Ship1", "ship_temp");
             AddTexture("Proj1", "Image2");
             AddTexture("pumpkin", "pumpkin");
+            AddTexture("Parasite", "Image3");
 
             AddFont("font1", "font1");
         }

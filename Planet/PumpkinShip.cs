@@ -8,7 +8,8 @@ namespace Planet
 {
     class PumpkinShip : Ship
     {
-        RadialWeapon<Projectile> wpn;
+        //RadialWeapon<Projectile> wpn;
+        Weapon<Projectile> wpn;
 
         public PumpkinShip(Vector2 pos)
             : base(pos)
@@ -16,7 +17,8 @@ namespace Planet
             SetTexture(AssetManager.GetTexture("pumpkin"));
             layer = Layer.ENEMY;
 
-            wpn = new RadialWeapon<Projectile>(this, 1, 7, 350, 45, 10, 8, 0, 0, 5, 10);
+           // wpn = new RadialWeapon<Projectile>(this, 1, 15, 350, 25, 20, 15, 10, 10, 5, 20);
+           wpn = new Weapon<Projectile>(this, 1, 5, 350, 10, 50, 150, 4, 5);
         }
         public override void Update(GameTime gt)
         {
