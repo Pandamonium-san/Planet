@@ -37,9 +37,6 @@ namespace Planet
                 dir.Normalize();
             this.dir = dir;
 
-            if (inaccuracy != 0)
-                AddSpread(inaccuracy);
-
             currentLifeTime = lifeTime;
             velocity = this.dir * speed;
 
@@ -58,11 +55,6 @@ namespace Planet
                 layer = Layer.ENEMY_PROJECTILE;
                 layerMask = (Layer.PLAYER | Layer.PLAYER_PROJECTILE);
             }
-        }
-        private void AddSpread(float spread)
-        {
-            float deviation = (float)((Game1.rnd.NextDouble()-0.5) * spread);
-            dir = Utility.RotateVector2(dir, MathHelper.ToRadians(deviation));
         }
 
         protected virtual void CalculateAcceleration()

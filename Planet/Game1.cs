@@ -5,6 +5,21 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Planet
 {
+    /*  TO DO
+     *  x Weapon settings
+     *  x Weapon templates
+     *  - Projectile variations
+     *      - Homing missiles
+     *      - Explosions?
+     *      - Projectile settings?
+     *      - Projectile paths/patterns
+     *  - Smaller hitboxes
+     *  - Show hitbox while aiming
+     *  - Gameplay content
+     *  - (Lasers)
+     *  - Rewinder
+     */
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>

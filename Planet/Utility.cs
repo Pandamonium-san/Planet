@@ -29,5 +29,10 @@ namespace Planet
             Matrix rot = Matrix.CreateRotationZ(radians);
             return Vector2.Transform(v, rot);
         }
+
+        public static float GetRandom(Random rnd, float min, float max)
+        {
+            return (float)(rnd.NextDouble() * (max - min) + min);
+        }
     }
 }

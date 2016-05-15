@@ -17,8 +17,7 @@ namespace Planet
             SetTexture(AssetManager.GetTexture("pumpkin"));
             layer = Layer.ENEMY;
 
-           // wpn = new RadialWeapon<Projectile>(this, 1, 15, 350, 25, 20, 15, 10, 10, 5, 20);
-           wpn = new Weapon<Projectile>(this, 1, 5, 350, 10, 50, 150, 4, 5);
+            wpn = new Weapon<Projectile>(this, 1, 20, 200, 4, 2.5f, 10.0f, 0.9f, 18, 90, 10, 0);
         }
         public override void Update(GameTime gt)
         {
@@ -33,32 +32,6 @@ namespace Planet
         public override void Fire1()
         {
             wpn.Fire();
-            //if (reloadDelay < 0 && currentVolleyAmount > 0)
-            //{
-            //    if (shotDelay < 0)
-            //    {
-            //        Vector2 dir = Utility.AngleToVector2(rotation) * 5.0f;
-            //        Vector2 dir2 = new Vector2(dir.Y, -dir.X);
-            //        Vector2 dir3 = new Vector2(-dir.Y, dir.X);
-            //        Vector2 dir4 = -dir;
-
-            //        Vector2 pos1 = new Vector2(dir.Y, -dir.X) * 5;
-            //        Vector2 pos2 = new Vector2(dir.Y, -dir.X) * -5;
-
-            //        AddProjectile(new Projectile(pos, dir, 200, this));
-            //        AddProjectile(new Projectile(pos, dir2, 200, this));
-            //        AddProjectile(new Projectile(pos, dir3, 200, this));
-            //        AddProjectile(new Projectile(pos, dir4, 200, this));
-
-            //        shotDelay = 1 / shotsPerSecond;
-            //        --currentVolleyAmount;
-            //    }
-            //}
-            //else if (currentVolleyAmount == 0)
-            //{
-            //    reloadDelay = reloadTime;
-            //    currentVolleyAmount = volleyAmount;
-            //}
         }
 
         public override void Fire2()

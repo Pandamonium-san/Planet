@@ -16,19 +16,18 @@ namespace Planet
             SetTexture(AssetManager.GetTexture("Parasite"));
             layer = Layer.PLAYER;
             rotationSpeed = 15;
-            wpn = new RadialWeapon<Projectile>(this, 1, 5, 500, 5, 1, 5, 0, 0, 2, 20);
-            wpn2 = new RadialWeapon<Projectile>(this, 1, 5, 500, -5, -1, 5, 0, 0, 2, 20);
+            wpn = new Weapon<Projectile>(this, WpnDesc.Spread());
+            wpn.inaccuracy = 1;
+            wpn.speedVariance = 5;
         }
         public override void Update(GameTime gt)
         {
             wpn.Update(gt);
-            wpn2.Update(gt);
             base.Update(gt);
         }
         public override void Fire1()
         {
             wpn.Fire();
-            wpn2.Fire();
         }
 
         public override void Fire2()
