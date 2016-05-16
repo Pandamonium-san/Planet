@@ -9,7 +9,6 @@ namespace Planet
     class BlinkerShip : Ship
     {
         Weapon<Projectile> wpn;
-        Weapon<Projectile> wpn2;
         public BlinkerShip(Vector2 pos)
             : base(pos)
         {
@@ -17,6 +16,7 @@ namespace Planet
             layer = Layer.PLAYER;
             rotationSpeed = 15;
             wpn = new Weapon<Projectile>(this, WpnDesc.Spread());
+            wpn = new Weapon<Projectile>(this, WpnDesc.Basic());
             wpn.inaccuracy = 1;
             wpn.speedVariance = 5;
         }

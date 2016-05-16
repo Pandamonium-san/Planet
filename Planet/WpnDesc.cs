@@ -18,7 +18,14 @@ namespace Planet
             desc.startingAngleDegrees = -20;
             return desc;
         }
-
+        public static WpnDesc Basic()
+        {
+            WpnDesc desc = new WpnDesc();
+            desc.damage = 1;
+            desc.shotsPerSecond = 8;
+            desc.projectileSpeed = 500;
+            return desc;
+        }
         /// <summary>
         /// Contains information about the behaviour of a weapon.
         /// </summary>

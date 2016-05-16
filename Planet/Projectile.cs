@@ -15,8 +15,10 @@ namespace Planet
         protected Vector2 dir;
         protected Vector2 velocity;
         protected float speed;
+        protected float maxLifeTime;
         protected float currentLifeTime;
         protected Vector2 acceleration;
+
 
         public Projectile(
             Vector2 pos,
@@ -37,6 +39,7 @@ namespace Planet
                 dir.Normalize();
             this.dir = dir;
 
+            maxLifeTime = lifeTime;
             currentLifeTime = lifeTime;
             velocity = this.dir * speed;
 
@@ -55,16 +58,11 @@ namespace Planet
                 layer = Layer.ENEMY_PROJECTILE;
                 layerMask = (Layer.PLAYER | Layer.PLAYER_PROJECTILE);
             }
-        }
 
-        protected virtual void CalculateAcceleration()
-        {
         }
 
         public override void Update(GameTime gt)
         {
-            CalculateAcceleration();
-            velocity += acceleration * (float)gt.ElapsedGameTime.TotalSeconds;
             pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
             currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
             if (currentLifeTime <= 0)
