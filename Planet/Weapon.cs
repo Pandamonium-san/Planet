@@ -116,7 +116,7 @@ namespace Planet
             currentShotAngle = 0;
         }
 
-        private void Shoot()
+        protected virtual void Shoot()
         {
             currentBulletAngle = MathHelper.ToRadians(startingAngleDegrees);
             for (int i = 0; i < nrOfBullets; i++)
@@ -132,56 +132,41 @@ namespace Planet
 
         protected virtual void CreateBullet()
         {
-            Vector2 direction = Utility.AngleToVector2(ship.rotation + currentBulletAngle + currentShotAngle);
+            Vector2 direction = Utility.AngleToVector2(ship.Rotation + currentBulletAngle + currentShotAngle);
             if (inaccuracy != 0)
                 ApplyInaccuracy(ref direction);
             float sv = Utility.GetRandom(Game1.rnd, -speedVariance, speedVariance);
-            //object[] args = {
-            //    ship.pos,
-            //    direction,
-            //    sv + projSpeed, 
-            //    damage, 
-            //    ship, 
-            //    inaccuracy, 
-            //    projLifeTime};
-            //Projectile projectile = (Projectile)Activator.CreateInstance(typeof(ProjType), args);
-
-            //test pattern
-            Projectile.Pattern pat = (p2, gt) => {
-
-                float dt = (float)gt.ElapsedGameTime.TotalSeconds;
-                Vector2 dir2 = new Vector2(p2.dir.Y, -p2.dir.X);
-                Vector2 v;
-
-                if (p2.frame > 120)
-                    v = -dir2 * p2.speed;
-                else if (p2.frame > 11)
-                    v = Vector2.Transform(p2.velocity, Matrix.CreateRotationZ(0.045f));
-                else if (p2.frame > 10)
-                    v = -dir2 * p2.speed;
-                else
-                    v = p2.velocity;
-
-                p2.velocity = v;
-                p2.pos += v * dt;
-            };
 
             Projectile p = new Projectile(
                 AssetManager.GetTexture("Proj1"),
-                ship.pos,
+                ship.Pos,
                 direction,
                 sv + projSpeed,
                 damage,
                 ship,
                 inaccuracy,
                 projLifeTime,
-                pat);
+                BulletPattern);
 
             Game1.objMgr.PostProjectile(p);
             projectiles.Add(p);
         }
 
-        private void ApplyInaccuracy(ref Vector2 dir)
+        protected virtual void BulletPattern(Projectile p, GameTime gt)
+        {
+            Vector2 dir2 = new Vector2(p.dir.Y, -p.dir.X);
+
+            if (p.frame > 120)
+                p.velocity = -dir2 * p.speed;
+            else if (p.frame > 11)
+                p.velocity = Vector2.Transform(p.velocity, Matrix.CreateRotationZ(0.045f));
+            else if (p.frame > 10)
+                p.velocity = -dir2 * p.speed;
+
+            p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+        }
+
+        protected void ApplyInaccuracy(ref Vector2 dir)
         {
             float deviation = Utility.GetRandom(Game1.rnd, -inaccuracy, inaccuracy);
             dir = Utility.RotateVector2(dir, MathHelper.ToRadians(deviation));

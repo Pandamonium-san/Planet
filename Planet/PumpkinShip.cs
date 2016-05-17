@@ -27,7 +27,7 @@ namespace Planet
         protected override void CalculateCurrentRotation()
         {
             currentRotationSpeed = 1;
-            rotation = MathHelper.WrapAngle(rotation);
+            Rotation = MathHelper.WrapAngle(Rotation);
         }
         public override void Fire1()
         {

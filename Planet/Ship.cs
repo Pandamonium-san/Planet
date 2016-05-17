@@ -31,10 +31,10 @@ namespace Planet
             DoAiming();
 
             CalculateCurrentVelocity();
-            pos += currentVelocity * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
+            Pos += currentVelocity * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
 
             CalculateCurrentRotation();
-            rotation += currentRotationSpeed * rotationModifier * (float)gt.ElapsedGameTime.TotalSeconds;
+            Rotation += currentRotationSpeed * rotationModifier * (float)gt.ElapsedGameTime.TotalSeconds;
 
             currentVelocity = Vector2.Zero;
             currentRotationSpeed = 0;
@@ -117,13 +117,13 @@ namespace Planet
 
         protected void TurnTowardsPoint(Vector2 point)
         {
-            rotation = MathHelper.WrapAngle(rotation);
+            Rotation = MathHelper.WrapAngle(Rotation);
 
             float desiredAngle = Utility.Vector2ToAngle(point);
             desiredAngle = MathHelper.WrapAngle(desiredAngle);
 
             // Calculate angle to target and use it to lerp rotationspeed. Lerping rotation->desiredAngle does not wrap properly.
-            float angleToTarget = desiredAngle - rotation;
+            float angleToTarget = desiredAngle - Rotation;
             angleToTarget = MathHelper.WrapAngle(angleToTarget);
 
             currentRotationSpeed += MathHelper.Lerp(0, angleToTarget, rotationSpeed);

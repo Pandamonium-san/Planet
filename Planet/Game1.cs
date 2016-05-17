@@ -9,6 +9,8 @@ namespace Planet
      *  x Weapon settings
      *  x Weapon templates
      *  x Bullet patterns
+     *  x Make Transform class for GameObject to make transform hierarchies
+     *  - Put bullet pattern in class
      *  - Destructible projectiles
      *  - Health
      *  - Enemy spawns

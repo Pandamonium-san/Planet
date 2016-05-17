@@ -16,17 +16,14 @@ namespace Planet
         ENEMY_PROJECTILE = 0x00000008
     }
 
-    public class GameObject
+    public class GameObject : Transform
     {
         private Texture2D tex;
 
-        public Vector2 pos;
         public Vector2 origin;
         public Rectangle spriteRec;
         public Color color = Color.White;
         public float alpha = 1f;
-        public float scale = 1f;
-        public float rotation = 0f;
         public float layerDepth = 0f;
 
         public Rectangle hitbox;
@@ -39,13 +36,15 @@ namespace Planet
         public bool destroyed;
 
         public GameObject(Vector2 pos)
+            : base(pos)
         {
-            this.pos = pos;
+            this.Pos = pos;
         }
 
         public GameObject()
+            : base(Vector2.Zero)
         {
-            this.pos = Vector2.Zero;
+            this.Pos = Vector2.Zero;
         }
 
         protected void SetTexture(Texture2D tex)
@@ -86,8 +85,8 @@ namespace Planet
 
         public void UpdateHitboxPos()
         {
-            hitbox.X = (int)(pos.X - origin.X + 0.5f * (spriteRec.Width * (1.0f - scale) + hitboxOffset.X));
-            hitbox.Y = (int)(pos.Y - origin.Y + 0.5f * (spriteRec.Height * (1.0f - scale) + hitboxOffset.Y));
+            hitbox.X = (int)(Pos.X - origin.X + 0.5f * (spriteRec.Width * (1.0f - Scale) + hitboxOffset.X));
+            hitbox.Y = (int)(Pos.Y - origin.Y + 0.5f * (spriteRec.Height * (1.0f - Scale) + hitboxOffset.Y));
         }
 
         /// <summary>
@@ -98,17 +97,17 @@ namespace Planet
             if (tex == null)
                 return;
             hitbox = new Rectangle(
-                (int)(pos.X - origin.X + 0.5f * (spriteRec.Width * (1.0f - scale) + hitboxOffset.X)),
-                (int)(pos.Y - origin.Y + 0.5f * (spriteRec.Height * (1.0f - scale) + hitboxOffset.Y)),
-                (int)(spriteRec.Width * scale - hitboxOffset.X),
-                (int)(spriteRec.Height * scale - hitboxOffset.Y)
+                (int)(Pos.X - origin.X + 0.5f * (spriteRec.Width * (1.0f - Scale) + hitboxOffset.X)),
+                (int)(Pos.Y - origin.Y + 0.5f * (spriteRec.Height * (1.0f - Scale) + hitboxOffset.Y)),
+                (int)(spriteRec.Width * Scale - hitboxOffset.X),
+                (int)(spriteRec.Height * Scale - hitboxOffset.Y)
                 );
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (tex != null)
-                spriteBatch.Draw(tex, pos, spriteRec, color * alpha, rotation, origin, scale, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
             spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Red * 0.5f);
         }
     }

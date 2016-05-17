@@ -36,7 +36,8 @@ namespace Planet
         {
             this.pattern = pattern;
 
-            this.SetTexture(tex);
+            if (tex != null)
+                this.SetTexture(tex);
             this.speed = speed;
             this.instigator = instigator;
             this.damage = damage;
@@ -73,7 +74,7 @@ namespace Planet
             if (pattern != null)
                 pattern(this, gt);
             else
-                pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+                Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
             currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
             if (currentLifeTime <= 0)
                 destroyed = true;

@@ -12,15 +12,19 @@ namespace Planet
         public BlinkerShip(Vector2 pos)
             : base(pos)
         {
+            hitboxOffset = new Vector2(10, 10);
             SetTexture(AssetManager.GetTexture("Parasite"));
             layer = Layer.PLAYER_SHIP;
             rotationSpeed = 15;
-            wpn = new Weapon(this, WpnDesc.Spread());
-            wpn = new Weapon(this, WpnDesc.Circle(48));
+            //wpn = new Weapon(this, WpnDesc.Spread());
+            wpn = new Weapon(this, WpnDesc.Circle(24));
+            wpn = new CycloneGun(this);
             wpn.projSpeed = 200;
-            wpn.projLifeTime = 5;
-           // wpn.inaccuracy = 1;
-           // wpn.speedVariance = 5;
+            wpn.projLifeTime = 3;
+            wpn.magSize = 5;
+            wpn.magReloadTime = 3;
+            //wpn.inaccuracy = 1;
+            //wpn.speedVariance = 50;
         }
         public override void Update(GameTime gt)
         {
@@ -39,7 +43,7 @@ namespace Planet
                 dir.Normalize();
             else
                 dir = GetDirection();
-            pos += dir * 100.0f;
+            Pos += dir * 100.0f;
         }
 
         public override void Fire3()

@@ -39,7 +39,7 @@ namespace Planet
             Vector2 d = new Vector2(dir.Y, -dir.X);
             //pos = realPos + d * 100 * (float)Math.Sin(gt.ElapsedGameTime.TotalMilliseconds);
             float time = currentLifeTime - maxLifeTime + timeOffset;
-            pos = basepos + d * amplitude * (float)Math.Sin(frequency * time);
+            Pos = basepos + d * amplitude * (float)Math.Sin(frequency * time);
         }
     }
 }

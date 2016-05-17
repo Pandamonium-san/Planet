@@ -23,7 +23,7 @@ namespace Planet
 
         public Vector2 GetDirection()
         {
-            return Utility.AngleToVector2(rotation);
+            return Utility.AngleToVector2(Rotation);
         }
 
         public void Invoke(string name, object[] parameters = null)

@@ -40,6 +40,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="AIController.cs" />
     <Compile Include="BlinkerShip.cs" />
+    <Compile Include="CycloneGun.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Missile.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Ship.cs" />
     <Compile Include="AssetManager.cs" />
     <Compile Include="RewinderShip.cs" />
+    <Compile Include="Transform.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="ObjectManager.cs" />
     <Compile Include="WaveProjectile.cs" />

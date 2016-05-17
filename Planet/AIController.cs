@@ -24,7 +24,7 @@ namespace Planet
             Vector2 direction;
             if (target != null)
             {
-                direction = target.GetShip().pos - ship.pos;
+                direction = target.GetShip().Pos - ship.Pos;
                 direction.Normalize();
                 ship.Move(direction);
             }
@@ -44,7 +44,7 @@ namespace Planet
             float nDistance = 1000000;
             foreach (Player p in players)
             {
-                float distance = Utility.Distance(p.GetShip().pos, ship.pos);
+                float distance = Utility.Distance(p.GetShip().Pos, ship.Pos);
                 if (distance < nDistance)
                 {
                     nearest = p;
