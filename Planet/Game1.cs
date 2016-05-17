@@ -8,6 +8,11 @@ namespace Planet
     /*  TO DO
      *  x Weapon settings
      *  x Weapon templates
+     *  x Bullet patterns
+     *  - Destructible projectiles
+     *  - Health
+     *  - Enemy spawns
+     *  - Enemy variations
      *  - Projectile variations
      *      - Homing missiles
      *      - Explosions?
@@ -15,9 +20,9 @@ namespace Planet
      *      - Projectile paths/patterns
      *  - Smaller hitboxes
      *  - Show hitbox while aiming
-     *  - Gameplay content
      *  - (Lasers)
      *  - Rewinder
+     *  - Possessor
      */
 
     /// <summary>

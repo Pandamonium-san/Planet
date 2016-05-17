@@ -6,14 +6,16 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-    class Weapon<ProjType> where ProjType : Projectile
+    class Weapon
     {
         protected Ship ship;
+        protected List<Projectile> projectiles = new List<Projectile>();
 
         public float damage;
         public float shotsPerSecond;
         public int nrOfBullets;
-        public float projectileSpeed;
+        public float projSpeed;
+        public float projLifeTime;
         public float inaccuracy;
         public float speedVariance;
 
@@ -37,7 +39,7 @@ namespace Planet
             Ship ship,
             float damage,
             float shotsPerSecond,
-            float projectileSpeed,
+            float projSpeed,
             int nrOfBullets = 1,
             float inaccuracy = 0,
             float speedVariance = 0,
@@ -45,13 +47,14 @@ namespace Planet
             int magSize = 1,
             float degreesBetweenBullets = 0,
             float degreesBetweenShots = 0,
-            float startingAngleDegrees = 0)
+            float startingAngleDegrees = 0,
+            float projLifeTime = 5)
         {
             this.ship = ship;
 
             this.damage = damage;
             this.shotsPerSecond = shotsPerSecond;
-            this.projectileSpeed = projectileSpeed;
+            this.projSpeed = projSpeed;
             this.nrOfBullets = nrOfBullets;
             this.inaccuracy = inaccuracy;
             this.speedVariance = speedVariance;
@@ -60,6 +63,7 @@ namespace Planet
             this.degreesBetweenBullets = degreesBetweenBullets;
             this.degreesBetweenShots = degreesBetweenShots;
             this.startingAngleDegrees = startingAngleDegrees;
+            this.projLifeTime = projLifeTime;
 
             this.currentMagCount = magSize;
         }
@@ -70,7 +74,7 @@ namespace Planet
 
             this.damage = desc.damage;
             this.shotsPerSecond = desc.shotsPerSecond;
-            this.projectileSpeed = desc.projectileSpeed;
+            this.projSpeed = desc.projectileSpeed;
             this.nrOfBullets = desc.nrOfBullets;
             this.inaccuracy = desc.inaccuracy;
             this.speedVariance = desc.speedVariance;
@@ -79,6 +83,7 @@ namespace Planet
             this.degreesBetweenBullets = desc.degreesBetweenBullets;
             this.degreesBetweenShots = desc.degreesBetweenShots;
             this.startingAngleDegrees = desc.startingAngleDegrees;
+            this.projLifeTime = desc.projLifeTime;
 
             this.currentMagCount = magSize;
         }
@@ -92,6 +97,8 @@ namespace Planet
                 secondsToNextReload -= (float)gt.ElapsedGameTime.TotalSeconds;
             if (secondsToNextReload <= 0)
                 Reload();
+
+            projectiles.RemoveAll(x => x.destroyed);
         }
 
         public virtual void Fire()
@@ -129,17 +136,49 @@ namespace Planet
             if (inaccuracy != 0)
                 ApplyInaccuracy(ref direction);
             float sv = Utility.GetRandom(Game1.rnd, -speedVariance, speedVariance);
-            object[] args = {
+            //object[] args = {
+            //    ship.pos,
+            //    direction,
+            //    sv + projSpeed, 
+            //    damage, 
+            //    ship, 
+            //    inaccuracy, 
+            //    projLifeTime};
+            //Projectile projectile = (Projectile)Activator.CreateInstance(typeof(ProjType), args);
+
+            //test pattern
+            Projectile.Pattern pat = (p2, gt) => {
+
+                float dt = (float)gt.ElapsedGameTime.TotalSeconds;
+                Vector2 dir2 = new Vector2(p2.dir.Y, -p2.dir.X);
+                Vector2 v;
+
+                if (p2.frame > 120)
+                    v = -dir2 * p2.speed;
+                else if (p2.frame > 11)
+                    v = Vector2.Transform(p2.velocity, Matrix.CreateRotationZ(0.045f));
+                else if (p2.frame > 10)
+                    v = -dir2 * p2.speed;
+                else
+                    v = p2.velocity;
+
+                p2.velocity = v;
+                p2.pos += v * dt;
+            };
+
+            Projectile p = new Projectile(
+                AssetManager.GetTexture("Proj1"),
                 ship.pos,
                 direction,
-                sv + projectileSpeed, 
-                damage, 
-                ship, 
-                inaccuracy, 
-                3};
-            Projectile projectile = (Projectile)Activator.CreateInstance(typeof(ProjType), args);
+                sv + projSpeed,
+                damage,
+                ship,
+                inaccuracy,
+                projLifeTime,
+                pat);
 
-            Game1.objMgr.PostGameObj(projectile);
+            Game1.objMgr.PostProjectile(p);
+            projectiles.Add(p);
         }
 
         private void ApplyInaccuracy(ref Vector2 dir)
@@ -153,7 +192,7 @@ namespace Planet
             WpnDesc desc = new WpnDesc(
                 this.damage,
                 this.shotsPerSecond,
-                this.projectileSpeed,
+                this.projSpeed,
                 this.nrOfBullets,
                 this.inaccuracy,
                 this.speedVariance,
@@ -161,7 +200,8 @@ namespace Planet
                 this.magSize,
                 this.degreesBetweenBullets,
                 this.degreesBetweenShots,
-                this.startingAngleDegrees);
+                this.startingAngleDegrees,
+                this.projLifeTime);
             return desc;
         }
     }

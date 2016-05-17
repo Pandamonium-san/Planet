@@ -72,7 +72,7 @@ namespace Planet
 
         public override void DoCollision(GameObject other)
         {
-            destroy = true;
+            destroyed = true;
         }
 
         public virtual void Fire1()

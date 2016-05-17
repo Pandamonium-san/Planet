@@ -8,17 +8,19 @@ namespace Planet
 {
     class BlinkerShip : Ship
     {
-        Weapon<Projectile> wpn;
+        Weapon wpn;
         public BlinkerShip(Vector2 pos)
             : base(pos)
         {
             SetTexture(AssetManager.GetTexture("Parasite"));
-            layer = Layer.PLAYER;
+            layer = Layer.PLAYER_SHIP;
             rotationSpeed = 15;
-            wpn = new Weapon<Projectile>(this, WpnDesc.Spread());
-            wpn = new Weapon<Projectile>(this, WpnDesc.Basic());
-            wpn.inaccuracy = 1;
-            wpn.speedVariance = 5;
+            wpn = new Weapon(this, WpnDesc.Spread());
+            wpn = new Weapon(this, WpnDesc.Circle(48));
+            wpn.projSpeed = 200;
+            wpn.projLifeTime = 5;
+           // wpn.inaccuracy = 1;
+           // wpn.speedVariance = 5;
         }
         public override void Update(GameTime gt)
         {

@@ -10,7 +10,7 @@ namespace Planet
     {
         public RewinderShip(Vector2 pos):base(pos)
         {
-            layer = Layer.PLAYER;
+            layer = Layer.PLAYER_SHIP;
             rotationSpeed = 15;
         }
 

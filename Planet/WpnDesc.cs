@@ -18,12 +18,15 @@ namespace Planet
             desc.startingAngleDegrees = -20;
             return desc;
         }
-        public static WpnDesc Basic()
+        public static WpnDesc Circle(int bullets)
         {
             WpnDesc desc = new WpnDesc();
             desc.damage = 1;
             desc.shotsPerSecond = 8;
             desc.projectileSpeed = 500;
+            desc.nrOfBullets = bullets;
+            desc.degreesBetweenBullets = 360.0f / bullets;
+
             return desc;
         }
         /// <summary>
@@ -40,17 +43,19 @@ namespace Planet
         /// <param name="degreesBetweenBullets">Degrees between bullets in a shot. Not relevant if nrOfBullets is 1</param>
         /// <param name="degreesBetweenShots">Degrees between shots in a magazine. Not relevant if magAmount is 1</param>
         /// <param name="startingAngleDegrees">First bullet in each shot is fired at an offset instead of going straight</param>
+        /// <param name="projLifeTime">Time in seconds before bullet destroys itself</param>
         public WpnDesc(float damage,
             float shotsPerSecond,
             float projectileSpeed,
-            int nrOfBullets = 1,
-            float inaccuracy = 0,
-            float speedVariance = 0,
-            float magReloadTime = 0,
-            int magSize = 1,
-            float degreesBetweenBullets = 0,
-            float degreesBetweenShots = 0,
-            float startingAngleDegrees = 0)
+            int nrOfBullets,
+            float inaccuracy,
+            float speedVariance,
+            float magReloadTime,
+            int magSize,
+            float degreesBetweenBullets,
+            float degreesBetweenShots,
+            float startingAngleDegrees ,
+            float projLifeTime)
         {
             this.damage = damage;
             this.shotsPerSecond = shotsPerSecond;
@@ -63,6 +68,7 @@ namespace Planet
             this.degreesBetweenBullets = degreesBetweenBullets;
             this.degreesBetweenShots = degreesBetweenShots;
             this.startingAngleDegrees = startingAngleDegrees;
+            this.projLifeTime = projLifeTime;
         }
 
         public WpnDesc() { }
@@ -78,5 +84,6 @@ namespace Planet
         public float degreesBetweenBullets = 0;
         public float degreesBetweenShots = 0;
         public float startingAngleDegrees = 0;
+        public float projLifeTime = 5;
     }
 }

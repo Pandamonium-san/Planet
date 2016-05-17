@@ -21,7 +21,7 @@ namespace Planet
 
         public void Update(GameTime gt)
         {
-            if (actor != null && actor.destroy)
+            if (actor != null && actor.destroyed)
                 actor = null;
             if (actor == null)
                 return;
