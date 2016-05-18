@@ -24,7 +24,7 @@ namespace Planet
             GameObject instigator = null,
             float inaccuracy = 0,
             float lifeTime = 3)
-            : base(AssetManager.GetTexture("Proj1"), pos, dir, speed, damage, instigator, inaccuracy, lifeTime)
+            : base(AssetManager.GetTexture("Proj1"), pos, dir, speed, damage, instigator, lifeTime)
         {
             basepos = pos;
             this.amplitude = amplitude;

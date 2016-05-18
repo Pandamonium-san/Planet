@@ -40,6 +40,8 @@ namespace Planet
 #endif
         public static Random rnd = new Random();
         public static ObjectManager objMgr;
+        private FrameCounter fc = new FrameCounter();
+        private bool runningSlowly;
 
         public Game1()
         {
@@ -97,6 +99,8 @@ namespace Planet
                 Exit();
 #endif
             // TODO: Add your update logic here
+            runningSlowly = gameTime.IsRunningSlowly;
+
             objMgr.Update(gameTime);
             base.Update(gameTime);
         }
@@ -108,9 +112,16 @@ namespace Planet
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            fc.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             // TODO: Add your drawing code here
             objMgr.Draw(spriteBatch);
+            spriteBatch.Begin();
+            spriteBatch.DrawString(AssetManager.GetFont("font1"), "FPS: " + fc.AverageFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
+            spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow: " + runningSlowly.ToString(), new Vector2(150, 0), Color.Red);
+            spriteBatch.End();
+
+
             base.Draw(gameTime);
         }
     }

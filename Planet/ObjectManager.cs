@@ -44,11 +44,14 @@ namespace Planet
             player1.Update(gt);
             ai.Update(gt);
 
-            foreach (Projectile p in projectiles)
+            //foreach (Projectile p in projectiles)
+            //{
+            //    p.Update(gt);
+            //}
+            for (int i = 0; i < projectiles.Count(); i++)
             {
-                p.Update(gt);
+                projectiles[i].Update(gt);
             }
-
             for (int i = 0; i < gameObjects.Count(); i++)
             {
                 GameObject go = gameObjects[i];
@@ -109,8 +112,9 @@ namespace Planet
             {
                 p.Draw(sb);
             }
-            sb.DrawString(AssetManager.GetFont("font1"), (this.gameObjects.Count()).ToString(), new Vector2(10, 10), Color.Red);
-            sb.DrawString(AssetManager.GetFont("font1"), (this.collisionChecksPerFrame).ToString(), new Vector2(10, 30), Color.Red);
+            sb.DrawString(AssetManager.GetFont("font1"), "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
+            sb.DrawString(AssetManager.GetFont("font1"), "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
+            sb.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (this.collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
             collisionChecksPerFrame = 0;
             sb.End();
         }

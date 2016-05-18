@@ -17,7 +17,8 @@ namespace Planet
             SetTexture(AssetManager.GetTexture("pumpkin"));
             layer = Layer.ENEMY_SHIP;
 
-            wpn = new Weapon(this, 1, 20, 200, 4, 2.5f, 10.0f, 0.9f, 18, 90, 10, 0);
+            //wpn = new Weapon(this, 1, 20, 200, 4, 2.5f, 10.0f, 0.9f, 18, 90, 10, 0);
+            wpn = new CycloneGun(this);
         }
         public override void Update(GameTime gt)
         {

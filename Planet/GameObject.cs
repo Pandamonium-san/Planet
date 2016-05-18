@@ -108,7 +108,8 @@ namespace Planet
         {
             if (tex != null)
                 spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
-            spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Red * 0.5f);
+            //show hitboxes, may be slow
+            //spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Red * 0.5f);
         }
     }
 }

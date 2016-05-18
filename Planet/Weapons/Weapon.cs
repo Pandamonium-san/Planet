@@ -9,7 +9,6 @@ namespace Planet
     class Weapon
     {
         protected Ship ship;
-        protected List<Projectile> projectiles = new List<Projectile>();
 
         public float damage;
         public float shotsPerSecond;
@@ -88,6 +87,11 @@ namespace Planet
             this.currentMagCount = magSize;
         }
 
+        public Weapon(Ship ship)
+        {
+            this.ship = ship;
+        }
+
         public virtual void Update(GameTime gt)
         {
             secondsToNextShot -= (float)gt.ElapsedGameTime.TotalSeconds;
@@ -98,7 +102,6 @@ namespace Planet
             if (secondsToNextReload <= 0)
                 Reload();
 
-            projectiles.RemoveAll(x => x.destroyed);
         }
 
         public virtual void Fire()
@@ -106,6 +109,10 @@ namespace Planet
             if (currentMagCount > 0 && secondsToNextShot <= 0)
             {
                 Shoot();
+                currentShotAngle += MathHelper.ToRadians(degreesBetweenShots);
+                if (shotsPerSecond != 0)
+                    secondsToNextShot = 1 / shotsPerSecond;
+                currentMagCount--;
             }
         }
 
@@ -124,17 +131,13 @@ namespace Planet
                 CreateBullet();
                 currentBulletAngle += MathHelper.ToRadians(degreesBetweenBullets);
             }
-            currentShotAngle += MathHelper.ToRadians(degreesBetweenShots);
-            if (shotsPerSecond != 0)
-                secondsToNextShot = 1 / shotsPerSecond;
-            currentMagCount--;
         }
 
         protected virtual void CreateBullet()
         {
             Vector2 direction = Utility.AngleToVector2(ship.Rotation + currentBulletAngle + currentShotAngle);
             if (inaccuracy != 0)
-                ApplyInaccuracy(ref direction);
+                ApplyInaccuracy(ref direction, inaccuracy);
             float sv = Utility.GetRandom(Game1.rnd, -speedVariance, speedVariance);
 
             Projectile p = new Projectile(
@@ -144,29 +147,27 @@ namespace Planet
                 sv + projSpeed,
                 damage,
                 ship,
-                inaccuracy,
                 projLifeTime,
                 BulletPattern);
 
             Game1.objMgr.PostProjectile(p);
-            projectiles.Add(p);
         }
 
         protected virtual void BulletPattern(Projectile p, GameTime gt)
         {
-            Vector2 dir2 = new Vector2(p.dir.Y, -p.dir.X);
+            //Vector2 dir2 = new Vector2(p.dir.Y, -p.dir.X);
 
-            if (p.frame > 120)
-                p.velocity = -dir2 * p.speed;
-            else if (p.frame > 11)
-                p.velocity = Vector2.Transform(p.velocity, Matrix.CreateRotationZ(0.045f));
-            else if (p.frame > 10)
-                p.velocity = -dir2 * p.speed;
+            //if (p.frame > 120)
+            //    p.velocity = -dir2 * p.speed;
+            //else if (p.frame > 11)
+            //    p.velocity = Vector2.Transform(p.velocity, Matrix.CreateRotationZ(0.045f));
+            //else if (p.frame > 10)
+            //    p.velocity = -dir2 * p.speed;
 
             p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
         }
 
-        protected void ApplyInaccuracy(ref Vector2 dir)
+        protected void ApplyInaccuracy(ref Vector2 dir, float inaccuracy)
         {
             float deviation = Utility.GetRandom(Game1.rnd, -inaccuracy, inaccuracy);
             dir = Utility.RotateVector2(dir, MathHelper.ToRadians(deviation));
@@ -188,6 +189,24 @@ namespace Planet
                 this.startingAngleDegrees,
                 this.projLifeTime);
             return desc;
+        }
+
+        public void SetDesc(WpnDesc desc)
+        {
+            this.damage = desc.damage;
+            this.shotsPerSecond = desc.shotsPerSecond;
+            this.projSpeed = desc.projectileSpeed;
+            this.nrOfBullets = desc.nrOfBullets;
+            this.inaccuracy = desc.inaccuracy;
+            this.speedVariance = desc.speedVariance;
+            this.magReloadTime = desc.magReloadTime;
+            this.magSize = desc.magSize;
+            this.degreesBetweenBullets = desc.degreesBetweenBullets;
+            this.degreesBetweenShots = desc.degreesBetweenShots;
+            this.startingAngleDegrees = desc.startingAngleDegrees;
+            this.projLifeTime = desc.projLifeTime;
+
+            this.currentMagCount = magSize;
         }
     }
 }

@@ -15,8 +15,8 @@ namespace Planet
         public Vector2 dir;
         public Vector2 velocity;
         public float speed;
-        protected float maxLifeTime;
-        protected float currentLifeTime;
+        public float maxLifeTime;
+        public float currentLifeTime;
         protected Vector2 acceleration;
 
         public delegate void Pattern(Projectile p, GameTime gt);
@@ -29,7 +29,6 @@ namespace Planet
             float speed,
             float damage = 1,
             GameObject instigator = null,
-            float inaccuracy = 0,
             float lifeTime = 3,
             Pattern pattern = null)
             : base(pos)
@@ -70,14 +69,16 @@ namespace Planet
 
         public override void Update(GameTime gt)
         {
+            currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
+            if (currentLifeTime <= 0)
+                destroyed = true;
+
             //perform bullet pattern operation
             if (pattern != null)
                 pattern(this, gt);
             else
                 Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
-            currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
-            if (currentLifeTime <= 0)
-                destroyed = true;
+
             base.Update(gt);
         }
     }

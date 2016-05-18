@@ -17,14 +17,15 @@ namespace Planet
             layer = Layer.PLAYER_SHIP;
             rotationSpeed = 15;
             //wpn = new Weapon(this, WpnDesc.Spread());
-            wpn = new Weapon(this, WpnDesc.Circle(24));
+            wpn = new Weapon(this, WpnDesc.Circle(200));
             wpn = new CycloneGun(this);
             wpn.projSpeed = 200;
-            wpn.projLifeTime = 3;
-            wpn.magSize = 5;
-            wpn.magReloadTime = 3;
-            //wpn.inaccuracy = 1;
-            //wpn.speedVariance = 50;
+            wpn.projLifeTime = 5;
+            wpn.shotsPerSecond = 10;
+            //wpn.magSize = 5;
+            wpn.magReloadTime = 0;
+            wpn.inaccuracy = 0;
+            wpn.speedVariance = 0;
         }
         public override void Update(GameTime gt)
         {

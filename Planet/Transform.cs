@@ -26,8 +26,9 @@ namespace Planet
             get { return parent; }
             set
             {
+                Vector2 pos = Pos;
                 parent = value;
-                localPos -= parent.Pos;
+                Pos = pos;
             }
         }
 
