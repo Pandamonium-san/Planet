@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Planet
@@ -12,23 +13,24 @@ namespace Planet
     public class ObjectManager
     {
         //ships and destructible projectiles
-        private List<GameObject> gameObjects;
+        public List<GameObject> gameObjects;
 
         //for projectiles that only collide with ships
-        private List<Projectile> projectiles;
+        public List<Projectile> projectiles;
 
         private AIController ai;
 
         private Player player1;
-        private Ship go;
+        private RewinderShip ship;
 
         public ObjectManager()
         {
             gameObjects = new List<GameObject>();
             projectiles = new List<Projectile>();
 
-            go = new BlinkerShip(new Vector2(500, 500));
-            PostGameObj(go);
+            //go = new BlinkerShip(new Vector2(500, 500));
+            ship = new RewinderShip(new Vector2(500, 500));
+            PostGameObj(ship);
 
             Ship s = new PumpkinShip(new Vector2(800, 500));
             ai = new AIController();
@@ -36,7 +38,7 @@ namespace Planet
             PostGameObj(s);
 
             player1 = new Player(PlayerIndex.One);
-            player1.SetShip(go);
+            player1.SetShip(ship);
         }
 
         public void Update(GameTime gt)
@@ -82,6 +84,17 @@ namespace Planet
 
             projectiles.RemoveAll(x => x.destroyed);
             gameObjects.RemoveAll(x => x.destroyed == true);
+
+            //List<GameObject> gos = new List<GameObject>();
+            //foreach(GameObject g in gameObjects)
+            //{
+            //    //bool isRewindable = g.GetType().GetInterfaces().Any(x => 
+            //    //    x.IsGenericType &&
+            //    //    x.GetGenericTypeDefinition() == typeof(IRewindable<>));
+            //    MethodInfo info = g.GetType().GetMethod("Save").MakeGenericMethod(g.GetType());
+            //    gos.Add((GameObject)info.Invoke(g, null));
+            //}
+            //ship.states.Push(gos);
         }
 
         public List<Player> GetPlayers()

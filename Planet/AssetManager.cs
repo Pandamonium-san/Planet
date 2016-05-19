@@ -19,6 +19,7 @@ namespace Planet
              //   throw new InvalidOperationException("Content is already loaded.");
             AssetManager.Content = content;
 
+            // (key, path)
             AddTexture("Fill", "Filltexture");
             AddTexture("Ship1", "ship_temp");
             AddTexture("Proj1", "Image2");

@@ -24,6 +24,11 @@ namespace Planet
      *  - Show hitbox while aiming
      *  - (Lasers)
      *  - Rewinder
+     *      - Fix structure of rewind code
+     *      - Some objects end rewinding before others (reached start of lifespan)
+     *      - Manual save state
+     *      - Show that state
+     *      - Rewind only certain objects
      *  - Possessor
      */
 

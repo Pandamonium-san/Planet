@@ -16,6 +16,7 @@ namespace Planet
             SetTexture(AssetManager.GetTexture("Parasite"));
             layer = Layer.PLAYER_SHIP;
             rotationSpeed = 15;
+
             //wpn = new Weapon(this, WpnDesc.Spread());
             wpn = new Weapon(this, WpnDesc.Circle(200));
             wpn = new CycloneGun(this);

@@ -18,7 +18,7 @@ namespace Planet
 
     public class GameObject : Transform
     {
-        private Texture2D tex;
+        protected Texture2D tex;
 
         public Vector2 origin;
         public Rectangle spriteRec;
@@ -33,19 +33,26 @@ namespace Planet
         public Layer layerMask;
 
         public int frame;
+        public bool isRewindable = true;
         public bool destroyed;
+
+        //rewind variables
+        public FixedList<GameObject> objStates;
+        public int iterator;
+        public static readonly int queueSize = 120;
+        public bool rewind;
 
         public GameObject(Vector2 pos)
             : base(pos)
         {
-            this.Pos = pos;
+            objStates = new FixedList<GameObject>(queueSize);
         }
 
-        public GameObject()
-            : base(Vector2.Zero)
-        {
-            this.Pos = Vector2.Zero;
-        }
+        //public GameObject()
+        //    : base(Vector2.Zero)
+        //{
+        //    objStates = new FixedList<GameObject>(queueSize);
+        //}
 
         protected void SetTexture(Texture2D tex)
         {
@@ -80,7 +87,13 @@ namespace Planet
         public virtual void Update(GameTime gt)
         {
             ++frame;
+            if (rewind)
+            {
+                LoadState(1);
+                return;
+            }
             UpdateHitboxPos();
+            SaveState();
         }
 
         public void UpdateHitboxPos()
@@ -104,10 +117,65 @@ namespace Planet
                 );
         }
 
+        protected void SaveState()
+        {
+            if (isRewindable)
+                objStates.AddFirst(GetState());
+        }
+
+        public void LoadState(int frames)
+        {
+            if (!isRewindable)
+                return;
+
+            if (objStates.Count <= frames)
+            {
+                frames = objStates.Count;
+                rewind = false;
+            }
+
+            for (int i = 0; i < frames - 1; i++)
+                objStates.Pop();
+
+            SetState(objStates.Pop());
+        }
+
+        protected virtual GameObject GetState()
+        {
+            GameObject g = new GameObject(Pos);
+            g.Rotation = this.Rotation;
+            g.Scale = this.Scale;
+            g.Parent = this.Parent;
+            g.frame = this.frame;
+            return g;
+        }
+
+        protected virtual void SetState(GameObject other)
+        {
+            if (other == null)
+            {
+                //destroyed = true;
+                return;
+            }
+            GameObject g = (GameObject)other;
+            this.Pos = other.Pos;
+            this.Rotation = other.Rotation;
+            this.Parent = other.Parent;
+            this.frame = other.frame;
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (tex != null)
+            {
                 spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+
+                GameObject old = null;
+                if (objStates.Count > 0)
+                    old = ((GameObject)(objStates.Last.Value));
+                if(old != null)
+                spriteBatch.Draw(tex, old.Pos, spriteRec, Color.Red * alpha * 0.2f, old.Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+            }
             //show hitboxes, may be slow
             //spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Red * 0.5f);
         }

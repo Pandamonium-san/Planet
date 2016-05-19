@@ -67,6 +67,31 @@ namespace Planet
 
         }
 
+        protected override GameObject GetState()
+        {
+            Projectile g = new Projectile(this.tex, this.Pos, this.dir, this.speed);
+            g.Rotation = this.Rotation;
+            g.Scale = this.Scale;
+            g.Parent = this.Parent;
+            g.frame = this.frame;
+            g.currentLifeTime = this.currentLifeTime;
+            return g;
+        }
+
+        protected override void SetState(GameObject other)
+        {
+            if (other == null)
+            {
+                return;
+            }
+            Projectile g = (Projectile)other;
+            this.Pos = g.Pos;
+            this.Rotation = g.Rotation;
+            this.Parent = g.Parent;
+            this.frame = g.frame;
+            this.currentLifeTime = g.currentLifeTime;
+        }
+
         public override void Update(GameTime gt)
         {
             currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
