@@ -101,7 +101,6 @@ namespace Planet
                 secondsToNextReload -= (float)gt.ElapsedGameTime.TotalSeconds;
             if (secondsToNextReload <= 0)
                 Reload();
-
         }
 
         public virtual void Fire()

@@ -26,7 +26,7 @@ namespace Planet
             this.SetTexture(AssetManager.GetTexture("Ship1"));
         }
 
-        public override void Update(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
             DoAiming();
 
@@ -41,7 +41,7 @@ namespace Planet
             speedModifier = 1.0f;
             rotationModifier = 1.0f;
 
-            base.Update(gt);
+            base.DoUpdate(gt);
         }
 
         protected virtual void DoAiming()
@@ -72,24 +72,12 @@ namespace Planet
 
         public override void DoCollision(GameObject other)
         {
-            destroyed = true;
+            Die();
         }
 
         public virtual void Fire1()
         {
-            //if (shotDelay < 0)
-            //{
-            //    Vector2 dir = Utility.AngleToVector2(rotation);
-            //    Vector2 pos1 = new Vector2(dir.Y, -dir.X) * 5;
-            //    Vector2 pos2 = new Vector2(dir.Y, -dir.X) * -5;
 
-            //    AddProjectile(new Projectile(pos + pos1, dir, 750, this));
-            //    AddProjectile(new Projectile(pos + pos2, dir, 750, this));
-            //    AddProjectile(new Projectile(pos + pos1, dir + Utility.AngleToVector2(rotation + -0.5f), 750, this));
-            //    AddProjectile(new Projectile(pos + pos1, dir + Utility.AngleToVector2(rotation + 0.5f), 750, this));
-
-            //    shotDelay = 1 / shotsPerSecond;
-            //}
         }
         public virtual void Fire2()
         {
@@ -127,11 +115,6 @@ namespace Planet
             angleToTarget = MathHelper.WrapAngle(angleToTarget);
 
             currentRotationSpeed += MathHelper.Lerp(0, angleToTarget, rotationSpeed);
-        }
-
-        protected void AddProjectile(Projectile p)
-        {
-            Game1.objMgr.PostGameObj(p);
         }
 
     }

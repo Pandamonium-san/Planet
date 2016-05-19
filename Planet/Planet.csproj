@@ -39,10 +39,11 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="AIController.cs" />
-    <Compile Include="FixedList.cs" />
+    <Compile Include="Controller.cs" />
+    <Compile Include="Utility\FixedList.cs" />
     <Compile Include="Ships\BlinkerShip.cs" />
     <Compile Include="Weapons\CycloneGun.cs" />
-    <Compile Include="FrameCounter.cs" />
+    <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Projectiles\Missile.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="AssetManager.cs" />
     <Compile Include="Ships\RewinderShip.cs" />
     <Compile Include="Transform.cs" />
-    <Compile Include="Utility.cs" />
+    <Compile Include="Utility\Utility.cs" />
     <Compile Include="ObjectManager.cs" />
     <Compile Include="Projectiles\WaveProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />
@@ -99,6 +100,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Content\Fonts\font1.spritefont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

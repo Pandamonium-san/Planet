@@ -37,7 +37,7 @@ namespace Planet
         public void SetShip(Ship a)
         {
             ship = a;
-            pc.SetActor(a);
+            pc.SetShip(a);
         }
 
         public Ship GetShip()

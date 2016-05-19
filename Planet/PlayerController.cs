@@ -7,39 +7,31 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-    class PlayerController
+    class PlayerController : Controller
     {
-        private Actor actor;
         private PlayerIndex index;
         private List<KeyBinding> bindings;
 
-        public PlayerController(PlayerIndex index)
+        public PlayerController(PlayerIndex index, Ship ship = null)
+            : base(ship)
         {
+            this.ship = ship;
             this.index = index;
             bindings = new List<KeyBinding>();
         }
 
-        public void Update(GameTime gt)
+        public override void DoUpdate(GameTime gt)
         {
-            if (actor != null && actor.destroyed)
-                actor = null;
-            if (actor == null)
-                return;
             foreach (KeyBinding kb in bindings)
             {
                 if (InputHandler.IsButtonDown(index, kb.input, false))
                 {
                     if (kb.rapidFire)
-                        actor.Invoke(kb.name, kb.args);
+                        ship.Invoke(kb.name, kb.args);
                     else if (InputHandler.IsButtonUp(index, kb.input, true))
-                        actor.Invoke(kb.name, kb.args);
+                        ship.Invoke(kb.name, kb.args);
                 }
             }
-        }
-
-        public void SetActor(Actor actor)
-        {
-            this.actor = actor;
         }
 
         public void SetBinding(PlayerInput input, string name, object[] args = null, bool rapidFire = false)
@@ -48,7 +40,7 @@ namespace Planet
         }
         public void SetBinding(PlayerInput input, string name, object args, bool rapidFire = false)
         {
-            bindings.Add(new KeyBinding(input, name, new object[]{args}, rapidFire));
+            bindings.Add(new KeyBinding(input, name, new object[] { args }, rapidFire));
         }
 
         private struct KeyBinding

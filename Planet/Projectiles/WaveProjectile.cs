@@ -32,7 +32,7 @@ namespace Planet
             this.timeOffset = timeOffset;
         }
 
-        public override void Update(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
             base.Update(gt);
             basepos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;

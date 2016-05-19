@@ -8,7 +8,6 @@ namespace Planet
 {
     class PumpkinShip : Ship
     {
-        //RadialWeapon<Projectile> wpn;
         Weapon wpn;
 
         public PumpkinShip(Vector2 pos)
@@ -17,13 +16,12 @@ namespace Planet
             SetTexture(AssetManager.GetTexture("pumpkin"));
             layer = Layer.ENEMY_SHIP;
 
-            //wpn = new Weapon(this, 1, 20, 200, 4, 2.5f, 10.0f, 0.9f, 18, 90, 10, 0);
             wpn = new CycloneGun(this);
         }
-        public override void Update(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
             wpn.Update(gt);
-            base.Update(gt);
+            base.DoUpdate(gt);
         }
         protected override void CalculateCurrentRotation()
         {

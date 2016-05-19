@@ -16,11 +16,6 @@ namespace Planet
 
         }
 
-        public override void Update(GameTime gt)
-        {
-            base.Update(gt);
-        }
-
         public Vector2 GetDirection()
         {
             return Utility.AngleToVector2(Rotation);

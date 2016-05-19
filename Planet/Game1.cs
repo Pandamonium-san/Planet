@@ -10,7 +10,7 @@ namespace Planet
      *  x Weapon templates
      *  x Bullet patterns
      *  x Make Transform class for GameObject to make transform hierarchies
-     *  - Put bullet pattern in class
+     *  - Put bullet pattern in class?
      *  - Destructible projectiles
      *  - Health
      *  - Enemy spawns
@@ -23,12 +23,11 @@ namespace Planet
      *  - Smaller hitboxes
      *  - Show hitbox while aiming
      *  - (Lasers)
+     *  - Game states
      *  - Rewinder
      *      - Fix structure of rewind code
-     *      - Some objects end rewinding before others (reached start of lifespan)
-     *      - Manual save state
-     *      - Show that state
-     *      - Rewind only certain objects
+     *      - Proper copy constructors
+     *      - Manual save state (rewind to this point later)
      *  - Possessor
      */
 

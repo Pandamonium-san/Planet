@@ -7,24 +7,21 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-    class AIController
+    class AIController : Controller
     {
-        protected Ship ship;
-        protected Player target;
+        protected Ship target;
 
-        public AIController()
-        {
+        public AIController();
+        public AIController(Ship ship) : base(ship) { }
 
-        }
-
-        public void Update(GameTime gt)
+        public override void DoUpdate(GameTime gt)
         {
             ship.speedModifier -= 0.85f;
             target = FindNearestTarget();
             Vector2 direction;
-            if (target != null)
+            if (target != null && target.isActive)
             {
-                direction = target.GetShip().Pos - ship.Pos;
+                direction = target.Pos - ship.Pos;
                 direction.Normalize();
                 ship.Move(direction);
             }
@@ -32,22 +29,17 @@ namespace Planet
             ship.Invoke("Fire1");
         }
 
-        public void SetActor(Ship ship)
-        {
-            this.ship = ship;
-        }
-
-        protected virtual Player FindNearestTarget()
+        protected virtual Ship FindNearestTarget()
         {
             List<Player> players = Game1.objMgr.GetPlayers();
-            Player nearest = null;
+            Ship nearest = null;
             float nDistance = 1000000;
             foreach (Player p in players)
             {
                 float distance = Utility.Distance(p.GetShip().Pos, ship.Pos);
                 if (distance < nDistance)
                 {
-                    nearest = p;
+                    nearest = p.GetShip();
                     nDistance = distance;
                 }
             }

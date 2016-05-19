@@ -79,11 +79,10 @@ namespace Planet
             else if (p.frame == 10)
                 p.velocity = -dir2 * p.speed;
             else if (p.frame == 110)
-                p.destroyed = true;
+            {
+                p.isActive = false;
 
             //test
-            if (p.destroyed)
-            {
                 for (int i = -1; i <= 1; i += 2)
                 {
                     Vector2 direction = new Vector2(p.velocity.Y, p.velocity.X * i);

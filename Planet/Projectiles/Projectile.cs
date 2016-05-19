@@ -17,7 +17,6 @@ namespace Planet
         public float speed;
         public float maxLifeTime;
         public float currentLifeTime;
-        protected Vector2 acceleration;
 
         public delegate void Pattern(Projectile p, GameTime gt);
         Pattern pattern;
@@ -74,29 +73,45 @@ namespace Planet
             g.Scale = this.Scale;
             g.Parent = this.Parent;
             g.frame = this.frame;
+
+            g.velocity = this.velocity;
             g.currentLifeTime = this.currentLifeTime;
+            g.isDead = this.isDead;
+            g.isActive = this.isActive;
             return g;
         }
 
         protected override void SetState(GameObject other)
         {
             if (other == null)
-            {
                 return;
-            }
+
             Projectile g = (Projectile)other;
             this.Pos = g.Pos;
             this.Rotation = g.Rotation;
             this.Parent = g.Parent;
             this.frame = g.frame;
+
+            this.velocity = g.velocity;
+            this.speed = g.speed;
+            this.dir = g.dir;
             this.currentLifeTime = g.currentLifeTime;
+            this.isDead = g.isDead;
+            this.isActive = g.isActive;
         }
 
-        public override void Update(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
+            base.DoUpdate(gt);
+
             currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
-            if (currentLifeTime <= 0)
-                destroyed = true;
+            if (currentLifeTime <= 0 && !isDead)
+            {
+                Die();
+            }
+
+            if (isDead || !isActive)
+                return;
 
             //perform bullet pattern operation
             if (pattern != null)
@@ -104,7 +119,6 @@ namespace Planet
             else
                 Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
 
-            base.Update(gt);
         }
     }
 }

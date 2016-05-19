@@ -19,7 +19,8 @@ namespace Planet
             rotationSpeed = 15;
 
             wpn = new Weapon(this, WpnDesc.Spread());
-            wpn = new Weapon(this, WpnDesc.Circle(150));
+            //wpn = new Weapon(this, WpnDesc.Circle(150));
+            wpn = new CycloneGun(this);
 
             //objStates = new FixedList<RewinderShip>(queueSize);
 
@@ -27,10 +28,10 @@ namespace Planet
             //RewinderShip[] tv2 = (RewinderShip[])tre;
         }
 
-        public override void Update(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
+            base.DoUpdate(gt);
             wpn.Update(gt);
-            base.Update(gt);
         }
 
         public override void Fire1()
@@ -42,19 +43,13 @@ namespace Planet
         {
             foreach (GameObject g in Game1.objMgr.gameObjects)
             {
-                //g.LoadState(120);
-                g.rewind = true;
+                //if(g.layer != Layer.PLAYER_SHIP)
+                g.StartRewind(GameObject.bufferFrames);
             }
             foreach (GameObject g in Game1.objMgr.projectiles)
             {
-                g.rewind = true;
-                //g.LoadState(120);
+                g.StartRewind(GameObject.bufferFrames);
             }
-            //List<GameObject> gos = states.Pop();
-            //foreach (GameObject g in Game1.objMgr.gameObjects)
-            //{
-            //    g.Load(g);
-            //}
         }
 
         public override void Fire3()

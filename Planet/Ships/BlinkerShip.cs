@@ -28,10 +28,10 @@ namespace Planet
             wpn.inaccuracy = 0;
             wpn.speedVariance = 0;
         }
-        public override void Update(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
             wpn.Update(gt);
-            base.Update(gt);
+            base.DoUpdate(gt);
         }
         public override void Fire1()
         {

@@ -12,10 +12,10 @@ namespace Planet
 {
     public class ObjectManager
     {
-        //ships and destructible projectiles
+        // ships and destructible projectiles
         public List<GameObject> gameObjects;
 
-        //for projectiles that only collide with ships
+        // do not check collision with each other (there could easily be million checks each frame)
         public List<Projectile> projectiles;
 
         private AIController ai;
@@ -33,8 +33,7 @@ namespace Planet
             PostGameObj(ship);
 
             Ship s = new PumpkinShip(new Vector2(800, 500));
-            ai = new AIController();
-            ai.SetActor(s);
+            ai = new AIController(s);
             PostGameObj(s);
 
             player1 = new Player(PlayerIndex.One);
@@ -46,23 +45,25 @@ namespace Planet
             player1.Update(gt);
             ai.Update(gt);
 
-            //foreach (Projectile p in projectiles)
-            //{
-            //    p.Update(gt);
-            //}
             for (int i = 0; i < projectiles.Count(); i++)
             {
                 projectiles[i].Update(gt);
             }
+
             for (int i = 0; i < gameObjects.Count(); i++)
             {
                 GameObject go = gameObjects[i];
+
                 go.Update(gt);
 
-                //collision check
+                // don't check collision if rewinding or inactive
+                if (go.rewind || !go.isActive)
+                    continue;
+
+                // collision check
                 foreach (GameObject go2 in gameObjects)
                 {
-                    if (go == go2 || go.destroyed)
+                    if (go == go2 || go.disposed)
                         continue;
                     if (go.IsColliding(go2))
                     {
@@ -71,10 +72,13 @@ namespace Planet
                     }
                 }
 
-                //projectile collision check
-                foreach(Projectile p in projectiles)
+                // projectile collision check
+                foreach (Projectile p in projectiles)
                 {
-                    if(p.IsColliding(go))
+                    if (p.isDead || !p.isActive)
+                        continue;
+
+                    if (p.IsColliding(go))
                     {
                         go.DoCollision(p);
                         p.DoCollision(go);
@@ -82,19 +86,8 @@ namespace Planet
                 }
             }
 
-            projectiles.RemoveAll(x => x.destroyed);
-            gameObjects.RemoveAll(x => x.destroyed == true);
-
-            //List<GameObject> gos = new List<GameObject>();
-            //foreach(GameObject g in gameObjects)
-            //{
-            //    //bool isRewindable = g.GetType().GetInterfaces().Any(x => 
-            //    //    x.IsGenericType &&
-            //    //    x.GetGenericTypeDefinition() == typeof(IRewindable<>));
-            //    MethodInfo info = g.GetType().GetMethod("Save").MakeGenericMethod(g.GetType());
-            //    gos.Add((GameObject)info.Invoke(g, null));
-            //}
-            //ship.states.Push(gos);
+            projectiles.RemoveAll(x => x.disposed);
+            gameObjects.RemoveAll(x => x.disposed == true);
         }
 
         public List<Player> GetPlayers()
