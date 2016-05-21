@@ -87,6 +87,7 @@ namespace Planet
             this.currentMagCount = magSize;
         }
 
+
         public Weapon(Ship ship)
         {
             this.ship = ship;
@@ -170,6 +171,15 @@ namespace Planet
         {
             float deviation = Utility.GetRandom(Game1.rnd, -inaccuracy, inaccuracy);
             dir = Utility.RotateVector2(dir, MathHelper.ToRadians(deviation));
+        }
+
+        public void CopyRewindVariables(Weapon other)
+        {
+            secondsToNextShot = other.secondsToNextShot;
+            secondsToNextReload = other.secondsToNextReload;
+            currentMagCount = other.currentMagCount;
+            currentBulletAngle = other.currentBulletAngle;
+            currentShotAngle = other.currentShotAngle;
         }
 
         public WpnDesc GetDesc()

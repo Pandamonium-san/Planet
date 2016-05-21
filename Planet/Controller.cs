@@ -10,7 +10,7 @@ namespace Planet
     { 
         protected Ship ship;
 
-        public Controller();
+        public Controller() { }
         public Controller(Ship ship) { this.ship = ship; }
 
         public void Update(GameTime gt)

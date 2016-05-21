@@ -18,13 +18,15 @@ namespace Planet
         // do not check collision with each other (there could easily be million checks each frame)
         public List<Projectile> projectiles;
 
-        private AIController ai;
+        private SpriteFont font;
 
+        private AIController ai;
         private Player player1;
         private RewinderShip ship;
 
         public ObjectManager()
         {
+            font = AssetManager.GetFont("font1");
             gameObjects = new List<GameObject>();
             projectiles = new List<Projectile>();
 
@@ -118,9 +120,9 @@ namespace Planet
             {
                 p.Draw(sb);
             }
-            sb.DrawString(AssetManager.GetFont("font1"), "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
-            sb.DrawString(AssetManager.GetFont("font1"), "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
-            sb.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (this.collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
+            sb.DrawString(font, "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
+            sb.DrawString(font, "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
+            sb.DrawString(font, "Collision checks: " + (this.collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
             collisionChecksPerFrame = 0;
             sb.End();
         }

@@ -30,7 +30,7 @@ namespace Planet
         }
         public override void Fire1()
         {
-            wpn.Fire();
+           // wpn.Fire();
         }
 
         public override void Fire2()

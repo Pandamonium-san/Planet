@@ -80,7 +80,7 @@ namespace Planet
                 p.velocity = -dir2 * p.speed;
             else if (p.frame == 110)
             {
-                p.isActive = false;
+                p.Die();
 
             //test
                 for (int i = -1; i <= 1; i += 2)

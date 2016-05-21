@@ -10,6 +10,7 @@ namespace Planet
      *  x Weapon templates
      *  x Bullet patterns
      *  x Make Transform class for GameObject to make transform hierarchies
+     *  - Screen border
      *  - Put bullet pattern in class?
      *  - Destructible projectiles
      *  - Health
@@ -26,9 +27,12 @@ namespace Planet
      *  - Game states
      *  - Rewinder
      *      - Fix structure of rewind code
-     *      - Proper copy constructors
      *      - Manual save state (rewind to this point later)
+     *      - Shadows
      *  - Possessor
+     *  . Blinker
+     *  - Score
+     *  - UI
      */
 
     /// <summary>
@@ -42,11 +46,14 @@ namespace Planet
 #else
 		public override string GameDisplayName { get { return "Planet"; } }
 #endif
+        public static readonly int ScreenWidth = 1920;
+        public static readonly int ScreenHeight = 1080;
+
         public static Random rnd = new Random();
         public static ObjectManager objMgr;
         private FrameCounter fc = new FrameCounter();
         private bool runningSlowly;
-
+        
         public Game1()
         {
 #if (!ARCADE)
@@ -108,7 +115,7 @@ namespace Planet
             objMgr.Update(gameTime);
             base.Update(gameTime);
         }
-
+        int slowFrames;
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -121,8 +128,14 @@ namespace Planet
             // TODO: Add your drawing code here
             objMgr.Draw(spriteBatch);
             spriteBatch.Begin();
-            spriteBatch.DrawString(AssetManager.GetFont("font1"), "FPS: " + fc.AverageFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
+            spriteBatch.DrawString(AssetManager.GetFont("font1"), "FPS: " + fc.CurrentFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
+            if (fc.CurrentFramesPerSecond < 30)
+            {
+                slowFrames++;
+            }
             spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow: " + runningSlowly.ToString(), new Vector2(150, 0), Color.Red);
+            spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow frames: " + slowFrames.ToString(), new Vector2(150, 20), Color.Red);
+            spriteBatch.DrawString(AssetManager.GetFont("font1"), "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
             spriteBatch.End();
 
 

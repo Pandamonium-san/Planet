@@ -46,7 +46,7 @@ namespace Planet
 
             maxLifeTime = lifeTime;
             currentLifeTime = lifeTime;
-            velocity = this.dir * speed;
+            velocity = dir * speed;
 
             if (instigator == null)
             {
@@ -63,55 +63,18 @@ namespace Planet
                 layer = Layer.ENEMY_PROJECTILE;
                 layerMask = (Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE);
             }
-
-        }
-
-        protected override GameObject GetState()
-        {
-            Projectile g = new Projectile(this.tex, this.Pos, this.dir, this.speed);
-            g.Rotation = this.Rotation;
-            g.Scale = this.Scale;
-            g.Parent = this.Parent;
-            g.frame = this.frame;
-
-            g.velocity = this.velocity;
-            g.currentLifeTime = this.currentLifeTime;
-            g.isDead = this.isDead;
-            g.isActive = this.isActive;
-            return g;
-        }
-
-        protected override void SetState(GameObject other)
-        {
-            if (other == null)
-                return;
-
-            Projectile g = (Projectile)other;
-            this.Pos = g.Pos;
-            this.Rotation = g.Rotation;
-            this.Parent = g.Parent;
-            this.frame = g.frame;
-
-            this.velocity = g.velocity;
-            this.speed = g.speed;
-            this.dir = g.dir;
-            this.currentLifeTime = g.currentLifeTime;
-            this.isDead = g.isDead;
-            this.isActive = g.isActive;
         }
 
         protected override void DoUpdate(GameTime gt)
         {
-            base.DoUpdate(gt);
-
             currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
             if (currentLifeTime <= 0 && !isDead)
             {
                 Die();
             }
 
-            if (isDead || !isActive)
-                return;
+            if (IsOutsideScreen())
+                Die();
 
             //perform bullet pattern operation
             if (pattern != null)
@@ -119,6 +82,55 @@ namespace Planet
             else
                 Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
 
+            base.DoUpdate(gt);
+        }
+
+        private bool IsOutsideScreen()
+        {
+            int xMax = Game1.ScreenWidth + 100;
+            int xMin = -100;
+            int yMax = Game1.ScreenHeight + 100;
+            int yMin = -100;
+
+            if (Pos.X > xMax ||
+                Pos.X < xMin ||
+                Pos.Y > yMax ||
+                Pos.Y < yMin)
+                return true;
+            else
+                return false;
+        }
+
+        protected override GameObjState GetState()
+        {
+            return new ProjState(this);
+        }
+
+        protected override void SetState(GameObjState data)
+        {
+            base.SetState(data);
+            ProjState p = (ProjState)data;
+            this.dir = p.dir;
+            this.velocity = p.velocity;
+            this.speed = p.speed;
+            this.currentLifeTime = p.currentLifeTime;
+        }
+
+        protected class ProjState : GameObjState
+        {
+            public Vector2 dir;
+            public Vector2 velocity;
+            public float speed;
+            public float currentLifeTime;
+
+            public ProjState(Projectile p)
+                : base(p)
+            {
+                this.dir = p.dir;
+                this.velocity = p.velocity;
+                this.speed = p.speed;
+                this.currentLifeTime = p.currentLifeTime;
+            }
         }
     }
 }

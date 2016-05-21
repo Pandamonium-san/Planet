@@ -20,7 +20,7 @@ namespace Planet
             bindings = new List<KeyBinding>();
         }
 
-        public override void DoUpdate(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
             foreach (KeyBinding kb in bindings)
             {

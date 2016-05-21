@@ -35,6 +35,7 @@ namespace Planet
         public int frame;
         public int framesTilDispose;
         public bool isRewindable = true;
+        public bool drawHitbox;
 
         //possible way to handle deathstates
         //public enum State
@@ -51,21 +52,27 @@ namespace Planet
         public bool isDead;                 // will set to dispose after a number of frames
 
         //rewind variables
-        public static readonly int bufferFrames = 180;    // how many frames to save that can then be rewinded to
-        public FixedList<GameObject> stateBuffer;
+        public static readonly int maxRewindableFrames = 180; // how many frames back we can go
+        public int framesToSkipSaving = 1;   // 1 = save every frame, 2 = save every other frame, 3 = every third frame, etc. Has a large effect on performance
+        public int bufferFrames;    // how many frame states actually saved
+        protected FixedList<GameObjState> stateBuffer;
         public bool rewind;
-        public int framesToRewind;
+        public int remainingFramesToRewind;
 
         public GameObject(Vector2 pos)
             : base(pos)
         {
-            stateBuffer = new FixedList<GameObject>(bufferFrames);
+            bufferFrames = maxRewindableFrames / framesToSkipSaving;
+            stateBuffer = new FixedList<GameObjState>(bufferFrames);
+            Scale = 2.0f;
         }
 
         public void Update(GameTime gt)
         {
             if (rewind)
-                Rewind();
+            {
+                DoRewind();
+            }
             else
             {
                 ++frame;
@@ -75,27 +82,61 @@ namespace Planet
                     if (framesTilDispose <= 0)
                         disposed = true;
                 }
-                DoUpdate(gt);
+                if (isActive)
+                {
+                    DoUpdate(gt);
+                }
+                // comparing to 1 saves the first frame, which is important for determining whether an object was just created
+                if (isRewindable && frame % framesToSkipSaving == 1)
+                    SaveCurrentState();
             }
         }
 
         protected virtual void DoUpdate(GameTime gt)
         {
             UpdateHitboxPos();
-            SaveCurrentState();
         }
 
-        private void Rewind()
+        private void DoRewind()
         {
-            LoadPreviousState();
-            if (--framesToRewind <= 0)
+            if (remainingFramesToRewind % framesToSkipSaving == 1)
+                LoadPreviousState();
+            else
+                LerpBasedOnPreviousState();
+
+            if (--remainingFramesToRewind <= 0)
                 rewind = false;
+
+            UpdateHitboxPos();
+        }
+
+        /// <summary>
+        /// Goes x frames back in time
+        /// </summary>
+        public void StartRewind(int x)
+        {
+            if (!isRewindable)
+                return;
+
+            rewind = true;
+            remainingFramesToRewind = x;
+        }
+
+        private void LerpBasedOnPreviousState()
+        {
+            GameObjState data = stateBuffer.Peek();
+            if (data != null)
+            {
+                Vector2 newPos = new Vector2(
+                    MathHelper.Lerp(Pos.X, data.Pos.X, 1.0f / framesToSkipSaving),
+                    MathHelper.Lerp(Pos.Y, data.Pos.Y, 1.0f / framesToSkipSaving));
+                Pos = newPos;
+            }
         }
 
         protected void SaveCurrentState()
         {
-            if (isRewindable)
-                stateBuffer.AddFirst(GetState());
+            stateBuffer.AddFirst(GetState());
         }
 
         public void LoadPreviousState()
@@ -106,51 +147,28 @@ namespace Planet
                 // remove object if rewinding to before object was created
                 if (frame == 1)
                     disposed = true;
-                // ends rewind for all objects (hopefully)
-                else
+                else if (remainingFramesToRewind == 0)
                     rewind = false;
                 return;
             }
             SetState(stateBuffer.Pop());
         }
 
-        public void StartRewind(int frames)
+        protected virtual GameObjState GetState()
         {
-            if (!isRewindable)
-                return;
-
-            rewind = true;
-            framesToRewind = frames;
+            return new GameObjState(this);
         }
 
-        /// <summary>
-        /// Gets all neccessary data in order to rewind to this state (all the dynamic variables)
-        /// </summary>
-        protected virtual GameObject GetState()
+        protected virtual void SetState(GameObjState data)
         {
-            GameObject g = new GameObject(Pos);
-            g.Rotation = this.Rotation;
-            g.Scale = this.Scale;
-            g.Parent = this.Parent;
-            g.frame = this.frame;
-            g.isDead = this.isDead;
-            g.isActive = this.isActive;
-            return g;
+            this.Pos = data.Pos;
+            this.Rotation = data.Rotation;
+            this.Scale = data.Scale;
+            this.Parent = data.Parent;
+            this.frame = data.frame;
+            this.isDead = data.isDead;
+            this.isActive = data.isActive;
         }
-
-        /// <summary>
-        /// Sets the neccessary variables
-        /// </summary>
-        protected virtual void SetState(GameObject other)
-        {
-            this.Pos = other.Pos;
-            this.Rotation = other.Rotation;
-            this.Parent = other.Parent;
-            this.frame = other.frame;
-            this.isDead = other.isDead;
-            this.isActive = other.isActive;
-        }
-
 
         protected void SetTexture(Texture2D tex)
         {
@@ -171,14 +189,14 @@ namespace Planet
         {
             isDead = true;
             isActive = false;
-            framesTilDispose = bufferFrames;
+            framesTilDispose = maxRewindableFrames;
         }
 
         public bool IsColliding(GameObject other)
         {
-            ++Game1.objMgr.collisionChecksPerFrame;
             if ((layerMask & other.layer) != Layer.ZERO)
             {
+                ++Game1.objMgr.collisionChecksPerFrame;
                 return hitbox.Intersects(other.hitbox);
             }
             return false;
@@ -195,9 +213,6 @@ namespace Planet
             hitbox.Y = (int)(Pos.Y - origin.Y + 0.5f * (spriteRec.Height * (1.0f - Scale) + hitboxOffset.Y));
         }
 
-        /// <summary>
-        /// Automatically generates a hitbox based on the sprite.
-        /// </summary>
         public void CreateHitbox()
         {
             if (tex == null)
@@ -212,19 +227,55 @@ namespace Planet
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-
             if (tex != null && isActive)
             {
                 spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
 
-                GameObject old = null;
+                GameObjState old = null;
                 if (stateBuffer.Count > 0)
-                    old = ((GameObject)(stateBuffer.Last.Value));
+                    old = ((GameObjState)(stateBuffer.Last.Value));
                 if (old != null)
                     spriteBatch.Draw(tex, old.Pos, spriteRec, Color.Red * alpha * 0.2f, old.Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+
+                //show hitboxes, may be slow
+                if (drawHitbox)
+                    spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Blue * 0.5f);
             }
-            //show hitboxes, may be slow
-            //spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Blue * 0.5f);
+        }
+
+        /// <summary>
+        /// Contains info required to load to a previous state.
+        /// </summary>
+        protected class GameObjState
+        {
+            public Vector2 Pos;
+            public float Rotation;
+            public float Scale;
+            public Transform Parent;
+            public Color color;
+            public float alpha;
+            public Rectangle hitbox;
+            public int frame;
+            public bool isRewindable = true;
+            public bool disposed;               // if true, object will be deleted at the end of the frame
+            public bool isActive = true;        // determines whether or not to draw/update/collision check the object
+            public bool isDead;                 // will set to dispose after a number of frames
+
+            public GameObjState(GameObject go)
+            {
+                this.Pos = go.Pos;
+                this.Rotation = go.Rotation;
+                this.Scale = go.Scale;
+                this.Parent = go.Parent;
+                this.color = go.color;
+                this.alpha = go.alpha;
+                this.hitbox = go.hitbox;
+                this.frame = go.frame;
+                this.isRewindable = go.isRewindable;
+                this.disposed = go.disposed;
+                this.isActive = go.isActive;
+                this.isDead = go.isDead;
+            }
         }
     }
 }

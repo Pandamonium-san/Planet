@@ -45,5 +45,19 @@ namespace Planet
             base.RemoveLast();
             return pop;
         }
+
+        public T Peek()
+        {
+            if (Count <= 0)
+                return default(T);
+            return (First.Value);
+        }
+
+        public T PeekLast()
+        {
+            if (Count <= 0)
+                return default(T);
+            return (Last.Value);
+        }
     }
 }

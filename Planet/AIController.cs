@@ -11,10 +11,10 @@ namespace Planet
     {
         protected Ship target;
 
-        public AIController();
+        public AIController() { }
         public AIController(Ship ship) : base(ship) { }
 
-        public override void DoUpdate(GameTime gt)
+        protected override void DoUpdate(GameTime gt)
         {
             ship.speedModifier -= 0.85f;
             target = FindNearestTarget();
