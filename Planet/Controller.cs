@@ -17,7 +17,7 @@ namespace Planet
         {
             if (ship != null && ship.disposed)
                 ship = null;
-            if (ship == null || ship.isDead || !ship.isActive || ship.rewind)
+            if (ship == null || ship.isDead || !ship.isActive || ship.isRewinding)
                 return;
 
             DoUpdate(gt);

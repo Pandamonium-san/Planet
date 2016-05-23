@@ -18,7 +18,7 @@ namespace Planet
         }
         public float Scale {
             get { return parent != null ? parent.Scale * localScale : localScale; }
-            set { localScale = parent != null ? value - parent.Scale : value; } 
+            set { localScale = parent != null ? value / parent.Scale : value; } 
         }
 
         public Transform Parent

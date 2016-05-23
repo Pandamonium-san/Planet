@@ -11,7 +11,6 @@ namespace Planet
      *  x Bullet patterns
      *  x Make Transform class for GameObject to make transform hierarchies
      *  - Screen border
-     *  - Put bullet pattern in class?
      *  - Destructible projectiles
      *  - Health
      *  - Enemy spawns
@@ -21,12 +20,11 @@ namespace Planet
      *      - Explosions?
      *      - Projectile settings?
      *      - Projectile paths/patterns
+     *      - Lasers
      *  - Smaller hitboxes
      *  - Show hitbox while aiming
-     *  - (Lasers)
      *  - Game states
      *  - Rewinder
-     *      - Fix structure of rewind code
      *      - Manual save state (rewind to this point later)
      *      - Shadows
      *  - Possessor

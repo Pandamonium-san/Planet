@@ -7,7 +7,7 @@ namespace Planet
 {
     public class FixedList<T> : LinkedList<T>
     {
-        public int Size { get; set; }
+        public int Size { get; private set; }
 
         public FixedList(int size)
         {

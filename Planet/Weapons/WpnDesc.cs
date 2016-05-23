@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Planet
 {
-    class WpnDesc
+    public class WpnDesc
     {
         public static WpnDesc Spread()
         {

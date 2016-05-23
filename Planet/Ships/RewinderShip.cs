@@ -18,10 +18,10 @@ namespace Planet
             layer = Layer.PLAYER_SHIP;
             rotationSpeed = 15;
 
-            wpn = new Weapon(this, WpnDesc.Spread());
-            wpn = new Weapon(this, WpnDesc.Circle(150));
+            //wpn = new Weapon(this, WpnDesc.Spread());
+            //wpn = new Weapon(this, WpnDesc.Circle(150));
             //wpn = new Weapon(this, new WpnDesc());
-            //wpn = new CycloneGun(this);
+            wpn = new CycloneGun(this);
 
             wpn.inaccuracy = 0;
             wpn.speedVariance = 0;
@@ -43,12 +43,20 @@ namespace Planet
         {
             foreach (GameObject g in Game1.objMgr.gameObjects)
             {
-                //if(g.layer != Layer.PLAYER_SHIP)
-                g.StartRewind(GameObject.maxRewindableFrames);
+                if (g.layer != Layer.PLAYER_SHIP)
+                {
+                    if(!g.isRewinding)
+                        g.RewindOnce();
+                    //g.LoadPreviousState();
+                }
+                //g.StartRewind(GameObject.maxRewindableFrames);
             }
             foreach (GameObject g in Game1.objMgr.projectiles)
             {
-                g.StartRewind(GameObject.maxRewindableFrames);
+                if (!g.isRewinding)
+                    g.RewindOnce();
+                //g.LoadPreviousState();
+                //g.StartRewind(GameObject.maxRewindableFrames);
             }
         }
 
@@ -57,33 +65,27 @@ namespace Planet
 
         }
 
-        //protected override GameObject GetState()
-        //{
-        //    RewinderShip g = new RewinderShip(Pos);
-        //    g.Rotation = this.Rotation;
-        //    g.Scale = this.Scale;
-        //    g.Parent = this.Parent;
-        //    g.frame = this.frame;
+        protected override GameObjState GetState()
+        {
+            return new RewinderShipState(this);
+        }
 
-        //    //
-        //    // class specific variables that need to be saved go here
-        //    //
-        //    g.wpn = new Weapon(this);
-        //    g.wpn.CopyRewindVariables(this.wpn);
+        protected override void SetState(GameObjState other)
+        {
+            base.SetState(other);
+            RewinderShipState g = (RewinderShipState)other;
+            this.wpn.SetState(g.ws);
+        }
 
-        //    return g;
-        //}
+        protected class RewinderShipState : GameObjState
+        {
+            public WeaponState ws;
 
-        //protected override void SetState(GameObject other)
-        //{
-        //    base.SetState(other);
-        //    RewinderShip g = (RewinderShip)other;
-
-        //    //
-        //    // class specific variables that need to be loaded go here
-        //    //
-        //    this.wpn.CopyRewindVariables(g.wpn);
-        //}
-
+            public RewinderShipState(RewinderShip s)
+                : base(s)
+            {
+                ws = new WeaponState(s.wpn);
+            }
+        }
     }
 }

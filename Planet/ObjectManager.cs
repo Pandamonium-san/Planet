@@ -59,7 +59,7 @@ namespace Planet
                 go.Update(gt);
 
                 // don't check collision if rewinding or inactive
-                if (go.rewind || !go.isActive)
+                if (go.isRewinding || !go.isActive)
                     continue;
 
                 // collision check

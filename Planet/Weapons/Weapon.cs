@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-    class Weapon
+    public class Weapon
     {
         protected Ship ship;
 
@@ -28,11 +28,11 @@ namespace Planet
         public float startingAngleDegrees;
 
         //counter variables
-        protected float secondsToNextShot;
-        protected float secondsToNextReload;
-        protected int currentMagCount;
-        protected float currentBulletAngle;
-        protected float currentShotAngle;
+        protected internal float secondsToNextShot;
+        protected internal float secondsToNextReload;
+        protected internal int currentMagCount;
+        protected internal float currentBulletAngle;
+        protected internal float currentShotAngle;
 
         public Weapon(
             Ship ship,
@@ -155,31 +155,12 @@ namespace Planet
 
         protected virtual void BulletPattern(Projectile p, GameTime gt)
         {
-            //Vector2 dir2 = new Vector2(p.dir.Y, -p.dir.X);
-
-            //if (p.frame > 120)
-            //    p.velocity = -dir2 * p.speed;
-            //else if (p.frame > 11)
-            //    p.velocity = Vector2.Transform(p.velocity, Matrix.CreateRotationZ(0.045f));
-            //else if (p.frame > 10)
-            //    p.velocity = -dir2 * p.speed;
-
             p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
         }
-
         protected void ApplyInaccuracy(ref Vector2 dir, float inaccuracy)
         {
             float deviation = Utility.GetRandom(Game1.rnd, -inaccuracy, inaccuracy);
             dir = Utility.RotateVector2(dir, MathHelper.ToRadians(deviation));
-        }
-
-        public void CopyRewindVariables(Weapon other)
-        {
-            secondsToNextShot = other.secondsToNextShot;
-            secondsToNextReload = other.secondsToNextReload;
-            currentMagCount = other.currentMagCount;
-            currentBulletAngle = other.currentBulletAngle;
-            currentShotAngle = other.currentShotAngle;
         }
 
         public WpnDesc GetDesc()
@@ -199,7 +180,6 @@ namespace Planet
                 this.projLifeTime);
             return desc;
         }
-
         public void SetDesc(WpnDesc desc)
         {
             this.damage = desc.damage;
@@ -216,6 +196,38 @@ namespace Planet
             this.projLifeTime = desc.projLifeTime;
 
             this.currentMagCount = magSize;
+        }
+
+        public WeaponState GetState()
+        {
+            return new WeaponState(this);
+        }
+        public void SetState(WeaponState ws)
+        {
+            this.secondsToNextShot = ws.secondsToNextShot;
+            this.secondsToNextShot = ws.secondsToNextShot;
+            this.secondsToNextReload = ws.secondsToNextReload;
+            this.currentMagCount = ws.currentMagCount;
+            this.currentBulletAngle = ws.currentBulletAngle;
+            this.currentShotAngle = ws.currentShotAngle;
+        }
+    }
+
+    public class WeaponState
+    {
+        public float secondsToNextShot;
+        public float secondsToNextReload;
+        public int currentMagCount;
+        public float currentBulletAngle;
+        public float currentShotAngle;
+
+        public WeaponState(Weapon wpn)
+        {
+            secondsToNextShot = wpn.secondsToNextShot;
+            secondsToNextReload = wpn.secondsToNextReload;
+            currentMagCount = wpn.currentMagCount;
+            currentBulletAngle = wpn.currentBulletAngle;
+            currentShotAngle = wpn.currentShotAngle;
         }
     }
 }
