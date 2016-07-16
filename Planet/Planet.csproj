@@ -37,28 +37,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Actor.cs" />
-    <Compile Include="AIController.cs" />
-    <Compile Include="Controller.cs" />
+    <Compile Include="Objects\Actor.cs" />
+    <Compile Include="Controllers\AIController.cs" />
+    <Compile Include="Controllers\Controller.cs" />
+    <Compile Include="Objects\Projectiles\Laser.cs" />
+    <Compile Include="Objects\TimeMachine.cs" />
     <Compile Include="Utility\FixedList.cs" />
-    <Compile Include="Ships\BlinkerShip.cs" />
+    <Compile Include="Objects\Ships\BlinkerShip.cs" />
     <Compile Include="Weapons\CycloneGun.cs" />
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="Projectiles\Missile.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerController.cs" />
-    <Compile Include="Projectiles\Projectile.cs" />
+    <Compile Include="Objects\GameObject.cs" />
+    <Compile Include="Objects\Projectiles\Missile.cs" />
+    <Compile Include="Core\Player.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Objects\Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ships\PumpkinShip.cs" />
-    <Compile Include="Ships\Ship.cs" />
-    <Compile Include="AssetManager.cs" />
-    <Compile Include="Ships\RewinderShip.cs" />
-    <Compile Include="Transform.cs" />
+    <Compile Include="Objects\Ships\PumpkinShip.cs" />
+    <Compile Include="Objects\Ships\Ship.cs" />
+    <Compile Include="Core\AssetManager.cs" />
+    <Compile Include="Objects\Ships\RewinderShip.cs" />
+    <Compile Include="Utility\Transform.cs" />
     <Compile Include="Utility\Utility.cs" />
-    <Compile Include="ObjectManager.cs" />
-    <Compile Include="Projectiles\WaveProjectile.cs" />
+    <Compile Include="Core\World.cs" />
+    <Compile Include="Objects\Projectiles\WaveProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WpnDesc.cs" />
   </ItemGroup>
@@ -87,6 +89,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Image3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\laser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\pumpkin.png">
