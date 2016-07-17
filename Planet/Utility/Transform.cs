@@ -8,6 +8,7 @@ namespace Planet
 {
   public class Transform
   {
+    // properties
     public Vector2 Pos
     {
       get { return parent != null ? Utility.RotateVector2(parent.Pos + localPos, parent.Pos, parent.Rotation) : localPos; }
@@ -23,7 +24,6 @@ namespace Planet
       get { return parent != null ? parent.Scale * localScale : localScale; }
       set { localScale = parent != null ? value / parent.Scale : value; }
     }
-
     public Transform Parent
     {
       get { return parent; }
@@ -35,6 +35,7 @@ namespace Planet
       }
     }
 
+    // member variables
     private Transform parent;
     public Vector2 localPos;
     public float localRotation;

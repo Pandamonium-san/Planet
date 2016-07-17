@@ -20,9 +20,12 @@ namespace Planet
     public float speedModifier = 1.0f;
     public float rotationModifier = 1.0f;
 
+    protected List<Weapon> weapons;
+
     public Ship(Vector2 pos, World world)
         : base(pos, world)
     {
+      weapons = new List<Weapon>();
       this.SetTexture(AssetManager.GetTexture("Ship1"));
     }
 
@@ -41,6 +44,11 @@ namespace Planet
       speedModifier = 1.0f;
       rotationModifier = 1.0f;
 
+      foreach (Weapon wpn in weapons)
+      {
+        wpn.Update(gt);
+      }
+
       base.DoUpdate(gt);
     }
 
@@ -52,6 +60,7 @@ namespace Planet
         rotationModifier -= 1.0f;
         aiming = false;
       }
+
     }
 
     protected virtual void CalculateCurrentVelocity()
@@ -86,16 +95,12 @@ namespace Planet
 
     public virtual void Fire3()
     {
+
     }
 
     public virtual void Aim()
     {
       aiming = true;
-    }
-
-    public void AddVelocity(Vector2 v)
-    {
-      currentVelocity += v;
     }
 
     public void Move(Vector2 direction)
@@ -119,6 +124,36 @@ namespace Planet
     public Vector2 GetDirection()
     {
       return Utility.AngleToVector2(Rotation);
+    }
+    public override GOState GetState()
+    {
+      return new ShipState(this);
+    }
+    public override void SetState(GOState other)
+    {
+      base.SetState(other);
+      ShipState parent = (ShipState)other;
+      foreach (Weapon wpn in weapons)
+      {
+        foreach (WeaponState wpnState in parent.weaponStates)
+        {
+          wpn.SetState(wpnState);
+        }
+      }
+    }
+    protected class ShipState : GOState
+    {
+      public List<WeaponState> weaponStates;
+
+      public ShipState(Ship s)
+          : base(s)
+      {
+        weaponStates = new List<WeaponState>();
+        foreach (Weapon wpn in s.weapons)
+        {
+          weaponStates.Add(new WeaponState(wpn));
+        }
+      }
     }
   }
 }

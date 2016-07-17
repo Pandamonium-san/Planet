@@ -23,7 +23,7 @@ namespace Planet
       //wpn = new Weapon(this, WpnDesc.Circle(150));
       //wpn = new Weapon(this, new WpnDesc());
       wpn = new CycloneGun(this, world);
-
+      weapons.Add(wpn);
       wpn.inaccuracy = 0;
       wpn.speedVariance = 0;
       drawHitbox = true;
@@ -51,13 +51,13 @@ namespace Planet
       foreach (GameObject g in world.gameObjects)
       {
         if (!g.isRewinding)
-          g.StartRewind(TimeMachine.framesToSkipSaving);
+          g.StartRewind(TimeMachine.framesBetweenStates);
         //g.StartRewind(TimeMachine.maxRewindableFrames);
       }
       foreach (GameObject g in world.projectiles)
       {
         if (!g.isRewinding)
-          g.StartRewind(TimeMachine.framesToSkipSaving);
+          g.StartRewind(TimeMachine.framesBetweenStates);
         //g.StartRewind(TimeMachine.maxRewindableFrames);
       }
     }
@@ -65,29 +65,6 @@ namespace Planet
     public override void Fire3()
     {
       world.PostGameObj(laser);
-    }
-
-    public override State GetState()
-    {
-      return new RewinderShipState(this);
-    }
-
-    public override void SetState(State other)
-    {
-      base.SetState(other);
-      RewinderShipState g = (RewinderShipState)other;
-      this.wpn.SetState(g.ws);
-    }
-
-    protected class RewinderShipState : State
-    {
-      public WeaponState ws;
-
-      public RewinderShipState(RewinderShip s)
-          : base(s)
-      {
-        ws = new WeaponState(s.wpn);
-      }
     }
   }
 }

@@ -102,12 +102,12 @@ namespace Planet
         return false;
     }
 
-    public override State GetState()
+    public override GOState GetState()
     {
       return new ProjState(this);
     }
 
-    public override void SetState(State data)
+    public override void SetState(GOState data)
     {
       base.SetState(data);
       ProjState p = (ProjState)data;
@@ -117,7 +117,7 @@ namespace Planet
       this.currentLifeTime = p.currentLifeTime;
     }
 
-    protected class ProjState : State
+    protected class ProjState : GOState
     {
       public Vector2 dir;
       public Vector2 velocity;

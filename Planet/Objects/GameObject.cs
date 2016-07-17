@@ -71,7 +71,7 @@ namespace Planet
         {
           DoUpdate(gt);
         }
-        if (isRewindable && frame % TimeMachine.framesToSkipSaving == 0)
+        if (isRewindable && frame % TimeMachine.framesBetweenStates == 0)
           timeMachine.SaveCurrentState();
         ++frame;
       }
@@ -92,11 +92,11 @@ namespace Planet
       isRewinding = true;
       timeMachine.remainingFramesToRewind = x;
     }
-    public virtual State GetState()
+    public virtual GOState GetState()
     {
-      return new State(this);
+      return new GOState(this);
     }
-    public virtual void SetState(State data)
+    public virtual void SetState(GOState data)
     {
       this.Pos = data.Pos;
       this.Rotation = data.Rotation;
@@ -162,13 +162,13 @@ namespace Planet
         spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
 
         // show last possible rewind position
-        State old = null;
+        GOState old = null;
         if (timeMachine.stateBuffer.Count > 0)
-          old = ((State)(timeMachine.stateBuffer.Last.Value));
+          old = ((GOState)(timeMachine.stateBuffer.Last.Value));
         if (old != null)
           spriteBatch.Draw(tex, old.Pos, spriteRec, Color.Red * alpha * 0.2f, old.Rotation, origin, Scale, SpriteEffects.None, layerDepth);
 
-        // show hitboxes, may be slow
+        // show hitboxes
         if (drawHitbox)
           spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Blue * 0.5f);
       }
@@ -177,7 +177,7 @@ namespace Planet
     /// <summary>
     /// Contains info required to load to a previous state.
     /// </summary>
-    public class State
+    public class GOState
     {
       public Vector2 Pos;
       public float Rotation;
@@ -192,7 +192,7 @@ namespace Planet
       public bool isActive = true;        // determines whether or not to draw/update/collision check the object
       public bool isDead;                 // will set to dispose after a number of frames
 
-      public State(GameObject go)
+      public GOState(GameObject go)
       {
         this.Pos = go.Pos;
         this.Rotation = go.Rotation;

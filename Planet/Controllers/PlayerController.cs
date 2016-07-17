@@ -10,7 +10,7 @@ namespace Planet
   /// <summary>
   /// Handles bindings for players and controls ships.
   /// </summary>
-  class PlayerController : Controller
+  class PlayerController : ShipController
   {
     private PlayerIndex index;
     private List<KeyBinding> bindings;

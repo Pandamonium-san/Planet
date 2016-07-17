@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Planet
 {
-  class Controller
+  class ShipController
   {
     protected Ship ship;
     protected World world;
 
-    public Controller() { }
-    public Controller(Ship ship, World world)
+    public ShipController() { }
+    public ShipController(Ship ship, World world)
     {
       this.ship = ship;
       this.world = world;

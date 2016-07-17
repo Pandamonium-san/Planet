@@ -8,26 +8,27 @@ namespace Planet
 {
   public class TimeMachine
   {
-    GameObject parent;
     public static readonly int maxRewindableFrames = 180;                               // how many frames back we can go
-    public static readonly int framesToSkipSaving = 5;                                  // 1 = save every frame, 2 = save every other frame, 3 = every third frame, etc. Has a large effect on performance
-    public static readonly int bufferSize = maxRewindableFrames / framesToSkipSaving;   // how many frame states actually saved
-    public FixedList<GameObject.State> stateBuffer;
+    public static readonly int framesBetweenStates = 5;                                  // 1 = save every frame, 2 = save every other frame, 3 = every third frame, etc. Has a large effect on performance
+    public static readonly int bufferSize = maxRewindableFrames / framesBetweenStates;   // how many frame states actually saved
+
+    private GameObject parent;
+    public FixedList<GameObject.GOState> stateBuffer;
     public int remainingFramesToRewind;
     // lerp
-    private GameObject.State lerpStart;
-    private GameObject.State lerpTarget;
-    private float lerpTime;
+    private GameObject.GOState lerpStart;
+    private GameObject.GOState lerpTarget;
+    private float lerpAmount;
 
     public TimeMachine(GameObject parent)
     {
       this.parent = parent;
-      stateBuffer = new FixedList<GameObject.State>(bufferSize);
+      stateBuffer = new FixedList<GameObject.GOState>(bufferSize);
     }
 
     public void DoRewind()
     {
-      if (remainingFramesToRewind % framesToSkipSaving == 0)
+      if (remainingFramesToRewind % framesBetweenStates == 0)
         LoadPreviousState();
       else
         LerpToPreviousState();
@@ -37,21 +38,21 @@ namespace Planet
     }
     private void LerpToPreviousState()
     {
-      GameObject.State data = stateBuffer.Peek();
+      GameObject.GOState data = stateBuffer.Peek();
       if (data != null)
       {
         if (lerpTarget != data)
         {
           lerpStart = parent.GetState();
           lerpTarget = data;
-          lerpTime = 1.0f / framesToSkipSaving;
+          lerpAmount = 1.0f / framesBetweenStates;
         }
 
         Vector2 newPos = new Vector2(
-            MathHelper.Lerp(lerpStart.Pos.X, lerpTarget.Pos.X, lerpTime),
-            MathHelper.Lerp(lerpStart.Pos.Y, lerpTarget.Pos.Y, lerpTime));
+            MathHelper.Lerp(lerpStart.Pos.X, lerpTarget.Pos.X, lerpAmount),
+            MathHelper.Lerp(lerpStart.Pos.Y, lerpTarget.Pos.Y, lerpAmount));
         parent.Pos = newPos;
-        lerpTime += 1.0f / framesToSkipSaving;
+        lerpAmount += 1.0f / framesBetweenStates;
       }
     }
     public void SaveCurrentState()

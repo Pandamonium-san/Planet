@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-  class AIController : Controller
+  class AIController : ShipController
   {
     protected GameObject target;
 

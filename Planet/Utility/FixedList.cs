@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Planet
 {
+  /// <summary>
+  /// Linked list containing a fixed amount of elements.
+  /// </summary>
+  /// <typeparam name="T"></typeparam>
   public class FixedList<T> : LinkedList<T>
   {
     public int Size { get; private set; }

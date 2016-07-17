@@ -39,7 +39,7 @@
   <ItemGroup>
     <Compile Include="Objects\Actor.cs" />
     <Compile Include="Controllers\AIController.cs" />
-    <Compile Include="Controllers\Controller.cs" />
+    <Compile Include="Controllers\ShipController.cs" />
     <Compile Include="Objects\Projectiles\Laser.cs" />
     <Compile Include="Objects\TimeMachine.cs" />
     <Compile Include="Utility\FixedList.cs" />
