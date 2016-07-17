@@ -20,13 +20,16 @@ namespace Planet
       layer = Layer.PLAYER_SHIP;
       rotationSpeed = 15;
       //wpn = new Weapon(this, WpnDesc.Spread());
-      //wpn = new Weapon(this, WpnDesc.Circle(150));
-      //wpn = new Weapon(this, new WpnDesc());
-      wpn = new CycloneGun(this, world);
+      wpn = new Weapon(this, world, WpnDesc.Circle(150));
+      //wpn = new Weapon(this, world, new WpnDesc());
+      //wpn = new CycloneGun(this, world);
       weapons.Add(wpn);
       wpn.inaccuracy = 0;
       wpn.speedVariance = 0;
       drawHitbox = true;
+
+      maxHealth = 10;
+      currentHealth = maxHealth;
 
       //test
       laser = new Laser(Pos + Vector2.UnitY * -25, Vector2.Zero, world);

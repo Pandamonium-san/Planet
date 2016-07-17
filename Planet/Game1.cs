@@ -10,10 +10,9 @@ namespace Planet
    *  x Weapon templates
    *  x Bullet patterns
    *  x Make Transform class for GameObject to make transform hierarchies
-   *  - Refactor GameObject class
-   *  - Screen border
+   *  - Change art
    *  - Destructible projectiles
-   *  - Health
+   *  x Health
    *  - AI
    *      - FuSM?
    *      - Command queue?
@@ -41,6 +40,7 @@ namespace Planet
    *  . Blinker
    *  - Score
    *  - UI
+   *  - Stage design
    *  - Menu
    *  - Title screen
    */

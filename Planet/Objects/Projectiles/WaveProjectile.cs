@@ -21,7 +21,7 @@ namespace Planet
       float amplitude,
       float frequency,
       float timeOffset,
-      float damage = 1,
+      int damage = 1,
       GameObject instigator = null,
       float inaccuracy = 0,
       float lifeTime = 3)

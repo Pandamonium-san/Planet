@@ -13,7 +13,7 @@ namespace Planet
    Vector2 pos,
    Vector2 dir,
    float speed,
-   float damage = 1,
+   int damage = 1,
    GameObject instigator = null,
    float inaccuracy = 0,
    float lifeTime = 3)

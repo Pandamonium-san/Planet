@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Planet
 {
-  public class Ship : Actor
+  public abstract class Ship : Actor
   {
     protected Vector2 currentVelocity;
     protected float currentRotationSpeed;
@@ -15,10 +15,14 @@ namespace Planet
     protected float rotationSpeed = 10;
 
     protected bool aiming;
+    public bool restrictToScreen;
 
     public float fireRateModifier = 1.0f;
     public float speedModifier = 1.0f;
     public float rotationModifier = 1.0f;
+
+    public int currentHealth;
+    public int maxHealth;
 
     protected List<Weapon> weapons;
 
@@ -27,6 +31,8 @@ namespace Planet
     {
       weapons = new List<Weapon>();
       this.SetTexture(AssetManager.GetTexture("Ship1"));
+      maxHealth = 10;
+      currentHealth = maxHealth;
     }
 
     protected override void DoUpdate(GameTime gt)
@@ -48,7 +54,8 @@ namespace Planet
       {
         wpn.Update(gt);
       }
-
+      if (restrictToScreen)
+        RestrictToScreen();
       base.DoUpdate(gt);
     }
 
@@ -81,7 +88,11 @@ namespace Planet
 
     public override void DoCollision(GameObject other)
     {
-      Die();
+      if (other is Projectile)
+      {
+        Projectile p = (Projectile)other;
+        TakeDamage(p.damage);
+      }
     }
 
     public virtual void Fire1()
@@ -107,7 +118,19 @@ namespace Planet
     {
       currentVelocity += direction * baseSpeed;
     }
-
+    public void TakeDamage(int amount)
+    {
+      currentHealth -= amount;
+      if (currentHealth < 0)
+        Die();
+    }
+    private void RestrictToScreen()
+    {
+      Pos = new Vector2(
+        MathHelper.Clamp(Pos.X, 0, Game1.ScreenWidth),
+        MathHelper.Clamp(Pos.Y, 0, Game1.ScreenHeight)
+        );
+    }
     protected void TurnTowardsPoint(Vector2 point)
     {
       Rotation = MathHelper.WrapAngle(Rotation);
@@ -129,13 +152,14 @@ namespace Planet
     {
       return new ShipState(this);
     }
-    public override void SetState(GOState other)
+    public override void SetState(GOState state)
     {
-      base.SetState(other);
-      ShipState parent = (ShipState)other;
+      base.SetState(state);
+      ShipState shipState = (ShipState)state;
+      this.currentHealth = shipState.currentHealth;
       foreach (Weapon wpn in weapons)
       {
-        foreach (WeaponState wpnState in parent.weaponStates)
+        foreach (WeaponState wpnState in shipState.weaponStates)
         {
           wpn.SetState(wpnState);
         }
@@ -144,10 +168,12 @@ namespace Planet
     protected class ShipState : GOState
     {
       public List<WeaponState> weaponStates;
+      public int currentHealth;
 
       public ShipState(Ship s)
           : base(s)
       {
+        this.currentHealth = s.currentHealth;
         weaponStates = new List<WeaponState>();
         foreach (Weapon wpn in s.weapons)
         {

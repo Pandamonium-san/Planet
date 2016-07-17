@@ -41,6 +41,7 @@ namespace Planet
     {
       ship = a;
       pc.SetShip(a);
+      a.restrictToScreen = true;
     }
 
     public Ship GetShip()

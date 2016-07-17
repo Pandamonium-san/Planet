@@ -11,7 +11,7 @@ namespace Planet
     protected Ship ship;
     protected World world;
 
-    public float damage;
+    public int damage;
     public float shotsPerSecond;
     public int nrOfBullets;
     public float projSpeed;
@@ -38,7 +38,7 @@ namespace Planet
     public Weapon(
         Ship ship,
         World world,
-        float damage,
+        int damage,
         float shotsPerSecond,
         float projSpeed,
         int nrOfBullets = 1,

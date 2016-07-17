@@ -9,7 +9,7 @@ namespace Planet
 {
   public class Projectile : GameObject
   {
-    public float damage;
+    public int damage;
     public GameObject instigator;
 
     public Vector2 dir;
@@ -27,7 +27,7 @@ namespace Planet
         Vector2 pos,
         Vector2 dir,
         float speed,
-        float damage = 1,
+        int damage = 1,
         GameObject instigator = null,
         float lifeTime = 3,
         Pattern pattern = null)
@@ -100,6 +100,11 @@ namespace Planet
         return true;
       else
         return false;
+    }
+
+    public override void DoCollision(GameObject other)
+    {
+      Die();
     }
 
     public override GOState GetState()

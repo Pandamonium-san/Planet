@@ -44,7 +44,8 @@ namespace Planet
     /// <param name="degreesBetweenShots">Degrees between shots in a magazine. Not relevant if magAmount is 1</param>
     /// <param name="startingAngleDegrees">First bullet in each shot is fired at an offset instead of going straight</param>
     /// <param name="projLifeTime">Time in seconds before bullet destroys itself</param>
-    public WpnDesc(float damage,
+    public WpnDesc(
+        int damage,
         float shotsPerSecond,
         float projectileSpeed,
         int nrOfBullets,
@@ -73,7 +74,7 @@ namespace Planet
 
     public WpnDesc() { }
 
-    public float damage = 1;
+    public int damage = 1;
     public float shotsPerSecond = 1;
     public float projectileSpeed = 500;
     public int nrOfBullets = 1;
