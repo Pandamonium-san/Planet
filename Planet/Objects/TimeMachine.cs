@@ -9,10 +9,11 @@ namespace Planet
   public class TimeMachine
   {
     public static readonly int maxRewindableFrames = 180;                               // how many frames back we can go
-    public static readonly int framesBetweenStates = 5;                                  // 1 = save every frame, 2 = save every other frame, 3 = every third frame, etc. Has a large effect on performance
+    public static readonly int framesBetweenStates = 3;                                  // 1 = save every frame, 2 = save every other frame, 3 = every third frame, etc. Has a large effect on performance
     public static readonly int bufferSize = maxRewindableFrames / framesBetweenStates;   // how many frame states actually saved
 
     private GameObject parent;
+    public bool isRewinding;
     public FixedList<GameObject.GOState> stateBuffer;
     public int remainingFramesToRewind;
     // lerp
@@ -20,21 +21,27 @@ namespace Planet
     private GameObject.GOState lerpTarget;
     private float lerpAmount;
 
+    private FrameTimer rewindTimer;
+
     public TimeMachine(GameObject parent)
     {
       this.parent = parent;
       stateBuffer = new FixedList<GameObject.GOState>(bufferSize);
     }
-
+    public void StartRewind(int x)
+    {
+      isRewinding = true;
+      rewindTimer = new FrameTimer(x, () => isRewinding = false);
+      rewindTimer.Start();
+    }
     public void DoRewind()
     {
-      if (remainingFramesToRewind % framesBetweenStates == 0)
+      if (rewindTimer.frames % framesBetweenStates == 0)
         LoadPreviousState();
       else
         LerpToPreviousState();
 
-      if (--remainingFramesToRewind <= 0)
-        parent.isRewinding = false;
+      rewindTimer.Update();
     }
     private void LerpToPreviousState()
     {
@@ -47,7 +54,6 @@ namespace Planet
           lerpTarget = data;
           lerpAmount = 1.0f / framesBetweenStates;
         }
-
         Vector2 newPos = new Vector2(
             MathHelper.Lerp(lerpStart.Pos.X, lerpTarget.Pos.X, lerpAmount),
             MathHelper.Lerp(lerpStart.Pos.Y, lerpTarget.Pos.Y, lerpAmount));
@@ -55,9 +61,9 @@ namespace Planet
         lerpAmount += 1.0f / framesBetweenStates;
       }
     }
-    public void SaveCurrentState()
+    public void AddState(GameObject.GOState state)
     {
-      stateBuffer.AddFirst(parent.GetState());
+      stateBuffer.AddFirst(state);
     }
     protected void LoadPreviousState()
     {
@@ -68,7 +74,7 @@ namespace Planet
         if (parent.frame == 0)
           parent.disposed = true;
         else //if (remainingFramesToRewind == 0)
-          parent.isRewinding = false;
+          isRewinding = false;
         return;
       }
       parent.SetState(stateBuffer.Pop());

@@ -21,13 +21,14 @@ namespace Planet
     public List<Projectile> projectiles;
 
     private SpriteFont font;
+    public Effect effect;
 
     public World()
     {
       font = AssetManager.GetFont("font1");
+      effect = AssetManager.GetEffect("ColorChanger");
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
-
 
     }
 
@@ -45,7 +46,7 @@ namespace Planet
         go.Update(gt);
 
         // don't check collision if rewinding or inactive
-        if (go.isRewinding || !go.isActive)
+        if (go.IsRewinding() || !go.isActive)
           continue;
 
         // collision check
@@ -101,7 +102,14 @@ namespace Planet
 
     public void Draw(SpriteBatch sb)
     {
-      sb.Begin();
+      sb.Begin(
+        SpriteSortMode.BackToFront, 
+        BlendState.AlphaBlend, 
+        SamplerState.LinearClamp, 
+        DepthStencilState.Default, 
+        RasterizerState.CullNone, 
+        effect
+        );
       foreach (GameObject go in gameObjects)
       {
         go.Draw(sb);

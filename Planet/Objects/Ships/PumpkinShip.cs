@@ -15,8 +15,8 @@ namespace Planet
     {
       SetTexture(AssetManager.GetTexture("pumpkin"));
       layer = Layer.ENEMY_SHIP;
-
       wpn = new CycloneGun(this, world);
+      currentHealth = 100;
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -37,7 +37,6 @@ namespace Planet
     {
 
     }
-
     public override void Fire3()
     {
 

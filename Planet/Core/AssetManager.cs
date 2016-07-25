@@ -12,6 +12,7 @@ namespace Planet
     private static ContentManager Content;
     private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
     private static Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
+    private static Dictionary<string, Effect> effects = new Dictionary<string, Effect>();
 
     public static void LoadContent(ContentManager content)
     {
@@ -28,6 +29,8 @@ namespace Planet
       AddTexture("Laser", "laser");
 
       AddFont("font1", "font1");
+
+      AddEffect("ColorChanger", "ColorChanger");
     }
 
     public static Texture2D GetTexture(string name)
@@ -38,15 +41,22 @@ namespace Planet
     {
       return fonts[name];
     }
+    public static Effect GetEffect(string name)
+    {
+      return effects[name];
+    }
 
     private static void AddTexture(string name, string path)
     {
-      textures.Add(name, AssetManager.Content.Load<Texture2D>(@"Textures/" + path));
+      textures.Add(name, AssetManager.Content.Load<Texture2D>(@"Textures\" + path));
     }
     private static void AddFont(string name, string path)
     {
-      fonts.Add(name, AssetManager.Content.Load<SpriteFont>(@"Fonts/" + path));
+      fonts.Add(name, AssetManager.Content.Load<SpriteFont>(@"Fonts\" + path));
     }
-
+    private static void AddEffect(string name, string path)
+    {
+      effects.Add(name, AssetManager.Content.Load<Effect>(@"Effects\" + path));
+    }
   }
 }

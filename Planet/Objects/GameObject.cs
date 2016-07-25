@@ -34,11 +34,10 @@ namespace Planet
     protected World world;
     public int frame;
     public int framesTilDispose;
-    public bool isRewindable = true;
-    public bool isRewinding;
-    public bool disposed;               // if true, object will be deleted at the end of the frame
-    public bool isActive = true;        // determines whether or not to draw/update/collision check the object
-    public bool isDead;                 // will set to dispose after a number of frames
+    public bool isRewindable { get; set; }
+    public bool disposed { get; set; }               // if true, object will be deleted at the end of the frame
+    public bool isActive { get; set; }        // determines whether or not to draw/update/collision check the object
+    public bool isDead { get; set; }                 // will set to dispose after a number of frames
 
     public TimeMachine timeMachine;
     // debug
@@ -50,11 +49,13 @@ namespace Planet
       this.world = world;
       timeMachine = new TimeMachine(this);
       Scale = 1.0f;
+      isRewindable = true;
+      isActive = true;
     }
 
     public void Update(GameTime gt)
     {
-      if (isRewinding)
+      if (IsRewinding())
       {
         timeMachine.DoRewind();
         UpdateHitboxPos();
@@ -72,7 +73,7 @@ namespace Planet
           DoUpdate(gt);
         }
         if (isRewindable && frame % TimeMachine.framesBetweenStates == 0)
-          timeMachine.SaveCurrentState();
+          timeMachine.AddState(GetState());
         ++frame;
       }
     }
@@ -88,9 +89,8 @@ namespace Planet
       if (!isRewindable)
         return;
       // save state here so objects are synced up if framesToSkipSaving != 0
-      //timeMachine.SaveCurrentState();
-      isRewinding = true;
-      timeMachine.remainingFramesToRewind = x;
+      // timeMachine.SaveCurrentState();
+      timeMachine.StartRewind(x);
     }
     public virtual GOState GetState()
     {
@@ -105,6 +105,8 @@ namespace Planet
       this.frame = data.frame;
       this.isDead = data.isDead;
       this.isActive = data.isActive;
+      this.color = data.color;
+      this.alpha = data.alpha;
     }
     protected void SetTexture(Texture2D tex)
     {
@@ -135,6 +137,10 @@ namespace Planet
       }
       return false;
     }
+    public bool IsRewinding()
+    {
+      return timeMachine.isRewinding;
+    }
     public virtual void DoCollision(GameObject other)
     {
 
@@ -161,13 +167,15 @@ namespace Planet
       {
         spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
 
+        /* DEBUG */
         // show last possible rewind position
         GOState old = null;
         if (timeMachine.stateBuffer.Count > 0)
           old = ((GOState)(timeMachine.stateBuffer.Last.Value));
         if (old != null)
+        {
           spriteBatch.Draw(tex, old.Pos, spriteRec, Color.Red * alpha * 0.2f, old.Rotation, origin, Scale, SpriteEffects.None, layerDepth);
-
+        }
         // show hitboxes
         if (drawHitbox)
           spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox, Color.Blue * 0.5f);
@@ -185,10 +193,7 @@ namespace Planet
       public Transform Parent;
       public Color color;
       public float alpha;
-      public Rectangle hitbox;
       public int frame;
-      public bool isRewindable = true;
-      public bool disposed;               // if true, object will be deleted at the end of the frame
       public bool isActive = true;        // determines whether or not to draw/update/collision check the object
       public bool isDead;                 // will set to dispose after a number of frames
 
@@ -200,10 +205,7 @@ namespace Planet
         this.Parent = go.Parent;
         this.color = go.color;
         this.alpha = go.alpha;
-        this.hitbox = go.hitbox;
         this.frame = go.frame;
-        this.isRewindable = go.isRewindable;
-        this.disposed = go.disposed;
         this.isActive = go.isActive;
         this.isDead = go.isDead;
       }

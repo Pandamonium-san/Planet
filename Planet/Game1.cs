@@ -43,6 +43,7 @@ namespace Planet
    *  - Stage design
    *  - Menu
    *  - Title screen
+   *  - Effects/Shaders?
    */
 
   /// <summary>
@@ -72,6 +73,7 @@ namespace Planet
     //debug variables
     public static Vector2 intersectPoint;
     public static int collisionChecksPerFrame;
+
 
     public Game1()
     {
@@ -117,6 +119,7 @@ namespace Planet
       p1 = new Player(PlayerIndex.One, world);
       p2 = new Player(PlayerIndex.Two, world);
       p1.SetShip(ship);
+
     }
 
     /// <summary>
@@ -156,8 +159,9 @@ namespace Planet
       GraphicsDevice.Clear(Color.CornflowerBlue);
       fc.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-      // TODO: Add your drawing code here
       world.Draw(spriteBatch);
+
+      // draw debug info
       spriteBatch.Begin();
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "FPS: " + fc.CurrentFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
       if (fc.CurrentFramesPerSecond < 30)
@@ -171,7 +175,6 @@ namespace Planet
       spriteBatch.Draw(AssetManager.GetTexture("Fill"), new Rectangle((int)intersectPoint.X, (int)intersectPoint.Y, 10, 10), Color.Red);
       collisionChecksPerFrame = 0;
       spriteBatch.End();
-
 
       base.Draw(gameTime);
     }

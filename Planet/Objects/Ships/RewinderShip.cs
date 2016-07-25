@@ -19,14 +19,14 @@ namespace Planet
       SetTexture(AssetManager.GetTexture("Ship1"));
       layer = Layer.PLAYER_SHIP;
       rotationSpeed = 15;
-      //wpn = new Weapon(this, WpnDesc.Spread());
-      wpn = new Weapon(this, world, WpnDesc.Circle(150));
+      wpn = new Weapon(this, world, WpnDesc.Spread());
+      //wpn = new Weapon(this, world, WpnDesc.Circle(150));
       //wpn = new Weapon(this, world, new WpnDesc());
       //wpn = new CycloneGun(this, world);
       weapons.Add(wpn);
       wpn.inaccuracy = 0;
       wpn.speedVariance = 0;
-      drawHitbox = true;
+      drawHitbox = false;
 
       maxHealth = 10;
       currentHealth = maxHealth;
@@ -53,13 +53,13 @@ namespace Planet
     {
       foreach (GameObject g in world.gameObjects)
       {
-        if (!g.isRewinding)
+        if (!g.IsRewinding())
           g.StartRewind(TimeMachine.framesBetweenStates);
         //g.StartRewind(TimeMachine.maxRewindableFrames);
       }
       foreach (GameObject g in world.projectiles)
       {
-        if (!g.isRewinding)
+        if (!g.IsRewinding())
           g.StartRewind(TimeMachine.framesBetweenStates);
         //g.StartRewind(TimeMachine.maxRewindableFrames);
       }

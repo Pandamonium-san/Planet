@@ -25,6 +25,7 @@ namespace Planet
     public int maxHealth;
 
     protected List<Weapon> weapons;
+    protected Timer damageTimer;
 
     public Ship(Vector2 pos, World world)
         : base(pos, world)
@@ -33,6 +34,8 @@ namespace Planet
       this.SetTexture(AssetManager.GetTexture("Ship1"));
       maxHealth = 10;
       currentHealth = maxHealth;
+
+      damageTimer = new Timer(0.08f, () => color = Color.White);
     }
 
     protected override void DoUpdate(GameTime gt)
@@ -56,6 +59,13 @@ namespace Planet
       }
       if (restrictToScreen)
         RestrictToScreen();
+
+      // flash white when damaged
+      if (damageTimer.counting)
+      {
+        color.A = (byte)MathHelper.Lerp(color.A, 250, (float)damageTimer.Fraction);
+        damageTimer.Update(gt);
+      }
       base.DoUpdate(gt);
     }
 
@@ -67,7 +77,6 @@ namespace Planet
         rotationModifier -= 1.0f;
         aiming = false;
       }
-
     }
 
     protected virtual void CalculateCurrentVelocity()
@@ -113,7 +122,6 @@ namespace Planet
     {
       aiming = true;
     }
-
     public void Move(Vector2 direction)
     {
       currentVelocity += direction * baseSpeed;
@@ -123,6 +131,8 @@ namespace Planet
       currentHealth -= amount;
       if (currentHealth < 0)
         Die();
+      color = new Color(255, 255, 255, 0);
+      damageTimer.Start();
     }
     private void RestrictToScreen()
     {
