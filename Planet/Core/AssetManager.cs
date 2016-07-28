@@ -27,6 +27,7 @@ namespace Planet
       AddTexture("pumpkin", "pumpkin");
       AddTexture("Parasite", "Image3");
       AddTexture("Laser", "laser");
+      AddTexture("Sprites", "Planet_sprites");
 
       AddFont("font1", "font1");
 

@@ -22,7 +22,8 @@ namespace Planet
       {
         Vector2 direction = target.Pos - ship.Pos;
         direction.Normalize();
-        ship.Move(direction);
+        //ship.Move(direction);
+        ship.Rotation = Utility.Vector2ToAngle(direction);
       }
 
       ship.Invoke("Fire1");

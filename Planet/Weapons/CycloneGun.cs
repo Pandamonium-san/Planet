@@ -9,7 +9,6 @@ namespace Planet
   //test class
   class CycloneGun : Weapon
   {
-
     public CycloneGun(Ship ship, World world)
         : base(ship, world)
     {

@@ -21,7 +21,8 @@ namespace Planet
     public List<Projectile> projectiles;
 
     private SpriteFont font;
-    public Effect effect;
+    private Effect effect;
+    private Matrix transformMatrix;
 
     public World()
     {
@@ -30,6 +31,7 @@ namespace Planet
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
 
+      transformMatrix = Matrix.CreateScale(1.0f);
     }
 
     public void Update(GameTime gt)
@@ -49,17 +51,17 @@ namespace Planet
         if (go.IsRewinding() || !go.isActive)
           continue;
 
-        // collision check
-        foreach (GameObject go2 in gameObjects)
-        {
-          if (go == go2 || go.disposed)
-            continue;
-          if (go.IsColliding(go2))
-          {
-            go.DoCollision(go2);
-            go2.DoCollision(go);
-          }
-        }
+        // collision check (currently pointless as ships don't collide with each other)
+        //foreach (GameObject go2 in gameObjects)
+        //{
+        //  if (go == go2 || go.disposed)
+        //    continue;
+        //  if (go.IsColliding(go2))
+        //  {
+        //    go.DoCollision(go2);
+        //    go2.DoCollision(go);
+        //  }
+        //}
 
         // projectile collision check
         foreach (Projectile p in projectiles)
@@ -105,10 +107,11 @@ namespace Planet
       sb.Begin(
         SpriteSortMode.BackToFront, 
         BlendState.AlphaBlend, 
-        SamplerState.LinearClamp, 
-        DepthStencilState.Default, 
-        RasterizerState.CullNone, 
-        effect
+        SamplerState.PointClamp, 
+        DepthStencilState.None, 
+        RasterizerState.CullCounterClockwise,
+        effect,
+        transformMatrix
         );
       foreach (GameObject go in gameObjects)
       {

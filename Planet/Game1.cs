@@ -6,21 +6,18 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
-   *  x Weapon settings
-   *  x Weapon templates
-   *  x Bullet patterns
-   *  x Make Transform class for GameObject to make transform hierarchies
-   *  - Change art
-   *  - Destructible projectiles
-   *  x Health
-   *  - AI
-   *      - FuSM?
-   *      - Command queue?
-   *      - Pathing
-   *      - Targeting/Firing
-   *  - Enemy spawns
-   *  - Enemy variations
-   *  - Projectile variations
+   *  -> FIX SPRITESHEET / SPRITE REGIONS
+   *  - Change art 
+   *  - Enemies
+   *      - Spawn logic
+   *      - Enemy types
+   *      - Enemy AI
+   *          - FuSM?
+   *          - Command queue?
+   *          - Targeting/Firing
+   *          - Fly patterns
+   *          - Bullet patterns
+   *  - Weapons
    *      - Homing missiles
    *      - Explosions?
    *      - Projectile settings?
@@ -30,21 +27,29 @@ namespace Planet
    *          x Ray-Box detection
    *              - Hitscan weapons?
    *              - Thicker lasers?
-   *  - Smaller hitboxes
-   *  - Show hitbox while aiming
+   *  - Ships
+   *      - Rewinder
+   *          - Manual save state (rewind to this point later)
+   *          - Shadows
+   *      - Possessor
+   *      - Blinker
    *  - Game states
-   *  - Rewinder
-   *      - Manual save state (rewind to this point later)
-   *      - Shadows
-   *  - Possessor
-   *  . Blinker
-   *  - Score
    *  - UI
    *  - Stage design
-   *  - Menu
+   *  - Score
+   *  - Menus
    *  - Title screen
+   *  - Show hitbox while aiming?
+   *  - Destructible projectiles?
    *  - Effects/Shaders?
    */
+   /* Actual TO-DO
+    * Refactor code
+    * That code looks bad, fix it
+    * This could be coded better, refactor
+    * Refactor code
+    * Re-refactor code
+    */
 
   /// <summary>
   /// This is the main type for your game.

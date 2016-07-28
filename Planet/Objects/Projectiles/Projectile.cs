@@ -15,9 +15,7 @@ namespace Planet
     public Vector2 dir;
     public Vector2 velocity;
     public float speed;
-    public float maxLifeTime;
-    public float currentLifeTime;
-
+    Timer lifeTimer;
     public delegate void Pattern(Projectile p, GameTime gt);
     Pattern pattern;
 
@@ -45,8 +43,7 @@ namespace Planet
         dir.Normalize();
       this.dir = dir;
 
-      maxLifeTime = lifeTime;
-      currentLifeTime = lifeTime;
+      lifeTimer = new Timer(lifeTime, Die);
       velocity = dir * speed;
 
       if (instigator == null)
@@ -58,21 +55,20 @@ namespace Planet
       {
         layer = Layer.PLAYER_PROJECTILE;
         layerMask = (Layer.ENEMY_SHIP | Layer.ENEMY_PROJECTILE);
+        color = Color.Red * 1f;
+        color = Color.SkyBlue;
       }
       else if (instigator.layer == Layer.ENEMY_SHIP)
       {
         layer = Layer.ENEMY_PROJECTILE;
         layerMask = (Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE);
       }
+      layerDepth = 0.8f;
     }
 
     protected override void DoUpdate(GameTime gt)
     {
-      currentLifeTime -= (float)gt.ElapsedGameTime.TotalSeconds;
-      if (currentLifeTime <= 0 && !isDead)
-      {
-        Die();
-      }
+      lifeTimer.Update(gt);
 
       if (IsOutsideScreen())
         Die();
@@ -119,7 +115,7 @@ namespace Planet
       this.dir = p.dir;
       this.velocity = p.velocity;
       this.speed = p.speed;
-      this.currentLifeTime = p.currentLifeTime;
+      this.lifeTimer = p.lifeTimer;
     }
 
     protected class ProjState : GOState
@@ -127,7 +123,7 @@ namespace Planet
       public Vector2 dir;
       public Vector2 velocity;
       public float speed;
-      public float currentLifeTime;
+      public Timer lifeTimer;
 
       public ProjState(Projectile p)
           : base(p)
@@ -135,7 +131,7 @@ namespace Planet
         this.dir = p.dir;
         this.velocity = p.velocity;
         this.speed = p.speed;
-        this.currentLifeTime = p.currentLifeTime;
+        this.lifeTimer = p.lifeTimer;
       }
     }
   }

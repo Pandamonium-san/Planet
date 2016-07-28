@@ -10,6 +10,7 @@ namespace Planet
   {
     protected Ship ship;
     protected World world;
+    protected Transform muzzle;
 
     public int damage;
     public float shotsPerSecond;
@@ -19,21 +20,22 @@ namespace Planet
     public float inaccuracy;
     public float speedVariance;
 
-    //magazine variables
+    // magazine variables
     public float magReloadTime;
     public int magSize;
 
-    //bullet angle variables
+    // bullet angle variables
     public float degreesBetweenBullets;
     public float degreesBetweenShots;
     public float startingAngleDegrees;
 
-    //counter variables
-    protected internal float secondsToNextShot;
-    protected internal float secondsToNextReload;
+    // counter variables
+    protected bool canShoot;
     protected internal int currentMagCount;
     protected internal float currentBulletAngle;
     protected internal float currentShotAngle;
+    protected internal Timer reloadTimer;
+    protected internal Timer shotTimer;
 
     public Weapon(
         Ship ship,
@@ -53,7 +55,6 @@ namespace Planet
     {
       this.ship = ship;
       this.world = world;
-
       this.damage = damage;
       this.shotsPerSecond = shotsPerSecond;
       this.projSpeed = projSpeed;
@@ -66,68 +67,61 @@ namespace Planet
       this.degreesBetweenShots = degreesBetweenShots;
       this.startingAngleDegrees = startingAngleDegrees;
       this.projLifeTime = projLifeTime;
-
       this.currentMagCount = magSize;
-    }
 
-    public Weapon(Ship ship, World world, WpnDesc desc)
+      reloadTimer = new Timer(magReloadTime, Reload);
+      shotTimer = new Timer(1f / shotsPerSecond, () => canShoot = true);
+      muzzle = new Transform(Vector2.Zero, 0, 1, ship);
+    }
+    public Weapon(Ship ship, World world, WpnDesc desc = null)
     {
       this.ship = ship;
       this.world = world;
-
-      this.damage = desc.damage;
-      this.shotsPerSecond = desc.shotsPerSecond;
-      this.projSpeed = desc.projectileSpeed;
-      this.nrOfBullets = desc.nrOfBullets;
-      this.inaccuracy = desc.inaccuracy;
-      this.speedVariance = desc.speedVariance;
-      this.magReloadTime = desc.magReloadTime;
-      this.magSize = desc.magSize;
-      this.degreesBetweenBullets = desc.degreesBetweenBullets;
-      this.degreesBetweenShots = desc.degreesBetweenShots;
-      this.startingAngleDegrees = desc.startingAngleDegrees;
-      this.projLifeTime = desc.projLifeTime;
-
-      this.currentMagCount = magSize;
+      if (desc != null)
+      {
+        this.damage = desc.damage;
+        this.shotsPerSecond = desc.shotsPerSecond;
+        this.projSpeed = desc.projectileSpeed;
+        this.nrOfBullets = desc.nrOfBullets;
+        this.inaccuracy = desc.inaccuracy;
+        this.speedVariance = desc.speedVariance;
+        this.magReloadTime = desc.magReloadTime;
+        this.magSize = desc.magSize;
+        this.degreesBetweenBullets = desc.degreesBetweenBullets;
+        this.degreesBetweenShots = desc.degreesBetweenShots;
+        this.startingAngleDegrees = desc.startingAngleDegrees;
+        this.projLifeTime = desc.projLifeTime;
+        this.currentMagCount = magSize;
+        reloadTimer = new Timer(magReloadTime, Reload);
+        shotTimer = new Timer(1f / shotsPerSecond, () => canShoot = true);
+        muzzle = new Transform(Vector2.Zero, 0, 1, ship);
+      }
     }
-
-
-    public Weapon(Ship ship, World world)
-    {
-      this.ship = ship;
-      this.world = world;
-    }
-
     public virtual void Update(GameTime gt)
     {
-      secondsToNextShot -= (float)gt.ElapsedGameTime.TotalSeconds;
+      shotTimer.Update(gt);
 
-      //reload starts if volley is not full
+      // reload starts if volley is not full
       if (currentMagCount < magSize)
-        secondsToNextReload -= (float)gt.ElapsedGameTime.TotalSeconds;
-      if (secondsToNextReload <= 0)
-        Reload();
+        reloadTimer.Update(gt);
     }
-
     public virtual void Fire()
     {
-      if (currentMagCount > 0 && secondsToNextShot <= 0)
+      if (currentMagCount > 0 && canShoot)
       {
         Shoot();
         currentShotAngle += MathHelper.ToRadians(degreesBetweenShots);
         if (shotsPerSecond != 0)
-          secondsToNextShot = 1 / shotsPerSecond;
+          shotTimer.Start();
         currentMagCount--;
       }
     }
-
     private void Reload()
     {
-      secondsToNextReload = magReloadTime;
+      reloadTimer.Start();
       currentMagCount = magSize;
       currentShotAngle = 0;
     }
-
     protected virtual void Shoot()
     {
       currentBulletAngle = MathHelper.ToRadians(startingAngleDegrees);
@@ -137,18 +131,17 @@ namespace Planet
         currentBulletAngle += MathHelper.ToRadians(degreesBetweenBullets);
       }
     }
-
     protected virtual void CreateBullet()
     {
-      Vector2 direction = Utility.AngleToVector2(ship.Rotation + currentBulletAngle + currentShotAngle);
+      Vector2 direction = Utility.AngleToVector2(muzzle.Rotation + currentBulletAngle + currentShotAngle);
       if (inaccuracy != 0)
         ApplyInaccuracy(ref direction, inaccuracy);
       float sv = Utility.GetRandom(Game1.rnd, -speedVariance, speedVariance);
 
       Projectile p = new Projectile(
         world,
-        AssetManager.GetTexture("Proj1"),
-        ship.Pos,
+        AssetManager.GetTexture("Fill"),
+        muzzle.Pos,
         direction,
         sv + projSpeed,
         damage,
@@ -159,7 +152,6 @@ namespace Planet
 
       world.PostProjectile(p);
     }
-
     protected virtual void BulletPattern(Projectile p, GameTime gt)
     {
       p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
@@ -169,7 +161,11 @@ namespace Planet
       float deviation = Utility.GetRandom(Game1.rnd, -inaccuracy, inaccuracy);
       dir = Utility.RotateVector2(dir, Vector2.Zero, MathHelper.ToRadians(deviation));
     }
-
+    public void SetMuzzle(Vector2 pos, float rotation = 0)
+    {
+      muzzle.localPos = pos;
+      muzzle.localRotation = rotation;
+    }
     public WpnDesc GetDesc()
     {
       WpnDesc desc = new WpnDesc(
@@ -201,37 +197,35 @@ namespace Planet
       this.degreesBetweenShots = desc.degreesBetweenShots;
       this.startingAngleDegrees = desc.startingAngleDegrees;
       this.projLifeTime = desc.projLifeTime;
-
       this.currentMagCount = magSize;
+      reloadTimer = new Timer(magReloadTime, Reload);
+      shotTimer = new Timer(1f / shotsPerSecond, () => canShoot = true);
     }
-
     public WeaponState GetState()
     {
       return new WeaponState(this);
     }
     public void SetState(WeaponState ws)
     {
-      this.secondsToNextShot = ws.secondsToNextShot;
-      this.secondsToNextShot = ws.secondsToNextShot;
-      this.secondsToNextReload = ws.secondsToNextReload;
+      this.shotTimer = ws.shotTimer;
+      this.reloadTimer = ws.reloadTimer;
       this.currentMagCount = ws.currentMagCount;
       this.currentBulletAngle = ws.currentBulletAngle;
       this.currentShotAngle = ws.currentShotAngle;
     }
   }
-
   public class WeaponState
   {
-    public float secondsToNextShot;
-    public float secondsToNextReload;
+    public Timer shotTimer;
+    public Timer reloadTimer;
     public int currentMagCount;
     public float currentBulletAngle;
     public float currentShotAngle;
 
     public WeaponState(Weapon wpn)
     {
-      secondsToNextShot = wpn.secondsToNextShot;
-      secondsToNextReload = wpn.secondsToNextReload;
+      shotTimer = wpn.shotTimer;
+      reloadTimer = wpn.reloadTimer;
       currentMagCount = wpn.currentMagCount;
       currentBulletAngle = wpn.currentBulletAngle;
       currentShotAngle = wpn.currentShotAngle;

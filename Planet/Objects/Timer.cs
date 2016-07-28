@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Planet
 {
-  public class Timer
+  public struct Timer
   {
     public bool counting { get; private set; }
     public double secondsToActivate { get; private set; }
@@ -19,8 +19,8 @@ namespace Planet
     {
       this.secondsToActivate = timeInSeconds;
       this.action = action;
+      this.elapsedSeconds = 0;
       counting = start;
-      elapsedSeconds = 0;
     }
     public void Start()
     {
@@ -41,7 +41,7 @@ namespace Planet
     }
   }
 
-  public class FrameTimer
+  public struct FrameTimer
   {
     public bool counting { get; private set; }
     public int frames { get; private set; }
@@ -54,7 +54,7 @@ namespace Planet
     {
       this.framesToActivate = frames;
       this.action = action;
-      frames = 0;
+      this.frames = 0;
       counting = start;
     }
     public void Start()

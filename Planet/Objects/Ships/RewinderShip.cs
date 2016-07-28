@@ -15,17 +15,23 @@ namespace Planet
     public RewinderShip(Vector2 pos, World world)
         : base(pos, world)
     {
-      hitboxOffset = new Vector2(50, 50);
-      SetTexture(AssetManager.GetTexture("Ship1"));
+      hitboxOffset = new Vector2(15, 15);
+      //SetTexture(AssetManager.GetTexture("Sprites"), new Rectangle(0, 0, 9, 10));
+      SetTexture(AssetManager.GetTexture("Sprites"), new Rectangle(1, 11, 7, 11));
+      origin.Y -= 1;
+      hitbox = new Hitbox(this, 7, 7, hitboxOffset);
       layer = Layer.PLAYER_SHIP;
+      layerDepth = 0f;
       rotationSpeed = 15;
-      wpn = new Weapon(this, world, WpnDesc.Spread());
+      //wpn = new Weapon(this, world, WpnDesc.Spread());
       //wpn = new Weapon(this, world, WpnDesc.Circle(150));
       //wpn = new Weapon(this, world, new WpnDesc());
       //wpn = new CycloneGun(this, world);
+      //wpn = new Planet.Weapon(this, world, 1, 5, 200, 4, 2, 0, 1, 30, 90, 18, 0, 10);
+      wpn = new Weapon(this, world, 1, 60, 400, 1, 50, 50, 1, 30, 0, 0, 0, 10);
+      //wpn = new Planet.Weapon(this, world, 1, 30, 700, 1, 10, 50, 2, 30, 0, 0, 0, 1);
+      wpn.SetMuzzle(new Vector2(0, -30));
       weapons.Add(wpn);
-      wpn.inaccuracy = 0;
-      wpn.speedVariance = 0;
       drawHitbox = false;
 
       maxHealth = 10;

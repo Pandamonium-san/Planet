@@ -44,9 +44,9 @@ namespace Planet
     public Transform(Vector2 pos, float rotation = 0.0f, float scale = 1.0f, Transform parent = null)
     {
       this.Parent = parent;
-      this.Pos = pos;
-      this.Rotation = rotation;
-      this.Scale = scale;
+      this.localPos = pos;
+      this.localRotation = rotation;
+      this.localScale = scale;
     }
   }
 }

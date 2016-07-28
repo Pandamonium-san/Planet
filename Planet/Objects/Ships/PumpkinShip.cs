@@ -15,7 +15,8 @@ namespace Planet
     {
       SetTexture(AssetManager.GetTexture("pumpkin"));
       layer = Layer.ENEMY_SHIP;
-      wpn = new CycloneGun(this, world);
+      //wpn = new CycloneGun(this, world);
+      wpn = new Weapon(this, world, 1, 60, 400, 1, 50, 50, 1, 30, 0, 0, 0, 10);
       currentHealth = 100;
     }
     protected override void DoUpdate(GameTime gt)
@@ -25,12 +26,12 @@ namespace Planet
     }
     protected override void CalculateCurrentRotation()
     {
-      currentRotationSpeed = 1;
-      Rotation = MathHelper.WrapAngle(Rotation);
+      //currentRotationSpeed = 1;
+      //Rotation = MathHelper.WrapAngle(Rotation);
     }
     public override void Fire1()
     {
-      // wpn.Fire();
+       //wpn.Fire();
     }
 
     public override void Fire2()

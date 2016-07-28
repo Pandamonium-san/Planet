@@ -37,9 +37,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Actor.cs" />
     <Compile Include="Controllers\AIController.cs" />
     <Compile Include="Controllers\ShipController.cs" />
+    <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Projectiles\Laser.cs" />
     <Compile Include="Objects\TimeMachine.cs" />
     <Compile Include="Utility\FixedList.cs" />
@@ -61,7 +63,6 @@
     <Compile Include="Utility\Transform.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Core\World.cs" />
-    <Compile Include="Objects\Projectiles\WaveProjectile.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WpnDesc.cs" />
   </ItemGroup>
