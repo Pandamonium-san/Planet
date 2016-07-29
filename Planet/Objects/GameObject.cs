@@ -27,7 +27,6 @@ namespace Planet
     public float layerDepth = 0f;
     // collision
     public Hitbox hitbox;
-    public Vector2 hitboxOffset;
     public Layer layer;
     public Layer layerMask;
     // game
@@ -48,7 +47,7 @@ namespace Planet
     {
       this.world = world;
       timeMachine = new TimeMachine(this);
-      Scale = 8.0f;
+      Scale = 4.0f;
       isRewindable = true;
       isActive = true;
     }
@@ -57,7 +56,6 @@ namespace Planet
       if (IsRewinding())
       {
         timeMachine.DoRewind();
-        //hitbox.UpdatePosition();
       }
       else
       {
@@ -78,7 +76,6 @@ namespace Planet
     }
     protected virtual void DoUpdate(GameTime gt)
     {
-      hitbox.UpdatePosition();
     }
     /// <summary>
     /// Goes x frames back in time
@@ -89,20 +86,19 @@ namespace Planet
         return;
       timeMachine.StartRewind(x);
     }
-
     protected void SetTexture(Texture2D tex)
     {
       this.tex = tex;
       spriteRec = new Rectangle(0, 0, tex.Width, tex.Height);
       origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
-      hitbox = new Hitbox(this, spriteRec.Width, spriteRec.Height, hitboxOffset);
+      hitbox = new Hitbox(this, Math.Min(spriteRec.Width/2.0f, spriteRec.Height/2.0f));
     }
     protected void SetTexture(Texture2D tex, Rectangle spriteRec)
     {
       this.tex = tex;
       this.spriteRec = spriteRec;
       origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
-      hitbox = new Hitbox(this, spriteRec.Width, spriteRec.Height, hitboxOffset);
+      hitbox = new Hitbox(this, Math.Min(spriteRec.Width/2.0f, spriteRec.Height/2.0f));
     }
     public void Die()
     {
@@ -122,7 +118,7 @@ namespace Planet
       if ((layerMask & other.layer) != Layer.ZERO)
       {
         ++Game1.collisionChecksPerFrame;
-        return hitbox.Intersects(other.hitbox);
+        return hitbox.Collides(other.hitbox);
       }
       return false;
     }
@@ -138,16 +134,16 @@ namespace Planet
 
         /* DEBUG */
         // show last possible rewind position
-        GOState old = null;
-        if (timeMachine.stateBuffer.Count > 0)
-          old = ((GOState)(timeMachine.stateBuffer.Last.Value));
-        if (old != null)
-        {
-          spriteBatch.Draw(tex, old.Pos, spriteRec, Color.Red * alpha * 0.2f, old.Rotation, origin, Scale, SpriteEffects.None, layerDepth);
-        }
+        //GOState old = null;
+        //if (timeMachine.stateBuffer.Count > 0)
+        //  old = ((GOState)(timeMachine.stateBuffer.Last.Value));
+        //if (old != null)
+        //{
+        //  spriteBatch.Draw(tex, old.Pos, spriteRec, Color.Red * alpha * 0.2f, old.Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+        //}
         // show hitboxes
         if (drawHitbox)
-          spriteBatch.Draw(AssetManager.GetTexture("Fill"), hitbox.Rectangle, Color.Blue * 0.5f);
+          hitbox.Draw(spriteBatch);
       }
     }
     public virtual GOState GetState()

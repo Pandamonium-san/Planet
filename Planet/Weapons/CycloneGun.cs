@@ -12,13 +12,13 @@ namespace Planet
     public CycloneGun(Ship ship, World world)
         : base(ship, world)
     {
-      SetDesc(WpnDesc.Circle(24));
-      projSpeed = 200;
-      projLifeTime = 5;
-      magSize = 5;
-      magReloadTime = 3;
-      inaccuracy = 5;
-      speedVariance = 50;
+      WpnDesc desc = WpnDesc.Circle(24);
+      desc.shotsPerSecond = 1;
+      desc.projSpeed = 200;
+      desc.projLifeTime = 5;
+      desc.magSize = 5;
+      desc.magReloadTime = 3;
+      SetDesc(desc);
     }
 
     public override void Update(GameTime gt)

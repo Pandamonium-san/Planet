@@ -40,7 +40,6 @@ namespace Planet
       }
     }
   }
-
   public struct FrameTimer
   {
     public bool counting { get; private set; }

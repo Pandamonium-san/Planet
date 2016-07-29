@@ -35,7 +35,7 @@ namespace Planet
       maxHealth = 10;
       currentHealth = maxHealth;
 
-      damageTimer = new Timer(0.08f, () => color = Color.White);
+      damageTimer = new Timer(0.25f, () => color = Color.White, false);
     }
 
     protected override void DoUpdate(GameTime gt)
@@ -63,7 +63,7 @@ namespace Planet
       // flash white when damaged
       if (damageTimer.counting)
       {
-        color.A = (byte)MathHelper.Lerp(color.A, 250, (float)damageTimer.Fraction);
+        color.A = (byte)MathHelper.Lerp(0, 250, (float)damageTimer.Fraction);
         damageTimer.Update(gt);
       }
       base.DoUpdate(gt);
@@ -131,7 +131,6 @@ namespace Planet
       currentHealth -= amount;
       if (currentHealth < 0)
         Die();
-      color = new Color(255, 255, 255, 0);
       damageTimer.Start();
     }
     private void RestrictToScreen()
@@ -167,12 +166,9 @@ namespace Planet
       base.SetState(state);
       ShipState shipState = (ShipState)state;
       this.currentHealth = shipState.currentHealth;
-      foreach (Weapon wpn in weapons)
+      for (int i = 0; i < weapons.Count(); i++)
       {
-        foreach (WeaponState wpnState in shipState.weaponStates)
-        {
-          wpn.SetState(wpnState);
-        }
+        weapons[i].SetState(shipState.weaponStates[i]);
       }
     }
     protected class ShipState : GOState
@@ -190,6 +186,8 @@ namespace Planet
           weaponStates.Add(new WeaponState(wpn));
         }
       }
+
     }
+
   }
 }

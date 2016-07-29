@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
@@ -30,12 +31,14 @@ namespace Planet
     public float startingAngleDegrees;
 
     // counter variables
-    protected bool canShoot;
+    protected internal bool canShoot;
     protected internal int currentMagCount;
     protected internal float currentBulletAngle;
     protected internal float currentShotAngle;
     protected internal Timer reloadTimer;
     protected internal Timer shotTimer;
+
+    Texture2D projTex = AssetManager.GetTexture("Proj1");
 
     public Weapon(
         Ship ship,
@@ -81,7 +84,7 @@ namespace Planet
       {
         this.damage = desc.damage;
         this.shotsPerSecond = desc.shotsPerSecond;
-        this.projSpeed = desc.projectileSpeed;
+        this.projSpeed = desc.projSpeed;
         this.nrOfBullets = desc.nrOfBullets;
         this.inaccuracy = desc.inaccuracy;
         this.speedVariance = desc.speedVariance;
@@ -92,24 +95,29 @@ namespace Planet
         this.startingAngleDegrees = desc.startingAngleDegrees;
         this.projLifeTime = desc.projLifeTime;
         this.currentMagCount = magSize;
+
         reloadTimer = new Timer(magReloadTime, Reload);
         shotTimer = new Timer(1f / shotsPerSecond, () => canShoot = true);
-        muzzle = new Transform(Vector2.Zero, 0, 1, ship);
       }
+      muzzle = new Transform(Vector2.Zero, 0, 1, ship);
     }
+    int frame = 0;
     public virtual void Update(GameTime gt)
     {
-      shotTimer.Update(gt);
+      if (!canShoot)
+        shotTimer.Update(gt);
 
       // reload starts if volley is not full
       if (currentMagCount < magSize)
         reloadTimer.Update(gt);
+      frame++;
     }
     public virtual void Fire()
     {
       if (currentMagCount > 0 && canShoot)
       {
         Shoot();
+        canShoot = false;
         currentShotAngle += MathHelper.ToRadians(degreesBetweenShots);
         if (shotsPerSecond != 0)
           shotTimer.Start();
@@ -140,7 +148,7 @@ namespace Planet
 
       Projectile p = new Projectile(
         world,
-        AssetManager.GetTexture("Fill"),
+        projTex,
         muzzle.Pos,
         direction,
         sv + projSpeed,
@@ -187,7 +195,7 @@ namespace Planet
     {
       this.damage = desc.damage;
       this.shotsPerSecond = desc.shotsPerSecond;
-      this.projSpeed = desc.projectileSpeed;
+      this.projSpeed = desc.projSpeed;
       this.nrOfBullets = desc.nrOfBullets;
       this.inaccuracy = desc.inaccuracy;
       this.speedVariance = desc.speedVariance;
@@ -212,6 +220,7 @@ namespace Planet
       this.currentMagCount = ws.currentMagCount;
       this.currentBulletAngle = ws.currentBulletAngle;
       this.currentShotAngle = ws.currentShotAngle;
+      this.canShoot = ws.canShoot;
     }
   }
   public class WeaponState
@@ -221,6 +230,7 @@ namespace Planet
     public int currentMagCount;
     public float currentBulletAngle;
     public float currentShotAngle;
+    public bool canShoot;
 
     public WeaponState(Weapon wpn)
     {
@@ -229,6 +239,7 @@ namespace Planet
       currentMagCount = wpn.currentMagCount;
       currentBulletAngle = wpn.currentBulletAngle;
       currentShotAngle = wpn.currentShotAngle;
+      canShoot = wpn.canShoot;
     }
   }
 }

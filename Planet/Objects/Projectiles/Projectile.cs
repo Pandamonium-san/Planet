@@ -64,6 +64,7 @@ namespace Planet
         layerMask = (Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE);
       }
       layerDepth = 0.8f;
+      Scale = 1.0f;
     }
 
     protected override void DoUpdate(GameTime gt)

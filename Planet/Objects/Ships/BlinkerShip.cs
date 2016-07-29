@@ -12,7 +12,6 @@ namespace Planet
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world)
     {
-      hitboxOffset = new Vector2(10, 10);
       SetTexture(AssetManager.GetTexture("Parasite"));
       layer = Layer.PLAYER_SHIP;
       rotationSpeed = 15;

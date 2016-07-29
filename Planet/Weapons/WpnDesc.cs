@@ -12,7 +12,7 @@ namespace Planet
       WpnDesc desc = new WpnDesc();
       desc.damage = 1;
       desc.shotsPerSecond = 5;
-      desc.projectileSpeed = 500;
+      desc.projSpeed = 500;
       desc.nrOfBullets = 5;
       desc.degreesBetweenBullets = 10;
       desc.startingAngleDegrees = -20;
@@ -23,7 +23,7 @@ namespace Planet
       WpnDesc desc = new WpnDesc();
       desc.damage = 1;
       desc.shotsPerSecond = 8;
-      desc.projectileSpeed = 500;
+      desc.projSpeed = 500;
       desc.nrOfBullets = bullets;
       desc.degreesBetweenBullets = 360.0f / bullets;
 
@@ -60,7 +60,7 @@ namespace Planet
     {
       this.damage = damage;
       this.shotsPerSecond = shotsPerSecond;
-      this.projectileSpeed = projectileSpeed;
+      this.projSpeed = projectileSpeed;
       this.nrOfBullets = nrOfBullets;
       this.inaccuracy = inaccuracy;
       this.speedVariance = speedVariance;
@@ -75,8 +75,8 @@ namespace Planet
     public WpnDesc() { }
 
     public int damage = 1;
-    public float shotsPerSecond = 1;
-    public float projectileSpeed = 500;
+    public float shotsPerSecond = 3;
+    public float projSpeed = 500;
     public int nrOfBullets = 1;
     public float inaccuracy = 0;
     public float speedVariance = 0;

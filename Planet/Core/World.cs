@@ -105,10 +105,10 @@ namespace Planet
     public void Draw(SpriteBatch sb)
     {
       sb.Begin(
-        SpriteSortMode.BackToFront, 
-        BlendState.AlphaBlend, 
-        SamplerState.PointClamp, 
-        DepthStencilState.None, 
+        SpriteSortMode.BackToFront,
+        BlendState.AlphaBlend,
+        SamplerState.PointClamp,
+        DepthStencilState.None,
         RasterizerState.CullCounterClockwise,
         effect,
         transformMatrix
