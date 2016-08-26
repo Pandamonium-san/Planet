@@ -10,54 +10,50 @@ namespace Planet
   class CycloneGun : Weapon
   {
     public CycloneGun(Ship ship, World world)
-        : base(ship, world)
+        : base(ship, world, new WpnDesc())
     {
-      WpnDesc desc = WpnDesc.Circle(24);
-      desc.shotsPerSecond = 1;
+      desc.damage = 1;
+      desc.nrOfBullets = 24;
+      desc.degreesBetweenBullets = 360 / desc.nrOfBullets;
+      desc.shotsPerSecond = 3;
       desc.projSpeed = 200;
       desc.projLifeTime = 5;
-      desc.magSize = 5;
-      desc.magReloadTime = 3;
+      desc.magSize = 3;
+      desc.magReloadTime = 1;
       SetDesc(desc);
-    }
-
-    public override void Update(GameTime gt)
-    {
-
-      base.Update(gt);
     }
 
     protected override void Shoot()
     {
-      currentBulletAngle = MathHelper.ToRadians(startingAngleDegrees);
-      Projectile center = new Projectile(world, null, ship.Pos, ship.GetDirection(), projSpeed, 0, null, projLifeTime, null);
+      currentBulletAngle = MathHelper.ToRadians(desc.startingAngleDegrees);
+      Projectile center = new Projectile(world, null, ship.Pos, ship.GetDirection(), desc.projSpeed, 0, null, desc.projLifeTime, null);
       center.Scale = 1.0f;
       center.layerMask = Layer.ZERO;
       world.PostProjectile(center);
 
-      for (int i = 0; i < nrOfBullets; i++)
+      for (int i = 0; i < desc.nrOfBullets; i++)
       {
         CreateBullet(center);
-        currentBulletAngle += MathHelper.ToRadians(degreesBetweenBullets);
+        currentBulletAngle += MathHelper.ToRadians(desc.degreesBetweenBullets);
       }
     }
 
     private void CreateBullet(Projectile center)
     {
       Vector2 direction = Utility.AngleToVector2(ship.Rotation + currentBulletAngle + currentShotAngle);
-      if (inaccuracy != 0)
-        ApplyInaccuracy(ref direction, inaccuracy);
-      float sv = Utility.GetRandom(Game1.rnd, -speedVariance, speedVariance);
+      if (desc.inaccuracy != 0)
+        ApplyInaccuracy(ref direction, desc.inaccuracy);
+      float sv = Utility.RandomFloat(-desc.speedVariance, desc.speedVariance);
 
       Projectile p = new Projectile(
           world,
           AssetManager.GetTexture("Proj1"),
           ship.Pos,
           direction,
-          sv + projSpeed,
-          damage,
+          sv + desc.projSpeed,
+          desc.damage,
           ship,
-          projLifeTime,
+          desc.projLifeTime,
           BulletPattern);
       p.Parent = center;
       world.PostProjectile(p);
@@ -87,14 +83,14 @@ namespace Planet
         {
           Vector2 direction = new Vector2(p.velocity.Y, p.velocity.X * i);
           ApplyInaccuracy(ref direction, 10);
-          float sv = Utility.GetRandom(Game1.rnd, -50, 50);
+          float sv = Utility.RandomFloat(-50, 50);
           Projectile p2 = new Projectile(
             world,
             AssetManager.GetTexture("Proj1"),
             p.Pos,
             direction,
-            sv + projSpeed,
-            damage,
+            sv + desc.projSpeed,
+            desc.damage,
             ship,
             3,
             null);

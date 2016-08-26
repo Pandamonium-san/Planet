@@ -20,6 +20,8 @@ namespace Planet
     public void Invoke(string name, object[] parameters = null)
     {
       MethodInfo method = this.GetType().GetMethod(name);
+      if (method == null)
+        throw new MissingMethodException("The method '" + name + "' does not exist.");
       method.Invoke(this, parameters);
     }
   }

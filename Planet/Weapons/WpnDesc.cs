@@ -5,30 +5,8 @@ using System.Text;
 
 namespace Planet
 {
-  public class WpnDesc
+  public struct WpnDesc
   {
-    public static WpnDesc Spread()
-    {
-      WpnDesc desc = new WpnDesc();
-      desc.damage = 1;
-      desc.shotsPerSecond = 5;
-      desc.projSpeed = 500;
-      desc.nrOfBullets = 5;
-      desc.degreesBetweenBullets = 10;
-      desc.startingAngleDegrees = -20;
-      return desc;
-    }
-    public static WpnDesc Circle(int bullets)
-    {
-      WpnDesc desc = new WpnDesc();
-      desc.damage = 1;
-      desc.shotsPerSecond = 8;
-      desc.projSpeed = 500;
-      desc.nrOfBullets = bullets;
-      desc.degreesBetweenBullets = 360.0f / bullets;
-
-      return desc;
-    }
     /// <summary>
     /// Contains information about the behaviour of a weapon.
     /// </summary>
@@ -42,21 +20,23 @@ namespace Planet
     /// <param name="magSize">Amount of shots fired before reload is neccessary</param>
     /// <param name="degreesBetweenBullets">Degrees between bullets in a shot. Not relevant if nrOfBullets is 1</param>
     /// <param name="degreesBetweenShots">Degrees between shots in a magazine. Not relevant if magAmount is 1</param>
-    /// <param name="startingAngleDegrees">First bullet in each shot is fired at an offset instead of going straight</param>
+    /// <param name="startingAngleDegrees">First bullet in each shot is fired at an angle instead of going straight</param>
     /// <param name="projLifeTime">Time in seconds before bullet destroys itself</param>
+    /// <param name="ignoreRotation">If true, does not take into account the ship's rotation when determining shot direction</param>
     public WpnDesc(
         int damage,
         float shotsPerSecond,
         float projectileSpeed,
-        int nrOfBullets,
-        float inaccuracy,
-        float speedVariance,
-        float magReloadTime,
-        int magSize,
-        float degreesBetweenBullets,
-        float degreesBetweenShots,
-        float startingAngleDegrees,
-        float projLifeTime)
+        int nrOfBullets = 1,
+        float inaccuracy = 0,
+        float speedVariance = 0,
+        float magReloadTime = 0,
+        int magSize = 1,
+        float degreesBetweenBullets = 0,
+        float degreesBetweenShots = 0,
+        float startingAngleDegrees = 0,
+        float projLifeTime = 10,
+        bool ignoreRotation = false)
     {
       this.damage = damage;
       this.shotsPerSecond = shotsPerSecond;
@@ -70,21 +50,21 @@ namespace Planet
       this.degreesBetweenShots = degreesBetweenShots;
       this.startingAngleDegrees = startingAngleDegrees;
       this.projLifeTime = projLifeTime;
+      this.ignoreRotation = ignoreRotation;
     }
 
-    public WpnDesc() { }
-
-    public int damage = 1;
-    public float shotsPerSecond = 3;
-    public float projSpeed = 500;
-    public int nrOfBullets = 1;
-    public float inaccuracy = 0;
-    public float speedVariance = 0;
-    public float magReloadTime = 0;
-    public int magSize = 1;
-    public float degreesBetweenBullets = 0;
-    public float degreesBetweenShots = 0;
-    public float startingAngleDegrees = 0;
-    public float projLifeTime = 5;
+    public int damage;
+    public float shotsPerSecond;
+    public float projSpeed;
+    public int nrOfBullets;
+    public float inaccuracy;
+    public float speedVariance;
+    public float magReloadTime;
+    public int magSize;
+    public float degreesBetweenBullets;
+    public float degreesBetweenShots;
+    public float startingAngleDegrees;
+    public float projLifeTime;
+    public bool ignoreRotation;
   }
 }

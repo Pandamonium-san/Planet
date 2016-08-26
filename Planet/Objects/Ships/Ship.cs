@@ -42,11 +42,8 @@ namespace Planet
     {
       DoAiming();
 
-      CalculateCurrentVelocity();
-      Pos += currentVelocity * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
-
-      CalculateCurrentRotation();
-      Rotation += currentRotationSpeed * rotationModifier * (float)gt.ElapsedGameTime.TotalSeconds;
+      Pos += CurrentVelocity() * (float)gt.ElapsedGameTime.TotalSeconds;
+      Rotation +=  CurrentRotation() * (float)gt.ElapsedGameTime.TotalSeconds;
 
       currentVelocity = Vector2.Zero;
       currentRotationSpeed = 0;
@@ -63,7 +60,7 @@ namespace Planet
       // flash white when damaged
       if (damageTimer.counting)
       {
-        color.A = (byte)MathHelper.Lerp(0, 250, (float)damageTimer.Fraction);
+        color.A = (byte)MathHelper.Lerp(100, 250, (float)damageTimer.Fraction);
         damageTimer.Update(gt);
       }
       base.DoUpdate(gt);
@@ -73,26 +70,26 @@ namespace Planet
     {
       if (aiming)
       {
-        speedModifier -= 0.5f;
-        rotationModifier -= 1.0f;
+        speedModifier *= 0.5f;
+        rotationModifier *= 0.0f;
         aiming = false;
       }
     }
 
-    protected virtual void CalculateCurrentVelocity()
+    protected virtual Vector2 CurrentVelocity()
     {
       if (currentVelocity != Vector2.Zero)
       {
-        float maxSpeed = MathHelper.Clamp(currentVelocity.Length(), 0, baseSpeed);
+        //float maxSpeed = MathHelper.Clamp(currentVelocity.Length(), 0, baseSpeed);
         currentVelocity.Normalize();
-        currentVelocity = currentVelocity * baseSpeed;
+        currentVelocity = currentVelocity * baseSpeed * speedModifier;
       }
+      return currentVelocity;
     }
 
-    protected virtual void CalculateCurrentRotation()
+    protected virtual float CurrentRotation()
     {
-      if (currentVelocity != Vector2.Zero)
-        TurnTowardsPoint(currentVelocity);
+      return currentRotationSpeed * rotationModifier;
     }
 
     public override void DoCollision(GameObject other)
@@ -103,7 +100,6 @@ namespace Planet
         TakeDamage(p.damage);
       }
     }
-
     public virtual void Fire1()
     {
 
@@ -117,7 +113,6 @@ namespace Planet
     {
 
     }
-
     public virtual void Aim()
     {
       aiming = true;
@@ -125,6 +120,25 @@ namespace Planet
     public void Move(Vector2 direction)
     {
       currentVelocity += direction * baseSpeed;
+    }
+    public void TurnTowardsPoint(Vector2 point)
+    {
+      Vector2 direction = point - Pos;
+      Rotation = MathHelper.WrapAngle(Rotation);
+
+      float desiredAngle = Utility.Vector2ToAngle(direction);
+      desiredAngle = MathHelper.WrapAngle(desiredAngle);
+
+      // Calculate angle to target and use it to lerp rotationspeed. Lerping rotation->desiredAngle does not wrap properly.
+      float angleToTarget = desiredAngle - Rotation;
+      angleToTarget = MathHelper.WrapAngle(angleToTarget);
+
+      currentRotationSpeed += MathHelper.Lerp(0, angleToTarget, rotationSpeed);
+    }
+    public void MoveAndTurn(Vector2 direction)
+    {
+      Move(direction);
+      TurnTowardsPoint(Pos + direction);
     }
     public void TakeDamage(int amount)
     {
@@ -139,19 +153,6 @@ namespace Planet
         MathHelper.Clamp(Pos.X, 0, Game1.ScreenWidth),
         MathHelper.Clamp(Pos.Y, 0, Game1.ScreenHeight)
         );
-    }
-    protected void TurnTowardsPoint(Vector2 point)
-    {
-      Rotation = MathHelper.WrapAngle(Rotation);
-
-      float desiredAngle = Utility.Vector2ToAngle(point);
-      desiredAngle = MathHelper.WrapAngle(desiredAngle);
-
-      // Calculate angle to target and use it to lerp rotationspeed. Lerping rotation->desiredAngle does not wrap properly.
-      float angleToTarget = desiredAngle - Rotation;
-      angleToTarget = MathHelper.WrapAngle(angleToTarget);
-
-      currentRotationSpeed += MathHelper.Lerp(0, angleToTarget, rotationSpeed);
     }
     public Vector2 GetDirection()
     {

@@ -21,20 +21,22 @@ namespace Planet
       playerIndex = index;
       pc = new PlayerController(index, world);
 
-      pc.SetBinding(PlayerInput.Up, "Move", -Vector2.UnitY, true);
-      pc.SetBinding(PlayerInput.Down, "Move", Vector2.UnitY, true);
-      pc.SetBinding(PlayerInput.Right, "Move", Vector2.UnitX, true);
-      pc.SetBinding(PlayerInput.Left, "Move", -Vector2.UnitX, true);
 
-      pc.SetBinding(PlayerInput.Yellow, "Fire1", null, true);
-      pc.SetBinding(PlayerInput.Red, "Fire2", null, true);
-      pc.SetBinding(PlayerInput.Blue, "Fire3", null, false);
-      pc.SetBinding(PlayerInput.A, "Aim", null, true);
     }
 
     public void Update(GameTime gt)
     {
+      //case State.Playing:
       pc.Update(gt);
+      /* case State.Menu:
+      * menuController.Update(gt);
+      * {
+      *   if(UpPressed)
+      *     ++menu.selectionIndex;
+      *   if(EnterPressed)
+      *     menu.Select();
+      * }
+      */
     }
 
     public void SetShip(Ship a)

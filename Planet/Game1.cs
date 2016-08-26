@@ -6,8 +6,10 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
-   *  -> FIX SPRITESHEET / SPRITE REGIONS
-   *  - Change art 
+   *  x FIX SPRITESHEET / SPRITE REGIONS
+   *  x Change art 
+   *  x Fix Hitscan
+   *  x Proper scaling
    *  - Enemies
    *      - Spawn logic
    *      - Enemy types
@@ -25,7 +27,7 @@ namespace Planet
    *      - Lasers
    *          x Laser sprites
    *          x Ray-Box detection
-   *              - Hitscan weapons?
+   *              x Hitscan weapons?
    *              - Thicker lasers?
    *  - Ships
    *      - Rewinder
@@ -38,18 +40,20 @@ namespace Planet
    *  - Stage design
    *  - Score
    *  - Menus
+   *      - Menu controller class
    *  - Title screen
+   *  - Camera?
    *  - Show hitbox while aiming?
    *  - Destructible projectiles?
    *  - Effects/Shaders?
    */
-   /* Actual TO-DO
-    * Refactor code
-    * That code looks bad, fix it
-    * This could be coded better, refactor
-    * Refactor code
-    * Re-refactor code
-    */
+  /* Actual TO-DO
+   * Refactor code
+   * That code looks bad, fix it
+   * This could be coded better, refactor
+   * Refactor code
+   * Re-refactor code
+   */
 
   /// <summary>
   /// This is the main type for your game.
@@ -65,7 +69,6 @@ namespace Planet
     public static readonly int ScreenWidth = 1920;
     public static readonly int ScreenHeight = 1080;
 
-    public static Random rnd = new Random();
     private FrameCounter fc = new FrameCounter();
     private bool runningSlowly;
 
@@ -76,9 +79,9 @@ namespace Planet
     public static Ship s;
 
     //debug variables
+    int slowFrames;
     public static Vector2 intersectPoint;
     public static int collisionChecksPerFrame;
-
 
     public Game1()
     {
@@ -146,15 +149,22 @@ namespace Planet
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 #endif
+
       runningSlowly = gameTime.IsRunningSlowly;
 
       p1.Update(gameTime);
       ai.Update(gameTime);
       world.Update(gameTime);
+      /*
+       * p1.setmenu(menu);
+       * menu = new Menu(p1, p2);
+       * case State.Menu:
+       *   menu.Update(gt);
+       * break;
+       */
 
       base.Update(gameTime);
     }
-    int slowFrames;
     /// <summary>
     /// This is called when the game should draw itself.
     /// </summary>

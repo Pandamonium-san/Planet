@@ -16,7 +16,7 @@ namespace Planet
   public class World
   {
     // ships and destructible projectiles
-    public List<GameObject> gameObjects;
+    private List<GameObject> gameObjects;
     // do not check collision with each other (there could easily be a million checks each frame)
     public List<Projectile> projectiles;
 
@@ -36,6 +36,8 @@ namespace Planet
 
     public void Update(GameTime gt)
     {
+      //float scale = 4.0f;
+      //transformMatrix = Matrix.CreateTranslation(-gameObjects[0].Pos.X + Game1.ScreenWidth/(2*scale), -gameObjects[0].Pos.Y + Game1.ScreenHeight/(2*scale), 0) * Matrix.CreateScale(scale, scale, 1);
       for (int i = 0; i < projectiles.Count(); i++)
       {
         projectiles[i].Update(gt);
@@ -91,7 +93,10 @@ namespace Planet
       }
       return result;
     }
-
+    public List<GameObject> GetGameObjects()
+    {
+      return gameObjects;
+    }
     public void PostGameObj(GameObject go)
     {
       gameObjects.Add(go);

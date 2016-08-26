@@ -13,19 +13,10 @@ namespace Planet
         : base(pos, world)
     {
       SetTexture(AssetManager.GetTexture("Parasite"));
-      layer = Layer.PLAYER_SHIP;
+      SetLayer(Layer.PLAYER_SHIP);
       rotationSpeed = 15;
 
-      //wpn = new Weapon(this, WpnDesc.Spread());
-      wpn = new Weapon(this, world, WpnDesc.Circle(200));
       wpn = new CycloneGun(this, world);
-      wpn.projSpeed = 200;
-      wpn.projLifeTime = 5;
-      wpn.shotsPerSecond = 10;
-      //wpn.magSize = 5;
-      wpn.magReloadTime = 0;
-      wpn.inaccuracy = 0;
-      wpn.speedVariance = 0;
     }
     protected override void DoUpdate(GameTime gt)
     {

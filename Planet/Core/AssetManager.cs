@@ -34,7 +34,6 @@ namespace Planet
 
       AddEffect("ColorChanger", "ColorChanger");
     }
-
     public static Texture2D GetTexture(string name)
     {
       return textures[name];

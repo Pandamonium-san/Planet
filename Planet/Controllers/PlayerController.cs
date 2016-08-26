@@ -21,6 +21,16 @@ namespace Planet
       this.ship = ship;
       this.index = index;
       bindings = new List<KeyBinding>();
+
+      SetBinding(PlayerInput.Up, "MoveAndTurn", -Vector2.UnitY, true);
+      SetBinding(PlayerInput.Down, "MoveAndTurn", Vector2.UnitY, true);
+      SetBinding(PlayerInput.Right, "MoveAndTurn", Vector2.UnitX, true);
+      SetBinding(PlayerInput.Left, "MoveAndTurn", -Vector2.UnitX, true);
+
+      SetBinding(PlayerInput.Yellow, "Fire1", null, true);
+      SetBinding(PlayerInput.Red, "Fire2", null, true);
+      SetBinding(PlayerInput.Blue, "Fire3", null, true);
+      SetBinding(PlayerInput.A, "Aim", null, true);
     }
 
     protected override void DoUpdate(GameTime gt)

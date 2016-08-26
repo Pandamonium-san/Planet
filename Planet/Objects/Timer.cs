@@ -15,7 +15,7 @@ namespace Planet
 
     private Action action;
 
-    public Timer(double timeInSeconds, Action action = null, bool start = true)
+    public Timer(double timeInSeconds, Action action = null, bool start = true) : this()
     {
       this.secondsToActivate = timeInSeconds;
       this.action = action;
@@ -49,7 +49,7 @@ namespace Planet
 
     private Action action;
 
-    public FrameTimer(int frames, Action action = null, bool start = true)
+    public FrameTimer(int frames, Action action = null, bool start = true) : this()
     {
       this.framesToActivate = frames;
       this.action = action;

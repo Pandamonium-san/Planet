@@ -16,19 +16,26 @@ namespace Planet
 
     protected override void DoUpdate(GameTime gt)
     {
-      ship.speedModifier -= 0.85f;
       target = FindNearestTarget();
       if (target != null && target.isActive && target.Pos != ship.Pos)
       {
-        Vector2 direction = target.Pos - ship.Pos;
-        direction.Normalize();
-        //ship.Move(direction);
-        ship.Rotation = Utility.Vector2ToAngle(direction);
+        //if(Utility.Distance(ship.Pos, target.Pos) >= 200)
+          MoveTowards(new Vector2(300, 300));
+        ship.TurnTowardsPoint(target.Pos);
       }
 
       ship.Invoke("Fire1");
     }
-
+    protected virtual void MoveTowards(Vector2 point)
+    {
+      Vector2 direction = point - ship.Pos;
+      ship.Move(direction);
+    }
+    protected virtual void LookAt(Vector2 point)
+    {
+      Vector2 direction = point - ship.Pos;
+      ship.Rotation = Utility.Vector2ToAngle(direction);
+    }
     protected virtual GameObject FindNearestTarget()
     {
       List<GameObject> players = world.GetPlayers();

@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
   public static class Utility
   {
+    private static Random rnd = new Random();
+    private static Texture2D dot = AssetManager.GetTexture("Fill");
+
     public static Vector2 AngleToVector2(float radians)
     {
-      return new Vector2((float)Math.Sin(radians), (float)-Math.Cos(radians));
+      Vector2 direction = new Vector2((float)Math.Sin(radians), (float)-Math.Cos(radians));
+      return direction;
     }
-
     public static float Vector2ToAngle(Vector2 v)
     {
-
       return (float)Math.Atan2(v.Y, v.X) + (float)Math.PI / 2f; ;
     }
-
     public static float Distance(Vector2 v1, Vector2 v2)
     {
       return (v2 - v1).Length();
     }
-
     /// <summary>
     /// Rotate a Vector2 around an origin by amount of radians.
     /// </summary>
@@ -32,13 +33,16 @@ namespace Planet
       Matrix rot = Matrix.CreateRotationZ(radians);
       return Vector2.Transform(v - origin, rot) + origin;
     }
-
-    public static float GetRandom(Random rnd, float min, float max)
+    public static float RandomFloat(float min, float max)
     {
       return (float)(rnd.NextDouble() * (max - min) + min);
     }
-
-    public static bool RayTrace(Vector2 origin, Vector2 dir, Rectangle rec, ref Vector2 intersection, float range = 0)
+    public static int RandomInt(int min, int max)
+    {
+      return rnd.Next(min, max);
+    }
+    // Raycast against rectangle.
+    public static bool RayCast(Vector2 origin, Vector2 dir, Rectangle rec, ref Vector2 intersection, float range = 0)
     {
       Vector2 rMin = new Vector2((float)rec.X, (float)rec.Y);
       Vector2 rMax = new Vector2(rMin.X + rec.Width, rMin.Y + rec.Height);
@@ -71,10 +75,9 @@ namespace Planet
         return false;
       return true;
     }
-    public static bool RayCastCircle(Vector2 start, Vector2 end, Vector2 center, float radius, ref Vector2 intersection)
+    // Raycast against circle.
+    public static bool RayCast(Vector2 start, Vector2 end, Vector2 center, float radius, ref Vector2 intersection)
     {
-      intersection = start;
-
       Vector2 d = end - start;
       Vector2 f = start - center;
 
@@ -126,6 +129,7 @@ namespace Planet
         if (t2 >= 0 && t2 <= 1)
         {
           // ExitWound
+          intersection = start + d * t2;
           return true;
         }
 
@@ -138,6 +142,20 @@ namespace Planet
       T temp = lhs;
       lhs = rhs;
       rhs = temp;
+    }
+    public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color, int width)
+    {
+        Vector2 edge = end - start;
+        float angle = (float)Math.Atan2(edge.Y, edge.X);
+        spriteBatch.Draw(
+          dot,
+          new Rectangle((int)start.X, (int)start.Y, (int)edge.Length(), width),
+          null,
+          color,
+          angle,
+          Vector2.Zero,
+          SpriteEffects.None,
+          0);
     }
   }
 }

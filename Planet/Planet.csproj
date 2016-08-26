@@ -37,12 +37,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\EnemySpawner.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Actor.cs" />
     <Compile Include="Controllers\AIController.cs" />
     <Compile Include="Controllers\ShipController.cs" />
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Projectiles\Laser.cs" />
+    <Compile Include="Objects\Projectiles\PHitScan.cs" />
     <Compile Include="Objects\TimeMachine.cs" />
     <Compile Include="Utility\FixedList.cs" />
     <Compile Include="Objects\Ships\BlinkerShip.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Core\World.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WpnDesc.cs" />
+    <Compile Include="Weapons\WHitScan.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

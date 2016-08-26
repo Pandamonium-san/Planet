@@ -27,7 +27,7 @@ namespace Planet
     public float layerDepth = 0f;
     // collision
     public Hitbox hitbox;
-    public Layer layer;
+    public Layer layer { get; private set; }
     public Layer layerMask;
     // game
     protected World world;
@@ -40,7 +40,7 @@ namespace Planet
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
 
     // debug
-    public bool drawHitbox = false;
+    public bool drawHitbox = true;
 
     public GameObject(Vector2 pos, World world)
         : base(pos)
@@ -126,6 +126,30 @@ namespace Planet
     {
       return timeMachine.isRewinding;
     }
+    public void SetLayer(Layer layer)
+    {
+      this.layer = layer;
+
+      switch (layer)
+      {
+        case Layer.ZERO:
+          break;
+        case Layer.PLAYER_SHIP:
+          layerDepth = 0.1f;
+          break;
+        case Layer.PLAYER_PROJECTILE:
+          layerDepth = 0.4f;
+          break;
+        case Layer.ENEMY_SHIP:
+          layerDepth = 0.3f;
+          break;
+        case Layer.ENEMY_PROJECTILE:
+          layerDepth = 0.2f;
+          break;
+        default:
+          break;
+      }
+    }
     public virtual void Draw(SpriteBatch spriteBatch)
     {
       if (tex != null && isActive)
@@ -133,7 +157,7 @@ namespace Planet
         spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
 
         /* DEBUG */
-        // show last possible rewind position
+        //// show last possible rewind position
         //GOState old = null;
         //if (timeMachine.stateBuffer.Count > 0)
         //  old = ((GOState)(timeMachine.stateBuffer.Last.Value));
