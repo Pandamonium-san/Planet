@@ -10,8 +10,26 @@ namespace Planet
   class AIController : ShipController
   {
     protected GameObject target;
+    protected List<Command> commands = new List<Command>();
 
-    public AIController() { }
+    public AIController(World world) : base(null, world)
+    {
+      commands = new List<Command>();
+      AddCommand(Command.Type.SetVelocity, -1000, 0, 0, 1);
+      AddCommand(Command.Type.AddVelocity, 5, 5, 0, 200);
+      AddCommand(Command.Type.AddVelocity, 5, -5, 200, 400);
+      AddCommand(Command.Type.AddVelocity, -5, -5, 400, 600);
+      AddCommand(Command.Type.AddVelocity, -5, 5, 600, 800);
+      AddCommand(Command.Type.SetVelocity, 0, 0, 800, 801);
+      //AddCommand(Command.Type.AddVelocity, 0, 1, 0, 100);
+
+      //AddCommand(Command.Type.Move, -1, 0, 0, 300);
+      //AddCommand(Command.Type.Move, 0, 1, 200, 600);
+      //AddCommand(Command.Type.Move, 1, 0, 600, 900);
+      //AddCommand(Command.Type.Rotate, -0.1f, 0, 0, 10000);
+      //AddCommand(Command.Type.LookAtTarget, 0, 0, 0, 10000);
+      //AddCommand(Command.Type.Fire, 0, 0, 0, 10000);
+    }
     public AIController(Ship ship, World world) : base(ship, world) { }
 
     protected override void DoUpdate(GameTime gt)
@@ -20,22 +38,24 @@ namespace Planet
       if (target != null && target.isActive && target.Pos != ship.Pos)
       {
         //if(Utility.Distance(ship.Pos, target.Pos) >= 200)
-          MoveTowards(new Vector2(300, 300));
-        ship.TurnTowardsPoint(target.Pos);
+        //MoveTowards(new Vector2(300, 300));
+        //ship.TurnTowardsPoint(target.Pos);
+        foreach (Command command in commands)
+        {
+          if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
+            ExecuteCommand(command);
+        }
       }
-
-      ship.Invoke("Fire1");
     }
     protected virtual void MoveTowards(Vector2 point)
     {
-      Vector2 direction = point - ship.Pos;
-      ship.Move(direction);
+      if (ship.Pos != point)
+      {
+        Vector2 direction = point - ship.Pos;
+        ship.Move(direction);
+      }
     }
-    protected virtual void LookAt(Vector2 point)
-    {
-      Vector2 direction = point - ship.Pos;
-      ship.Rotation = Utility.Vector2ToAngle(direction);
-    }
+
     protected virtual GameObject FindNearestTarget()
     {
       List<GameObject> players = world.GetPlayers();
@@ -52,6 +72,70 @@ namespace Planet
       }
       return nearest;
     }
+    public void AddCommand(Command.Type type, float x, float y, int startFrame, int endFrame)
+    {
+      commands.Add(new Command(type, x, y, startFrame, endFrame));
+    }
+
+    public void ExecuteCommand(Command c)
+    {
+      switch (c.type)
+      {
+        case Command.Type.Move:
+          ship.Move(new Vector2(c.x, c.y));
+          break;
+        case Command.Type.MoveTo:
+          MoveTowards(new Vector2(c.x, c.y));
+          break;
+        case Command.Type.Fire:
+          ship.Fire1();
+          break;
+        case Command.Type.LookAtPoint:
+          ship.TurnTowardsPoint(new Vector2(c.x, c.y));
+          break;
+        case Command.Type.LookAtTarget:
+          ship.TurnTowardsPoint(target.Pos);
+          break;
+        case Command.Type.Rotate:
+          ship.Rotation += c.x;
+          break;
+        case Command.Type.SetVelocity:
+          ship.SetDrift(new Vector2(c.x, c.y));
+          break;
+        case Command.Type.AddVelocity:
+          ship.AddDrift(new Vector2(c.x, c.y));
+          break;
+        default:
+          break;
+      }
+    }
   }
 
+  public struct Command
+  {
+    public enum Type
+    {
+      Move, // x,y direction
+      MoveTo, // x,y coordinates
+      Fire,
+      LookAtPoint, // x,y coordinates
+      LookAtTarget,
+      Rotate, // x degrees
+      SetVelocity,
+      AddVelocity
+    }
+    public Type type;
+    public float x;
+    public float y;
+    public int startFrame;
+    public int endFrame;
+    public Command(Type type, float x, float y, int startFrame, int endFrame)
+    {
+      this.type = type;
+      this.x = x;
+      this.y = y;
+      this.startFrame = startFrame;
+      this.endFrame = endFrame;
+    }
+  }
 }

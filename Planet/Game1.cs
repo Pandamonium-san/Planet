@@ -12,12 +12,15 @@ namespace Planet
    *  x Proper scaling
    *  - Enemies
    *      - Spawn logic
+   *          - Waves/Levels
+   *          - Timing
    *      - Enemy types
+   *          - Weapons/Stats
+   *          - Behaviors
    *      - Enemy AI
-   *          - FuSM?
-   *          - Command queue?
-   *          - Targeting/Firing
-   *          - Fly patterns
+   *          x Command queue
+   *          x Targeting/Firing
+   *          - Flight patterns
    *          - Bullet patterns
    *  - Weapons
    *      - Homing missiles
@@ -28,7 +31,7 @@ namespace Planet
    *          x Laser sprites
    *          x Ray-Box detection
    *              x Hitscan weapons?
-   *              - Thicker lasers?
+   *              x Thicker lasers?
    *  - Ships
    *      - Rewinder
    *          - Manual save state (rewind to this point later)

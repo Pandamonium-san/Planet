@@ -15,7 +15,7 @@ namespace Planet
         : base(pos, world)
     {
       //SetTexture(AssetManager.GetTexture("Ship1"));
-      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Drone3"));
+      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Ship1"));
       origin += new Vector2(0, 2);
       SetLayer(Layer.PLAYER_SHIP);
       layerDepth = 0.2f;
@@ -24,15 +24,15 @@ namespace Planet
       //wpn = new Weapon(this, world, WpnDesc.Spread());
       //wpn = new Weapon(this, world, WpnDesc.Circle(150));
       //wpn = new Weapon(this, world, new WpnDesc());
-      WpnDesc desc = new WpnDesc(1, 60, 700, 4, 0, 0, 0, 60*6, 90, 60*6/360, 0, 1, true);
-      //WpnDesc desc = new WpnDesc(1, 5, 200, 4, 2, 0, 1, 30, 90, 18, 0, 10);
-      //WpnDesc desc = new WpnDesc(1, 60, 400, 1, 50, 50, 1, 30, 0, 0, 0, 10);
-      //WpnDesc desc = new WpnDesc( 1, 30, 700, 1, 10, 50, 2, 30, 0, 0, 0, 1);
+      //WpnDesc desc = new WpnDesc(1, 60, 700, 4, 0, 0, 0, 60*6, 90, 60*6/360, 0, 1, true); // spinny laser thing
+      //WpnDesc desc = new WpnDesc(1, 5, 200, 4, 2, 0, 1, 30, 90, 18, 0, 10);                 // spinny projectile thing
+      //WpnDesc desc = new WpnDesc(1, 60, 400, 1, 50, 50, 1, 30, 0, 0, 0, 10);              // burst shotgun
+      WpnDesc desc = new WpnDesc(1, 60, 700, 1, 0, 0, 0, 30, 0, 0, 0, 1);
       wpn = new Weapon(this, world, desc);
       wpn.SetMuzzle(new Vector2(0, -30));
       //weapons.Add(wpn);
 
-      WHitScan hitscan = new WHitScan(this, world, desc);
+      WHitScan hitscan = new WHitScan(this, world, desc, 10, true);
       //hitscan.SetMuzzle(new Vector2(0, -30));
       weapons.Add(hitscan);
 

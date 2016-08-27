@@ -8,10 +8,13 @@ namespace Planet
 {
   class WHitScan : Weapon
   {
-    public WHitScan(Ship ship, World world, WpnDesc desc)
+    private int width;
+    private bool canPierce;
+    public WHitScan(Ship ship, World world, WpnDesc desc, int width, bool canPierce)
       : base(ship, world, desc)
     {
-
+      this.width = width;
+      this.canPierce = canPierce;
     }
     protected override void CreateBullet()
     {
@@ -27,6 +30,8 @@ namespace Planet
         muzzle.Pos,
         direction,
         desc.damage,
+        canPierce,
+        width,
         ship);
       world.PostProjectile(p);
     }

@@ -25,6 +25,10 @@ namespace Planet
     {
       return (v2 - v1).Length();
     }
+    public static float DistanceSquared(Vector2 v1, Vector2 v2)
+    {
+      return (v2 - v1).LengthSquared();
+    }
     /// <summary>
     /// Rotate a Vector2 around an origin by amount of radians.
     /// </summary>
@@ -153,9 +157,9 @@ namespace Planet
           null,
           color,
           angle,
-          Vector2.Zero,
+          new Vector2(0, 0.5f),
           SpriteEffects.None,
-          0);
+          1);
     }
   }
 }

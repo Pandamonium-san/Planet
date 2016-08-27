@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Core\EnemySpawner.cs" />
+    <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Actor.cs" />
     <Compile Include="Controllers\AIController.cs" />

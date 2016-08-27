@@ -78,7 +78,7 @@ namespace Planet
       if (pattern != null)
         pattern(this, gt);
       else
-        Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+        Pos += velocity * 0.017f;//(float)gt.ElapsedGameTime.TotalSeconds;
 
       base.DoUpdate(gt);
     }

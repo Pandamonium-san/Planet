@@ -8,8 +8,8 @@ namespace Planet
 {
   public class TimeMachine
   {
-    public static readonly int maxRewindableFrames = 180;                               // how many frames back we can go
-    public static readonly int framesBetweenStates = 2;                                  // 1 = save every frame, 2 = save every other frame, 3 = every third frame, etc. Has a large effect on performance
+    public static readonly int maxRewindableFrames = 120;                               // how many frames back we can go
+    public static readonly int framesBetweenStates = 5;                                  // 1 = save every frame, 2 = save every other frame, 3 = every third frame, etc. Has a large effect on performance
     public static readonly int bufferSize = maxRewindableFrames / framesBetweenStates;   // how many frame states actually saved
 
     private GameObject parent;
@@ -57,10 +57,12 @@ namespace Planet
         Vector2 newPos = new Vector2(
             MathHelper.Lerp(lerpStart.Pos.X, lerpTarget.Pos.X, lerpAmount),
             MathHelper.Lerp(lerpStart.Pos.Y, lerpTarget.Pos.Y, lerpAmount));
-        float newRot = MathHelper.Lerp(lerpStart.Rotation, lerpTarget.Rotation, lerpAmount);
         parent.Pos = newPos;
+
+        float newRot = MathHelper.Lerp(lerpStart.Rotation, lerpTarget.Rotation, lerpAmount);
         parent.Rotation = newRot;
         lerpAmount += 1.0f / framesBetweenStates;
+        --parent.frame;
       }
     }
     public void AddState(GameObject.GOState state)

@@ -9,6 +9,7 @@ namespace Planet
 {
   public abstract class Ship : Actor
   {
+    protected Vector2 drift;
     protected Vector2 currentVelocity;
     protected float currentRotationSpeed;
     protected float baseSpeed = 400;
@@ -78,6 +79,7 @@ namespace Planet
 
     protected virtual Vector2 CurrentVelocity()
     {
+      currentVelocity += drift;
       if (currentVelocity != Vector2.Zero)
       {
         //float maxSpeed = MathHelper.Clamp(currentVelocity.Length(), 0, baseSpeed);
@@ -116,6 +118,14 @@ namespace Planet
     public virtual void Aim()
     {
       aiming = true;
+    }
+    public void AddDrift(Vector2 v)
+    {
+      drift += v;
+    }
+    public void SetDrift(Vector2 v)
+    {
+      drift = v;
     }
     public void Move(Vector2 direction)
     {
@@ -167,6 +177,7 @@ namespace Planet
       base.SetState(state);
       ShipState shipState = (ShipState)state;
       this.currentHealth = shipState.currentHealth;
+      this.drift = shipState.drift;
       for (int i = 0; i < weapons.Count(); i++)
       {
         weapons[i].SetState(shipState.weaponStates[i]);
@@ -176,11 +187,13 @@ namespace Planet
     {
       public List<WeaponState> weaponStates;
       public int currentHealth;
+      public Vector2 drift;
 
       public ShipState(Ship s)
           : base(s)
       {
         this.currentHealth = s.currentHealth;
+        this.drift = s.drift;
         weaponStates = new List<WeaponState>();
         foreach (Weapon wpn in s.weapons)
         {

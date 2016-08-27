@@ -40,7 +40,7 @@ namespace Planet
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
 
     // debug
-    public bool drawHitbox = true;
+    private bool drawHitbox = false;
 
     public GameObject(Vector2 pos, World world)
         : base(pos)

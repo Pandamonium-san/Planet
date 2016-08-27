@@ -15,6 +15,9 @@ namespace Planet
 
     private Action action;
 
+    /// <param name="timeInSeconds">Time before action is invoked.</param>
+    /// <param name="action">Action to invoke after set amount of time.</param>
+    /// <param name="start">Start the timer immediately without calling Start.</param>
     public Timer(double timeInSeconds, Action action = null, bool start = true) : this()
     {
       this.secondsToActivate = timeInSeconds;

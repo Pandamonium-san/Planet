@@ -55,21 +55,20 @@ namespace Planet
     {
       bindings.Add(new KeyBinding(input, name, new object[] { args }, rapidFire));
     }
+  }
+  internal struct KeyBinding
+  {
+    public PlayerInput input;
+    public string name;
+    public bool rapidFire;
+    public object[] args;
 
-    private struct KeyBinding
+    public KeyBinding(PlayerInput input, string name, object[] args, bool rapidFire)
     {
-      public PlayerInput input;
-      public string name;
-      public bool rapidFire;
-      public object[] args;
-
-      public KeyBinding(PlayerInput input, string name, object[] args, bool rapidFire)
-      {
-        this.input = input;
-        this.name = name;
-        this.rapidFire = rapidFire;
-        this.args = args;
-      }
+      this.input = input;
+      this.name = name;
+      this.rapidFire = rapidFire;
+      this.args = args;
     }
   }
 

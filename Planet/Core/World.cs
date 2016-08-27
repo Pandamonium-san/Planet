@@ -20,9 +20,12 @@ namespace Planet
     // do not check collision with each other (there could easily be a million checks each frame)
     public List<Projectile> projectiles;
 
+    private EnemyManager enemyManager;
+
     private SpriteFont font;
     private Effect effect;
     private Matrix transformMatrix;
+    private FrameTimer worldTimer;
 
     public World()
     {
@@ -30,14 +33,20 @@ namespace Planet
       effect = AssetManager.GetEffect("ColorChanger");
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
-
+      enemyManager = new EnemyManager(this);
       transformMatrix = Matrix.CreateScale(1.0f);
+
+      for (int i = 0; i < 50; i++)
+      {
+        enemyManager.CreateEnemy(new PumpkinShip(new Vector2(700, 100+i*10), this), new AIController(this));
+      }
     }
 
     public void Update(GameTime gt)
     {
       //float scale = 4.0f;
       //transformMatrix = Matrix.CreateTranslation(-gameObjects[0].Pos.X + Game1.ScreenWidth/(2*scale), -gameObjects[0].Pos.Y + Game1.ScreenHeight/(2*scale), 0) * Matrix.CreateScale(scale, scale, 1);
+      enemyManager.Update(gt);
       for (int i = 0; i < projectiles.Count(); i++)
       {
         projectiles[i].Update(gt);
