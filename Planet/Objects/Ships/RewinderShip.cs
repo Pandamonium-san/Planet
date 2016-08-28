@@ -61,18 +61,8 @@ namespace Planet
     }
     public override void Fire2()
     {
-      foreach (GameObject g in world.GetGameObjects())
-      {
-        if (!g.IsRewinding())
-          g.StartRewind(TimeMachine.framesBetweenStates);
-        //g.StartRewind(TimeMachine.maxRewindableFrames);
-      }
-      foreach (GameObject g in world.projectiles)
-      {
-        if (!g.IsRewinding())
-          g.StartRewind(TimeMachine.framesBetweenStates);
-        //g.StartRewind(TimeMachine.maxRewindableFrames);
-      }
+      world.Rewind(TimeMachine.framesBetweenStates);
+      //world.Rewind(TimeMachine.maxRewindableFrames);
     }
     public override void Fire3()
     {

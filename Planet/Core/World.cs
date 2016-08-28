@@ -15,17 +15,17 @@ namespace Planet
   /// </summary>
   public class World
   {
+    public int Frames { get; private set; }
     // ships and destructible projectiles
     private List<GameObject> gameObjects;
     // do not check collision with each other (there could easily be a million checks each frame)
-    public List<Projectile> projectiles;
+    private List<Projectile> projectiles;
 
     private EnemyManager enemyManager;
 
     private SpriteFont font;
     private Effect effect;
     private Matrix transformMatrix;
-    private FrameTimer worldTimer;
 
     public World()
     {
@@ -40,6 +40,8 @@ namespace Planet
       {
         enemyManager.CreateEnemy(new PumpkinShip(new Vector2(700, 100+i*10), this), new AIController(this));
       }
+      AIController aic = new AIController(this);
+      aic.AddCommand(CommandType.Fire, 0, 0, 0, 10000);
     }
 
     public void Update(GameTime gt)
@@ -90,8 +92,22 @@ namespace Planet
 
       projectiles.RemoveAll(x => x.disposed);
       gameObjects.RemoveAll(x => x.disposed == true);
-    }
 
+      ++Frames;
+    }
+    public void Rewind(int x)
+    {
+      foreach (GameObject g in GetGameObjects())
+      {
+        if (!g.IsRewinding())
+          g.StartRewind(x);
+      }
+      foreach (GameObject g in projectiles)
+      {
+        if (!g.IsRewinding())
+          g.StartRewind(x);
+      }
+    }
     public List<GameObject> GetPlayers()
     {
       List<GameObject> result = new List<GameObject>();

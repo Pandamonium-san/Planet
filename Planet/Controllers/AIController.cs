@@ -21,6 +21,7 @@ namespace Planet
       AddCommand(Command.Type.AddVelocity, -5, -5, 400, 600);
       AddCommand(Command.Type.AddVelocity, -5, 5, 600, 800);
       AddCommand(Command.Type.SetVelocity, 0, 0, 800, 801);
+
       //AddCommand(Command.Type.AddVelocity, 0, 1, 0, 100);
 
       //AddCommand(Command.Type.Move, -1, 0, 0, 300);
@@ -72,7 +73,7 @@ namespace Planet
       }
       return nearest;
     }
-    public void AddCommand(Command.Type type, float x, float y, int startFrame, int endFrame)
+    public void AddCommand(CommandType type, float x, float y, int startFrame, int endFrame)
     {
       commands.Add(new Command(type, x, y, startFrame, endFrame));
     }
@@ -81,28 +82,28 @@ namespace Planet
     {
       switch (c.type)
       {
-        case Command.Type.Move:
+        case CommandType.Move:
           ship.Move(new Vector2(c.x, c.y));
           break;
-        case Command.Type.MoveTo:
+        case CommandType.MoveTo:
           MoveTowards(new Vector2(c.x, c.y));
           break;
-        case Command.Type.Fire:
+        case CommandType.Fire:
           ship.Fire1();
           break;
-        case Command.Type.LookAtPoint:
+        case CommandType.LookAtPoint:
           ship.TurnTowardsPoint(new Vector2(c.x, c.y));
           break;
-        case Command.Type.LookAtTarget:
+        case CommandType.LookAtTarget:
           ship.TurnTowardsPoint(target.Pos);
           break;
-        case Command.Type.Rotate:
+        case CommandType.Rotate:
           ship.Rotation += c.x;
           break;
-        case Command.Type.SetVelocity:
+        case CommandType.SetVelocity:
           ship.SetDrift(new Vector2(c.x, c.y));
           break;
-        case Command.Type.AddVelocity:
+        case CommandType.AddVelocity:
           ship.AddDrift(new Vector2(c.x, c.y));
           break;
         default:
@@ -110,32 +111,5 @@ namespace Planet
       }
     }
   }
-
-  public struct Command
-  {
-    public enum Type
-    {
-      Move, // x,y direction
-      MoveTo, // x,y coordinates
-      Fire,
-      LookAtPoint, // x,y coordinates
-      LookAtTarget,
-      Rotate, // x degrees
-      SetVelocity,
-      AddVelocity
-    }
-    public Type type;
-    public float x;
-    public float y;
-    public int startFrame;
-    public int endFrame;
-    public Command(Type type, float x, float y, int startFrame, int endFrame)
-    {
-      this.type = type;
-      this.x = x;
-      this.y = y;
-      this.startFrame = startFrame;
-      this.endFrame = endFrame;
-    }
-  }
+  
 }

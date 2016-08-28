@@ -24,8 +24,8 @@ namespace Planet
         ship = null;
       if (ship == null || ship.isDead || !ship.isActive || ship.IsRewinding())
         return;
-
-      DoUpdate(gt);
+      else
+        DoUpdate(gt);
     }
 
     protected virtual void DoUpdate(GameTime gt)

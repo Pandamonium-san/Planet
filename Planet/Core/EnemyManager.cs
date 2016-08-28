@@ -20,19 +20,22 @@ namespace Planet
       spawnTimer = new FrameTimer();
       this.world = world;
     }
+    public void Update(GameTime gt)
+    {
+      foreach (AIController aic in controllers)
+      {
+        aic.Update(gt);
+      }
+    }
     public void CreateEnemy(Ship enemy, AIController controller)
     {
       controller.SetShip(enemy);
       controllers.Add(controller);
       world.PostGameObj(enemy);
     }
-    public void Update(GameTime gt)
+    public void AddToQueue()
     {
-      spawnTimer.Update();
-      foreach (AIController aic in controllers)
-      {
-        aic.Update(gt);
-      }
+
     }
   }
   internal struct Spawn
