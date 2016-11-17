@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Planet
 {
-  class ShipController
+  public class ShipController
   {
     protected Ship ship;
     protected World world;

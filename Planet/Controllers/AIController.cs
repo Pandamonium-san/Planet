@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-  class AIController : ShipController
+  public class AIController : ShipController
   {
     protected GameObject target;
     protected List<Command> commands = new List<Command>();
@@ -15,12 +15,12 @@ namespace Planet
     public AIController(World world) : base(null, world)
     {
       commands = new List<Command>();
-      AddCommand(Command.Type.SetVelocity, -1000, 0, 0, 1);
-      AddCommand(Command.Type.AddVelocity, 5, 5, 0, 200);
-      AddCommand(Command.Type.AddVelocity, 5, -5, 200, 400);
-      AddCommand(Command.Type.AddVelocity, -5, -5, 400, 600);
-      AddCommand(Command.Type.AddVelocity, -5, 5, 600, 800);
-      AddCommand(Command.Type.SetVelocity, 0, 0, 800, 801);
+      AddCommand(CommandType.SetVelocity, -1000, 0, 0, 1);
+      AddCommand(CommandType.AddVelocity, 5, 5, 0, 200);
+      AddCommand(CommandType.AddVelocity, 5, -5, 200, 400);
+      AddCommand(CommandType.AddVelocity, -5, -5, 400, 600);
+      AddCommand(CommandType.AddVelocity, -5, 5, 600, 800);
+      AddCommand(CommandType.SetVelocity, 0, 0, 800, 801);
 
       //AddCommand(Command.Type.AddVelocity, 0, 1, 0, 100);
 
@@ -38,14 +38,16 @@ namespace Planet
       target = FindNearestTarget();
       if (target != null && target.isActive && target.Pos != ship.Pos)
       {
-        //if(Utility.Distance(ship.Pos, target.Pos) >= 200)
-        //MoveTowards(new Vector2(300, 300));
-        //ship.TurnTowardsPoint(target.Pos);
-        foreach (Command command in commands)
-        {
-          if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
-            ExecuteCommand(command);
-        }
+        if (Utility.Distance(ship.Pos, target.Pos) >= 200)
+          //MoveTowards(new Vector2(300, 300));
+          //MoveTowards(target.Pos);
+        ship.TurnTowardsPoint(target.Pos);
+        //foreach (Command command in commands)
+        //{
+        //  if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
+        //    ExecuteCommand(command);
+        //}
+        ship.Fire1();
       }
     }
     protected virtual void MoveTowards(Vector2 point)
@@ -111,5 +113,5 @@ namespace Planet
       }
     }
   }
-  
+
 }

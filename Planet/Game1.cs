@@ -10,8 +10,9 @@ namespace Planet
    *  x Change art 
    *  x Fix Hitscan
    *  x Proper scaling
+   *  x Make collision checking more efficient (found issue, caused by Transform class using complex gets several times each frame)
    *  - Enemies
-   *      - Spawn logic
+   *      - Spawn logic <-- make spawns stay the same after rewinding (might consider reworking how rewind works code wise)
    *          - Waves/Levels
    *          - Timing
    *      - Enemy types
@@ -34,6 +35,7 @@ namespace Planet
    *              x Thicker lasers?
    *  - Ships
    *      - Rewinder
+   *          - Rewind everything, timers, world timers, everything (base everything on global time object?)
    *          - Manual save state (rewind to this point later)
    *          - Shadows
    *      - Possessor
@@ -49,13 +51,6 @@ namespace Planet
    *  - Show hitbox while aiming?
    *  - Destructible projectiles?
    *  - Effects/Shaders?
-   */
-  /* Actual TO-DO
-   * Refactor code
-   * That code looks bad, fix it
-   * This could be coded better, refactor
-   * Refactor code
-   * Re-refactor code
    */
 
   /// <summary>
@@ -82,6 +77,7 @@ namespace Planet
     public static Ship s;
 
     //debug variables
+    public static int frames;
     int slowFrames;
     public static Vector2 intersectPoint;
     public static int collisionChecksPerFrame;
@@ -152,7 +148,8 @@ namespace Planet
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 #endif
-
+      ++frames;
+      collisionChecksPerFrame = 0;
       runningSlowly = gameTime.IsRunningSlowly;
 
       p1.Update(gameTime);
@@ -190,8 +187,8 @@ namespace Planet
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow frames: " + slowFrames.ToString(), new Vector2(150, 20), Color.Red);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
+      spriteBatch.DrawString(AssetManager.GetFont("font1"), "World frames: " + world.Frames.ToString(), new Vector2(0, 80), Color.Red);
       spriteBatch.Draw(AssetManager.GetTexture("Fill"), new Rectangle((int)intersectPoint.X, (int)intersectPoint.Y, 10, 10), Color.Red);
-      collisionChecksPerFrame = 0;
       spriteBatch.End();
 
       base.Draw(gameTime);

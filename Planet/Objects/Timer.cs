@@ -48,7 +48,7 @@ namespace Planet
     public bool counting { get; private set; }
     public int frames { get; private set; }
     public int framesToActivate { get; private set; }
-    public double Fraction { get { return (double)frames / (double)framesToActivate; } }
+    public double Fraction { get { if (framesToActivate == 0) return 1; else return (double)frames / (double)framesToActivate; } }
 
     private Action action;
 

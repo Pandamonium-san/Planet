@@ -9,18 +9,26 @@ namespace Planet
 {
   public class Hitbox : Transform
   {
-    private float radius;
-    public float Radius { get { return radius * Scale; } }
+    private float localRadius;
+    public float Radius;
 
     public Hitbox(GameObject parent, float radius)
-      : base(Vector2.Zero, 0, 1, parent)
+      : base(parent.Pos, parent.Rotation, parent.Scale, parent)
     {
-      this.radius = radius;
+      localRadius = radius;
+      Radius = radius * Scale;
     }
     public bool Collides(Hitbox other)
     {
-      float distance = (this.Pos - other.Pos).LengthSquared();
-      if (distance <= ((Radius + other.Radius) * (Radius + other.Radius)))
+      float radSum = Radius + other.Radius;
+      float xDiff = Math.Abs(this.Pos.X - other.Pos.X);
+      if (xDiff > radSum)
+        return false;
+      float yDiff = Math.Abs(this.Pos.Y - other.Pos.Y);
+      if (yDiff > radSum)
+        return false;
+      float distance = xDiff * xDiff + yDiff * yDiff;
+      if (distance <= (radSum * radSum))
         return true;
       return false;
     }
@@ -29,6 +37,12 @@ namespace Planet
       Texture2D tex = AssetManager.GetTexture("Circle");
       Vector2 drawPos = Pos - Vector2.One * Radius;
       spriteBatch.Draw(tex, drawPos, null, Color.Blue * 0.5f, 0f, Vector2.Zero, (Radius / (tex.Width * 0.5f)), SpriteEffects.None, 0.1f);
+    }
+
+    protected override void Update()
+    {
+      base.Update();
+      Radius = localRadius * Scale;
     }
   }
 

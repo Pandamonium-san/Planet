@@ -37,6 +37,11 @@ namespace Planet
       Matrix rot = Matrix.CreateRotationZ(radians);
       return Vector2.Transform(v - origin, rot) + origin;
     }
+    public static float RandomFloat(float min, float max, int seed)
+    {
+      Random rnd = new Random(seed);
+      return (float)(rnd.NextDouble() * (max - min) + min);
+    }
     public static float RandomFloat(float min, float max)
     {
       return (float)(rnd.NextDouble() * (max - min) + min);

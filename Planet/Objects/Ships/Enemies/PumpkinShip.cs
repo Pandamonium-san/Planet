@@ -19,7 +19,8 @@ namespace Planet
       layerDepth = 0.8f;
       //wpn = new CycloneGun(this, world);
       //WpnDesc desc = new WpnDesc(1, 10, 400, 1, 50, 50, 0, 30, 1, 0, 0, 10);
-      WpnDesc desc = new WpnDesc(1, 20, 400, 1, 5, 5, 0, 30, 0, 0, 0, 10);
+      //WpnDesc desc = new WpnDesc(1, 20, 400, 1, 5, 5, 0, 30, 0, 0, 0, 10);
+      WpnDesc desc = new WpnDesc(0, 0, 250);
       Weapon wpn = new Weapon(this, world, desc);
       wpn.SetMuzzle(new Vector2(0, -10));
       weapons.Add(wpn);

@@ -26,15 +26,17 @@ namespace Planet
       //wpn = new Weapon(this, world, new WpnDesc());
       //WpnDesc desc = new WpnDesc(1, 60, 700, 4, 0, 0, 0, 60*6, 90, 60*6/360, 0, 1, true); // spinny laser thing
       //WpnDesc desc = new WpnDesc(1, 5, 200, 4, 2, 0, 1, 30, 90, 18, 0, 10);                 // spinny projectile thing
-      //WpnDesc desc = new WpnDesc(1, 60, 400, 1, 50, 50, 1, 30, 0, 0, 0, 10);              // burst shotgun
-      WpnDesc desc = new WpnDesc(1, 60, 700, 1, 0, 0, 0, 30, 0, 0, 0, 1);
+      //WpnDesc desc = new WpnDesc(40, 60, 400, 1, 20, 50, 1, 30, 0, 0, 0, 10);              // burst shotgun
+      //WpnDesc desc = new WpnDesc(1, 60, 700, 1, 0, 0, 0, 30, 0, 0, 0, 1);           //normal laser
+      //WpnDesc desc = new WpnDesc(5, 20, 700, 1, 5, 0, 0, 30, 0, 0, 0, 1);           //machine gun
+      WpnDesc desc = new WpnDesc(0, 4, 10, 100, 0, 0, 0, 1, 360/100f, 0, 0, 10);           //stress test
       wpn = new Weapon(this, world, desc);
       wpn.SetMuzzle(new Vector2(0, -30));
-      //weapons.Add(wpn);
+      weapons.Add(wpn);
 
-      WHitScan hitscan = new WHitScan(this, world, desc, 10, true);
-      //hitscan.SetMuzzle(new Vector2(0, -30));
-      weapons.Add(hitscan);
+      //WHitScan hitscan = new WHitScan(this, world, desc, 1, false);
+      //hitscan.SetMuzzle(new Vector2(0, -20));
+      //weapons.Add(hitscan);
 
       Weapon wpn2;
       wpn2 = new CycloneGun(this, world); 

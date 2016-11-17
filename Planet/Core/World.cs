@@ -36,10 +36,10 @@ namespace Planet
       enemyManager = new EnemyManager(this);
       transformMatrix = Matrix.CreateScale(1.0f);
 
-      for (int i = 0; i < 50; i++)
-      {
-        enemyManager.CreateEnemy(new PumpkinShip(new Vector2(700, 100+i*10), this), new AIController(this));
-      }
+      //for (int i = 0; i < 50; i++)
+      //{
+      //  enemyManager.CreateEnemy(new PumpkinShip(new Vector2(700, 100+i*10), this), new AIController(this));
+      //}
       AIController aic = new AIController(this);
       aic.AddCommand(CommandType.Fire, 0, 0, 0, 10000);
     }
@@ -92,6 +92,7 @@ namespace Planet
 
       projectiles.RemoveAll(x => x.disposed);
       gameObjects.RemoveAll(x => x.disposed == true);
+
 
       ++Frames;
     }

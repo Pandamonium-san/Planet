@@ -49,19 +49,19 @@ namespace Planet
       if (instigator == null)
       {
         SetLayer(Layer.PLAYER_PROJECTILE | Layer.ENEMY_PROJECTILE);
-        layerMask = ~Layer.ZERO;
+        layerMask = Layer.PLAYER_SHIP | Layer.ENEMY_SHIP;
       }
       else if (instigator.layer == Layer.PLAYER_SHIP)
       {
-        SetLayer(Layer.PLAYER_PROJECTILE | Layer.ENEMY_PROJECTILE);
-        layerMask = (Layer.ENEMY_SHIP | Layer.ENEMY_PROJECTILE);
+        SetLayer(Layer.PLAYER_PROJECTILE);
+        layerMask = Layer.ENEMY_SHIP;
         color = Color.Red * 1f;
         color = Color.SkyBlue;
       }
       else if (instigator.layer == Layer.ENEMY_SHIP)
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
-        layerMask = (Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE);
+        layerMask = (Layer.PLAYER_SHIP);
       }
       layerDepth = 0.8f;
       Scale = 1.0f;
