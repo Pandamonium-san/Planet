@@ -34,9 +34,9 @@ namespace Planet
       wpn.SetMuzzle(new Vector2(0, -30));
       weapons.Add(wpn);
 
-      //WHitScan hitscan = new WHitScan(this, world, desc, 1, false);
-      //hitscan.SetMuzzle(new Vector2(0, -20));
-      //weapons.Add(hitscan);
+      WHitScan hitscan = new WHitScan(this, world, desc, 10, true);
+      hitscan.SetMuzzle(new Vector2(0, -20));
+      weapons.Add(hitscan);
 
       Weapon wpn2;
       wpn2 = new CycloneGun(this, world); 

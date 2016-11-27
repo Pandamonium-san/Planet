@@ -92,9 +92,6 @@ namespace Planet
 
       projectiles.RemoveAll(x => x.disposed);
       gameObjects.RemoveAll(x => x.disposed == true);
-
-
-      ++Frames;
     }
     public void Rewind(int x)
     {
@@ -108,6 +105,7 @@ namespace Planet
         if (!g.IsRewinding())
           g.StartRewind(x);
       }
+      enemyManager.StartRewind(x);
     }
     public List<GameObject> GetPlayers()
     {

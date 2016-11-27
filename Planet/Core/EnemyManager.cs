@@ -8,54 +8,79 @@ namespace Planet
 {
   class EnemyManager
   {
+    int frames;
     World world;
     List<AIController> controllers;
-    //Queue<Spawn> spawnQueue;
-    SortedSet<Spawn> spawns;
-    FrameTimer spawnTimer;
+    Dictionary<int, List<Spawn>> spawnDict;
+    FrameTimer rewindTimer;
+    bool rewinding;
     
     public EnemyManager(World world)
     {
-      controllers = new List<AIController>();
-      //spawnQueue = new Queue<Spawn>();
-      spawns = new SortedSet<Spawn>(new SpawnComp());
       this.world = world;
+
+      controllers = new List<AIController>();
+      spawnDict = new Dictionary<int, List<Spawn>>();
 
       for (int i = 0; i < 98; i++)
       {
         float x = Utility.RandomFloat(0, 800);
         float y = Utility.RandomFloat(0, 600);
-        AddToQueue(new PumpkinShip(new Vector2(x, y), world), new AIController(world), 1*i);
+        AddSpawn(new PumpkinShip(new Vector2(x, y), world), new AIController(world), 50*i);
       }
-      spawnTimer = new FrameTimer(spawns.Min.spawnFrame - world.Frames, SpawnEnemy, true);
     }
     public void Update(GameTime gt)
     {
-      spawnTimer.Update();
+      if (rewinding)
+      {
+        --frames;
+        rewindTimer.Update();
+        return;
+      }
+      if(spawnDict.ContainsKey(frames))
+      {
+        foreach(Spawn s in spawnDict[frames])
+        {
+          CreateEnemy(s);
+        }
+      }
       foreach (AIController aic in controllers)
       {
         aic.Update(gt);
       }
+      ++frames;
     }
-    void SpawnEnemy()
+    public void StartRewind(int x)
     {
-      CreateEnemy(spawns.Min);
-      spawns.Remove(spawns.Min);
-      if (spawns.Count != 0)
-      {
-        spawnTimer = new FrameTimer(spawns.Min.spawnFrame - world.Frames, SpawnEnemy, true);
-        spawnTimer.Start();
-      }
+      rewinding = true;
+      rewindTimer = new FrameTimer(x, () => rewinding = false, true);
     }
     void CreateEnemy(Spawn spawn)
     {
-      controllers.Add(spawn.controller);
-      world.PostGameObj(spawn.enemy);
+      Type enemyType = spawn.enemy.GetType();
+      Type aic = spawn.controller.GetType();
+
+      Ship enemy = (Ship)Activator.CreateInstance(enemyType, new object[] { spawn.enemy.Pos, world });
+      enemy.SetState(spawn.enemy.GetState());
+      AIController sc = (AIController)Activator.CreateInstance(aic, world);
+      sc.SetShip(enemy);
+
+      controllers.Add(sc);
+      world.PostGameObj(enemy);
     }
-    public void AddToQueue(Ship enemy, AIController controller, int spawnFrame)
+    public void AddSpawn(Ship enemy, AIController controller, int spawnFrame)
     {
       Spawn s = new Spawn(enemy, controller, spawnFrame);
-      spawns.Add(s);
+      if(spawnDict.ContainsKey(spawnFrame))
+      {
+        spawnDict[spawnFrame].Add(s);
+      }
+      else
+      {
+        List<Spawn> spawnlist = new List<Spawn>();
+        spawnlist.Add(s);
+        spawnDict[spawnFrame] = spawnlist;
+      }
     }
     class Spawn
     {
@@ -68,13 +93,6 @@ namespace Planet
         this.controller = controller;
         this.spawnFrame = spawnFrame;
         this.controller.SetShip(this.enemy);
-      }
-    }
-    class SpawnComp : Comparer<Spawn>
-    {
-      public override int Compare(Spawn x, Spawn y)
-      {
-        return x.spawnFrame.CompareTo(y.spawnFrame);
       }
     }
   }

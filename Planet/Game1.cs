@@ -12,9 +12,9 @@ namespace Planet
    *  x Proper scaling
    *  x Make collision checking more efficient (found issue, caused by Transform class using complex gets several times each frame)
    *  - Enemies
-   *      - Spawn logic <-- make spawns stay the same after rewinding (might consider reworking how rewind works code wise)
+   *      x Spawn logic <-- make spawns stay the same after rewinding (might consider reworking how rewind works code wise)
    *          - Waves/Levels
-   *          - Timing
+   *          x Timing
    *      - Enemy types
    *          - Weapons/Stats
    *          - Behaviors
