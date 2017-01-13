@@ -46,7 +46,9 @@
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Projectiles\Laser.cs" />
     <Compile Include="Objects\Projectiles\PHitScan.cs" />
+    <Compile Include="Objects\Projectiles\PLightning.cs" />
     <Compile Include="Objects\TimeMachine.cs" />
+    <Compile Include="Utility\DebugFunc.cs" />
     <Compile Include="Utility\FixedList.cs" />
     <Compile Include="Objects\Ships\BlinkerShip.cs" />
     <Compile Include="Objects\Timer.cs" />
@@ -66,6 +68,9 @@
     <Compile Include="Utility\Transform.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Core\World.cs" />
+    <Compile Include="Weapons\ExplodeGun.cs" />
+    <Compile Include="Weapons\LightningGun.cs" />
+    <Compile Include="Weapons\TurretGun.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WpnDesc.cs" />
     <Compile Include="Weapons\WHitScan.cs" />

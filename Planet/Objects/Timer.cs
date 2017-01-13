@@ -9,9 +9,9 @@ namespace Planet
   public struct Timer
   {
     public bool counting { get; private set; }
-    public double secondsToActivate { get; private set; }
+    public double seconds { get; private set; }
     public double elapsedSeconds { get; private set; }
-    public double Fraction { get { return elapsedSeconds / secondsToActivate; } }
+    public double Fraction { get { return elapsedSeconds / seconds; } }
 
     private Action action;
 
@@ -20,7 +20,7 @@ namespace Planet
     /// <param name="start">Start the timer immediately without calling Start.</param>
     public Timer(double timeInSeconds, Action action = null, bool start = true) : this()
     {
-      this.secondsToActivate = timeInSeconds;
+      this.seconds = timeInSeconds;
       this.action = action;
       this.elapsedSeconds = 0;
       counting = start;
@@ -35,7 +35,7 @@ namespace Planet
       if (!counting)
         return;
       elapsedSeconds += gt.ElapsedGameTime.TotalSeconds;
-      if (elapsedSeconds >= secondsToActivate)
+      if (elapsedSeconds >= seconds)
       {
         counting = false;
         if (action != null)

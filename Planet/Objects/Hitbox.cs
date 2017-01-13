@@ -18,7 +18,7 @@ namespace Planet
       localRadius = radius;
       Radius = radius * Scale;
     }
-    public bool Collides(Hitbox other)
+    public bool Colliding(Hitbox other)
     {
       float radSum = Radius + other.Radius;
       float xDiff = Math.Abs(this.Pos.X - other.Pos.X);

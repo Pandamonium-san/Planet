@@ -12,26 +12,34 @@ namespace Planet
     private Vector2 hit;
     private bool canPierce;
     private int width;      // increases width on both sides so actual width is 2x bigger
-    public PHitScan(World world, Vector2 start, Vector2 direction, int damage, bool canPierce, int width, GameObject instigator)
-      : base(world, null, start, direction, 0, damage, instigator)
+    public float length;
+
+    public PHitScan(World world, Vector2 start, Vector2 dir, int damage, bool canPierce, int width, float length, GameObject instigator, float lifeTime = 0.1f)
+      : base(world, null, start, dir, 0, damage, instigator, lifeTime)
     {
       SetTexture(AssetManager.GetTexture("Fill"));
-      hit = Pos + dir * 10000;
+      Rotation = Utility.Vector2ToAngle(dir);
+      hit = Pos + dir * length;
       this.canPierce = canPierce;
       this.width = width;
+      this.length = length;
     }
 
     protected override void DoUpdate(GameTime gt)
     {
+      lifeTimer.Update(gt);
+      alpha = 1-(float)lifeTimer.Fraction;
+
       if (frame != 0)
-        Die();
+        return;
+
       List<GameObject> objects = world.GetGameObjects();
       List<GameObject> hits = new List<GameObject>();
       foreach (GameObject go in objects)
       {
         if (!go.isDead && (layerMask & go.layer) != Layer.ZERO)
         {
-          if (Utility.RayCast(Pos, Pos + dir * 10000, go.Pos, go.hitbox.Radius + width, ref hit))
+          if (Utility.RayCast(Pos, Pos + dir * length, go.Pos, go.hitbox.Radius + width, ref hit))
           {
             hits.Add(go);
           }
@@ -43,10 +51,10 @@ namespace Planet
 
       if (canPierce)
       {
-        hit = Pos + dir * 10000;
-        foreach (GameObject hit in hits)
+        hit = Pos + dir * length;
+        foreach (GameObject h in hits)
         {
-          hit.DoCollision(this);
+          h.DoCollision(this);
         }
       }
       // selects the closest target that was hit, may be inaccurate if hitboxes have different sizes
@@ -65,7 +73,7 @@ namespace Planet
             nDistance = distance;
           }
         }
-        Utility.RayCast(Pos, Pos + dir * 10000, near.Pos, near.hitbox.Radius + width, ref hit);
+        Utility.RayCast(Pos, Pos + dir * length, near.Pos, near.hitbox.Radius + width, ref hit); // set the hit position at nearest
         near.DoCollision(this);
       }
     }
@@ -73,8 +81,7 @@ namespace Planet
     public override void Draw(SpriteBatch spriteBatch)
     {
       if (isActive)
-        Utility.DrawLine(spriteBatch, Pos, hit, Color.White, width*2);
+        Utility.DrawLine(spriteBatch, Pos, hit, color*alpha, width*2);
     }
-
   }
 }

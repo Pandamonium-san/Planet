@@ -38,9 +38,9 @@ namespace Planet
     public bool disposed { get; set; }               // if true, object will be deleted at the end of the frame
     public bool isActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
-
+    public bool Visible { get; set; }
     // debug
-    private bool drawHitbox = false;
+    protected bool drawHitbox = false;
 
     public GameObject(Vector2 pos, World world)
         : base(pos)
@@ -50,6 +50,7 @@ namespace Planet
       Scale = 4.0f;
       isRewindable = true;
       isActive = true;
+      Visible = true;
     }
     public void Update(GameTime gt)
     {
@@ -118,7 +119,7 @@ namespace Planet
       if ((layerMask & other.layer) != Layer.ZERO)
       {
         ++Game1.collisionChecksPerFrame;
-        return hitbox.Collides(other.hitbox);
+        return hitbox.Colliding(other.hitbox);
       }
       return false;
     }
@@ -152,6 +153,8 @@ namespace Planet
     }
     public virtual void Draw(SpriteBatch spriteBatch)
     {
+      if (!Visible)
+        return;
       if (tex != null && isActive)
       {
         spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);

@@ -21,6 +21,15 @@ namespace Planet
     {
       return (float)Math.Atan2(v.Y, v.X) + (float)Math.PI / 2f; ;
     }
+    public static float AngleBetweenVectors(Vector2 v1, Vector2 v2)
+    {
+      float cross = v1.X * v2.Y - v1.Y * v2.X;  // find sign of angle
+      float dot = Vector2.Dot(v1, v2);
+      dot = MathHelper.Clamp(dot, 0.000001f, 0.999999f);  // make sure value stays between 0 and 1, otherwise Acos returns NaN
+      float angleDifference = (float)Math.Acos(dot);
+      angleDifference = cross < 0 ? -angleDifference : angleDifference;
+      return angleDifference;
+    }
     public static float Distance(Vector2 v1, Vector2 v2)
     {
       return (v2 - v1).Length();
@@ -37,15 +46,12 @@ namespace Planet
       Matrix rot = Matrix.CreateRotationZ(radians);
       return Vector2.Transform(v - origin, rot) + origin;
     }
-    public static float RandomFloat(float min, float max, int seed)
-    {
-      Random rnd = new Random(seed);
-      return (float)(rnd.NextDouble() * (max - min) + min);
-    }
     public static float RandomFloat(float min, float max)
     {
       return (float)(rnd.NextDouble() * (max - min) + min);
     }
+    /// <param name="min">Inclusive lower bound</param>
+    /// <param name="max">Exclusive upper bound</param>
     public static int RandomInt(int min, int max)
     {
       return rnd.Next(min, max);

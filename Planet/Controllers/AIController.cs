@@ -29,7 +29,7 @@ namespace Planet
       //AddCommand(Command.Type.Move, 1, 0, 600, 900);
       //AddCommand(Command.Type.Rotate, -0.1f, 0, 0, 10000);
       //AddCommand(Command.Type.LookAtTarget, 0, 0, 0, 10000);
-      //AddCommand(Command.Type.Fire, 0, 0, 0, 10000);
+      AddCommand(CommandType.Fire, 0, 0, 0, 10000);
     }
     public AIController(Ship ship, World world) : base(ship, world) { }
 
@@ -41,13 +41,13 @@ namespace Planet
         if (Utility.Distance(ship.Pos, target.Pos) >= 200)
           //MoveTowards(new Vector2(300, 300));
           //MoveTowards(target.Pos);
-        ship.TurnTowardsPoint(target.Pos);
-        //foreach (Command command in commands)
-        //{
-        //  if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
-        //    ExecuteCommand(command);
-        //}
-        ship.Fire1();
+          ship.TurnTowardsPoint(target.Pos);
+        foreach (Command command in commands)
+        {
+          if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
+            ExecuteCommand(command);
+        }
+        //ship.Fire1();
       }
     }
     protected virtual void MoveTowards(Vector2 point)

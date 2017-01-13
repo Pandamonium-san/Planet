@@ -19,7 +19,8 @@ namespace Planet
       { "Slime4", new Rectangle(0, 72, 25, 18) },
       { "Drone1", new Rectangle(0, 91, 8, 12) },
       { "Drone2", new Rectangle(0, 104, 10, 17) },
-      { "Drone3", new Rectangle(0, 122, 20, 24) }
+      { "Drone3", new Rectangle(0, 122, 20, 24) },
+      { "Pixel", new Rectangle(16, 0, 1, 3) }
     };
 
     public static Rectangle Get(string name)

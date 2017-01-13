@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,18 @@ namespace Planet
         : base(pos, world)
     {
       //SetTexture(AssetManager.GetTexture("pumpkin"));
-      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Drone1"));
+      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Slime1"));
       origin += new Vector2(0, 2);
       //hitbox.localPos = new Vector2(0, 10);
       SetLayer(Layer.ENEMY_SHIP);
       layerDepth = 0.8f;
       //wpn = new CycloneGun(this, world);
-      //WpnDesc desc = new WpnDesc(1, 10, 400, 1, 50, 50, 0, 30, 1, 0, 0, 10);
-      //WpnDesc desc = new WpnDesc(1, 20, 400, 1, 5, 5, 0, 30, 0, 0, 0, 10);
-      WpnDesc desc = new WpnDesc(0, 0, 250);
+      //WpnDesc desc = new WpnDesc(1, 3, 200, 1, 50, 50, 0, 30, 1, 0, 0, 10);
+      //WpnDesc desc = new WpnDesc(100, 1f, 300, 1, 0, 5, 10, 1, 0, 0, 0, 10);
+      //WpnDesc desc = new WpnDesc(0, 0, 250);
+      WpnDesc desc = new WpnDesc(10, 1, 200);
       Weapon wpn = new Weapon(this, world, desc);
+      //WHitScan wpn = new WHitScan(this, world, desc, 10, false);
       wpn.SetMuzzle(new Vector2(0, -10));
       weapons.Add(wpn);
       currentHealth = 100;
@@ -45,6 +48,25 @@ namespace Planet
     {
 
     }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+      if (tex != null && isActive)
+      {
+        spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, 0f, origin, Scale, SpriteEffects.None, layerDepth);
 
+        /* DEBUG */
+        //// show last possible rewind position
+        //GOState old = null;
+        //if (timeMachine.stateBuffer.Count > 0)
+        //  old = ((GOState)(timeMachine.stateBuffer.Last.Value));
+        //if (old != null)
+        //{
+        //  spriteBatch.Draw(tex, old.Pos, spriteRec, Color.Red * alpha * 0.2f, old.Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+        //}
+        // show hitboxes
+        if (drawHitbox)
+          hitbox.Draw(spriteBatch);
+      }
+    }
   }
 }

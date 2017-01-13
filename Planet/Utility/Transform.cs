@@ -45,8 +45,12 @@ namespace Planet
       set
       {
         Vector2 pos = Pos;
+        float scale = Scale;
+        float rotation = Rotation;
         parent = value;
         Pos = pos;
+        Scale = scale;
+        Rotation = rotation;
         if(parent != null)
           parent.AppendChild(this);
       }

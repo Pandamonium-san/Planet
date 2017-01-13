@@ -15,7 +15,8 @@ namespace Planet
     public Vector2 dir;
     public Vector2 velocity;
     public float speed;
-    Timer lifeTimer;
+    public float lifeTime;
+    protected Timer lifeTimer;
     public delegate void Pattern(Projectile p, GameTime gt);
     Pattern pattern;
 
@@ -35,9 +36,11 @@ namespace Planet
 
       if (tex != null)
         this.SetTexture(tex);
+      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Pixel"));
       this.speed = speed;
       this.instigator = instigator;
       this.damage = damage;
+      this.lifeTime = lifeTime;
 
       if (dir != Vector2.Zero)
         dir.Normalize();
@@ -64,7 +67,6 @@ namespace Planet
         layerMask = (Layer.PLAYER_SHIP);
       }
       layerDepth = 0.8f;
-      Scale = 1.0f;
     }
 
     protected override void DoUpdate(GameTime gt)
@@ -77,8 +79,11 @@ namespace Planet
       //perform bullet pattern operation
       if (pattern != null)
         pattern(this, gt);
-      else
-        Pos += velocity * 0.017f;//(float)gt.ElapsedGameTime.TotalSeconds;
+      //else
+      //{
+      //  Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+      //  Rotation = Utility.Vector2ToAngle(velocity);
+      //}
 
       base.DoUpdate(gt);
     }

@@ -6,17 +6,22 @@ using System.Text;
 
 namespace Planet
 {
-  class WHitScan : Weapon
+  class LightningGun : Weapon
   {
-    private int width;
-    private float range;
-    private bool canPierce;
-    public WHitScan(Ship ship, World world, WpnDesc desc, int width, bool canPierce, float range = 10000)
-      : base(ship, world, desc)
+    int width;
+    public LightningGun(Ship ship, World world, int width)
+      : base(ship, world, new WpnDesc())
     {
       this.width = width;
-      this.range = range;
-      this.canPierce = canPierce;
+
+      desc.damage = 1;
+      desc.nrOfBullets = 10;
+      desc.shotsPerSecond = 30;
+      desc.projSpeed = 200;
+      desc.projLifeTime = 0.1f;
+      desc.magSize = 3;
+      desc.magReloadTime = 0;
+      SetDesc(desc);
     }
     protected override void CreateBullet()
     {
@@ -26,18 +31,15 @@ namespace Planet
       Vector2 direction = Utility.AngleToVector2(shotAngle);
       if (desc.inaccuracy != 0)
         ApplyInaccuracy(ref direction, desc.inaccuracy);
-
-      PHitScan p = new PHitScan(
+      PLightning p = new PLightning(
         world,
         muzzle.Pos,
         direction,
         desc.damage,
-        canPierce,
         width,
-        range,
-        ship);
+        ship,
+        desc.projLifeTime);
       world.PostProjectile(p);
     }
-    
   }
 }

@@ -12,7 +12,7 @@ namespace Planet
     public CycloneGun(Ship ship, World world)
         : base(ship, world, new WpnDesc())
     {
-      desc.damage = 1;
+      desc.damage = 10;
       desc.nrOfBullets = 24;
       desc.degreesBetweenBullets = 360 / desc.nrOfBullets;
       desc.shotsPerSecond = 3;
@@ -26,9 +26,19 @@ namespace Planet
     protected override void Shoot()
     {
       currentBulletAngle = MathHelper.ToRadians(desc.startingAngleDegrees);
-      Projectile center = new Projectile(world, null, ship.Pos, ship.GetDirection(), desc.projSpeed, 0, null, desc.projLifeTime, null);
+      Projectile center = new Projectile(
+        world,
+        null,
+        ship.Pos,
+        ship.GetDirection(),
+        desc.projSpeed,
+        0,
+        null,
+        desc.projLifeTime,
+        (p, gt) => { p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds; });
       center.Scale = 1.0f;
       center.layerMask = Layer.ZERO;
+      center.Visible = false;
       world.PostProjectile(center);
 
       for (int i = 0; i < desc.nrOfBullets; i++)
@@ -70,18 +80,18 @@ namespace Planet
         p.velocity = dir * p.speed;
         ((Projectile)(p.Parent)).velocity = Vector2.Zero;
       }
-      else if (p.frame > 11 && p.frame < 90)
+      else if (p.frame > 1 && p.frame < 90)
         p.velocity = Vector2.Transform(p.velocity, Matrix.CreateRotationZ(0.06f));
       else if (p.frame == 10)
         p.velocity = -dir2 * p.speed;
-      else if (p.frame == 110)
+      else if (p.frame == 91)
       {
         p.Die();
 
         //test
         for (int i = -1; i <= 1; i += 2)
         {
-          Vector2 direction = new Vector2(p.velocity.Y, p.velocity.X * i);
+          Vector2 direction = new Vector2(p.velocity.X, p.velocity.Y);
           ApplyInaccuracy(ref direction, 10);
           float sv = Utility.RandomFloat(-50, 50);
           Projectile p2 = new Projectile(
@@ -89,15 +99,16 @@ namespace Planet
             AssetManager.GetTexture("Proj1"),
             p.Pos,
             direction,
-            sv + desc.projSpeed,
+            sv + desc.projSpeed*1.5f,
             desc.damage,
             ship,
-            3,
-            null);
+            1f,
+            base.BulletPattern);
           world.PostProjectile(p2);
         }
       }
       p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+      p.Rotation = Utility.Vector2ToAngle(p.velocity);
     }
   }
 }

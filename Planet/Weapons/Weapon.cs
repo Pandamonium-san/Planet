@@ -27,7 +27,10 @@ namespace Planet
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
+      if (ship is RewinderShip)
+        Console.Write("hello");
       muzzle = new Transform(Vector2.Zero, 0, 0, ship);
+      SetMuzzle(Vector2.Zero);
     }
     public void Update(GameTime gt)
     {
@@ -89,6 +92,7 @@ namespace Planet
     protected virtual void BulletPattern(Projectile p, GameTime gt)
     {
       p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+      p.Rotation = Utility.Vector2ToAngle(p.velocity);
     }
     protected void ApplyInaccuracy(ref Vector2 dir, float inaccuracy)
     {

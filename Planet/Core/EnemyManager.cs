@@ -26,8 +26,14 @@ namespace Planet
       {
         float x = Utility.RandomFloat(0, 800);
         float y = Utility.RandomFloat(0, 600);
-        AddSpawn(new PumpkinShip(new Vector2(x, y), world), new AIController(world), 50*i);
+        float c = 50;
+        AddSpawn(new PumpkinShip(new Vector2(x, y), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x+c, y), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x, y+c), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x-c, y), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x, y-c), world), new AIController(world), 600 * i);
       }
+      //AddSpawn(new PumpkinShip(new Vector2(500, 500), world), new AIController(world), 50);
     }
     public void Update(GameTime gt)
     {
