@@ -14,13 +14,11 @@ namespace Planet
     {
       this.width = width;
 
-      desc.damage = 1;
-      desc.nrOfBullets = 10;
-      desc.shotsPerSecond = 30;
-      desc.projSpeed = 200;
-      desc.projLifeTime = 0.1f;
-      desc.magSize = 3;
-      desc.magReloadTime = 0;
+      desc.damage = 10;
+      desc.inaccuracy = 0;
+      desc.nrOfBullets = 3;
+      desc.shotsPerSecond = 2;
+      desc.projLifeTime = 0.5f;
       SetDesc(desc);
     }
     protected override void CreateBullet()
