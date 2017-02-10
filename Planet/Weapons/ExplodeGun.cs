@@ -14,15 +14,15 @@ namespace Planet
       desc.damage = 10;
       desc.nrOfBullets = 1;
       desc.shotsPerSecond = 3;
-      desc.projSpeed = 200;
-      desc.projLifeTime = 5;
+      desc.projSpeed = 400;
+      desc.projLifeTime = 3;
       desc.magSize = 3;
       desc.magReloadTime = 1;
       SetDesc(desc);
     }
     protected override void BulletPattern(Projectile p, GameTime gt)
     {
-      if (p.frame >= 120 && p.frame % 10 == 0)
+      if (p.frame >= 30)
       {
         float angle = 0f;
         for (int i = 0; i < 64; i++)
@@ -36,14 +36,14 @@ namespace Planet
             AssetManager.GetTexture("Proj1"),
             p.Pos,
             direction,
-            sv + desc.projSpeed * 1.5f,
+            sv + desc.projSpeed,
             desc.damage,
             ship,
-            5f,
+            0.2f + Utility.RandomFloat(-0.1f, 0.1f),
             base.BulletPattern);
           world.PostProjectile(p2);
         }
-        if (p.frame == 200)
+        if (p.frame >= 35)
           p.Die();
       }
       else if (p.frame < 120)

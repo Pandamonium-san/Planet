@@ -19,10 +19,10 @@ namespace Planet
       SetLayer(Layer.ENEMY_SHIP);
       layerDepth = 0.8f;
       //wpn = new CycloneGun(this, world);
-      //WpnDesc desc = new WpnDesc(1, 3, 200, 1, 50, 50, 0, 30, 1, 0, 0, 10);
+      WpnDesc desc = new WpnDesc(1, 3, 200, 1, 50, 50, 0, 30, 1, 0, 0, 10);
       //WpnDesc desc = new WpnDesc(100, 1f, 300, 1, 0, 5, 10, 1, 0, 0, 0, 10);
       //WpnDesc desc = new WpnDesc(0, 0, 250);
-      WpnDesc desc = new WpnDesc(10, 1, 200);
+      //WpnDesc desc = new WpnDesc(10, 1, 200);
       Weapon wpn = new Weapon(this, world, desc);
       //WHitScan wpn = new WHitScan(this, world, desc, 10, false);
       wpn.SetMuzzle(new Vector2(0, -10));

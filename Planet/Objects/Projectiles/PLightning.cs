@@ -137,18 +137,6 @@ namespace Planet
             default:
               result += c;
               break;
-              //case '+':
-              //  result += "+";
-              //  break;
-              //case '-':
-              //  result += "-";
-              //  break;
-              //case '[':
-              //  result += "[";
-              //  break;
-              //case ']':
-              //  result += "]";
-              //  break;
           }
         }
       }

@@ -115,6 +115,10 @@ namespace Planet
     {
 
     }
+    public virtual void Fire4()
+    {
+
+    }
     public virtual void Aim()
     {
       aiming = true;

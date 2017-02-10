@@ -101,7 +101,7 @@ namespace Planet
       origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
       hitbox = new Hitbox(this, Math.Min(spriteRec.Width/2.0f, spriteRec.Height/2.0f));
     }
-    public void Die()
+    public virtual void Die()
     {
       if (!isDead)
       {

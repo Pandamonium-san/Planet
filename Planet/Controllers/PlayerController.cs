@@ -30,6 +30,7 @@ namespace Planet
       SetBinding(PlayerInput.Yellow, "Fire1", null, true);
       SetBinding(PlayerInput.Red, "Fire2", null, true);
       SetBinding(PlayerInput.Blue, "Fire3", null, true);
+      SetBinding(PlayerInput.B, "Fire4", null, true);
       SetBinding(PlayerInput.A, "Aim", null, true);
     }
 
