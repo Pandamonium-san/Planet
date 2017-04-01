@@ -42,7 +42,12 @@ namespace Planet
 
     protected override void DoUpdate(GameTime gt)
     {
-      DoAiming();
+      if (target != null && target.isActive)
+        TurnTowardsPoint(target.Pos);
+      else
+      {
+        target = AcquireTarget();
+      }
 
       Pos += CurrentVelocity() * (float)gt.ElapsedGameTime.TotalSeconds;
       Rotation += CurrentRotation() * (float)gt.ElapsedGameTime.TotalSeconds;
@@ -68,38 +73,24 @@ namespace Planet
       }
       base.DoUpdate(gt);
     }
-    protected virtual void AcquireTarget()
+
+    protected virtual GameObject AcquireTarget()
     {
       List<GameObject> go = world.GetGameObjects();
-      target = null;
+      GameObject nearest = null;
       float nearestDistance = float.MaxValue;
       foreach (GameObject g in go)
       {
-        if (g.layer != Layer.ENEMY_SHIP || !g.isActive)
+        if (g.layer != Layer.ENEMY_SHIP || !g.isActive || g == target)
           continue;
         float distance = Vector2.DistanceSquared(Pos, g.Pos);
         if (distance < nearestDistance)
         {
-          target = g;
+          nearest = g;
           nearestDistance = distance;
         }
       }
-    }
-
-    protected virtual void DoAiming()
-    {
-      if (aiming)
-      {
-        speedModifier *= 0.5f;
-        rotationModifier *= 0.0f;
-        aiming = false;
-      }
-      else
-      {
-        AcquireTarget();
-        if (target != null)
-          TurnTowardsPoint(target.Pos);
-      }
+      return nearest;
     }
 
     protected virtual Vector2 CurrentVelocity()
@@ -133,7 +124,7 @@ namespace Planet
     public virtual void Fire4() { }
     public virtual void Aim()
     {
-      aiming = true;
+      target = AcquireTarget();
     }
     public void AddDrift(Vector2 v)
     {
@@ -178,6 +169,16 @@ namespace Planet
     public Vector2 Forward()
     {
       return Utility.AngleToVector2(Rotation);
+    }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+      base.Draw(spriteBatch);
+
+      if (target != null)
+      {
+        Texture2D circle = AssetManager.GetTexture("Circle");
+        spriteBatch.Draw(circle, target.Pos, null, Color.Red * 0.3f, 0.0f, new Vector2(circle.Width / 2, circle.Height / 2), 0.2f, SpriteEffects.None, 0.0f);
+      }
     }
   }
 }
