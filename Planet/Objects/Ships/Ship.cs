@@ -9,6 +9,7 @@ namespace Planet
 {
   public abstract class Ship : Actor
   {
+    protected GameObject target;
     protected Vector2 drift;
     protected Vector2 currentVelocity;
     protected float currentRotationSpeed;
@@ -67,6 +68,23 @@ namespace Planet
       }
       base.DoUpdate(gt);
     }
+    protected virtual void AcquireTarget()
+    {
+      List<GameObject> go = world.GetGameObjects();
+      target = null;
+      float nearestDistance = float.MaxValue;
+      foreach (GameObject g in go)
+      {
+        if (g.layer != Layer.ENEMY_SHIP || !g.isActive)
+          continue;
+        float distance = Vector2.DistanceSquared(Pos, g.Pos);
+        if (distance < nearestDistance)
+        {
+          target = g;
+          nearestDistance = distance;
+        }
+      }
+    }
 
     protected virtual void DoAiming()
     {
@@ -75,6 +93,12 @@ namespace Planet
         speedModifier *= 0.5f;
         rotationModifier *= 0.0f;
         aiming = false;
+      }
+      else
+      {
+        AcquireTarget();
+        if (target != null)
+          TurnTowardsPoint(target.Pos);
       }
     }
 
