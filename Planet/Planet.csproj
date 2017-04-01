@@ -47,7 +47,6 @@
     <Compile Include="Objects\Projectiles\Laser.cs" />
     <Compile Include="Objects\Projectiles\PHitScan.cs" />
     <Compile Include="Objects\Projectiles\PLightning.cs" />
-    <Compile Include="Objects\TimeMachine.cs" />
     <Compile Include="Utility\DebugFunc.cs" />
     <Compile Include="Utility\FixedList.cs" />
     <Compile Include="Objects\Ships\BlinkerShip.cs" />

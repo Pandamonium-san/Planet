@@ -22,10 +22,10 @@ namespace Planet
       this.index = index;
       bindings = new List<KeyBinding>();
 
-      SetBinding(PlayerInput.Up, "MoveAndTurn", -Vector2.UnitY, true);
-      SetBinding(PlayerInput.Down, "MoveAndTurn", Vector2.UnitY, true);
-      SetBinding(PlayerInput.Right, "MoveAndTurn", Vector2.UnitX, true);
-      SetBinding(PlayerInput.Left, "MoveAndTurn", -Vector2.UnitX, true);
+      SetBinding(PlayerInput.Up, "Move", -Vector2.UnitY, true);
+      SetBinding(PlayerInput.Down, "Move", Vector2.UnitY, true);
+      SetBinding(PlayerInput.Right, "Move", Vector2.UnitX, true);
+      SetBinding(PlayerInput.Left, "Move", -Vector2.UnitX, true);
 
       SetBinding(PlayerInput.Yellow, "Fire1", null, true);
       SetBinding(PlayerInput.Red, "Fire2", null, true);

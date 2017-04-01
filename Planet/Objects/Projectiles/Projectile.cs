@@ -109,36 +109,5 @@ namespace Planet
       Die();
     }
 
-    public override GOState GetState()
-    {
-      return new ProjState(this);
-    }
-
-    public override void SetState(GOState data)
-    {
-      base.SetState(data);
-      ProjState p = (ProjState)data;
-      this.dir = p.dir;
-      this.velocity = p.velocity;
-      this.speed = p.speed;
-      this.lifeTimer = p.lifeTimer;
-    }
-
-    protected class ProjState : GOState
-    {
-      public Vector2 dir;
-      public Vector2 velocity;
-      public float speed;
-      public Timer lifeTimer;
-
-      public ProjState(Projectile p)
-          : base(p)
-      {
-        this.dir = p.dir;
-        this.velocity = p.velocity;
-        this.speed = p.speed;
-        this.lifeTimer = p.lifeTimer;
-      }
-    }
   }
 }

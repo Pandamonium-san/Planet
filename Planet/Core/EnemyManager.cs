@@ -67,7 +67,6 @@ namespace Planet
       Type aic = spawn.controller.GetType();
 
       Ship enemy = (Ship)Activator.CreateInstance(enemyType, new object[] { spawn.enemy.Pos, world });
-      enemy.SetState(spawn.enemy.GetState());
       AIController sc = (AIController)Activator.CreateInstance(aic, world);
       sc.SetShip(enemy);
 

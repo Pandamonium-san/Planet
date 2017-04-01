@@ -28,9 +28,9 @@ namespace Planet
       WpnDesc desc = new WpnDesc(1, 30, 700, 1, 0.1f, 0, 0, 30, 0, 0, 0, 1);           //normal laser
       //WpnDesc desc = new WpnDesc(10, 20, 1000, 1, 5, 0, 0, 30, 0, 0, 0, 3);           //machine gun
       //WpnDesc desc = new WpnDesc(0, 4, 10, 100, 0, 0, 0, 1, 360/100f, 0, 0, 10);           //stress test
-      //wpn = new Weapon(this, world, desc);
-      //wpn.SetMuzzle(new Vector2(0, -30));
-      //weapons.Add(wpn);
+      wpn = new Weapon(this, world, desc);
+      wpn.SetMuzzle(new Vector2(0, -30));
+      weapons.Add(wpn);
 
       WHitScan hitscan = new WHitScan(this, world, desc, 10, true);
       hitscan.SetMuzzle(new Vector2(0, -20));
@@ -66,7 +66,7 @@ namespace Planet
     }
     public override void Fire2()
     {
-      world.Rewind(TimeMachine.framesBetweenStates);
+      //world.Rewind(TimeMachine.framesBetweenStates);
       //world.Rewind(TimeMachine.maxRewindableFrames);
     }
     public override void Fire3()

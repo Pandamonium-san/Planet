@@ -22,7 +22,7 @@ namespace Planet
     {
       if (ship != null && ship.disposed)
         ship = null;
-      if (ship == null || ship.isDead || !ship.isActive || ship.IsRewinding())
+      if (ship == null || ship.isDead || !ship.isActive)
         return;
       else
         DoUpdate(gt);

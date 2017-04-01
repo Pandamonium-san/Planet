@@ -29,7 +29,7 @@ namespace Planet
     protected Timer damageTimer;
 
     public Ship(Vector2 pos, World world)
-        : base(pos, world)
+      : base(pos, world)
     {
       weapons = new List<Weapon>();
       this.SetTexture(AssetManager.GetTexture("Ship1"));
@@ -44,7 +44,7 @@ namespace Planet
       DoAiming();
 
       Pos += CurrentVelocity() * (float)gt.ElapsedGameTime.TotalSeconds;
-      Rotation +=  CurrentRotation() * (float)gt.ElapsedGameTime.TotalSeconds;
+      Rotation += CurrentRotation() * (float)gt.ElapsedGameTime.TotalSeconds;
 
       currentVelocity = Vector2.Zero;
       currentRotationSpeed = 0;
@@ -55,6 +55,7 @@ namespace Planet
       {
         wpn.Update(gt);
       }
+
       if (restrictToScreen)
         RestrictToScreen();
 
@@ -102,23 +103,10 @@ namespace Planet
         TakeDamage(p.damage);
       }
     }
-    public virtual void Fire1()
-    {
-
-    }
-    public virtual void Fire2()
-    {
-
-    }
-
-    public virtual void Fire3()
-    {
-
-    }
-    public virtual void Fire4()
-    {
-
-    }
+    public virtual void Fire1() { }
+    public virtual void Fire2() { }
+    public virtual void Fire3() { }
+    public virtual void Fire4() { }
     public virtual void Aim()
     {
       aiming = true;
@@ -149,11 +137,6 @@ namespace Planet
 
       currentRotationSpeed += MathHelper.Lerp(0, angleToTarget, rotationSpeed);
     }
-    public void MoveAndTurn(Vector2 direction)
-    {
-      Move(direction);
-      TurnTowardsPoint(Pos + direction);
-    }
     public void TakeDamage(int amount)
     {
       currentHealth -= amount;
@@ -168,44 +151,9 @@ namespace Planet
         MathHelper.Clamp(Pos.Y, 0, Game1.ScreenHeight)
         );
     }
-    public Vector2 GetDirection()
+    public Vector2 Forward()
     {
       return Utility.AngleToVector2(Rotation);
     }
-    public override GOState GetState()
-    {
-      return new ShipState(this);
-    }
-    public override void SetState(GOState state)
-    {
-      base.SetState(state);
-      ShipState shipState = (ShipState)state;
-      this.currentHealth = shipState.currentHealth;
-      this.drift = shipState.drift;
-      for (int i = 0; i < weapons.Count(); i++)
-      {
-        weapons[i].SetState(shipState.weaponStates[i]);
-      }
-    }
-    protected class ShipState : GOState
-    {
-      public List<WeaponState> weaponStates;
-      public int currentHealth;
-      public Vector2 drift;
-
-      public ShipState(Ship s)
-          : base(s)
-      {
-        this.currentHealth = s.currentHealth;
-        this.drift = s.drift;
-        weaponStates = new List<WeaponState>();
-        foreach (Weapon wpn in s.weapons)
-        {
-          weaponStates.Add(new WeaponState(wpn));
-        }
-      }
-
-    }
-
   }
 }

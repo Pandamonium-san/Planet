@@ -61,7 +61,7 @@ namespace Planet
         go.Update(gt);
 
         // don't check collision if rewinding or inactive
-        if (go.IsRewinding() || !go.isActive)
+        if (!go.isActive)
           continue;
 
         // collision check (currently pointless as ships don't collide with each other)
@@ -92,20 +92,6 @@ namespace Planet
 
       projectiles.RemoveAll(x => x.disposed);
       gameObjects.RemoveAll(x => x.disposed == true);
-    }
-    public void Rewind(int x)
-    {
-      foreach (GameObject g in GetGameObjects())
-      {
-        if (!g.IsRewinding())
-          g.StartRewind(x);
-      }
-      foreach (GameObject g in projectiles)
-      {
-        if (!g.IsRewinding())
-          g.StartRewind(x);
-      }
-      enemyManager.StartRewind(x);
     }
     public List<GameObject> GetPlayers()
     {
