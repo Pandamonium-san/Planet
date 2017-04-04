@@ -14,9 +14,9 @@ namespace Planet
     protected Vector2 currentVelocity;
     protected float currentRotationSpeed;
     protected float baseSpeed = 400;
-    protected float rotationSpeed = 10;
+    protected float rotationSpeed = 5;
 
-    protected bool aiming;
+    protected bool dashing;
     public bool restrictToScreen;
 
     public float fireRateModifier = 1.0f;
@@ -42,11 +42,11 @@ namespace Planet
 
     protected override void DoUpdate(GameTime gt)
     {
-      if (target != null && target.isActive)
-        TurnTowardsPoint(target.Pos);
-      else
-      {
+      if (target == null || !target.isActive )
         target = AcquireTarget();
+      else if(!dashing)
+      {
+        currentRotationSpeed += TurnTowardsPoint(target.Pos);
       }
 
       Pos += CurrentVelocity() * (float)gt.ElapsedGameTime.TotalSeconds;
@@ -56,6 +56,7 @@ namespace Planet
       currentRotationSpeed = 0;
       speedModifier = 1.0f;
       rotationModifier = 1.0f;
+      dashing = false;
 
       foreach (Weapon wpn in weapons)
       {
@@ -95,13 +96,14 @@ namespace Planet
 
     protected virtual Vector2 CurrentVelocity()
     {
-      currentVelocity += drift;
-      if (currentVelocity != Vector2.Zero)
+      if (currentVelocity != Vector2.Zero && !dashing)
       {
         //float maxSpeed = MathHelper.Clamp(currentVelocity.Length(), 0, baseSpeed);
         currentVelocity.Normalize();
         currentVelocity = currentVelocity * baseSpeed * speedModifier;
       }
+      currentVelocity += drift * speedModifier;
+      drift *= 0.95f;
       return currentVelocity;
     }
 
@@ -121,7 +123,20 @@ namespace Planet
     public virtual void Fire1() { }
     public virtual void Fire2() { }
     public virtual void Fire3() { }
-    public virtual void Fire4() { }
+    public virtual void Fire4()
+    {
+      dashing = true;
+      Vector2 d = currentVelocity;
+      if (d != Vector2.Zero)
+        d.Normalize();
+      else
+        d = Forward();
+      if (drift.Length() < baseSpeed * 1.5f)
+        Rotation = Utility.Vector2ToAngle(d);
+      drift = Forward() * baseSpeed * 2;
+      currentRotationSpeed += TurnTowardsPoint(Pos + d);
+      rotationModifier = 0.3f;
+    }
     public virtual void Aim()
     {
       target = AcquireTarget();
@@ -136,9 +151,9 @@ namespace Planet
     }
     public void Move(Vector2 direction)
     {
-      currentVelocity += direction * baseSpeed;
+      currentVelocity += direction;
     }
-    public void TurnTowardsPoint(Vector2 point)
+    public float TurnTowardsPoint(Vector2 point)
     {
       Vector2 direction = point - Pos;
       Rotation = MathHelper.WrapAngle(Rotation);
@@ -150,7 +165,7 @@ namespace Planet
       float angleToTarget = desiredAngle - Rotation;
       angleToTarget = MathHelper.WrapAngle(angleToTarget);
 
-      currentRotationSpeed += MathHelper.Lerp(0, angleToTarget, rotationSpeed);
+      return MathHelper.Lerp(0, angleToTarget, rotationSpeed);
     }
     public void TakeDamage(int amount)
     {

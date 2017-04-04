@@ -66,17 +66,12 @@ namespace Planet
     }
     public override void Fire2()
     {
-      //world.Rewind(TimeMachine.framesBetweenStates);
-      //world.Rewind(TimeMachine.maxRewindableFrames);
+      weapons[2].Fire();
     }
     public override void Fire3()
     {
       weapons[1].Fire();
       //world.PostGameObj(laser);
-    }
-    public override void Fire4()
-    {
-      weapons[2].Fire();
     }
   }
 }
