@@ -44,7 +44,7 @@ namespace Planet
     {
 
     }
-    public override void Fire3()
+    public override void Switch()
     {
 
     }

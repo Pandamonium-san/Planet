@@ -9,12 +9,18 @@ namespace Planet
 {
   public abstract class Ship : Actor
   {
+    public Weapon CurrentWeapon { get { return weapons[currentWeapon]; } }
+
     protected GameObject target;
-    protected Vector2 drift;
+    protected Vector2 acceleration;
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
     protected float baseSpeed = 400;
     protected float rotationSpeed = 5;
+
+    protected List<Weapon> weapons;
+    protected int currentWeapon;
+    protected Timer damageTimer;
 
     protected bool dashing;
     public bool restrictToScreen;
@@ -25,9 +31,6 @@ namespace Planet
 
     public int currentHealth;
     public int maxHealth;
-
-    protected List<Weapon> weapons;
-    protected Timer damageTimer;
 
     public Ship(Vector2 pos, World world)
       : base(pos, world)
@@ -52,13 +55,14 @@ namespace Planet
       {
         if (target is Ship && this is RewinderShip)
         {
+          //code for leading shots
           Ship t = (Ship)target;
           Vector2 AB = t.Pos - Pos;
           AB.Normalize();
-          Vector2 u = t.drift - movementDirection * baseSpeed * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
+          Vector2 u = t.acceleration - movementDirection * baseSpeed * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
           Vector2 uj = Vector2.Dot(AB, u) * AB;
           Vector2 ui = u - uj;
-          float vLenSq = (float)Math.Pow(weapons[0].GetDesc().projSpeed, 2);
+          float vLenSq = (float)Math.Pow(weapons[currentWeapon].Desc.projSpeed, 2);
           Vector2 vi = ui;
           float viLenSq = vi.LengthSquared();
           float vjLenSq = vLenSq - viLenSq;
@@ -84,6 +88,7 @@ namespace Planet
       rotationModifier = 1.0f;
       dashing = false;
 
+
       foreach (Weapon wpn in weapons)
       {
         wpn.Update(gt);
@@ -99,6 +104,36 @@ namespace Planet
         damageTimer.Update(gt);
       }
       base.DoUpdate(gt);
+    }
+
+    public virtual void Fire1()
+    {
+      CurrentWeapon.Fire();
+    }
+    public virtual void Fire2() { }
+    public virtual void Switch()
+    {
+      if (++currentWeapon >= weapons.Count())
+        currentWeapon = 0;
+      CurrentWeapon.ResetShootTimer();
+    }
+    public virtual void Dash()
+    {
+      dashing = true;
+      Vector2 d = movementDirection;
+      if (d != Vector2.Zero)
+        d.Normalize();
+      else
+        d = Forward();
+      if (acceleration.Length() < baseSpeed * 1.5f)
+        Rotation = Utility.Vector2ToAngle(d);
+      acceleration = Forward() * baseSpeed * 2;
+      currentRotationSpeed += TurnTowardsPoint(Pos + d);
+      rotationModifier = 0.3f;
+    }
+    public virtual void Aim()
+    {
+      target = AcquireTarget();
     }
 
     protected virtual GameObject AcquireTarget()
@@ -128,16 +163,14 @@ namespace Planet
         movementDirection.Normalize();
         movementDirection = movementDirection * baseSpeed * speedModifier;
       }
-      movementDirection += drift * speedModifier;
-      drift *= 0.95f;
+      movementDirection += acceleration * speedModifier;
+      acceleration *= 0.95f;
       return movementDirection;
     }
-
     protected virtual float CurrentRotation()
     {
       return currentRotationSpeed * rotationModifier;
     }
-
     public override void DoCollision(GameObject other)
     {
       if (other is Projectile)
@@ -146,34 +179,13 @@ namespace Planet
         TakeDamage(p.damage);
       }
     }
-    public virtual void Fire1() { }
-    public virtual void Fire2() { }
-    public virtual void Fire3() { }
-    public virtual void Fire4()
-    {
-      dashing = true;
-      Vector2 d = movementDirection;
-      if (d != Vector2.Zero)
-        d.Normalize();
-      else
-        d = Forward();
-      if (drift.Length() < baseSpeed * 1.5f)
-        Rotation = Utility.Vector2ToAngle(d);
-      drift = Forward() * baseSpeed * 2;
-      currentRotationSpeed += TurnTowardsPoint(Pos + d);
-      rotationModifier = 0.3f;
-    }
-    public virtual void Aim()
-    {
-      target = AcquireTarget();
-    }
     public void AddDrift(Vector2 v)
     {
-      drift += v;
+      acceleration += v;
     }
     public void SetDrift(Vector2 v)
     {
-      drift = v;
+      acceleration = v;
     }
     public void Move(Vector2 direction)
     {
@@ -222,6 +234,7 @@ namespace Planet
         Texture2D circle = AssetManager.GetTexture("Circle");
         spriteBatch.Draw(circle, target.Pos, null, Color.Red * 0.3f, 0.0f, new Vector2(circle.Width / 2, circle.Height / 2), 0.2f, SpriteEffects.None, 0.0f);
       }
+      spriteBatch.DrawString(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 20, Color.Green);
     }
   }
 }

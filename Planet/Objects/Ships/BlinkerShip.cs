@@ -38,7 +38,7 @@ namespace Planet
       Pos += dir * 100.0f;
     }
 
-    public override void Fire3()
+    public override void Switch()
     {
 
     }

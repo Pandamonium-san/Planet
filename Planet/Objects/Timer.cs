@@ -25,9 +25,16 @@ namespace Planet
       this.elapsedSeconds = 0;
       counting = start;
     }
+
     public void Start()
     {
       counting = true;
+      elapsedSeconds = 0;
+    }
+    public void Start(double seconds)
+    {
+      counting = true;
+      this.seconds = seconds;
       elapsedSeconds = 0;
     }
     public void Update(GameTime gt)

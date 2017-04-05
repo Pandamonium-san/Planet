@@ -9,21 +9,24 @@ namespace Planet
 {
   public class Weapon
   {
+    public string Name { get; set; }
+    public WpnDesc Desc { get { return desc; } }
     protected Ship ship;
     protected World world;
     protected Transform muzzle;
     protected WpnDesc desc;
 
     // counter variables
-    protected internal int currentMagCount;
-    protected internal float currentBulletAngle;
-    protected internal float currentShotAngle;
-    protected internal Timer timeSinceLastShot;
+    protected int currentMagCount;
+    protected float currentBulletAngle;
+    protected float currentShotAngle;
+    protected Timer shootTimer;
 
     Texture2D projTex = AssetManager.GetTexture("Proj1");
 
     public Weapon(Ship ship, World world, WpnDesc desc)
     {
+      Name = "Unnamed Weapon";
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
@@ -34,8 +37,8 @@ namespace Planet
     }
     public void Update(GameTime gt)
     {
-      timeSinceLastShot.Update(gt);
-      if ((timeSinceLastShot.elapsedSeconds >= desc.magReloadTime && desc.magReloadTime > 0) ||
+      shootTimer.Update(gt);
+      if ((shootTimer.elapsedSeconds >= desc.magReloadTime && desc.magReloadTime > 0) ||
       (desc.magReloadTime == 0 && currentMagCount == 0))  // edge case where reload time is 0 and magazine is used to determine shot angle
       {
         Reload();
@@ -48,8 +51,12 @@ namespace Planet
         Shoot();
         currentShotAngle += MathHelper.ToRadians(desc.degreesBetweenShots);
         currentMagCount--;
-        timeSinceLastShot.Start();
+        shootTimer.Start();
       }
+    }
+    public void ResetShootTimer()
+    {
+      shootTimer.Start();
     }
     private void Reload()
     {
@@ -101,16 +108,12 @@ namespace Planet
     }
     public bool CanShoot()
     {
-      return timeSinceLastShot.elapsedSeconds >= 1.0f / desc.shotsPerSecond;
+      return shootTimer.elapsedSeconds >= 1.0f / desc.shotsPerSecond;
     }
     public void SetMuzzle(Vector2 pos, float rotation = 0)
     {
       muzzle.localPos = pos;
       muzzle.localRotation = rotation;
-    }
-    public WpnDesc GetDesc()
-    {
-      return desc;
     }
     public void SetDesc(WpnDesc desc)
     {
@@ -118,34 +121,7 @@ namespace Planet
         desc.magSize = 1;
       this.desc = desc;
       currentMagCount = desc.magSize;
-      timeSinceLastShot = new Timer(100);
-    }
-    public WeaponState GetState()
-    {
-      return new WeaponState(this);
-    }
-    public void SetState(WeaponState ws)
-    {
-      this.currentMagCount = ws.currentMagCount;
-      this.currentBulletAngle = ws.currentBulletAngle;
-      this.currentShotAngle = ws.currentShotAngle;
-      this.timeSinceLastShot = ws.timeSinceLastShot;
-    }
-  }
-  public class WeaponState
-  {
-    public Timer timeSinceLastShot;
-    public int currentMagCount;
-    public float currentBulletAngle;
-    public float currentShotAngle;
-    public bool canShoot;
-
-    public WeaponState(Weapon wpn)
-    {
-      currentMagCount = wpn.currentMagCount;
-      currentBulletAngle = wpn.currentBulletAngle;
-      currentShotAngle = wpn.currentShotAngle;
-      timeSinceLastShot = wpn.timeSinceLastShot;
+      shootTimer = new Timer(100);
     }
   }
 }
