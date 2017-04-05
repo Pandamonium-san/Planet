@@ -11,7 +11,7 @@ namespace Planet
   {
     protected GameObject target;
     protected Vector2 drift;
-    protected Vector2 currentVelocity;
+    protected Vector2 movementDirection;
     protected float currentRotationSpeed;
     protected float baseSpeed = 400;
     protected float rotationSpeed = 5;
@@ -42,17 +42,43 @@ namespace Planet
 
     protected override void DoUpdate(GameTime gt)
     {
-      if (target == null || !target.isActive )
-        target = AcquireTarget();
-      else if(!dashing)
+      if (target == null || !target.isActive)
       {
-        currentRotationSpeed += TurnTowardsPoint(target.Pos);
+        target = AcquireTarget();
+        if (target == null)
+          currentRotationSpeed += TurnTowardsPoint(Pos + movementDirection);
+      }
+      else if (!dashing)
+      {
+        if (target is Ship && this is RewinderShip)
+        {
+          Ship t = (Ship)target;
+          Vector2 AB = t.Pos - Pos;
+          AB.Normalize();
+          Vector2 u = t.drift - movementDirection * baseSpeed * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
+          Vector2 uj = Vector2.Dot(AB, u) * AB;
+          Vector2 ui = u - uj;
+          float vLenSq = (float)Math.Pow(weapons[0].GetDesc().projSpeed, 2);
+          Vector2 vi = ui;
+          float viLenSq = vi.LengthSquared();
+          float vjLenSq = vLenSq - viLenSq;
+          float vjLen = (float)Math.Sqrt(vLenSq - viLenSq); //NaN if vjLenSq is negative
+          Vector2 vj = AB * vjLen;
+          Vector2 v = vi + vj;
+          if (vjLenSq < 0)
+            v = t.Pos + u;
+          currentRotationSpeed += TurnTowardsPoint(Pos + v);
+        }
+        else
+        {
+          currentRotationSpeed += TurnTowardsPoint(target.Pos);
+        }
       }
 
       Pos += CurrentVelocity() * (float)gt.ElapsedGameTime.TotalSeconds;
       Rotation += CurrentRotation() * (float)gt.ElapsedGameTime.TotalSeconds;
 
-      currentVelocity = Vector2.Zero;
+      movementDirection = Vector2.Zero;
       currentRotationSpeed = 0;
       speedModifier = 1.0f;
       rotationModifier = 1.0f;
@@ -96,15 +122,15 @@ namespace Planet
 
     protected virtual Vector2 CurrentVelocity()
     {
-      if (currentVelocity != Vector2.Zero && !dashing)
+      if (movementDirection != Vector2.Zero && !dashing)
       {
         //float maxSpeed = MathHelper.Clamp(currentVelocity.Length(), 0, baseSpeed);
-        currentVelocity.Normalize();
-        currentVelocity = currentVelocity * baseSpeed * speedModifier;
+        movementDirection.Normalize();
+        movementDirection = movementDirection * baseSpeed * speedModifier;
       }
-      currentVelocity += drift * speedModifier;
+      movementDirection += drift * speedModifier;
       drift *= 0.95f;
-      return currentVelocity;
+      return movementDirection;
     }
 
     protected virtual float CurrentRotation()
@@ -126,7 +152,7 @@ namespace Planet
     public virtual void Fire4()
     {
       dashing = true;
-      Vector2 d = currentVelocity;
+      Vector2 d = movementDirection;
       if (d != Vector2.Zero)
         d.Normalize();
       else
@@ -151,7 +177,7 @@ namespace Planet
     }
     public void Move(Vector2 direction)
     {
-      currentVelocity += direction;
+      movementDirection += direction;
     }
     public float TurnTowardsPoint(Vector2 point)
     {
@@ -164,6 +190,8 @@ namespace Planet
       // Calculate angle to target and use it to lerp rotationspeed. Lerping rotation->desiredAngle does not wrap properly.
       float angleToTarget = desiredAngle - Rotation;
       angleToTarget = MathHelper.WrapAngle(angleToTarget);
+      if (Math.Abs(angleToTarget * 60) < rotationSpeed)
+        return angleToTarget * 60;
 
       return MathHelper.Lerp(0, angleToTarget, rotationSpeed);
     }

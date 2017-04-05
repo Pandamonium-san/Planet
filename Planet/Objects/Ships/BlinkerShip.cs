@@ -30,7 +30,7 @@ namespace Planet
 
     public override void Fire2()
     {
-      Vector2 dir = currentVelocity;
+      Vector2 dir = movementDirection;
       if (dir != Vector2.Zero)
         dir.Normalize();
       else

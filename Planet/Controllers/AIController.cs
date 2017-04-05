@@ -15,7 +15,7 @@ namespace Planet
     public AIController(World world) : base(null, world)
     {
       commands = new List<Command>();
-      AddCommand(CommandType.SetVelocity, -1000, 0, 0, 1);
+      AddCommand(CommandType.SetVelocity, -10, 0, 0, 1);
       AddCommand(CommandType.AddVelocity, 5, 5, 0, 200);
       AddCommand(CommandType.AddVelocity, 5, -5, 200, 400);
       AddCommand(CommandType.AddVelocity, -5, -5, 400, 600);

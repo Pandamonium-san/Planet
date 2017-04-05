@@ -17,6 +17,7 @@ namespace Planet
       this.width = width;
       this.range = range;
       this.canPierce = canPierce;
+      desc.projSpeed = 10000;
     }
     protected override void CreateBullet()
     {
