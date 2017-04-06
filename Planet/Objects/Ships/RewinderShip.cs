@@ -33,23 +33,28 @@ namespace Planet
       wpn.Name = "Weapon1";
       weapons.Add(wpn);
 
-      desc = new WpnDesc(1, 60, 700, 4, 0, 0, 0, 60*6, 90, 60*6/360, 0, 1, true); // spinny laser thing
+      desc = new WpnDesc(1, 30, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 3);           //normal laser
+      Weapon wpn2 = new Weapon(this, world, desc);
+      wpn2.SetMuzzle(new Vector2(0, -30));
+      wpn2.Name = "Line";
+      weapons.Add(wpn2);
+
       WHitScan hitscan = new WHitScan(this, world, desc, 10, true);
       hitscan.SetMuzzle(new Vector2(0, -20));
       hitscan.Name = "Laser";
       weapons.Add(hitscan);
 
-      Weapon wpn2;
-      wpn2 = new CycloneGun(this, world);
+      Weapon wpn3;
+      wpn3 = new CycloneGun(this, world);
       //wpn2 = new ExplodeGun(this, world);
       //wpn2 = new TurretGun(this, world);
       //wpn2 = new LightningGun(this, world, 2);
-      wpn2.SetMuzzle(new Vector2(0, -30));
-      wpn2.Name = "Cyclone";
-      weapons.Add(wpn2);
-      Weapon wpn3 = new TurretGun(this, world);
-      wpn3.Name = "Turret";
+      wpn3.SetMuzzle(new Vector2(0, -30));
+      wpn3.Name = "Cyclone";
       weapons.Add(wpn3);
+      Weapon wpn4 = new TurretGun(this, world);
+      wpn4.Name = "Turret";
+      weapons.Add(wpn4);
 
       maxHealth = 1000;
       currentHealth = maxHealth;

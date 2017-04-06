@@ -18,6 +18,8 @@ namespace Planet
 
   public class GameObject : Transform
   {
+    public Vector2 Forward { get { return Utility.AngleToVector2(Rotation); } }
+
     // drawing
     protected Texture2D tex;
     public Vector2 origin;

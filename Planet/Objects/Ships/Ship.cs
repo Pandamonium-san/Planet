@@ -13,16 +13,18 @@ namespace Planet
 
     protected GameObject target;
     protected Vector2 acceleration;
+    protected Vector2 velocity;
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
     protected float baseSpeed = 400;
     protected float rotationSpeed = 5;
+    protected bool dashing;
+    protected bool leadShots;
 
     protected List<Weapon> weapons;
     protected int currentWeapon;
     protected Timer damageTimer;
 
-    protected bool dashing;
     public bool restrictToScreen;
 
     public float fireRateModifier = 1.0f;
@@ -46,56 +48,34 @@ namespace Planet
     protected override void DoUpdate(GameTime gt)
     {
       if (target == null || !target.isActive)
-      {
         target = AcquireTarget();
-        if (target == null)
-          currentRotationSpeed += TurnTowardsPoint(Pos + movementDirection);
-      }
+      if (target == null || dashing)
+        currentRotationSpeed += TurnTowards(Pos + movementDirection);
       else if (!dashing)
       {
-        if (target is Ship && this is RewinderShip)
-        {
-          //code for leading shots
-          Ship t = (Ship)target;
-          Vector2 AB = t.Pos - Pos;
-          AB.Normalize();
-          Vector2 u = t.acceleration - movementDirection * baseSpeed * speedModifier * (float)gt.ElapsedGameTime.TotalSeconds;
-          Vector2 uj = Vector2.Dot(AB, u) * AB;
-          Vector2 ui = u - uj;
-          float vLenSq = (float)Math.Pow(weapons[currentWeapon].Desc.projSpeed, 2);
-          Vector2 vi = ui;
-          float viLenSq = vi.LengthSquared();
-          float vjLenSq = vLenSq - viLenSq;
-          float vjLen = (float)Math.Sqrt(vLenSq - viLenSq); //NaN if vjLenSq is negative
-          Vector2 vj = AB * vjLen;
-          Vector2 v = vi + vj;
-          if (vjLenSq < 0)
-            v = t.Pos + u;
-          currentRotationSpeed += TurnTowardsPoint(Pos + v);
-        }
-        else
-        {
-          currentRotationSpeed += TurnTowardsPoint(target.Pos);
-        }
+        if(layer != Layer.ENEMY_SHIP)
+          LeadShot((Ship)target);
       }
 
-      Pos += CurrentVelocity() * (float)gt.ElapsedGameTime.TotalSeconds;
-      Rotation += CurrentRotation() * (float)gt.ElapsedGameTime.TotalSeconds;
+      velocity = acceleration * speedModifier;
+      if (!dashing)
+        velocity += movementDirection * baseSpeed * speedModifier;
+
+      Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+      Rotation += currentRotationSpeed * rotationModifier * (float)gt.ElapsedGameTime.TotalSeconds;
 
       movementDirection = Vector2.Zero;
       currentRotationSpeed = 0;
       speedModifier = 1.0f;
       rotationModifier = 1.0f;
       dashing = false;
-
-
-      foreach (Weapon wpn in weapons)
-      {
-        wpn.Update(gt);
-      }
+      acceleration *= 0.95f;
 
       if (restrictToScreen)
         RestrictToScreen();
+
+      foreach (Weapon wpn in weapons)
+        wpn.Update(gt);
 
       // flash white when damaged
       if (damageTimer.counting)
@@ -105,7 +85,6 @@ namespace Planet
       }
       base.DoUpdate(gt);
     }
-
     public virtual void Fire1()
     {
       CurrentWeapon.Fire();
@@ -120,22 +99,18 @@ namespace Planet
     public virtual void Dash()
     {
       dashing = true;
-      Vector2 d = movementDirection;
-      if (d != Vector2.Zero)
-        d.Normalize();
-      else
-        d = Forward();
-      if (acceleration.Length() < baseSpeed * 1.5f)
-        Rotation = Utility.Vector2ToAngle(d);
-      acceleration = Forward() * baseSpeed * 2;
-      currentRotationSpeed += TurnTowardsPoint(Pos + d);
       rotationModifier = 0.3f;
+      Vector2 d = movementDirection;
+      if (d == Vector2.Zero)
+        d = Forward;
+      if (acceleration.Length() < baseSpeed * 1.5f) // Turn instantly when dash is initiated
+        Rotation = Utility.Vector2ToAngle(d);
+      acceleration = Forward * baseSpeed * 2;
     }
     public virtual void Aim()
     {
       target = AcquireTarget();
     }
-
     protected virtual GameObject AcquireTarget()
     {
       List<GameObject> go = world.GetGameObjects();
@@ -153,23 +128,6 @@ namespace Planet
         }
       }
       return nearest;
-    }
-
-    protected virtual Vector2 CurrentVelocity()
-    {
-      if (movementDirection != Vector2.Zero && !dashing)
-      {
-        //float maxSpeed = MathHelper.Clamp(currentVelocity.Length(), 0, baseSpeed);
-        movementDirection.Normalize();
-        movementDirection = movementDirection * baseSpeed * speedModifier;
-      }
-      movementDirection += acceleration * speedModifier;
-      acceleration *= 0.95f;
-      return movementDirection;
-    }
-    protected virtual float CurrentRotation()
-    {
-      return currentRotationSpeed * rotationModifier;
     }
     public override void DoCollision(GameObject other)
     {
@@ -191,7 +149,7 @@ namespace Planet
     {
       movementDirection += direction;
     }
-    public float TurnTowardsPoint(Vector2 point)
+    public float TurnTowards(Vector2 point)
     {
       Vector2 direction = point - Pos;
       Rotation = MathHelper.WrapAngle(Rotation);
@@ -199,10 +157,9 @@ namespace Planet
       float desiredAngle = Utility.Vector2ToAngle(direction);
       desiredAngle = MathHelper.WrapAngle(desiredAngle);
 
-      // Calculate angle to target and use it to lerp rotationspeed. Lerping rotation->desiredAngle does not wrap properly.
       float angleToTarget = desiredAngle - Rotation;
       angleToTarget = MathHelper.WrapAngle(angleToTarget);
-      if (Math.Abs(angleToTarget * 60) < rotationSpeed)
+      if (Math.Abs(angleToTarget * 60) < rotationSpeed) //turn fully if rotationspeed higher than difference
         return angleToTarget * 60;
 
       return MathHelper.Lerp(0, angleToTarget, rotationSpeed);
@@ -214,16 +171,32 @@ namespace Planet
         Die();
       damageTimer.Start();
     }
+    protected void LeadShot(Ship target)
+    {
+      //code for leading shots
+      Ship t = (Ship)target;
+      Vector2 AB = t.Pos - Pos;
+      AB.Normalize();
+      Vector2 u = t.velocity;
+      Vector2 uj = Vector2.Dot(AB, u) * AB;
+      Vector2 ui = u - uj;
+      float vLenSq = (float)Math.Pow(weapons[currentWeapon].Desc.projSpeed, 2);
+      Vector2 vi = ui;
+      float viLenSq = vi.LengthSquared();
+      float vjLenSq = vLenSq - viLenSq;
+      float vjLen = (float)Math.Sqrt(vLenSq - viLenSq); //NaN if vjLenSq is negative
+      Vector2 vj = AB * vjLen;
+      Vector2 v = vi + vj;
+      if (vjLenSq < 0)
+        v = t.Pos + u;
+      currentRotationSpeed += TurnTowards(Pos + v);
+    }
     private void RestrictToScreen()
     {
       Pos = new Vector2(
         MathHelper.Clamp(Pos.X, 0, Game1.ScreenWidth),
         MathHelper.Clamp(Pos.Y, 0, Game1.ScreenHeight)
         );
-    }
-    public Vector2 Forward()
-    {
-      return Utility.AngleToVector2(Rotation);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {

@@ -30,7 +30,7 @@ namespace Planet
         world,
         null,
         ship.Pos,
-        ship.Forward(),
+        ship.Forward,
         desc.projSpeed,
         0,
         null,

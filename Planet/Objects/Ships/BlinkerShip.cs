@@ -34,7 +34,7 @@ namespace Planet
       if (dir != Vector2.Zero)
         dir.Normalize();
       else
-        dir = Forward();
+        dir = Forward;
       Pos += dir * 100.0f;
     }
 

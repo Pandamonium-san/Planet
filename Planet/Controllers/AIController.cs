@@ -41,7 +41,7 @@ namespace Planet
         if (Utility.Distance(ship.Pos, target.Pos) >= 200)
           //MoveTowards(new Vector2(300, 300));
           //MoveTowards(target.Pos);
-          ship.TurnTowardsPoint(target.Pos);
+          ship.TurnTowards(target.Pos);
         foreach (Command command in commands)
         {
           if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
@@ -94,10 +94,10 @@ namespace Planet
           ship.Fire1();
           break;
         case CommandType.LookAtPoint:
-          ship.TurnTowardsPoint(new Vector2(c.x, c.y));
+          ship.TurnTowards(new Vector2(c.x, c.y));
           break;
         case CommandType.LookAtTarget:
-          ship.TurnTowardsPoint(target.Pos);
+          ship.TurnTowards(target.Pos);
           break;
         case CommandType.Rotate:
           ship.Rotation += c.x;
