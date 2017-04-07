@@ -28,7 +28,7 @@ namespace Planet
       SetBinding(PlayerInput.Left, "Move", -Vector2.UnitX, true);
 
       SetBinding(PlayerInput.Yellow, "Fire1", null, true);
-      SetBinding(PlayerInput.B, "Fire2", null, true);
+      SetBinding(PlayerInput.B, "Fire2", null, false);
       SetBinding(PlayerInput.Blue, "Aim", null, false);
       SetBinding(PlayerInput.Red, "Dash", null, true);
       SetBinding(PlayerInput.A, "Switch", null, false);

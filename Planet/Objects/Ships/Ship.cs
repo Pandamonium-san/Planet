@@ -53,7 +53,7 @@ namespace Planet
         currentRotationSpeed += TurnTowards(Pos + movementDirection);
       else if (!dashing)
       {
-        if(layer != Layer.ENEMY_SHIP)
+        if (layer != Layer.ENEMY_SHIP)
           LeadShot((Ship)target);
       }
 
@@ -99,6 +99,7 @@ namespace Planet
     public virtual void Dash()
     {
       dashing = true;
+      CurrentWeapon.ResetShootTimer();  // disable fire while dashing
       rotationModifier = 0.3f;
       Vector2 d = movementDirection;
       if (d == Vector2.Zero)

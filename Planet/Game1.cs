@@ -6,11 +6,8 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
-   *  x FIX SPRITESHEET / SPRITE REGIONS
-   *  x Change art 
-   *  x Fix Hitscan
-   *  x Proper scaling
-   *  x Make collision checking more efficient (found issue, caused by Transform class using complex gets several times each frame)
+   *  - WEAPON SWITCHING
+   *  - RESTRUCTURE SHIP CLASSES
    *  - Enemies
    *      x Spawn logic <-- make spawns stay the same after rewinding (might consider reworking how rewind works code wise)
    *          - Waves/Levels
@@ -35,7 +32,8 @@ namespace Planet
    *              x Thicker lasers?
    *  - Ships
    *      - Rewinder
-   *          - Rewind everything, timers, world timers, everything (base everything on global time object?)
+   *          //CUT(Too resource-intensive) - Rewind everything, timers, world timers, everything (base everything on global time object?)
+   *          - Rewinds only self
    *          - Manual save state (rewind to this point later)
    *          - Shadows
    *      - Possessor
@@ -48,7 +46,6 @@ namespace Planet
    *      - Menu controller class
    *  - Title screen
    *  - Camera?
-   *  - Show hitbox while aiming?
    *  - Destructible projectiles?
    *  - Effects/Shaders?
    */
@@ -74,6 +71,7 @@ namespace Planet
     private Player p1, p2;
     private AIController ai;
     private RewinderShip ship;
+    private BlinkerShip ship2;
     public static Ship s;
 
     //debug variables
@@ -118,6 +116,8 @@ namespace Planet
       //go = new BlinkerShip(new Vector2(500, 500));
       ship = new RewinderShip(new Vector2(500, 500), world);
       world.PostGameObj(ship);
+      ship2 = new BlinkerShip(new Vector2(1000, 500), world);
+      world.PostGameObj(ship2);
 
       s = new PumpkinShip(new Vector2(800, 500), world);
       ai = new AIController(s, world);
@@ -126,6 +126,7 @@ namespace Planet
       p1 = new Player(PlayerIndex.One, world);
       p2 = new Player(PlayerIndex.Two, world);
       p1.SetShip(ship);
+      p2.SetShip(ship2);
 
     }
 
@@ -153,6 +154,7 @@ namespace Planet
       runningSlowly = gameTime.IsRunningSlowly;
 
       p1.Update(gameTime);
+      p2.Update(gameTime);
       ai.Update(gameTime);
       world.Update(gameTime);
       /*

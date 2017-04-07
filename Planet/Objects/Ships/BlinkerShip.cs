@@ -8,26 +8,26 @@ namespace Planet
 {
   class BlinkerShip : Ship
   {
-    Weapon wpn;
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world)
     {
-      SetTexture(AssetManager.GetTexture("Parasite"));
+      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Ship1"));
       SetLayer(Layer.PLAYER_SHIP);
       rotationSpeed = 15;
 
-      wpn = new CycloneGun(this, world);
-    }
-    protected override void DoUpdate(GameTime gt)
-    {
-      wpn.Update(gt);
-      base.DoUpdate(gt);
-    }
-    public override void Fire1()
-    {
-      wpn.Fire();
-    }
+      maxHealth = 1000;
+      currentHealth = maxHealth;
 
+      WpnDesc desc = new WpnDesc(20, 1, 700, 12, 5, 75, 0, 1, 0, 0, 0, 10);              // burst shotgun
+      Weapon wpn = new Weapon(this, world, desc);
+      wpn.Name = "Shotgun2";
+      weapons.Add(wpn);
+
+      desc = new WpnDesc(5, 60, 500, 8, 0, 50, 1, 30, 360/8f, 360/30f, 0, 0.2f);                 // spinny projectile thing
+      wpn = new Weapon(this, world, desc);
+      wpn.Name = "Spin";
+      weapons.Add(wpn);
+    }
     public override void Fire2()
     {
       Vector2 dir = movementDirection;
@@ -37,12 +37,5 @@ namespace Planet
         dir = Forward;
       Pos += dir * 100.0f;
     }
-
-    public override void Switch()
-    {
-
-    }
-
-
   }
 }
