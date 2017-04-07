@@ -9,7 +9,7 @@ namespace Planet
 {
   public class AIController : ShipController
   {
-    protected GameObject target;
+    protected GameObject t;
     protected List<Command> commands = new List<Command>();
 
     public AIController(World world) : base(null, world)
@@ -35,13 +35,13 @@ namespace Planet
 
     protected override void DoUpdate(GameTime gt)
     {
-      target = FindNearestTarget();
-      if (target != null && target.isActive && target.Pos != ship.Pos)
+      t = FindNearestTarget();
+      if (t != null && t.isActive && t.Pos != ship.Pos)
       {
-        if (Utility.Distance(ship.Pos, target.Pos) >= 200)
+        if (Utility.Distance(ship.Pos, t.Pos) >= 200)
           //MoveTowards(new Vector2(300, 300));
           //MoveTowards(target.Pos);
-          ship.TurnTowards(target.Pos);
+          ship.TurnTowards(t.Pos);
         foreach (Command command in commands)
         {
           if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
@@ -97,7 +97,7 @@ namespace Planet
           ship.TurnTowards(new Vector2(c.x, c.y));
           break;
         case CommandType.LookAtTarget:
-          ship.TurnTowards(target.Pos);
+          ship.TurnTowards(t.Pos);
           break;
         case CommandType.Rotate:
           ship.Rotation += c.x;

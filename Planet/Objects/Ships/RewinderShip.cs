@@ -16,6 +16,9 @@ namespace Planet
     {
       //SetTexture(AssetManager.GetTexture("Ship1"));
       SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Ship2"));
+      SetTexture(AssetManager.GetTexture("enemyBlue2"));
+      Scale = .5f;
+      
       hitbox.localScale = 0.5f;
       origin += new Vector2(0, 2);
       SetLayer(Layer.PLAYER_SHIP);
@@ -53,7 +56,7 @@ namespace Planet
       wpn3.Name = "Cyclone";
       weapons.Add(wpn3);
       Weapon wpn4 = new TurretGun(this, world);
-      wpn4.Name = "Turret";
+      wpn4.Name = "Turret"; 
       weapons.Add(wpn4);
 
       maxHealth = 1000;

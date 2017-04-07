@@ -12,6 +12,7 @@ namespace Planet
     public double seconds { get; private set; }
     public double elapsedSeconds { get; private set; }
     public double Fraction { get { return elapsedSeconds / seconds; } }
+    public double Remaining { get { return seconds - elapsedSeconds; } }
 
     private Action action;
 

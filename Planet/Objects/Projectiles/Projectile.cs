@@ -30,13 +30,15 @@ namespace Planet
         GameObject instigator = null,
         float lifeTime = 3,
         Pattern pattern = null)
-        : base(pos, world)
+      : base(pos, world)
     {
       this.pattern = pattern;
 
       if (tex != null)
         this.SetTexture(tex);
       SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Pixel"));
+      SetTexture(AssetManager.GetTexture("laserBlue07"));
+      Scale = .5f;
       this.speed = speed;
       this.instigator = instigator;
       this.damage = damage;
@@ -58,13 +60,13 @@ namespace Planet
       {
         SetLayer(Layer.PLAYER_PROJECTILE);
         layerMask = Layer.ENEMY_SHIP;
-        color = Color.Red * 1f;
-        color = Color.SkyBlue;
+        color = Color.White;
       }
       else if (instigator.layer == Layer.ENEMY_SHIP)
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
         layerMask = (Layer.PLAYER_SHIP);
+        color = Color.Red;
       }
       layerDepth = 0.8f;
     }
@@ -72,6 +74,8 @@ namespace Planet
     protected override void DoUpdate(GameTime gt)
     {
       lifeTimer.Update(gt);
+      if (lifeTimer.Remaining < 0.5)  //Fade-out effect
+        alpha = (float)(0.25 + lifeTimer.Remaining / 0.5);
 
       if (IsOutsideScreen())
         Die();

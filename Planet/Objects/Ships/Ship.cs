@@ -49,12 +49,11 @@ namespace Planet
     {
       if (target == null || !target.isActive)
         target = AcquireTarget();
-      if (target == null || dashing)
+      if (movementDirection != Vector2.Zero && (target == null || dashing))
         currentRotationSpeed += TurnTowards(Pos + movementDirection);
-      else if (!dashing)
+      else if (!dashing && target != null)
       {
-        if (layer != Layer.ENEMY_SHIP)
-          LeadShot((Ship)target);
+        LeadShot((Ship)target);
       }
 
       velocity = acceleration * speedModifier;
@@ -69,7 +68,7 @@ namespace Planet
       speedModifier = 1.0f;
       rotationModifier = 1.0f;
       dashing = false;
-      acceleration *= 0.95f;
+      acceleration *= 0.90f;
 
       if (restrictToScreen)
         RestrictToScreen();
@@ -80,7 +79,8 @@ namespace Planet
       // flash white when damaged
       if (damageTimer.counting)
       {
-        color.A = (byte)MathHelper.Lerp(100, 250, (float)damageTimer.Fraction);
+        //color.A = (byte)MathHelper.Lerp(100, 250, (float)damageTimer.Fraction);
+        alpha = 0.5f + (float)damageTimer.Fraction * 0.5f;
         damageTimer.Update(gt);
       }
       base.DoUpdate(gt);
@@ -119,7 +119,7 @@ namespace Planet
       float nearestDistance = float.MaxValue;
       foreach (GameObject g in go)
       {
-        if (g.layer != Layer.ENEMY_SHIP || !g.isActive || g == target)
+        if (!(g is Ship) || g.layer == layer || !g.isActive || g == target)
           continue;
         float distance = Vector2.DistanceSquared(Pos, g.Pos);
         if (distance < nearestDistance)
@@ -208,7 +208,8 @@ namespace Planet
         Texture2D circle = AssetManager.GetTexture("Circle");
         spriteBatch.Draw(circle, target.Pos, null, Color.Red * 0.3f, 0.0f, new Vector2(circle.Width / 2, circle.Height / 2), 0.2f, SpriteEffects.None, 0.0f);
       }
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 20, Color.Green);
+      Text weaponText = new Text(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 30, Color.Green);
+      weaponText.Draw(spriteBatch);
     }
   }
 }

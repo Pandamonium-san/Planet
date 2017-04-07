@@ -20,8 +20,6 @@ namespace Planet
     {
       playerIndex = index;
       pc = new PlayerController(index, world);
-
-
     }
 
     public void Update(GameTime gt)
@@ -37,6 +35,10 @@ namespace Planet
       *     menu.Select();
       * }
       */
+    }
+    public void MenuUpdate(GameTime gt)
+    {
+
     }
 
     public void SetShip(Ship a)

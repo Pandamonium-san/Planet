@@ -18,12 +18,12 @@ namespace Planet
       maxHealth = 1000;
       currentHealth = maxHealth;
 
-      WpnDesc desc = new WpnDesc(20, 1, 700, 12, 5, 75, 0, 1, 0, 0, 0, 10);              // burst shotgun
+      WpnDesc desc = new WpnDesc(20, 1, 700, 12, 10, 100, 0, 1, 0, 0, 0, 1);              // burst shotgun
       Weapon wpn = new Weapon(this, world, desc);
       wpn.Name = "Shotgun2";
       weapons.Add(wpn);
 
-      desc = new WpnDesc(5, 60, 500, 8, 0, 50, 1, 30, 360/8f, 360/30f, 0, 0.2f);                 // spinny projectile thing
+      desc = new WpnDesc(5, 60, 500, 8, 10, 50, 1, 30, 360/8f, 360/30f, 0, 0.2f);                 // spinny projectile thing
       wpn = new Weapon(this, world, desc);
       wpn.Name = "Spin";
       weapons.Add(wpn);

@@ -40,6 +40,7 @@
     <Compile Include="Controllers\Command.cs" />
     <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
+    <Compile Include="UI\Menu.cs" />
     <Compile Include="Objects\Actor.cs" />
     <Compile Include="Controllers\AIController.cs" />
     <Compile Include="Controllers\ShipController.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Objects\Projectiles\Laser.cs" />
     <Compile Include="Objects\Projectiles\PHitScan.cs" />
     <Compile Include="Objects\Projectiles\PLightning.cs" />
+    <Compile Include="UI\Text.cs" />
     <Compile Include="Utility\DebugFunc.cs" />
     <Compile Include="Utility\FixedList.cs" />
     <Compile Include="Objects\Ships\BlinkerShip.cs" />

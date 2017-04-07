@@ -29,8 +29,11 @@ namespace Planet
       AddTexture("Laser", "laser");
       AddTexture("Sprites", "Planet_sprites");
       AddTexture("Circle", "Circle");
+      AddTexture("enemyBlue2", "enemyBlue2");
+      AddTexture("laserBlue07", "laserBlue07");
 
       AddFont("font1", "font1");
+      AddFont("titleFont", "titleFont");
 
       AddEffect("ColorChanger", "ColorChanger");
     }

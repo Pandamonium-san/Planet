@@ -50,6 +50,12 @@ namespace Planet
    *  - Effects/Shaders?
    */
 
+  public enum GameState
+  {
+    Menu,
+    Playing
+  }
+
   /// <summary>
   /// This is the main type for your game.
   /// </summary>
@@ -67,11 +73,14 @@ namespace Planet
     private FrameCounter fc = new FrameCounter();
     private bool runningSlowly;
 
-    public World world;
+    private GameState gameState;
+    private World world;
+    private Menu menu;
     private Player p1, p2;
     private AIController ai;
     private RewinderShip ship;
     private BlinkerShip ship2;
+
     public static Ship s;
 
     //debug variables
@@ -112,6 +121,7 @@ namespace Planet
 #endif
       AssetManager.LoadContent(Content);
       world = new World();
+      menu = new Menu();
 
       //go = new BlinkerShip(new Vector2(500, 500));
       ship = new RewinderShip(new Vector2(500, 500), world);
@@ -127,7 +137,6 @@ namespace Planet
       p2 = new Player(PlayerIndex.Two, world);
       p1.SetShip(ship);
       p2.SetShip(ship2);
-
     }
 
     /// <summary>
@@ -152,11 +161,26 @@ namespace Planet
       ++frames;
       collisionChecksPerFrame = 0;
       runningSlowly = gameTime.IsRunningSlowly;
-
-      p1.Update(gameTime);
-      p2.Update(gameTime);
-      ai.Update(gameTime);
-      world.Update(gameTime);
+      if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true))
+      {
+        gameState = (GameState)(((int)gameState + 1) % 2);
+      }
+      switch (gameState)
+      {
+        case GameState.Menu:
+          menu.Update(gameTime);
+          p1.MenuUpdate(gameTime);
+          p2.MenuUpdate(gameTime);
+          break;
+        case GameState.Playing:
+          p1.Update(gameTime);
+          p2.Update(gameTime);
+          ai.Update(gameTime);
+          world.Update(gameTime);
+          break;
+        default:
+          break;
+      }
       /*
        * p1.setmenu(menu);
        * menu = new Menu(p1, p2);
@@ -173,10 +197,20 @@ namespace Planet
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-      GraphicsDevice.Clear(Color.CornflowerBlue);
+      GraphicsDevice.Clear(Color.SlateGray);
       fc.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-      world.Draw(spriteBatch);
+      switch (gameState)
+      {
+        case GameState.Menu:
+          menu.Draw(spriteBatch);
+          break;
+        case GameState.Playing:
+          world.Draw(spriteBatch);
+          break;
+        default:
+          break;
+      }
 
       // draw debug info
       spriteBatch.Begin();
@@ -190,6 +224,7 @@ namespace Planet
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "World frames: " + world.Frames.ToString(), new Vector2(0, 80), Color.Red);
+      spriteBatch.DrawString(AssetManager.GetFont("font1"), "Game State: " + gameState.ToString(), new Vector2(300, 0), Color.Red);
       spriteBatch.Draw(AssetManager.GetTexture("Fill"), new Rectangle((int)intersectPoint.X, (int)intersectPoint.Y, 10, 10), Color.Red);
       spriteBatch.End();
 
