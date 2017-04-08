@@ -7,13 +7,10 @@ using System.Text;
 
 namespace Planet
 {
-  class Text : Transform
+  class Text : Sprite
   {
-    public Vector2 origin;
     public SpriteFont font;
     public string text;
-    public Color color;
-    public float layerDepth;
 
     public Text(SpriteFont font, string text, Vector2 pos, Color color)
       : base(pos)
@@ -24,7 +21,7 @@ namespace Planet
       origin = font.MeasureString(text) / 2f;
       layerDepth = 0.0f;
     }
-    public void Draw(SpriteBatch sb)
+    public override void Draw(SpriteBatch sb)
     {
       sb.DrawString(font, text, Pos, color, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
     }

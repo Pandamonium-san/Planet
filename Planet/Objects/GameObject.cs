@@ -16,17 +16,10 @@ namespace Planet
     ENEMY_PROJECTILE = 0x00000008
   }
 
-  public class GameObject : Transform
+  public class GameObject : Sprite
   {
     public Vector2 Forward { get { return Utility.AngleToVector2(Rotation); } }
 
-    // drawing
-    protected Texture2D tex;
-    public Vector2 origin;
-    public Rectangle spriteRec;
-    public Color color = Color.White;
-    public float alpha = 1f;
-    public float layerDepth = 0f;
     // collision
     public Hitbox hitbox;
     public Layer layer { get; private set; }
@@ -38,7 +31,6 @@ namespace Planet
     public bool disposed { get; set; }               // if true, object will be deleted at the end of the frame
     public bool isActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
-    public bool Visible { get; set; }
     // debug
     protected bool drawHitbox = false;
 
@@ -48,7 +40,6 @@ namespace Planet
       this.world = world;
       Scale = 4.0f;
       isActive = true;
-      Visible = true;
     }
     public void Update(GameTime gt)
     {
@@ -67,18 +58,9 @@ namespace Planet
     protected virtual void DoUpdate(GameTime gt)
     {
     }
-    protected void SetTexture(Texture2D tex)
+    protected override void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
     {
-      this.tex = tex;
-      spriteRec = new Rectangle(0, 0, tex.Width, tex.Height);
-      origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
-      hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
-    }
-    protected void SetTexture(Texture2D tex, Rectangle spriteRec)
-    {
-      this.tex = tex;
-      this.spriteRec = spriteRec;
-      origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
+      base.SetTexture(tex, sourceRec);
       hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
     }
     public virtual void Die()
@@ -126,15 +108,12 @@ namespace Planet
           break;
       }
     }
-    public virtual void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
-      if (!Visible)
-        return;
       if (tex != null && isActive)
       {
-        spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+        base.Draw(spriteBatch);
 
-        // show hitboxes
         if (drawHitbox)
           hitbox.Draw(spriteBatch);
       }

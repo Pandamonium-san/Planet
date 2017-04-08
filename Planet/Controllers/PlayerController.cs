@@ -57,7 +57,7 @@ namespace Planet
       bindings.Add(new KeyBinding(input, name, new object[] { args }, rapidFire));
     }
   }
-  internal struct KeyBinding
+  struct KeyBinding
   {
     public PlayerInput input;
     public string name;

@@ -31,9 +31,11 @@ namespace Planet
       AddTexture("Circle", "Circle");
       AddTexture("enemyBlue2", "enemyBlue2");
       AddTexture("laserBlue07", "laserBlue07");
+      AddTexture("blue_button04", "blue_button04");
 
       AddFont("font1", "font1");
       AddFont("titleFont", "titleFont");
+      AddFont("uiFont", "uiFont");
 
       AddEffect("ColorChanger", "ColorChanger");
     }

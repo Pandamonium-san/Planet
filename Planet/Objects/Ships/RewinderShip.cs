@@ -14,8 +14,7 @@ namespace Planet
     public RewinderShip(Vector2 pos, World world)
         : base(pos, world)
     {
-      //SetTexture(AssetManager.GetTexture("Ship1"));
-      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Ship2"));
+      leadShots = true;
       SetTexture(AssetManager.GetTexture("enemyBlue2"));
       Scale = .5f;
       

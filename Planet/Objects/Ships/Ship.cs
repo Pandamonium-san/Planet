@@ -38,6 +38,7 @@ namespace Planet
       : base(pos, world)
     {
       weapons = new List<Weapon>();
+      currentWeapon = 0;
       this.SetTexture(AssetManager.GetTexture("Ship1"));
       maxHealth = 10;
       currentHealth = maxHealth;
@@ -53,7 +54,10 @@ namespace Planet
         currentRotationSpeed += TurnTowards(Pos + movementDirection);
       else if (!dashing && target != null)
       {
-        LeadShot((Ship)target);
+        if (leadShots)
+          LeadShot((Ship)target);
+        else
+          currentRotationSpeed += TurnTowards(target.Pos);
       }
 
       velocity = acceleration * speedModifier;
@@ -189,7 +193,7 @@ namespace Planet
       Vector2 vj = AB * vjLen;
       Vector2 v = vi + vj;
       if (vjLenSq < 0)
-        v = t.Pos + u;
+        v = t.Pos + u - Pos;
       currentRotationSpeed += TurnTowards(Pos + v);
     }
     private void RestrictToScreen()
@@ -203,6 +207,8 @@ namespace Planet
     {
       base.Draw(spriteBatch);
 
+      if (layer != Layer.PLAYER_SHIP)
+        return;
       if (target != null)
       {
         Texture2D circle = AssetManager.GetTexture("Circle");
