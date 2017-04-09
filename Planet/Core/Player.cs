@@ -12,14 +12,14 @@ namespace Planet
   /// </summary>
   public class Player
   {
-    private PlayerIndex playerIndex;
-    private PlayerController pc;
-    private Ship ship;
+    public PlayerIndex Index { get; private set; }
+    public Ship Ship { get; private set; }
 
-    public Player(PlayerIndex index, World world)
+    private PlayerShipController pc;
+
+    public Player(PlayerIndex index)
     {
-      playerIndex = index;
-      pc = new PlayerController(index, world);
+      Index = index;
     }
 
     public void Update(GameTime gt)
@@ -41,16 +41,14 @@ namespace Planet
 
     }
 
-    public void SetShip(Ship a)
+    public void SetShip(Ship ship)
     {
-      ship = a;
-      pc.SetShip(a);
-      a.restrictToScreen = true;
-    }
-
-    public Ship GetShip()
-    {
-      return ship;
+      this.Ship = ship;
+      if (pc == null)
+        pc = new PlayerShipController(Index, ship);
+      else
+        pc.Ship = ship;
+      ship.restrictToScreen = true;
     }
   }
 }

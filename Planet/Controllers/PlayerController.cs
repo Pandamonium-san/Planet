@@ -10,67 +10,81 @@ namespace Planet
   /// <summary>
   /// Handles bindings for players and controls ships.
   /// </summary>
-  class PlayerController : ShipController
+  abstract class PlayerController
   {
     private PlayerIndex index;
     private List<KeyBinding> bindings;
 
-    public PlayerController(PlayerIndex index, World world, Ship ship = null)
-        : base(ship, world)
+    public PlayerController(PlayerIndex index)
     {
-      this.ship = ship;
       this.index = index;
       bindings = new List<KeyBinding>();
-
-      SetBinding(PlayerInput.Up, "Move", -Vector2.UnitY, true);
-      SetBinding(PlayerInput.Down, "Move", Vector2.UnitY, true);
-      SetBinding(PlayerInput.Right, "Move", Vector2.UnitX, true);
-      SetBinding(PlayerInput.Left, "Move", -Vector2.UnitX, true);
-
-      SetBinding(PlayerInput.Yellow, "Fire1", null, true);
-      SetBinding(PlayerInput.B, "Fire2", null, false);
-      SetBinding(PlayerInput.Blue, "Aim", null, false);
-      SetBinding(PlayerInput.Red, "Dash", null, true);
-      SetBinding(PlayerInput.A, "Switch", null, false);
     }
-
-    protected override void DoUpdate(GameTime gt)
+    public void Update(GameTime gt)
     {
       foreach (KeyBinding kb in bindings)
       {
-        if (InputHandler.IsButtonDown(index, kb.input, false))
-        {
-          if (kb.rapidFire)
-            ship.Invoke(kb.name, kb.args);
-          else if (InputHandler.IsButtonUp(index, kb.input, true))
-            ship.Invoke(kb.name, kb.args);
-        }
+        kb.Update();
       }
     }
-
-    public void SetBinding(PlayerInput input, string name, object[] args = null, bool rapidFire = false)
+    public void SetBinding(PlayerInput input, Action action, InputType inputType)
     {
-      bindings.Add(new KeyBinding(input, name, args, rapidFire));
+      KeyBinding kb = bindings.Find(x => x.input == input);
+      if (kb == null)
+        bindings.Add(new KeyBinding(this.index, input, action, inputType));
+      else
+        kb = new KeyBinding(this.index, input, action, inputType);
     }
-    public void SetBinding(PlayerInput input, string name, object args, bool rapidFire = false)
+
+    class KeyBinding
     {
-      bindings.Add(new KeyBinding(input, name, new object[] { args }, rapidFire));
+      public PlayerInput input;
+      PlayerIndex index;
+      Action action;
+      InputType type;
+
+      public KeyBinding(PlayerIndex index, PlayerInput input, Action action, InputType inputType)
+      {
+        this.index = index;
+        this.input = input;
+        this.action = action;
+        this.type = inputType;
+      }
+      public void Update()
+      {
+        if (Activated())
+          action.Invoke();
+      }
+      private bool Activated()
+      {
+        switch (type)
+        {
+          case InputType.Pressed:
+            return InputHandler.IsButtonDown(index, input, false) && InputHandler.IsButtonUp(index, input, true);
+          case InputType.Released:
+            return InputHandler.IsButtonUp(index, input, false) && InputHandler.IsButtonDown(index, input, true);
+          case InputType.Down:
+            return InputHandler.IsButtonDown(index, input, false);
+          case InputType.Up:
+            return InputHandler.IsButtonUp(index, input, false);
+        }
+        return false;
+      }
     }
   }
-  struct KeyBinding
-  {
-    public PlayerInput input;
-    public string name;
-    public bool rapidFire;
-    public object[] args;
-
-    public KeyBinding(PlayerInput input, string name, object[] args, bool rapidFire)
-    {
-      this.input = input;
-      this.name = name;
-      this.rapidFire = rapidFire;
-      this.args = args;
-    }
+  /// <summary>
+  /// Defines what type of interaction with the key will activate the binding.
+  /// </summary>
+  public enum InputType 
+  { 
+    /// <summary> Key is pressed from a released state </summary>
+    Pressed,
+    /// <summary> Key is released from a pressed state </summary>
+    Released,
+    /// <summary> Key is pressed/held </summary>
+    Down,
+    /// <summary> Key is released </summary>
+    Up
   }
 
 }

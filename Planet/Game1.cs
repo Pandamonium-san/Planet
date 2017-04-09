@@ -133,8 +133,8 @@ namespace Planet
       ai = new AIController(s, world);
       world.PostGameObj(s);
 
-      p1 = new Player(PlayerIndex.One, world);
-      p2 = new Player(PlayerIndex.Two, world);
+      p1 = new Player(PlayerIndex.One);
+      p2 = new Player(PlayerIndex.Two);
       p1.SetShip(ship);
       p2.SetShip(ship2);
     }
