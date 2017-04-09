@@ -40,8 +40,6 @@ namespace Planet
       //{
       //  enemyManager.CreateEnemy(new PumpkinShip(new Vector2(700, 100+i*10), this), new AIController(this));
       //}
-      AIController aic = new AIController(this);
-      aic.AddCommand(CommandType.Fire, 0, 0, 0, 10000);
     }
 
     public void Update(GameTime gt)

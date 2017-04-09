@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 namespace Planet
 {
   /// <summary>
-  /// Handles bindings for players and controls ships.
+  /// Handles bindings for players
   /// </summary>
   abstract class PlayerController
   {

@@ -6,47 +6,29 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
-   *  - WEAPON SWITCHING
-   *  - RESTRUCTURE SHIP CLASSES
+   *  - Menus
+   *      - Menu controller class
+   *  - Game states
+   *  - UI
+   *  - Score
    *  - Enemies
-   *      x Spawn logic <-- make spawns stay the same after rewinding (might consider reworking how rewind works code wise)
-   *          - Waves/Levels
-   *          x Timing
+   *      - Waves/Levels
    *      - Enemy types
-   *          - Weapons/Stats
-   *          - Behaviors
    *      - Enemy AI
-   *          x Command queue
-   *          x Targeting/Firing
-   *          - Flight patterns
-   *          - Bullet patterns
    *  - Weapons
-   *      - Homing missiles
-   *      - Explosions?
-   *      - Projectile settings?
-   *      - Projectile paths/patterns
+   *      - Missiles/destructible projectiles
+   *      - Explosions
    *      - Lasers
-   *          x Laser sprites
-   *          x Ray-Box detection
-   *              x Hitscan weapons?
-   *              x Thicker lasers?
    *  - Ships
    *      - Rewinder
-   *          //CUT(Too resource-intensive) - Rewind everything, timers, world timers, everything (base everything on global time object?)
-   *          - Rewinds only self
+   *          - Rewinds self
    *          - Manual save state (rewind to this point later)
    *          - Shadows
    *      - Possessor
+   *          - Possess enemy ship with improved weaponry
    *      - Blinker
-   *  - Game states
-   *  - UI
    *  - Stage design
-   *  - Score
-   *  - Menus
-   *      - Menu controller class
-   *  - Title screen
    *  - Camera?
-   *  - Destructible projectiles?
    *  - Effects/Shaders?
    */
 
@@ -123,7 +105,6 @@ namespace Planet
       world = new World();
       menu = new Menu();
 
-      //go = new BlinkerShip(new Vector2(500, 500));
       ship = new RewinderShip(new Vector2(500, 500), world);
       world.PostGameObj(ship);
       ship2 = new BlinkerShip(new Vector2(1000, 500), world);

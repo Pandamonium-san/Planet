@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Planet
 {
+  /// <summary>
+  /// Sets bindings for, and controls the ship for the player
+  /// </summary>
   class PlayerShipController : PlayerController
   {
     public Ship Ship { get; set; }
