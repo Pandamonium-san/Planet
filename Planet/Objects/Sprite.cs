@@ -23,6 +23,22 @@ namespace Planet
       alpha = 1f;
       layerDepth = 0f;
     }
+    protected virtual void SetTexture(string tName, Rectangle? sourceRec = null)
+    {
+      try
+      {
+        this.tex = AssetManager.GetTexture(tName);
+      }
+      catch
+      {
+        throw;
+      }
+      if (sourceRec != null)
+        spriteRec = (Rectangle)sourceRec;
+      else
+        spriteRec = new Rectangle(0, 0, tex.Width, tex.Height);
+      origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
+    }
     protected virtual void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
     {
       this.tex = tex;

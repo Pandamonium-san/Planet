@@ -15,7 +15,7 @@ namespace Planet
         : base(pos, world)
     {
       leadShots = true;
-      SetTexture(AssetManager.GetTexture("enemyBlue2"));
+      SetTexture("enemyBlue5");
       Scale = .5f;
       
       hitbox.localScale = 0.5f;

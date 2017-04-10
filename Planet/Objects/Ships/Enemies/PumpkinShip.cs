@@ -13,7 +13,7 @@ namespace Planet
         : base(pos, world)
     {
       //SetTexture(AssetManager.GetTexture("pumpkin"));
-      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Slime1"));
+      SetTexture("enemyBlack1");
       origin += new Vector2(0, 2);
       //hitbox.localPos = new Vector2(0, 10);
       SetLayer(Layer.ENEMY_SHIP);

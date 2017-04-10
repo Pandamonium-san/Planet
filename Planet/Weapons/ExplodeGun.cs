@@ -33,7 +33,7 @@ namespace Planet
           float sv = Utility.RandomFloat(-150, 150);
           Projectile p2 = new Projectile(
             world,
-            AssetManager.GetTexture("Proj1"),
+            "Proj1",
             p.Pos,
             direction,
             sv + desc.projSpeed,

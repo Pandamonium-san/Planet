@@ -206,7 +206,7 @@ namespace Planet
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "World frames: " + world.Frames.ToString(), new Vector2(0, 80), Color.Red);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Game State: " + gameState.ToString(), new Vector2(300, 0), Color.Red);
-      spriteBatch.Draw(AssetManager.GetTexture("Fill"), new Rectangle((int)intersectPoint.X, (int)intersectPoint.Y, 10, 10), Color.Red);
+      spriteBatch.Draw(AssetManager.GetTexture("pixel"), new Rectangle((int)intersectPoint.X, (int)intersectPoint.Y, 10, 10), Color.Red);
       spriteBatch.End();
 
       base.Draw(gameTime);

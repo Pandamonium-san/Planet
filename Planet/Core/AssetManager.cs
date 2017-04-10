@@ -16,31 +16,20 @@ namespace Planet
 
     public static void LoadContent(ContentManager content)
     {
-      //if (content != null)
-      //   throw new InvalidOperationException("Content is already loaded.");
       AssetManager.Content = content;
 
-      // (key, path)
-      AddTexture("Fill", "Filltexture");
-      AddTexture("Ship1", "ship_temp");
-      AddTexture("Proj1", "Image2");
-      AddTexture("pumpkin", "pumpkin");
-      AddTexture("Parasite", "Image3");
-      AddTexture("Laser", "laser");
-      AddTexture("Sprites", "Planet_sprites");
-      AddTexture("Circle", "Circle");
-      AddTexture("enemyBlue2", "enemyBlue2");
-      AddTexture("laserBlue07", "laserBlue07");
-      AddTexture("blue_button04", "blue_button04");
+      LoadFont("font1", "font1");
+      LoadFont("titleFont", "titleFont");
+      LoadFont("uiFont", "uiFont");
 
-      AddFont("font1", "font1");
-      AddFont("titleFont", "titleFont");
-      AddFont("uiFont", "uiFont");
-
-      AddEffect("ColorChanger", "ColorChanger");
+      LoadEffect("ColorChanger", "ColorChanger");
     }
     public static Texture2D GetTexture(string name)
     {
+      if (!textures.ContainsKey(name))
+      {
+        LoadTexture(name, name);
+      }
       return textures[name];
     }
     public static SpriteFont GetFont(string name)
@@ -51,16 +40,15 @@ namespace Planet
     {
       return effects[name];
     }
-
-    private static void AddTexture(string name, string path)
+    private static void LoadTexture(string name, string path)
     {
       textures.Add(name, AssetManager.Content.Load<Texture2D>(@"Textures\" + path));
     }
-    private static void AddFont(string name, string path)
+    private static void LoadFont(string name, string path)
     {
       fonts.Add(name, AssetManager.Content.Load<SpriteFont>(@"Fonts\" + path));
     }
-    private static void AddEffect(string name, string path)
+    private static void LoadEffect(string name, string path)
     {
       effects.Add(name, AssetManager.Content.Load<Effect>(@"Effects\" + path));
     }

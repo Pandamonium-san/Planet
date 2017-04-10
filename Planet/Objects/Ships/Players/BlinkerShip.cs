@@ -11,7 +11,7 @@ namespace Planet
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world)
     {
-      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Ship1"));
+      SetTexture("enemyBlue4");
       SetLayer(Layer.PLAYER_SHIP);
       rotationSpeed = 15;
 

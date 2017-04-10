@@ -22,7 +22,7 @@ namespace Planet
 
     public Projectile(
         World world,
-        Texture2D tex,
+        string tex,
         Vector2 pos,
         Vector2 dir,
         float speed,
@@ -36,8 +36,7 @@ namespace Planet
 
       if (tex != null)
         this.SetTexture(tex);
-      SetTexture(AssetManager.GetTexture("Sprites"), SpriteRegions.Get("Pixel"));
-      SetTexture(AssetManager.GetTexture("laserBlue07"));
+      SetTexture("laserBlue07");
       Scale = .5f;
       this.speed = speed;
       this.instigator = instigator;

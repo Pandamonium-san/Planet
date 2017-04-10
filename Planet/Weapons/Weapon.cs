@@ -22,8 +22,6 @@ namespace Planet
     protected float currentShotAngle;
     protected Timer shootTimer;
 
-    Texture2D projTex = AssetManager.GetTexture("Proj1");
-
     public Weapon(Ship ship, World world, WpnDesc desc)
     {
       Name = "Unnamed Weapon";
@@ -84,7 +82,7 @@ namespace Planet
 
       Projectile p = new Projectile(
         world,
-        projTex,
+        "Proj1",
         muzzle.Pos,
         direction,
         sv + desc.projSpeed,

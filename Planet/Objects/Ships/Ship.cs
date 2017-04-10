@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Planet
 {
-  public abstract class Ship : Actor
+  public abstract class Ship : GameObject
   {
     public Weapon CurrentWeapon { get { return weapons[currentWeapon]; } }
 
@@ -39,7 +39,7 @@ namespace Planet
     {
       weapons = new List<Weapon>();
       currentWeapon = 0;
-      this.SetTexture(AssetManager.GetTexture("Ship1"));
+      this.SetTexture("enemyBlack1");
       maxHealth = 10;
       currentHealth = maxHealth;
 
@@ -211,8 +211,8 @@ namespace Planet
         return;
       if (target != null)
       {
-        Texture2D circle = AssetManager.GetTexture("Circle");
-        spriteBatch.Draw(circle, target.Pos, null, Color.Red * 0.3f, 0.0f, new Vector2(circle.Width / 2, circle.Height / 2), 0.2f, SpriteEffects.None, 0.0f);
+        Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
+        spriteBatch.Draw(circle, target.Pos, null, Color.Green * 0.5f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * target.Scale, SpriteEffects.None, 0.0f);
       }
       Text weaponText = new Text(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 30, Color.Green);
       weaponText.Draw(spriteBatch);

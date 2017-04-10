@@ -16,7 +16,7 @@ namespace Planet
     public PLightning(World world, Vector2 start, Vector2 direction, int damage, int width, GameObject instigator, float lifeTime = 0.4f)
       : base(world, null, start, direction, 0, damage, instigator, lifeTime)
     {
-      SetTexture(AssetManager.GetTexture("Fill"));
+      SetTexture("Fill");
       hitbox.Radius = 0;
       this.width = width;
       LBranches = new List<PHitScan>();

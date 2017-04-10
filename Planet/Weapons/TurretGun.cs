@@ -44,7 +44,7 @@ namespace Planet
           Vector2 nDir = Utility.RotateVector2(direction, Vector2.Zero, i * 0.1f);
           Projectile p2 = new Projectile(
   world,
-  AssetManager.GetTexture("Proj1"),
+  "Proj1",
   p.Pos,
   nDir,
   desc.projSpeed * 3f,

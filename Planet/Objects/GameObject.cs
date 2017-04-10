@@ -38,7 +38,7 @@ namespace Planet
       : base(pos)
     {
       this.world = world;
-      Scale = 4.0f;
+      Scale = .5f;
       isActive = true;
     }
     public void Update(GameTime gt)
@@ -58,9 +58,9 @@ namespace Planet
     protected virtual void DoUpdate(GameTime gt)
     {
     }
-    protected override void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
+    protected override void SetTexture(string tName, Rectangle? sourceRec = null)
     {
-      base.SetTexture(tex, sourceRec);
+      base.SetTexture(tName, sourceRec);
       hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
     }
     public virtual void Die()

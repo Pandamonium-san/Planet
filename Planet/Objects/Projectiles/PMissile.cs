@@ -17,7 +17,7 @@ namespace Planet
    GameObject instigator = null,
    float inaccuracy = 0,
    float lifeTime = 3)
-        : base(world, AssetManager.GetTexture("Proj1"), pos, dir, speed, damage, instigator, lifeTime)
+        : base(world, "Proj1", pos, dir, speed, damage, instigator, lifeTime)
     {
       if (instigator == null)
       {

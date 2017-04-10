@@ -57,7 +57,7 @@ namespace Planet
 
       Projectile p = new Projectile(
           world,
-          AssetManager.GetTexture("Proj1"),
+          "Proj1",
           ship.Pos,
           direction,
           sv + desc.projSpeed,
@@ -96,7 +96,7 @@ namespace Planet
           float sv = Utility.RandomFloat(-50, 50);
           Projectile p2 = new Projectile(
             world,
-            AssetManager.GetTexture("Proj1"),
+            "Proj1",
             p.Pos,
             direction,
             sv + desc.projSpeed*1.5f,

@@ -16,7 +16,7 @@ namespace Planet
     public Laser(Vector2 startPos, Vector2 endPos, World world)
         : base(startPos, world)
     {
-      SetTexture(AssetManager.GetTexture("Laser"));
+      SetTexture("Laser");
       spriteRec = new Rectangle(0, 108, 51, 25);
       origin = new Vector2(spriteRec.Width / 2, spriteRec.Height / 2);
 

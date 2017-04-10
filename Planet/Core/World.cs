@@ -120,7 +120,7 @@ namespace Planet
       sb.Begin(
         SpriteSortMode.BackToFront,
         BlendState.AlphaBlend,
-        SamplerState.PointClamp,
+        SamplerState.LinearClamp,
         DepthStencilState.None,
         RasterizerState.CullCounterClockwise,
         effect,

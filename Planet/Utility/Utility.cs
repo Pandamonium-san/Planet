@@ -10,7 +10,6 @@ namespace Planet
   public static class Utility
   {
     private static Random rnd = new Random();
-    private static Texture2D dot = AssetManager.GetTexture("Fill");
 
     /// <summary>
     /// Converts a rotation into a direction. 0 rotation means straight up.
@@ -109,9 +108,9 @@ namespace Planet
       if (f.Length() <= radius)
         return true;
 
-      float a = Vector2.Dot(d,d);
-      float b = 2 * Vector2.Dot(f,d);
-      float c = Vector2.Dot(f,f) - radius * radius;
+      float a = Vector2.Dot(d, d);
+      float b = 2 * Vector2.Dot(f, d);
+      float c = Vector2.Dot(f, f) - radius * radius;
 
       float discriminant = b * b - 4 * a * c;
       if (discriminant < 0)
@@ -170,17 +169,19 @@ namespace Planet
     }
     public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color, int width)
     {
-        Vector2 edge = end - start;
-        float angle = (float)Math.Atan2(edge.Y, edge.X);
-        spriteBatch.Draw(
-          dot,
-          new Rectangle((int)start.X, (int)start.Y, (int)edge.Length(), width),
-          null,
-          color,
-          angle,
-          new Vector2(0, 0.5f),
-          SpriteEffects.None,
-          1);
+      Texture2D texture = new Texture2D(1, 1);
+      texture.SetData<Color>(new Color[] { Color.White });
+      Vector2 edge = end - start;
+      float angle = (float)Math.Atan2(edge.Y, edge.X);
+      spriteBatch.Draw(
+        texture,
+        new Rectangle((int)start.X, (int)start.Y, (int)edge.Length(), width),
+        null,
+        color,
+        angle,
+        new Vector2(0, 0.5f),
+        SpriteEffects.None,
+        1);
     }
   }
 }
