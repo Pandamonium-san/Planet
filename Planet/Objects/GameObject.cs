@@ -65,11 +65,8 @@ namespace Planet
     }
     public virtual void Die()
     {
-      if (!isDead)
-      {
-        isDead = true;
-        isActive = false;
-      }
+      isDead = true;
+      isActive = false;
     }
     public virtual void DoCollision(GameObject other)
     {

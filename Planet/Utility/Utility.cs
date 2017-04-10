@@ -169,8 +169,12 @@ namespace Planet
     }
     public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color, int width)
     {
-      Texture2D texture = new Texture2D(1, 1);
-      texture.SetData<Color>(new Color[] { Color.White });
+      Texture2D texture;
+      texture = AssetManager.GetTexture("pixel");
+
+      //texture = new Texture2D(1, 1); //fails because of project template?
+      //texture.SetData<Color>(new Color[] { Color.White });
+
       Vector2 edge = end - start;
       float angle = (float)Math.Atan2(edge.Y, edge.X);
       spriteBatch.Draw(

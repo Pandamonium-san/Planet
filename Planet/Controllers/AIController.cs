@@ -103,10 +103,10 @@ namespace Planet
           ship.Rotation += c.x;
           break;
         case CommandType.SetVelocity:
-          ship.SetDrift(new Vector2(c.x, c.y));
+          ship.SetAcceleration(new Vector2(c.x, c.y));
           break;
         case CommandType.AddVelocity:
-          ship.AddDrift(new Vector2(c.x, c.y));
+          ship.AddAcceleration(new Vector2(c.x, c.y));
           break;
         default:
           break;

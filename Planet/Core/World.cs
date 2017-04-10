@@ -16,9 +16,7 @@ namespace Planet
   public class World
   {
     public int Frames { get; private set; }
-    // ships and destructible projectiles
     private List<GameObject> gameObjects;
-    // do not check collision with each other (there could easily be a million checks each frame)
     private List<Projectile> projectiles;
 
     private EnemyManager enemyManager;
@@ -35,17 +33,10 @@ namespace Planet
       projectiles = new List<Projectile>();
       enemyManager = new EnemyManager(this);
       transformMatrix = Matrix.CreateScale(1.0f);
-
-      //for (int i = 0; i < 50; i++)
-      //{
-      //  enemyManager.CreateEnemy(new PumpkinShip(new Vector2(700, 100+i*10), this), new AIController(this));
-      //}
     }
 
     public void Update(GameTime gt)
     {
-      //float scale = 4.0f;
-      //transformMatrix = Matrix.CreateTranslation(-gameObjects[0].Pos.X + Game1.ScreenWidth/(2*scale), -gameObjects[0].Pos.Y + Game1.ScreenHeight/(2*scale), 0) * Matrix.CreateScale(scale, scale, 1);
       enemyManager.Update(gt);
       for (int i = 0; i < projectiles.Count(); i++)
       {
@@ -55,36 +46,21 @@ namespace Planet
       for (int i = 0; i < gameObjects.Count(); i++)
       {
         GameObject go = gameObjects[i];
-
         go.Update(gt);
-
-        // don't check collision if rewinding or inactive
         if (!go.isActive)
           continue;
 
-        // collision check (currently pointless as ships don't collide with each other)
-        //foreach (GameObject go2 in gameObjects)
-        //{
-        //  if (go == go2 || go.disposed)
-        //    continue;
-        //  if (go.IsColliding(go2))
-        //  {
-        //    go.DoCollision(go2);
-        //    go2.DoCollision(go);
-        //  }
-        //}
-
-        // projectile collision check
         foreach (Projectile p in projectiles)
         {
-          if (p.isDead || !p.isActive)
+          if (!p.isActive)
             continue;
-
           if (p.IsColliding(go))
           {
             go.DoCollision(p);
             p.DoCollision(go);
           }
+          if (!go.isActive)
+            break;
         }
       }
 

@@ -30,7 +30,7 @@ namespace Planet
     public void SetBinding(PlayerInput input, Action action, InputType inputType)
     {
       KeyBinding kb = bindings.Find(x => x.input == input);
-      if (kb == null)
+      if (kb == null || kb.type != inputType)
         bindings.Add(new KeyBinding(this.index, input, action, inputType));
       else
         kb = new KeyBinding(this.index, input, action, inputType);
@@ -39,9 +39,9 @@ namespace Planet
     class KeyBinding
     {
       public PlayerInput input;
+      public InputType type;
       PlayerIndex index;
       Action action;
-      InputType type;
 
       public KeyBinding(PlayerIndex index, PlayerInput input, Action action, InputType inputType)
       {
