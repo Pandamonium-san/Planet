@@ -32,12 +32,6 @@ namespace Planet
    *  - Effects/Shaders?
    */
 
-  public enum GameState
-  {
-    Menu,
-    Playing
-  }
-
   /// <summary>
   /// This is the main type for your game.
   /// </summary>
@@ -55,15 +49,7 @@ namespace Planet
     private FrameCounter fc = new FrameCounter();
     private bool runningSlowly;
 
-    private GameState gameState;
-    private World world;
-    private Menu menu;
-    private Player p1, p2;
-    private AIController ai;
-    private RewinderShip ship;
-    private BlinkerShip ship2;
-
-    public static Ship s;
+    private GameStateManager gameStateManager;
 
     //debug variables
     public static int frames;
@@ -102,22 +88,8 @@ namespace Planet
             spriteBatch = new SpriteBatch(GraphicsDevice);
 #endif
       AssetManager.LoadContent(Content);
-      world = new World();
-      menu = new Menu();
-
-      ship = new RewinderShip(new Vector2(500, 500), world);
-      world.PostGameObj(ship);
-      ship2 = new BlinkerShip(new Vector2(1000, 500), world);
-      world.PostGameObj(ship2);
-
-      s = new PumpkinShip(new Vector2(800, 500), world);
-      ai = new AIController(s, world);
-      world.PostGameObj(s);
-
-      p1 = new Player(PlayerIndex.One);
-      p2 = new Player(PlayerIndex.Two);
-      p1.SetShip(ship);
-      p2.SetShip(ship2);
+      gameStateManager = new GameStateManager();
+      gameStateManager.Push(new GameStatePlaying(gameStateManager));
     }
 
     /// <summary>
@@ -142,33 +114,7 @@ namespace Planet
       ++frames;
       collisionChecksPerFrame = 0;
       runningSlowly = gameTime.IsRunningSlowly;
-      if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true))
-      {
-        gameState = (GameState)(((int)gameState + 1) % 2);
-      }
-      switch (gameState)
-      {
-        case GameState.Menu:
-          menu.Update(gameTime);
-          p1.MenuUpdate(gameTime);
-          p2.MenuUpdate(gameTime);
-          break;
-        case GameState.Playing:
-          p1.Update(gameTime);
-          p2.Update(gameTime);
-          ai.Update(gameTime);
-          world.Update(gameTime);
-          break;
-        default:
-          break;
-      }
-      /*
-       * p1.setmenu(menu);
-       * menu = new Menu(p1, p2);
-       * case State.Menu:
-       *   menu.Update(gt);
-       * break;
-       */
+      gameStateManager.Update(gameTime);
 
       base.Update(gameTime);
     }
@@ -181,17 +127,7 @@ namespace Planet
       GraphicsDevice.Clear(Color.SlateGray);
       fc.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-      switch (gameState)
-      {
-        case GameState.Menu:
-          menu.Draw(spriteBatch);
-          break;
-        case GameState.Playing:
-          world.Draw(spriteBatch);
-          break;
-        default:
-          break;
-      }
+      gameStateManager.Draw(spriteBatch);
 
       // draw debug info
       spriteBatch.Begin();
@@ -204,9 +140,7 @@ namespace Planet
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow frames: " + slowFrames.ToString(), new Vector2(150, 20), Color.Red);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
       spriteBatch.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "World frames: " + world.Frames.ToString(), new Vector2(0, 80), Color.Red);
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "Game State: " + gameState.ToString(), new Vector2(300, 0), Color.Red);
-      spriteBatch.Draw(AssetManager.GetTexture("pixel"), new Rectangle((int)intersectPoint.X, (int)intersectPoint.Y, 10, 10), Color.Red);
+      spriteBatch.DrawString(AssetManager.GetFont("font1"), "Game State: " + gameStateManager.Peek().ToString(), new Vector2(300, 0), Color.Red);
       spriteBatch.End();
 
       base.Draw(gameTime);

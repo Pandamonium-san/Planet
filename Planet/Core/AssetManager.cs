@@ -19,8 +19,8 @@ namespace Planet
       AssetManager.Content = content;
 
       LoadFont("font1", "font1");
-      LoadFont("titleFont", "titleFont");
-      LoadFont("uiFont", "uiFont");
+      LoadFont("future48", "future48");
+      LoadFont("future18", "future18");
 
       LoadEffect("ColorChanger", "ColorChanger");
     }

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /// <summary>
-  /// Contains data about a player such as score and index.
+  /// Contains player data and input classes
   /// </summary>
   public class Player
   {
@@ -19,35 +19,16 @@ namespace Planet
 
     public Player(PlayerIndex index)
     {
-      Index = index;
+      this.Index = index;
     }
 
     public void Update(GameTime gt)
     {
-      //case State.Playing:
       pc.Update(gt);
-      /* case State.Menu:
-      * menuController.Update(gt);
-      * {
-      *   if(UpPressed)
-      *     ++menu.selectionIndex;
-      *   if(EnterPressed)
-      *     menu.Select();
-      * }
-      */
     }
-    public void MenuUpdate(GameTime gt)
-    {
-
-    }
-
     public void SetShip(Ship ship)
     {
-      this.Ship = ship;
-      if (pc == null)
-        pc = new PlayerShipController(Index, ship);
-      else
-        pc.Ship = ship;
+      pc = new PlayerShipController(Index, ship);
       ship.restrictToScreen = true;
     }
   }

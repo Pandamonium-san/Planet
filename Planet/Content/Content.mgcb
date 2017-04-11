@@ -73,12 +73,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/laserBlue07.png
 
-#begin Fonts\titleFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts\titleFont.spritefont
-
 #begin Textures/blue_button04.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -90,12 +84,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/blue_button04.png
-
-#begin Fonts/uiFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/uiFont.spritefont
 
 #begin Textures/pixel.png
 /importer:TextureImporter
@@ -408,4 +396,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures\proj1.png
+
+#begin Fonts\future18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts\future18.spritefont
+
+#begin Fonts\future48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts\future48.spritefont
 

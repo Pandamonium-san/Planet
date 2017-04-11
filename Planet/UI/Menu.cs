@@ -14,31 +14,40 @@ namespace Planet
     SelectionList mainMenu;
     public Menu()
     {
-      titleText = new Text(AssetManager.GetFont("titleFont"), "Planet", new Vector2(Game1.ScreenWidth/2f, 200), Color.White);
+      titleText = new Text(AssetManager.GetFont("future48"), "Planet", new Vector2(Game1.ScreenWidth / 2f, 200), Color.White);
       mainMenu = new SelectionList(3);
 
       Button b = new Button(new Vector2(Game1.ScreenWidth / 2f, 300));
-      b.AddText(AssetManager.GetFont("uiFont"), "Play");
+      b.AddText(AssetManager.GetFont("future18"), "Play");
       mainMenu.AddSelection(0, b);
 
       b = new Button(new Vector2(Game1.ScreenWidth / 2f, 400));
-      b.AddText(AssetManager.GetFont("uiFont"), "Options");
+      b.AddText(AssetManager.GetFont("future18"), "Options");
       mainMenu.AddSelection(1, b);
 
       b = new Button(new Vector2(Game1.ScreenWidth / 2f, 500));
-      b.AddText(AssetManager.GetFont("uiFont"), "Exit");
+      b.AddText(AssetManager.GetFont("future18"), "Exit");
       mainMenu.AddSelection(2, b);
+    }
+    public void Confirm()
+    {
+
+    }
+    public void Cancel()
+    {
+
+    }
+    public void NextSelection()
+    {
+      mainMenu.Next();
+    }
+    public void PreviousSelection()
+    {
+      mainMenu.Previous();
     }
     public void Update(GameTime gt)
     {
-      if(InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Up, false) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Up, true))
-      {
-        mainMenu.Previous();
-      }
-      if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Down, false) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Down, true))
-      {
-        mainMenu.Next();
-      }
+
     }
     public void Draw(SpriteBatch sb)
     {

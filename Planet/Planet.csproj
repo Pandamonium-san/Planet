@@ -38,10 +38,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controllers\Command.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PlayerShipController.cs" />
     <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Sprite.cs" />
+    <Compile Include="States\GameState.cs" />
+    <Compile Include="States\GameStateManager.cs" />
+    <Compile Include="States\GameStatePlaying.cs" />
+    <Compile Include="States\GameStateTitleScreen.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="Controllers\AIController.cs" />
