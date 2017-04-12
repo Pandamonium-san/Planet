@@ -14,7 +14,7 @@ namespace Planet
     Dictionary<int, List<Spawn>> spawnDict;
     FrameTimer rewindTimer;
     bool rewinding;
-    
+
     public EnemyManager(World world)
     {
       this.world = world;
@@ -28,10 +28,10 @@ namespace Planet
         float y = Utility.RandomFloat(0, 600);
         float c = 50;
         AddSpawn(new PumpkinShip(new Vector2(x, y), world), new AIController(world), 600 * i);
-        AddSpawn(new PumpkinShip(new Vector2(x+c, y), world), new AIController(world), 600 * i);
-        AddSpawn(new PumpkinShip(new Vector2(x, y+c), world), new AIController(world), 600 * i);
-        AddSpawn(new PumpkinShip(new Vector2(x-c, y), world), new AIController(world), 600 * i);
-        AddSpawn(new PumpkinShip(new Vector2(x, y-c), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x + c, y), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x, y + c), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x - c, y), world), new AIController(world), 600 * i);
+        AddSpawn(new PumpkinShip(new Vector2(x, y - c), world), new AIController(world), 600 * i);
       }
       //AddSpawn(new PumpkinShip(new Vector2(500, 500), world), new AIController(world), 50);
     }
@@ -43,9 +43,9 @@ namespace Planet
         rewindTimer.Update();
         return;
       }
-      if(spawnDict.ContainsKey(frames))
+      if (spawnDict.ContainsKey(frames))
       {
-        foreach(Spawn s in spawnDict[frames])
+        foreach (Spawn s in spawnDict[frames])
         {
           CreateEnemy(s);
         }
@@ -76,7 +76,7 @@ namespace Planet
     public void AddSpawn(Ship enemy, AIController controller, int spawnFrame)
     {
       Spawn s = new Spawn(enemy, controller, spawnFrame);
-      if(spawnDict.ContainsKey(spawnFrame))
+      if (spawnDict.ContainsKey(spawnFrame))
       {
         spawnDict[spawnFrame].Add(s);
       }

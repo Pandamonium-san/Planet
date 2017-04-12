@@ -409,3 +409,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts\future48.spritefont
 
+#begin Sfx/Laser_Shoot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/Laser_Shoot.wav
+

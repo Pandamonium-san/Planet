@@ -9,10 +9,11 @@ namespace Planet
 {
   class GameStateManager
   {
-    Stack<GameState> currentStates;
+    Stack<GameState> stateStack;
+
     public GameStateManager()
     {
-      currentStates = new Stack<GameState>();
+      stateStack = new Stack<GameState>();
     }
     public void ChangeState(GameState state)
     {
@@ -21,26 +22,26 @@ namespace Planet
     }
     public GameState Pop()
     {
-      if (currentStates.Count() == 0)
+      if (stateStack.Count() == 0)
         throw new Exception("Attempted to pop from an empty game stack");
-      GameState popped = currentStates.Pop();
+      GameState popped = stateStack.Pop();
       popped.Leaving();
-      if (currentStates.Count() != 0)
-        currentStates.Peek().Revealed();
+      if (stateStack.Count() != 0)
+        stateStack.Peek().Revealed();
       return popped;
     }
     public void Push(GameState state)
     {
-      if (currentStates.Count() != 0)
-        currentStates.Peek().Obscuring();
-      currentStates.Push(state);
+      if (stateStack.Count() != 0)
+        stateStack.Peek().Obscuring();
+      stateStack.Push(state);
       state.Entered();
     }
     public GameState Peek()
     {
-      if (currentStates.Count() == 0)
+      if (stateStack.Count() == 0)
         return null;
-      return currentStates.Peek();
+      return stateStack.Peek();
     }
     public void Update(GameTime gt)
     {

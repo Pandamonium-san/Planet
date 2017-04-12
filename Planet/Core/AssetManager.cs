@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Planet
     private static ContentManager Content;
     private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
     private static Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
+    private static Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
     private static Dictionary<string, Effect> effects = new Dictionary<string, Effect>();
 
     public static void LoadContent(ContentManager content)
@@ -27,14 +29,18 @@ namespace Planet
     public static Texture2D GetTexture(string name)
     {
       if (!textures.ContainsKey(name))
-      {
         LoadTexture(name, name);
-      }
       return textures[name];
     }
     public static SpriteFont GetFont(string name)
     {
       return fonts[name];
+    }
+    public static SoundEffect GetSfx(string name)
+    {
+      if (!soundEffects.ContainsKey(name))
+        LoadSfx(name, name);
+      return soundEffects[name];
     }
     public static Effect GetEffect(string name)
     {
@@ -51,6 +57,10 @@ namespace Planet
     private static void LoadEffect(string name, string path)
     {
       effects.Add(name, AssetManager.Content.Load<Effect>(@"Effects\" + path));
+    }
+    private static void LoadSfx(string name, string path)
+    {
+      soundEffects.Add(name, AssetManager.Content.Load<SoundEffect>(@"Sfx\" + path));
     }
   }
 }

@@ -45,10 +45,10 @@
     <Compile Include="Objects\Sprite.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\GameStateManager.cs" />
+    <Compile Include="States\GameStateMenu.cs" />
     <Compile Include="States\GameStatePlaying.cs" />
     <Compile Include="States\GameStateTitleScreen.cs" />
     <Compile Include="UI\Button.cs" />
-    <Compile Include="UI\Menu.cs" />
     <Compile Include="Controllers\AIController.cs" />
     <Compile Include="Controllers\ShipController.cs" />
     <Compile Include="Objects\Hitbox.cs" />

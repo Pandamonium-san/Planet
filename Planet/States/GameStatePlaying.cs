@@ -11,6 +11,7 @@ namespace Planet
   class GameStatePlaying : GameState
   {
     private GameStateManager gsm;
+
     private World world;
     private Player p1, p2;
     private RewinderShip ship;
@@ -45,13 +46,12 @@ namespace Planet
     }
     public override void Obscuring()
     {
-
     }
     public override void Update(GameTime gameTime)
     {
       if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true))
       {
-        gsm.Push(new GameStateTitleScreen(gsm));
+        gsm.Pop();
       }
       p1.Update(gameTime);
       p2.Update(gameTime);

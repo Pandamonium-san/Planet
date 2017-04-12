@@ -11,8 +11,9 @@ namespace Planet
   {
     public string Name { get; set; }
     protected Text text;
-    public Button(Vector2 pos) : base(pos)
+    public Button(Vector2 pos, string name) : base(pos)
     {
+      this.Name = name;
       SetTexture("blue_button04");
     }
     public void AddText(SpriteFont font, string text)

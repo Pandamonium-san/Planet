@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Planet
 {
@@ -46,6 +47,10 @@ namespace Planet
     {
       if (currentMagCount > 0 && CanShoot())
       {
+        var sfx = AssetManager.GetSfx("Laser_Shoot").CreateInstance();
+        sfx.Volume = 0.3f;
+        if(ship is RewinderShip)
+        sfx.Play();
         Shoot();
         currentShotAngle += MathHelper.ToRadians(desc.degreesBetweenShots);
         currentMagCount--;

@@ -6,15 +6,11 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
-   *  - Menus
-   *      - Menu controller class
-   *  - Game states
-   *  - UI
-   *  - Score
    *  - Enemies
    *      - Waves/Levels
    *      - Enemy types
    *      - Enemy AI
+   *  - Score
    *  - Weapons
    *      - Missiles/destructible projectiles
    *      - Explosions
@@ -89,7 +85,7 @@ namespace Planet
 #endif
       AssetManager.LoadContent(Content);
       gameStateManager = new GameStateManager();
-      gameStateManager.Push(new GameStatePlaying(gameStateManager));
+      gameStateManager.Push(new GameStateTitleScreen(gameStateManager));
     }
 
     /// <summary>
