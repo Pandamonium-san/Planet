@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
   class Missile : Projectile
   {
-    public Missile(
-   World world,
-   Vector2 pos,
-   Vector2 dir,
-   float speed,
-   int damage = 1,
-   GameObject instigator = null,
-   float inaccuracy = 0,
-   float lifeTime = 3)
-        : base(world, "Proj1", pos, dir, speed, damage, instigator, lifeTime)
+    public Missile(World world, Texture2D tex, Vector2 pos, Vector2 dir, float speed, int damage = 1, GameObject instigator = null, float inaccuracy = 0, float lifeTime = 3)
+      : base(world, tex, pos, dir, speed, damage, instigator, lifeTime)
     {
       if (instigator == null)
       {

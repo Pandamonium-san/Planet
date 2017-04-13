@@ -19,8 +19,6 @@ namespace Planet
     private List<GameObject> gameObjects;
     private List<Projectile> projectiles;
 
-    private EnemyManager enemyManager;
-
     private SpriteFont font;
     private Effect effect;
     private Matrix transformMatrix;
@@ -31,13 +29,11 @@ namespace Planet
       effect = AssetManager.GetEffect("ColorChanger");
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
-      enemyManager = new EnemyManager(this);
       transformMatrix = Matrix.CreateScale(1.0f);
     }
 
     public void Update(GameTime gt)
     {
-      enemyManager.Update(gt);
       for (int i = 0; i < projectiles.Count(); i++)
       {
         projectiles[i].Update(gt);

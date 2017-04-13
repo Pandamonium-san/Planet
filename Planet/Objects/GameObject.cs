@@ -40,6 +40,7 @@ namespace Planet
       this.world = world;
       Scale = .5f;
       isActive = true;
+      hitbox = new Hitbox(this, 0);
     }
     public void Update(GameTime gt)
     {
@@ -57,6 +58,11 @@ namespace Planet
     }
     protected virtual void DoUpdate(GameTime gt)
     {
+    }
+    protected override void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
+    {
+      base.SetTexture(tex, sourceRec);
+      hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
     }
     protected override void SetTexture(string tName, Rectangle? sourceRec = null)
     {

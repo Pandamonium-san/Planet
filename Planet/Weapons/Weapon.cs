@@ -12,6 +12,7 @@ namespace Planet
   {
     public string Name { get; set; }
     public WpnDesc Desc { get { return desc; } }
+    protected Texture2D projTex;
     protected Ship ship;
     protected World world;
     protected Transform muzzle;
@@ -23,9 +24,10 @@ namespace Planet
     protected float currentShotAngle;
     protected Timer shootTimer;
 
-    public Weapon(Ship ship, World world, WpnDesc desc)
+    public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon")
     {
-      Name = "Unnamed Weapon";
+      Name = name;
+      projTex = AssetManager.GetTexture(pTex);
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
@@ -47,10 +49,10 @@ namespace Planet
     {
       if (currentMagCount > 0 && CanShoot())
       {
-        var sfx = AssetManager.GetSfx("Laser_Shoot").CreateInstance();
-        sfx.Volume = 0.3f;
-        if(ship is RewinderShip)
-        sfx.Play();
+        //var sfx = AssetManager.GetSfx("Laser_Shoot").CreateInstance();
+        //sfx.Volume = 0.3f;
+        //if(ship is RewinderShip)
+        //sfx.Play();
         Shoot();
         currentShotAngle += MathHelper.ToRadians(desc.degreesBetweenShots);
         currentMagCount--;
@@ -87,7 +89,7 @@ namespace Planet
 
       Projectile p = new Projectile(
         world,
-        "Proj1",
+        projTex,
         muzzle.Pos,
         direction,
         sv + desc.projSpeed,

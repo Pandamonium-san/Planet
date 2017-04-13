@@ -41,6 +41,8 @@ namespace Planet
     }
     protected virtual void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
     {
+      if (tex == null)
+        return;
       this.tex = tex;
       if (sourceRec != null)
         spriteRec = (Rectangle)sourceRec;

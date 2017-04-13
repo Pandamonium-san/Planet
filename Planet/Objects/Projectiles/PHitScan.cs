@@ -15,9 +15,8 @@ namespace Planet
     public float length;
 
     public PHitScan(World world, Vector2 start, Vector2 dir, int damage, bool canPierce, int width, float length, GameObject instigator, float lifeTime = 0.1f)
-      : base(world, null, start, dir, 0, damage, instigator, lifeTime)
+      : base(world, AssetManager.GetTexture("pixel"), start, dir, 0, damage, instigator, lifeTime)
     {
-      SetTexture("pixel");
       Rotation = Utility.Vector2ToAngle(dir);
       hit = Pos + dir * length;
       this.canPierce = canPierce;

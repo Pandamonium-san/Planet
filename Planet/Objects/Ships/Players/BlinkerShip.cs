@@ -19,7 +19,7 @@ namespace Planet
       currentHealth = maxHealth;
 
       WpnDesc desc = new WpnDesc(20, 1, 700, 12, 10, 100, 0, 1, 0, 0, 0, 1);              // burst shotgun
-      Weapon wpn = new Weapon(this, world, desc);
+      Weapon wpn = new Weapon(this, world, desc, "laserBlue07");
       wpn.Name = "Shotgun2";
       weapons.Add(wpn);
 

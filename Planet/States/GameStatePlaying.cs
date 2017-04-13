@@ -13,6 +13,7 @@ namespace Planet
     private GameStateManager gsm;
 
     private World world;
+    private EnemyManager enemyManager;
     private Player p1, p2;
     private RewinderShip ship;
     private BlinkerShip ship2;
@@ -31,6 +32,8 @@ namespace Planet
       p2 = new Player(PlayerIndex.Two);
       p1.SetShip(ship);
       p2.SetShip(ship2);
+
+      enemyManager = new EnemyManager(world);
     }
     public override void Entered()
     {
@@ -55,6 +58,7 @@ namespace Planet
       }
       p1.Update(gameTime);
       p2.Update(gameTime);
+      enemyManager.Update(gameTime);
       world.Update(gameTime);
     }
     public override void Draw(SpriteBatch spriteBatch)

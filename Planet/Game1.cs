@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
+   *  - Make proper weapons
    *  - Enemies
    *      - Waves/Levels
    *      - Enemy types

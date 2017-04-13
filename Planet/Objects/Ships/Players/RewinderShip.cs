@@ -28,9 +28,10 @@ namespace Planet
       //WpnDesc desc = new WpnDesc(1, 5, 200, 4, 2, 0, 1, 30, 90, 18, 0, 10);                 // spinny projectile thing
       //WpnDesc desc = new WpnDesc(40, 60, 400, 1, 20, 50, 1, 30, 0, 0, 0, 10);              // burst shotgun
       //WpnDesc desc = new WpnDesc(1, 30, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 3);           //normal laser
-      WpnDesc desc = new WpnDesc(10, 20, 1000, 1, 5, 0, 0, 30, 0, 0, 0, 3);           //machine gun
+      //WpnDesc desc = new WpnDesc(10, 20, 1000, 1, 5, 0, 0, 30, 0, 0, 0, 3);           //machine gun
+      WpnDesc desc = new WpnDesc(100, 1, 1000, 1, 0, 0, 0, 1, 0, 0, 0, 3);           //machine gun
       //WpnDesc desc = new WpnDesc(0, 4, 10, 100, 0, 0, 0, 1, 360/100f, 0, 0, 10);           //stress test
-      wpn = new Weapon(this, world, desc);
+      wpn = new Weapon(this, world, desc, "laserBlue16");
       wpn.SetMuzzle(new Vector2(0, -30));
       wpn.Name = "Weapon1";
       weapons.Add(wpn);

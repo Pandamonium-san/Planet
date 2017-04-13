@@ -12,8 +12,6 @@ namespace Planet
     World world;
     List<AIController> controllers;
     Dictionary<int, List<Spawn>> spawnDict;
-    FrameTimer rewindTimer;
-    bool rewinding;
 
     public EnemyManager(World world)
     {
@@ -33,16 +31,9 @@ namespace Planet
         AddSpawn(new PumpkinShip(new Vector2(x - c, y), world), new AIController(world), 600 * i);
         AddSpawn(new PumpkinShip(new Vector2(x, y - c), world), new AIController(world), 600 * i);
       }
-      //AddSpawn(new PumpkinShip(new Vector2(500, 500), world), new AIController(world), 50);
     }
     public void Update(GameTime gt)
     {
-      if (rewinding)
-      {
-        --frames;
-        rewindTimer.Update();
-        return;
-      }
       if (spawnDict.ContainsKey(frames))
       {
         foreach (Spawn s in spawnDict[frames])
@@ -55,11 +46,6 @@ namespace Planet
         aic.Update(gt);
       }
       ++frames;
-    }
-    public void StartRewind(int x)
-    {
-      rewinding = true;
-      rewindTimer = new FrameTimer(x, () => rewinding = false, true);
     }
     void CreateEnemy(Spawn spawn)
     {
@@ -87,6 +73,7 @@ namespace Planet
         spawnDict[spawnFrame] = spawnlist;
       }
     }
+
     class Spawn
     {
       public Ship enemy;

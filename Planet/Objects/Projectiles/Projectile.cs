@@ -22,7 +22,7 @@ namespace Planet
 
     public Projectile(
         World world,
-        string tex,
+        Texture2D tex,
         Vector2 pos,
         Vector2 dir,
         float speed,
@@ -33,11 +33,8 @@ namespace Planet
       : base(pos, world)
     {
       this.pattern = pattern;
-
-      if (tex != null)
-        this.SetTexture(tex);
-      SetTexture("laserBlue07");
-      Scale = .5f;
+      this.SetTexture(tex);
+      Scale = 1f;
       this.speed = speed;
       this.instigator = instigator;
       this.damage = damage;
