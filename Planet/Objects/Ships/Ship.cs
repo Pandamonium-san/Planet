@@ -11,8 +11,8 @@ namespace Planet
   {
     public Weapon CurrentWeapon { get { return weapons[currentWeapon]; } }
     public bool Dashing { get; set; }
+    public GameObject Target { get; set; }
 
-    protected GameObject target;
     protected Vector2 acceleration;
     protected Vector2 velocity;
     protected Vector2 movementDirection;
@@ -34,12 +34,11 @@ namespace Planet
     public int currentHealth;
     public int maxHealth;
 
-    public Ship(Vector2 pos, World world)
-      : base(pos, world)
+    public Ship(Vector2 pos, World world, Texture2D tex)
+      : base(pos, world, tex)
     {
       weapons = new List<Weapon>();
       currentWeapon = 0;
-      this.SetTexture("enemyBlack1");
       maxHealth = 10;
       currentHealth = maxHealth;
 
@@ -48,8 +47,8 @@ namespace Planet
 
     protected override void DoUpdate(GameTime gt)
     {
-      if (target == null || !target.isActive)
-        target = NextTarget();
+      if (Target == null || !Target.isActive)
+        Target = NextTarget();
 
       if (Dashing)
       {
@@ -66,14 +65,14 @@ namespace Planet
       }
       else
       {
-        if (movementDirection != Vector2.Zero && target == null)
+        if (movementDirection != Vector2.Zero && Target == null)
           TurnTowards(Pos + movementDirection);
-        else if (target != null)
+        else if (Target != null)
         {
           if (leadShots)
-            LeadShot((Ship)target);
+            LeadShot((Ship)Target);
           else
-            TurnTowards(target.Pos);
+            TurnTowards(Target.Pos);
         }
         velocity = movementDirection * baseSpeed * speedModifier;
         velocity += acceleration * speedModifier;
@@ -116,7 +115,7 @@ namespace Planet
     }
     public virtual void SwitchTarget()
     {
-      target = NextTarget();
+      Target = NextTarget();
     }
     protected virtual GameObject NextTarget()
     {
@@ -125,7 +124,7 @@ namespace Planet
       float nearestDistance = float.MaxValue;
       foreach (GameObject g in go)
       {
-        if (!(g is Ship) || g.layer == layer || !g.isActive || g == target)
+        if (!(g is Ship) || g.layer == layer || !g.isActive || g == Target)
           continue;
         float distance = Vector2.DistanceSquared(Pos, g.Pos);
         if (distance < nearestDistance)
@@ -213,10 +212,10 @@ namespace Planet
 
       if (layer != Layer.PLAYER_SHIP)
         return;
-      if (target != null)
+      if (Target != null)
       {
         Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
-        spriteBatch.Draw(circle, target.Pos, null, Color.Green * 0.5f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * target.Scale, SpriteEffects.None, 0.0f);
+        spriteBatch.Draw(circle, Target.Pos, null, Color.Green * 0.5f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
       }
       Text weaponText = new Text(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 30, Color.Green);
       weaponText.Draw(spriteBatch);

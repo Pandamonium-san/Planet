@@ -27,28 +27,24 @@ namespace Planet
     // game
     protected World world;
     public int frame;
-    public int framesTilDispose;
     public bool disposed { get; set; }               // if true, object will be deleted at the end of the frame
     public bool isActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
     // debug
     protected bool drawHitbox = false;
 
-    public GameObject(Vector2 pos, World world)
-      : base(pos)
+    public GameObject(Vector2 pos, World world, Texture2D tex)
+      : base(pos, tex)
     {
       this.world = world;
       Scale = .5f;
       isActive = true;
-      hitbox = new Hitbox(this, 0);
     }
     public void Update(GameTime gt)
     {
       if (isDead)
       {
-        framesTilDispose--;
-        if (framesTilDispose <= 0)
-          disposed = true;
+        disposed = true;
       }
       if (isActive)
       {
@@ -62,11 +58,6 @@ namespace Planet
     protected override void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
     {
       base.SetTexture(tex, sourceRec);
-      hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
-    }
-    protected override void SetTexture(string tName, Rectangle? sourceRec = null)
-    {
-      base.SetTexture(tName, sourceRec);
       hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
     }
     public virtual void Die()

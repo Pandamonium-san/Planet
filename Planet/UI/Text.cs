@@ -13,7 +13,7 @@ namespace Planet
     public string text;
 
     public Text(SpriteFont font, string text, Vector2 pos, Color color)
-      : base(pos)
+      : base(pos, (Texture2D)null)
     {
       this.color = color;
       this.font = font;

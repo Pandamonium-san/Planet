@@ -19,6 +19,8 @@ namespace Planet
     protected Timer lifeTimer;
     public delegate void Pattern(Projectile p, GameTime gt);
     Pattern pattern;
+    public delegate void CollisionEffect(Projectile p);
+    CollisionEffect collisionEffect;
 
     public Projectile(
         World world,
@@ -29,11 +31,12 @@ namespace Planet
         int damage = 1,
         GameObject instigator = null,
         float lifeTime = 3,
-        Pattern pattern = null)
-      : base(pos, world)
+        Pattern pattern = null,
+        CollisionEffect collisionEffect = null)
+      : base(pos, world, tex)
     {
       this.pattern = pattern;
-      this.SetTexture(tex);
+      this.collisionEffect = collisionEffect;
       Scale = 1f;
       this.speed = speed;
       this.instigator = instigator;
@@ -66,15 +69,14 @@ namespace Planet
       }
       layerDepth = 0.8f;
     }
-
     protected override void DoUpdate(GameTime gt)
     {
       lifeTimer.Update(gt);
       if (lifeTimer.Remaining < 0.5)  //Fade-out effect
         alpha = (float)(0.25 + lifeTimer.Remaining / 0.5);
 
-      if (IsOutsideScreen())
-        Die();
+      //if (IsOutsideScreen())
+      //  Die();
 
       //perform bullet pattern operation
       if (pattern != null)
@@ -87,7 +89,6 @@ namespace Planet
 
       base.DoUpdate(gt);
     }
-
     private bool IsOutsideScreen()
     {
       int xMax = Game1.ScreenWidth + 100;
@@ -103,11 +104,11 @@ namespace Planet
       else
         return false;
     }
-
     public override void DoCollision(GameObject other)
     {
+      if (collisionEffect != null)
+        collisionEffect(this);
       Die();
     }
-
   }
 }

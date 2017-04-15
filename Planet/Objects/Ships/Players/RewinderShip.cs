@@ -12,10 +12,9 @@ namespace Planet
     //test
     Laser laser;
     public RewinderShip(Vector2 pos, World world)
-        : base(pos, world)
+        : base(pos, world, AssetManager.GetTexture("enemyblue5"))
     {
       leadShots = true;
-      SetTexture("enemyBlue5");
       Scale = .5f;
       
       hitbox.localScale = 0.5f;

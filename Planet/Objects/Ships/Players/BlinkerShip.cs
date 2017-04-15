@@ -9,9 +9,8 @@ namespace Planet
   class BlinkerShip : Ship
   {
     public BlinkerShip(Vector2 pos, World world)
-        : base(pos, world)
+        : base(pos, world, AssetManager.GetTexture("enemyBlue4"))
     {
-      SetTexture("enemyBlue4");
       SetLayer(Layer.PLAYER_SHIP);
       rotationSpeed = 15;
 

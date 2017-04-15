@@ -10,10 +10,8 @@ namespace Planet
   class PumpkinShip : Ship
   {
     public PumpkinShip(Vector2 pos, World world)
-        : base(pos, world)
+        : base(pos, world, AssetManager.GetTexture("enemyBlack1"))
     {
-      //SetTexture(AssetManager.GetTexture("pumpkin"));
-      SetTexture("enemyBlack1");
       origin += new Vector2(0, 2);
       //hitbox.localPos = new Vector2(0, 10);
       SetLayer(Layer.ENEMY_SHIP);

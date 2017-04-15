@@ -16,9 +16,10 @@ namespace Planet
   public class World
   {
     public int Frames { get; private set; }
+    public ParticleManager Particles { get; private set; }
+
     private List<GameObject> gameObjects;
     private List<Projectile> projectiles;
-
     private SpriteFont font;
     private Effect effect;
     private Matrix transformMatrix;
@@ -27,22 +28,23 @@ namespace Planet
     {
       font = AssetManager.GetFont("font1");
       effect = AssetManager.GetEffect("ColorChanger");
+      Particles = new ParticleManager();
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
       transformMatrix = Matrix.CreateScale(1.0f);
     }
 
-    public void Update(GameTime gt)
+    public void Update(GameTime gameTime)
     {
       for (int i = 0; i < projectiles.Count(); i++)
       {
-        projectiles[i].Update(gt);
+        projectiles[i].Update(gameTime);
       }
 
       for (int i = 0; i < gameObjects.Count(); i++)
       {
         GameObject go = gameObjects[i];
-        go.Update(gt);
+        go.Update(gameTime);
         if (!go.isActive)
           continue;
 
@@ -59,6 +61,7 @@ namespace Planet
             break;
         }
       }
+      Particles.Update(gameTime);
 
       projectiles.RemoveAll(x => x.disposed);
       gameObjects.RemoveAll(x => x.disposed == true);
@@ -86,10 +89,9 @@ namespace Planet
     {
       projectiles.Add(p);
     }
-
-    public void Draw(SpriteBatch sb)
+    public void Draw(SpriteBatch spriteBatch)
     {
-      sb.Begin(
+      spriteBatch.Begin(
         SpriteSortMode.BackToFront,
         BlendState.AlphaBlend,
         SamplerState.LinearClamp,
@@ -100,16 +102,17 @@ namespace Planet
         );
       foreach (GameObject go in gameObjects)
       {
-        go.Draw(sb);
+        go.Draw(spriteBatch);
       }
       foreach (Projectile p in projectiles)
       {
-        p.Draw(sb);
+        p.Draw(spriteBatch);
       }
-      sb.DrawString(font, "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
-      sb.DrawString(font, "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
+      Particles.Draw(spriteBatch);
+      spriteBatch.DrawString(font, "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
+      spriteBatch.DrawString(font, "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
 
-      sb.End();
+      spriteBatch.End();
     }
 
   }

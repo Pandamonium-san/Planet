@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Planet
 {
-  public class Sprite : Transform
+  public abstract class Sprite : Transform
   {
     public bool Visible { get; set; }
     public Texture2D tex { get; private set; }
@@ -16,28 +16,13 @@ namespace Planet
     public Color color;
     public float alpha;
     public float layerDepth;
-    public Sprite(Vector2 pos) : base(pos)
+    public Sprite(Vector2 pos, Texture2D tex) : base(pos)
     {
+      SetTexture(tex);
       Visible = true;
       color = Color.White;
       alpha = 1f;
       layerDepth = 0f;
-    }
-    protected virtual void SetTexture(string tName, Rectangle? sourceRec = null)
-    {
-      try
-      {
-        this.tex = AssetManager.GetTexture(tName);
-      }
-      catch
-      {
-        throw;
-      }
-      if (sourceRec != null)
-        spriteRec = (Rectangle)sourceRec;
-      else
-        spriteRec = new Rectangle(0, 0, tex.Width, tex.Height);
-      origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
     }
     protected virtual void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
     {

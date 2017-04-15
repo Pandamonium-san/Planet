@@ -31,8 +31,6 @@ namespace Planet
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
-      if (ship is RewinderShip)
-        Console.Write("hello");
       muzzle = new Transform(Vector2.Zero, 0, 0, ship);
       SetMuzzle(Vector2.Zero);
     }
@@ -51,8 +49,8 @@ namespace Planet
       {
         //var sfx = AssetManager.GetSfx("Laser_Shoot").CreateInstance();
         //sfx.Volume = 0.3f;
-        //if(ship is RewinderShip)
-        //sfx.Play();
+        //if (ship is RewinderShip)
+        //  sfx.Play();
         Shoot();
         currentShotAngle += MathHelper.ToRadians(desc.degreesBetweenShots);
         currentMagCount--;
@@ -86,7 +84,6 @@ namespace Planet
       if (desc.inaccuracy != 0)
         ApplyInaccuracy(ref direction, desc.inaccuracy);
       float sv = Utility.RandomFloat(-desc.speedVariance, desc.speedVariance);
-
       Projectile p = new Projectile(
         world,
         projTex,
@@ -96,15 +93,19 @@ namespace Planet
         desc.damage,
         ship,
         desc.projLifeTime,
-        BulletPattern
+        BulletPattern,
+        pr => world.Particles.CreateParticle(pr.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, 0.7f)
         );
-
       world.PostProjectile(p);
     }
     protected virtual void BulletPattern(Projectile p, GameTime gt)
     {
       p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
       p.Rotation = Utility.Vector2ToAngle(p.velocity);
+      if (p.frame % 5 == 0)
+      {
+        world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), -100, 100, -100, 100, 0.4f, Color.White, 0.7f, 4f, 0.1f);
+      }
     }
     protected void ApplyInaccuracy(ref Vector2 dir, float inaccuracy)
     {

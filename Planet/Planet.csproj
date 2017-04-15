@@ -41,7 +41,10 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PlayerShipController.cs" />
     <Compile Include="Core\EnemyManager.cs" />
+    <Compile Include="Core\ParticleManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
+    <Compile Include="Objects\Particle.cs" />
+    <Compile Include="Objects\Projectiles\PBlueLaser.cs" />
     <Compile Include="Objects\Sprite.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\GameStateManager.cs" />

@@ -9,7 +9,6 @@ namespace Planet
 {
   public class AIController : ShipController
   {
-    protected GameObject t;
     protected List<Command> commands = new List<Command>();
 
     public AIController(World world) : base(null, world)
@@ -28,26 +27,21 @@ namespace Planet
       //AddCommand(Command.Type.Move, 0, 1, 200, 600);
       //AddCommand(Command.Type.Move, 1, 0, 600, 900);
       //AddCommand(Command.Type.Rotate, -0.1f, 0, 0, 10000);
-      //AddCommand(Command.Type.LookAtTarget, 0, 0, 0, 10000);
+      //AddCommand(CommandType.LookAtTarget, 0, 0, 0, 10000);
       AddCommand(CommandType.Fire, 0, 0, 0, 10000);
     }
     public AIController(Ship ship, World world) : base(ship, world) { }
 
     protected override void DoUpdate(GameTime gt)
     {
-      t = FindNearestTarget();
-      if (t != null && t.isActive && t.Pos != ship.Pos)
+      ship.Target = FindNearestTarget();
+      if (ship.Target != null && ship.Target.isActive && ship.Target.Pos != ship.Pos)
       {
-        if (Utility.Distance(ship.Pos, t.Pos) >= 200)
-          //MoveTowards(new Vector2(300, 300));
-          //MoveTowards(target.Pos);
-          ship.TurnTowards(t.Pos);
         foreach (Command command in commands)
         {
           if (command.startFrame <= ship.frame && ship.frame < command.endFrame)
             ExecuteCommand(command);
         }
-        //ship.Fire1();
       }
     }
     protected virtual void MoveTowards(Vector2 point)
@@ -97,7 +91,7 @@ namespace Planet
           ship.TurnTowards(new Vector2(c.x, c.y));
           break;
         case CommandType.LookAtTarget:
-          ship.TurnTowards(t.Pos);
+          ship.TurnTowards(ship.Target.Pos);
           break;
         case CommandType.Rotate:
           ship.Rotation += c.x;

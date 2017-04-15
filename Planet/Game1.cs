@@ -7,6 +7,8 @@ namespace Planet
 {
   /*  TO DO
    *  - Make proper weapons
+   *      - How to instantiate projectile based on class?
+   *      - How to implement different particle effects?
    *  - Enemies
    *      - Waves/Levels
    *      - Enemy types
