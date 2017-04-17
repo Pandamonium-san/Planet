@@ -13,7 +13,7 @@ namespace Planet
     private int width;      // increases width on both sides so actual width is 2x bigger
     List<PHitScan> LBranches;
 
-    public PLightning(World world, Vector2 start, Vector2 direction, int damage, int width, GameObject instigator, float lifeTime = 0.4f)
+    public PLightning(World world, Vector2 start, Vector2 direction, int damage, int width, Ship instigator, float lifeTime = 0.4f)
       : base(world, null, start, direction, 0, damage, instigator, lifeTime)
     {
       hitbox.Radius = 0;

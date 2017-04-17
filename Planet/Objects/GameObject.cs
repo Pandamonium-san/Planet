@@ -30,6 +30,7 @@ namespace Planet
     public bool disposed { get; set; }               // if true, object will be deleted at the end of the frame
     public bool isActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
+    public bool CollisionEnabled { get; set; }
     // debug
     protected bool drawHitbox = false;
 
@@ -39,6 +40,7 @@ namespace Planet
       this.world = world;
       Scale = .5f;
       isActive = true;
+      CollisionEnabled = true;
     }
     public void Update(GameTime gt)
     {

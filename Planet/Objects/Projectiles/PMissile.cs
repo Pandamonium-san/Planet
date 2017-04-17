@@ -9,7 +9,7 @@ namespace Planet
 {
   class Missile : Projectile
   {
-    public Missile(World world, Texture2D tex, Vector2 pos, Vector2 dir, float speed, int damage = 1, GameObject instigator = null, float inaccuracy = 0, float lifeTime = 3)
+    public Missile(World world, Texture2D tex, Vector2 pos, Vector2 dir, float speed, int damage = 1, Ship instigator = null, float inaccuracy = 0, float lifeTime = 3)
       : base(world, tex, pos, dir, speed, damage, instigator, lifeTime)
     {
       if (instigator == null)

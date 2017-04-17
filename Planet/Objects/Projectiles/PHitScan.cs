@@ -14,7 +14,7 @@ namespace Planet
     private int width;      // increases width on both sides so actual width is 2x bigger
     public float length;
 
-    public PHitScan(World world, Vector2 start, Vector2 dir, int damage, bool canPierce, int width, float length, GameObject instigator, float lifeTime = 0.1f)
+    public PHitScan(World world, Vector2 start, Vector2 dir, int damage, bool canPierce, int width, float length, Ship instigator, float lifeTime = 0.1f)
       : base(world, AssetManager.GetTexture("pixel"), start, dir, 0, damage, instigator, lifeTime)
     {
       Rotation = Utility.Vector2ToAngle(dir);

@@ -31,8 +31,8 @@ namespace Planet
     public float speedModifier = 1.0f;
     public float rotationModifier = 1.0f;
 
-    public int currentHealth;
-    public int maxHealth;
+    public float currentHealth;
+    public float maxHealth;
 
     public Ship(Vector2 pos, World world, Texture2D tex)
       : base(pos, world, tex)
@@ -44,7 +44,6 @@ namespace Planet
 
       damageTimer = new Timer(0.25f);
     }
-
     protected override void DoUpdate(GameTime gt)
     {
       if (Target == null || !Target.isActive)

@@ -44,7 +44,6 @@
     <Compile Include="Core\ParticleManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Particle.cs" />
-    <Compile Include="Objects\Projectiles\PBlueLaser.cs" />
     <Compile Include="Objects\Sprite.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\GameStateManager.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="Core\World.cs" />
     <Compile Include="Weapons\ExplodeGun.cs" />
     <Compile Include="Weapons\LightningGun.cs" />
+    <Compile Include="Weapons\NewTestWeapon.cs" />
     <Compile Include="Weapons\TurretGun.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WpnDesc.cs" />

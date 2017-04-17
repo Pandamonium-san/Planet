@@ -7,6 +7,8 @@ namespace Planet
 {
   /*  TO DO
    *  - Make proper weapons
+   *      - Laser
+   *      - Missiles
    *      - How to instantiate projectile based on class?
    *      - How to implement different particle effects?
    *  - Enemies

@@ -19,6 +19,7 @@ namespace Planet
       desc.nrOfBullets = 3;
       desc.shotsPerSecond = 2;
       desc.projLifeTime = 0.5f;
+      desc.projSpeed = 10000;
       SetDesc(desc);
     }
     protected override void CreateBullet()

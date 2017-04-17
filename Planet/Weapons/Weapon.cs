@@ -27,6 +27,8 @@ namespace Planet
     public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon")
     {
       Name = name;
+      if (pTex == "")
+        projTex = null;
       projTex = AssetManager.GetTexture(pTex);
       this.ship = ship;
       this.world = world;
@@ -34,7 +36,7 @@ namespace Planet
       muzzle = new Transform(Vector2.Zero, 0, 0, ship);
       SetMuzzle(Vector2.Zero);
     }
-    public void Update(GameTime gt)
+    public virtual void Update(GameTime gt)
     {
       shootTimer.Update(gt);
       if ((shootTimer.elapsedSeconds >= desc.magReloadTime && desc.magReloadTime > 0) ||
@@ -94,7 +96,7 @@ namespace Planet
         ship,
         desc.projLifeTime,
         BulletPattern,
-        pr => world.Particles.CreateParticle(pr.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, 0.7f)
+        OnProjectileCollision
         );
       world.PostProjectile(p);
     }
@@ -106,6 +108,10 @@ namespace Planet
       {
         world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), -100, 100, -100, 100, 0.4f, Color.White, 0.7f, 4f, 0.1f);
       }
+    }
+    protected virtual void OnProjectileCollision(Projectile p, GameObject other)
+    {
+      world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, 0.7f);
     }
     protected void ApplyInaccuracy(ref Vector2 dir, float inaccuracy)
     {

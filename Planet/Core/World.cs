@@ -45,11 +45,12 @@ namespace Planet
       {
         GameObject go = gameObjects[i];
         go.Update(gameTime);
-        if (!go.isActive)
+        if (!go.isActive || !go.CollisionEnabled)
           continue;
 
-        foreach (Projectile p in projectiles)
+        for (int j = 0; j < projectiles.Count(); j++)
         {
+          Projectile p = projectiles[j];
           if (!p.isActive)
             continue;
           if (p.IsColliding(go))

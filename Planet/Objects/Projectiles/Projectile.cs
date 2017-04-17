@@ -10,7 +10,7 @@ namespace Planet
   public class Projectile : GameObject
   {
     public int damage;
-    public GameObject instigator;
+    public Ship instigator;
 
     public Vector2 dir;
     public Vector2 velocity;
@@ -19,8 +19,8 @@ namespace Planet
     protected Timer lifeTimer;
     public delegate void Pattern(Projectile p, GameTime gt);
     Pattern pattern;
-    public delegate void CollisionEffect(Projectile p);
-    CollisionEffect collisionEffect;
+    public delegate void OnCollision(Projectile p, GameObject other);
+    OnCollision onCollision;
 
     public Projectile(
         World world,
@@ -29,14 +29,14 @@ namespace Planet
         Vector2 dir,
         float speed,
         int damage = 1,
-        GameObject instigator = null,
+        Ship instigator = null,
         float lifeTime = 3,
         Pattern pattern = null,
-        CollisionEffect collisionEffect = null)
+        OnCollision collisionEffect = null)
       : base(pos, world, tex)
     {
       this.pattern = pattern;
-      this.collisionEffect = collisionEffect;
+      this.onCollision = collisionEffect;
       Scale = 1f;
       this.speed = speed;
       this.instigator = instigator;
@@ -106,8 +106,8 @@ namespace Planet
     }
     public override void DoCollision(GameObject other)
     {
-      if (collisionEffect != null)
-        collisionEffect(this);
+      if (onCollision != null)
+        onCollision(this, other);
       Die();
     }
   }
