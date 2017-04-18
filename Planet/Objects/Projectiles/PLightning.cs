@@ -16,7 +16,6 @@ namespace Planet
     public PLightning(World world, Vector2 start, Vector2 direction, int damage, int width, Ship instigator, float lifeTime = 0.4f)
       : base(world, null, start, direction, 0, damage, instigator, lifeTime)
     {
-      hitbox.Radius = 0;
       this.width = width;
       LBranches = new List<PHitScan>();
       GenerateLightning(Utility.RandomInt(0, 2) == 1);
@@ -44,7 +43,7 @@ namespace Planet
         {
           case 'G':
           case 'F':
-            PHitScan branch = new PHitScan(world, cPos, cDir, damage, true, width, length, instigator, lifeTime);
+            PHitScan branch = new PHitScan(world, tex, cPos, cDir, damage, true, width, length, instigator, lifeTime);
             branch.color = new Color(100, 100, 255);
             LBranches.Add(branch);
             positions.RemoveFirst();
@@ -69,39 +68,39 @@ namespace Planet
         }
       }
 
-// Stores data about lightning shapes      
-//#if DEBUG
-//      string debugInfo = "";
-//      float totalAngle = 0;
-//      float totalArea;
-//      Vector2 topLeft = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
-//      Vector2 bottomRight = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
-      
-//      foreach (PHitScan b in LBranches)
-//      {
-//        totalAngle += Utility.AngleBetweenVectors(b.dir, dir);
+      // Stores data about lightning shapes      
+      //#if DEBUG
+      //      string debugInfo = "";
+      //      float totalAngle = 0;
+      //      float totalArea;
+      //      Vector2 topLeft = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
+      //      Vector2 bottomRight = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
 
-//        //find smallest rectangle that contains lightning
-//        Action<Vector2> extremes = (v) =>
-//        {
-//          bottomRight.X = Math.Max(v.X, bottomRight.X);
-//          bottomRight.Y = Math.Max(v.Y, bottomRight.Y);
-//          topLeft.X = Math.Min(v.X, topLeft.X);
-//          topLeft.Y = Math.Min(v.Y, topLeft.Y);
-//        };
-//        extremes.Invoke(b.Pos);
-//        extremes.Invoke(b.Pos + b.dir * b.length);
-//      }
+      //      foreach (PHitScan b in LBranches)
+      //      {
+      //        totalAngle += Utility.AngleBetweenVectors(b.dir, dir);
 
-//      Vector2 vArea = (bottomRight - topLeft);
-//      totalArea = vArea.X * vArea.Y;
+      //        //find smallest rectangle that contains lightning
+      //        Action<Vector2> extremes = (v) =>
+      //        {
+      //          bottomRight.X = Math.Max(v.X, bottomRight.X);
+      //          bottomRight.Y = Math.Max(v.Y, bottomRight.Y);
+      //          topLeft.X = Math.Min(v.X, topLeft.X);
+      //          topLeft.Y = Math.Min(v.Y, topLeft.Y);
+      //        };
+      //        extremes.Invoke(b.Pos);
+      //        extremes.Invoke(b.Pos + b.dir * b.length);
+      //      }
 
-//      debugInfo += totalAngle.ToString(System.Globalization.NumberFormatInfo.InvariantInfo) + "\t" + totalArea.ToString(System.Globalization.NumberFormatInfo.InvariantInfo); 
-//      debugInfo += "\n";
+      //      Vector2 vArea = (bottomRight - topLeft);
+      //      totalArea = vArea.X * vArea.Y;
 
-//      DebugFunc.WriteToLog(debugInfo);
-//      //Debug.Write(totalArea);
-//#endif
+      //      debugInfo += totalAngle.ToString(System.Globalization.NumberFormatInfo.InvariantInfo) + "\t" + totalArea.ToString(System.Globalization.NumberFormatInfo.InvariantInfo); 
+      //      debugInfo += "\n";
+
+      //      DebugFunc.WriteToLog(debugInfo);
+      //      //Debug.Write(totalArea);
+      //#endif
 
     }
 

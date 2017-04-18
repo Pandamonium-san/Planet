@@ -95,7 +95,7 @@ namespace Planet
       // flash when damaged
       if (damageTimer.counting)
       {
-        alpha = 0.35f + (float)damageTimer.Fraction * 0.65f;
+        alpha = 0.55f + (float)damageTimer.Fraction * 0.45f;
         damageTimer.Update(gt);
       }
       base.DoUpdate(gt);

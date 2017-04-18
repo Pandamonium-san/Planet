@@ -8,9 +8,9 @@ namespace Planet
 {
   class WHitScan : Weapon
   {
-    private int width;
-    private float range;
-    private bool canPierce;
+    protected int width;
+    protected float range;
+    protected bool canPierce;
     public WHitScan(Ship ship, World world, WpnDesc desc, int width, bool canPierce, float range = 10000)
       : base(ship, world, desc)
     {
@@ -30,6 +30,7 @@ namespace Planet
 
       PHitScan p = new PHitScan(
         world,
+        projTex,
         muzzle.Pos,
         direction,
         desc.damage,
@@ -37,8 +38,8 @@ namespace Planet
         width,
         range,
         ship);
+      p.onCollision = OnProjectileCollision;
       world.PostProjectile(p);
     }
-    
   }
 }

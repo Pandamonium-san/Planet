@@ -11,8 +11,7 @@ namespace Planet
   {
     FixedList<State> states;
     bool rewinding;
-    //test
-    Laser laser;
+
     public RewinderShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture("enemyblue5"))
     {
@@ -39,16 +38,16 @@ namespace Planet
       wpn.Name = "Weapon1";
       weapons.Add(wpn);
 
-      desc = new WpnDesc(1, 30, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 3);           //normal laser
+      desc = new WpnDesc(1, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 3);           //normal laser
       Weapon wpn2 = new Weapon(this, world, desc);
-      wpn2.SetMuzzle(new Vector2(0, -30));
+      wpn2.SetMuzzle(new Vector2(0, -10));
       wpn2.Name = "Line";
       weapons.Add(wpn2);
 
-      WHitScan hitscan = new WHitScan(this, world, desc, 10, true);
-      hitscan.SetMuzzle(new Vector2(0, -20));
-      hitscan.Name = "Laser";
-      weapons.Add(hitscan);
+      LaserGun laser = new LaserGun(this, world, desc, 20, false);
+      laser.SetMuzzle(new Vector2(0, -20));
+      laser.Name = "Laser";
+      weapons.Add(laser);
 
       Weapon wpn3;
       wpn3 = new LightningGun(this, world, 2);
@@ -71,9 +70,6 @@ namespace Planet
       currentHealth = maxHealth;
 
       //drawHitbox = false;
-      //test
-      laser = new Laser(Pos + Vector2.UnitY * -25, Vector2.Zero, world);
-      laser.Parent = this;
     }
     public override void Fire1()
     {

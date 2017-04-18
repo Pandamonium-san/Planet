@@ -170,20 +170,20 @@ namespace Planet
     public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color, int width)
     {
       Texture2D texture;
-      texture = AssetManager.GetTexture("pixel");
+      texture = AssetManager.GetTexture("laserBlue_m");
 
       //texture = new Texture2D(1, 1); //fails because of project template?
       //texture.SetData<Color>(new Color[] { Color.White });
 
       Vector2 edge = end - start;
-      float angle = (float)Math.Atan2(edge.Y, edge.X);
+      float angle = (float)-Math.Atan2(edge.X, edge.Y);
       spriteBatch.Draw(
         texture,
-        new Rectangle((int)start.X, (int)start.Y, (int)edge.Length(), width),
+        new Rectangle((int)start.X, (int)start.Y, width, (int)edge.Length()),
         null,
         color,
         angle,
-        new Vector2(0, 0.5f),
+        new Vector2(texture.Width / 2f, 0),
         SpriteEffects.None,
         1);
     }

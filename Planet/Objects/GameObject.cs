@@ -32,7 +32,7 @@ namespace Planet
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
     public bool CollisionEnabled { get; set; }
     // debug
-    protected bool drawHitbox = false;
+    protected bool drawHitbox = true;
 
     public GameObject(Vector2 pos, World world, Texture2D tex)
       : base(pos, tex)

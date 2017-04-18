@@ -18,9 +18,9 @@ namespace Planet
     public float lifeTime;
     protected Timer lifeTimer;
     public delegate void Pattern(Projectile p, GameTime gt);
-    Pattern pattern;
+    public Pattern pattern;
     public delegate void OnCollision(Projectile p, GameObject other);
-    OnCollision onCollision;
+    public OnCollision onCollision;
 
     public Projectile(
         World world,

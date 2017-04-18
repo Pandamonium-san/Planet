@@ -9,25 +9,26 @@ namespace Planet
 {
   class PHitScan : Projectile
   {
-    private Vector2 hit;
+    public Vector2 hit;
+    public float length;
     private bool canPierce;
     private int width;      // increases width on both sides so actual width is 2x bigger
-    public float length;
+    public bool stickToInstigator;
 
-    public PHitScan(World world, Vector2 start, Vector2 dir, int damage, bool canPierce, int width, float length, Ship instigator, float lifeTime = 0.1f)
-      : base(world, AssetManager.GetTexture("pixel"), start, dir, 0, damage, instigator, lifeTime)
+    public PHitScan(World world, Texture2D tex, Vector2 start, Vector2 dir, int damage, bool canPierce, int width, float length, Ship instigator, float lifeTime = 0.1f)
+      : base(world, tex, start, dir, 0, damage, instigator, lifeTime)
     {
       Rotation = Utility.Vector2ToAngle(dir);
       hit = Pos + dir * length;
       this.canPierce = canPierce;
       this.width = width;
       this.length = length;
+      stickToInstigator = true;
     }
-
     protected override void DoUpdate(GameTime gt)
     {
       lifeTimer.Update(gt);
-      alpha = 1-(float)lifeTimer.Fraction;
+      alpha = 1 - (float)lifeTimer.Fraction;
 
       if (frame != 0)
         return;
@@ -38,8 +39,13 @@ namespace Planet
       {
         if (!go.isDead && (layerMask & go.layer) != Layer.ZERO)
         {
-          if (Utility.RayCast(Pos, Pos + dir * length, go.Pos, go.hitbox.Radius + width, ref hit))
+          if (Utility.RayCast(Pos, Pos + dir * length, go.Pos, go.hitbox.Radius + width / 2f, ref hit))
           {
+            if (canPierce)
+            {
+              go.DoCollision(this);
+              DoCollision(go);
+            }
             hits.Add(go);
           }
         }
@@ -51,10 +57,6 @@ namespace Planet
       if (canPierce)
       {
         hit = Pos + dir * length;
-        foreach (GameObject h in hits)
-        {
-          h.DoCollision(this);
-        }
       }
       // selects the closest target that was hit, may be inaccurate if hitboxes have different sizes
       else
@@ -72,15 +74,30 @@ namespace Planet
             nDistance = distance;
           }
         }
-        Utility.RayCast(Pos, Pos + dir * length, near.Pos, near.hitbox.Radius + width, ref hit); // set the hit position at nearest
+        Utility.RayCast(Pos, Pos + dir * length, near.Pos, near.hitbox.Radius, ref hit); // set the hit position at nearest
         near.DoCollision(this);
+        DoCollision(near);
       }
     }
-
     public override void Draw(SpriteBatch spriteBatch)
     {
-      if (isActive)
-        Utility.DrawLine(spriteBatch, Pos, hit, color*alpha, width*2);
+      if (frame != 1)
+        return;
+      Vector2 start = Pos;
+      if (stickToInstigator)
+        start = instigator.Pos;
+      Vector2 end = hit;
+      Vector2 edge = end - start;
+      float angle = (float)-Math.Atan2(edge.X, edge.Y);
+      spriteBatch.Draw(
+        tex,
+        new Rectangle((int)start.X, (int)start.Y, width, (int)edge.Length()),
+        null,
+        color,
+        angle,
+        new Vector2(tex.Width / 2f, 0),
+        SpriteEffects.None,
+        1);
     }
   }
 }

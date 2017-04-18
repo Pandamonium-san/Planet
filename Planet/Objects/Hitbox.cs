@@ -10,13 +10,12 @@ namespace Planet
   public class Hitbox : Transform
   {
     private float localRadius;
-    public float Radius;
+    public float Radius { get { return localRadius * Scale; } }
 
     public Hitbox(GameObject parent, float radius)
       : base(parent.Pos, parent.Rotation, parent.Scale, parent)
     {
       localRadius = radius;
-      Radius = radius * Scale;
     }
     public bool Colliding(Hitbox other)
     {
@@ -42,7 +41,6 @@ namespace Planet
     protected override void Update()
     {
       base.Update();
-      Radius = localRadius * Scale;
     }
   }
 
