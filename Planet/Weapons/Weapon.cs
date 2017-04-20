@@ -111,7 +111,7 @@ namespace Planet
     }
     protected virtual void OnProjectileCollision(Projectile p, GameObject other)
     {
-      world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, 0.7f);
+      //world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, 0.7f);
     }
     protected void ApplyInaccuracy(ref Vector2 dir, float inaccuracy)
     {

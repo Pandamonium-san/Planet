@@ -14,7 +14,7 @@ namespace Planet
     List<PHitScan> LBranches;
 
     public PLightning(World world, Vector2 start, Vector2 direction, int damage, int width, Ship instigator, float lifeTime = 0.4f)
-      : base(world, null, start, direction, 0, damage, instigator, lifeTime)
+      : base(world, AssetManager.GetTexture("pixel"), start, direction, 0, damage, instigator, lifeTime)
     {
       this.width = width;
       LBranches = new List<PHitScan>();

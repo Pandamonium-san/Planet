@@ -61,6 +61,11 @@ namespace Planet
         rotationModifier = 0.3f;
         acceleration = Forward * baseSpeed * 2;
         velocity = acceleration * speedModifier;
+        //dash trail
+        Particle pr = world.Particles.CreateParticle(Pos + Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
+        pr.Rotation = Rotation;
+        pr = world.Particles.CreateParticle(Pos - Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
+        pr.Rotation = Rotation;
       }
       else
       {

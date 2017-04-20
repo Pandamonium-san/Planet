@@ -19,6 +19,7 @@ namespace Planet
   public class GameObject : Sprite
   {
     public Vector2 Forward { get { return Utility.AngleToVector2(Rotation); } }
+    public Vector2 Right { get { return Utility.AngleToVector2(Rotation + (float)Math.PI / 2); } }
 
     // collision
     public Hitbox hitbox;
@@ -32,7 +33,7 @@ namespace Planet
     public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
     public bool CollisionEnabled { get; set; }
     // debug
-    protected bool drawHitbox = true;
+    protected bool drawHitbox = false;
 
     public GameObject(Vector2 pos, World world, Texture2D tex)
       : base(pos, tex)

@@ -51,7 +51,7 @@ namespace Planet
         Pos = pos;
         Scale = scale;
         Rotation = rotation;
-        if(parent != null)
+        if (parent != null)
           parent.AppendChild(this);
       }
     }
@@ -62,6 +62,7 @@ namespace Planet
     public Vector2 localPos;
     public float localRotation;
     public float localScale;
+    public Vector2 localOrigin;
     private Vector2 worldPos;
     private float worldRotation;
     private float worldScale;
@@ -72,11 +73,12 @@ namespace Planet
       this.Pos = pos;
       this.Rotation = rotation;
       this.Scale = scale;
+      localOrigin = Vector2.Zero;
     }
 
     private void AppendChild(Transform child)
     {
-      if(children == null)
+      if (children == null)
         children = new List<Transform>();
       children.Add(child);
     }
@@ -94,7 +96,7 @@ namespace Planet
     }
     protected virtual void Update()
     {
-      worldPos = parent != null ? Utility.RotateVector2(parent.Pos + localPos, parent.Pos, parent.Rotation) : localPos;
+      worldPos = parent != null ? Utility.RotateVector2(parent.Pos + localPos, parent.Pos + localOrigin, parent.Rotation) : localPos;
       worldRotation = parent != null ? parent.Rotation + localRotation : localRotation;
       worldScale = parent != null ? parent.Scale * localScale : localScale;
     }

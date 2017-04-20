@@ -57,9 +57,9 @@ namespace Planet
           {
             go.DoCollision(p);
             p.DoCollision(go);
+            if (!go.isActive)
+              break;
           }
-          if (!go.isActive)
-            break;
         }
       }
       Particles.Update(gameTime);

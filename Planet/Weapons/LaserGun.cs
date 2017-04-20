@@ -8,6 +8,7 @@ namespace Planet
 {
   class LaserGun : WHitScan
   {
+    float prevRotation = 0f;
     public LaserGun(Ship ship, World world, WpnDesc desc, int width, bool canPierce, float range = 10000)
       : base(ship, world, desc, width, canPierce, range)
     {
@@ -31,7 +32,8 @@ namespace Planet
         return;
       PHitScan ph = (PHitScan)p;
       Vector2 prPos = ph.hit;
-      world.Particles.CreateParticle(prPos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.1f, Color.White, 0.5f, 4f, 0.8f * width / 20f);
+      Particle pr = world.Particles.CreateParticle(prPos, AssetManager.GetTexture("laserBlue10"), Vector2.Zero, 0.1f, Color.White, 0.8f, 4f, 1.0f * width / 20f);
+      pr.Rotation = prevRotation += (float)Math.PI/24;
 
       Vector2 prDir = -ph.dir;
       ApplyInaccuracy(ref prDir, 65);
