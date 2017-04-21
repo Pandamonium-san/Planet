@@ -147,6 +147,11 @@ namespace Planet
         TakeDamage(p.damage);
       }
     }
+    public override void Die()
+    {
+      base.Die();
+      world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
+    }
     public void AddAcceleration(Vector2 v)
     {
       acceleration += v;
@@ -180,7 +185,7 @@ namespace Planet
     public void TakeDamage(int amount)
     {
       currentHealth -= amount;
-      if (currentHealth < 0)
+      if (currentHealth <= 0)
         Die();
       damageTimer.Start();
     }

@@ -35,6 +35,15 @@ namespace Planet
       AddParticle(p);
       return p;
     }
+    public Particle CreateExplosion(Vector2 pos, float lifeTime, float alpha, float scale)
+    {
+      string texPath = "explosion0";
+      int i = Utility.RandomInt(0, 9);
+      texPath += i.ToString();
+      Particle p = new Particle(pos, AssetManager.GetTexture(texPath), Vector2.Zero, lifeTime, Color.White, alpha, 0, scale);
+      AddParticle(p);
+      return p;
+    }
     public void Update(GameTime gameTime)
     {
       foreach (Particle p in particles)

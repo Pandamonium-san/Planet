@@ -8,14 +8,13 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace Planet
 {
-  public class Weapon
+  public class Weapon : Transform
   {
     public string Name { get; set; }
     public WpnDesc Desc { get { return desc; } }
     protected Texture2D projTex;
     protected Ship ship;
     protected World world;
-    protected Transform muzzle;
     protected WpnDesc desc;
 
     // counter variables
@@ -25,6 +24,7 @@ namespace Planet
     protected Timer shootTimer;
 
     public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon")
+      : base(Vector2.Zero, 0, 1.0f, ship)
     {
       Name = name;
       if (pTex == "")
@@ -33,7 +33,6 @@ namespace Planet
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
-      muzzle = new Transform(Vector2.Zero, 0, 0, ship);
       SetMuzzle(Vector2.Zero);
     }
     public virtual void Update(GameTime gt)
@@ -81,7 +80,7 @@ namespace Planet
     {
       float shotAngle = currentBulletAngle + currentShotAngle;
       if (!desc.ignoreRotation)
-        shotAngle += muzzle.Rotation;
+        shotAngle += Rotation;
       Vector2 direction = Utility.AngleToVector2(shotAngle);
       if (desc.inaccuracy != 0)
         ApplyInaccuracy(ref direction, desc.inaccuracy);
@@ -89,7 +88,7 @@ namespace Planet
       Projectile p = new Projectile(
         world,
         projTex,
-        muzzle.Pos,
+        Pos,
         direction,
         sv + desc.projSpeed,
         desc.damage,
@@ -98,20 +97,17 @@ namespace Planet
         BulletPattern,
         OnProjectileCollision
         );
+      p.Scale *= Scale;
       world.PostProjectile(p);
     }
     protected virtual void BulletPattern(Projectile p, GameTime gt)
     {
       p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
       p.Rotation = Utility.Vector2ToAngle(p.velocity);
-      if (p.frame % 5 == 0)
-      {
-        world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), -100, 100, -100, 100, 0.4f, Color.White, 0.7f, 4f, 0.1f);
-      }
     }
     protected virtual void OnProjectileCollision(Projectile p, GameObject other)
     {
-      //world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, 0.7f);
+      world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, p.Scale * 0.7f);
     }
     protected void ApplyInaccuracy(ref Vector2 dir, float inaccuracy)
     {
@@ -124,8 +120,8 @@ namespace Planet
     }
     public void SetMuzzle(Vector2 pos, float rotation = 0)
     {
-      muzzle.localPos = pos;
-      muzzle.localRotation = rotation;
+      localPos = pos;
+      localRotation = rotation;
     }
     public void SetDesc(WpnDesc desc)
     {

@@ -26,13 +26,13 @@ namespace Planet
     {
       float shotAngle = currentBulletAngle + currentShotAngle;
       if (!desc.ignoreRotation)
-        shotAngle += muzzle.Rotation;
+        shotAngle += Rotation;
       Vector2 direction = Utility.AngleToVector2(shotAngle);
       if (desc.inaccuracy != 0)
         ApplyInaccuracy(ref direction, desc.inaccuracy);
       PLightning p = new PLightning(
         world,
-        muzzle.Pos,
+        Pos,
         direction,
         desc.damage,
         width,

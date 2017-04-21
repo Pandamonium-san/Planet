@@ -23,7 +23,7 @@ namespace Planet
     {
       float shotAngle = currentBulletAngle + currentShotAngle;
       if (!desc.ignoreRotation)
-        shotAngle += muzzle.Rotation;
+        shotAngle += Rotation;
       Vector2 direction = Utility.AngleToVector2(shotAngle);
       if (desc.inaccuracy != 0)
         ApplyInaccuracy(ref direction, desc.inaccuracy);
@@ -31,7 +31,7 @@ namespace Planet
       PHitScan p = new PHitScan(
         world,
         projTex,
-        muzzle.Pos,
+        Pos,
         direction,
         desc.damage,
         canPierce,

@@ -23,7 +23,8 @@ namespace Planet
       weapons.Add(wpn);
 
       desc = new WpnDesc(5, 60, 500, 8, 10, 50, 1, 30, 360/8f, 360/30f, 0, 0.2f);                 // spinny projectile thing
-      wpn = new Weapon(this, world, desc);
+      wpn = new Weapon(this, world, desc, "laserBlue10");
+      wpn.Scale = 0.5f;
       wpn.Name = "Spin";
       weapons.Add(wpn);
     }

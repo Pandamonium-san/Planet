@@ -11,24 +11,24 @@ namespace Planet
   /// <typeparam name="T"></typeparam>
   public class FixedList<T> : LinkedList<T>
   {
-    public int Size { get; private set; }
+    public readonly int Length;
 
     public FixedList(int size)
     {
-      this.Size = size;
+      this.Length = size;
     }
 
     public new void AddFirst(T obj)
     {
       base.AddFirst(obj);
-      if (base.Count > Size)
+      if (base.Count > Length)
         base.RemoveLast();
     }
 
     public new void AddLast(T obj)
     {
       base.AddLast(obj);
-      if (base.Count > Size)
+      if (base.Count > Length)
         base.RemoveFirst();
     }
 

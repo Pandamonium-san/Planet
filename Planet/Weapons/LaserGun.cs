@@ -24,7 +24,7 @@ namespace Planet
       float speed = Utility.RandomFloat(130, 175);
       float lifeTime = Utility.RandomFloat(0.4f, 0.6f);
       float scale = Utility.RandomFloat(0.08f, 0.20f) * width / 20f;
-      world.Particles.CreateParticle(muzzle.Pos, AssetManager.GetTexture("laserBlue08"), prDir * speed, lifeTime, Color.White, 0.5f, 4f, scale);
+      world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), prDir * speed, lifeTime, Color.White, 0.5f, 4f, scale);
     }
     protected override void OnProjectileCollision(Projectile p, GameObject other)
     {
