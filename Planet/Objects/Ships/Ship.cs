@@ -12,20 +12,22 @@ namespace Planet
     public Weapon CurrentWeapon { get { return weapons[currentWeapon]; } }
     public bool Dashing { get; set; }
     public GameObject Target { get; set; }
+    public ShipController Controller { get; set; }
+    public float Speed { get { return baseSpeed * speedModifier; } }
+    public float RotationSpeed { get { return rotationSpeed * rotationModifier; } }
+    public bool ClampToScreen { get; set; }
+    public bool LeadShots { get; set; }
 
     protected Vector2 acceleration;
     protected Vector2 velocity;
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
     protected float baseSpeed = 400;
-    protected float rotationSpeed = 5;
-    protected bool leadShots;
+    protected float rotationSpeed = 10;
 
     protected List<Weapon> weapons;
     protected int currentWeapon;
     protected Timer damageTimer;
-
-    public bool restrictToScreen;
 
     public float fireRateModifier = 1.0f;
     public float speedModifier = 1.0f;
@@ -46,7 +48,7 @@ namespace Planet
     }
     protected override void DoUpdate(GameTime gt)
     {
-      if (Target == null || !Target.isActive)
+      if (Target == null || !Target.isActive || Target.layer == layer)
         Target = NextTarget();
 
       if (Dashing)
@@ -54,13 +56,12 @@ namespace Planet
         Vector2 dashDir = movementDirection;
         if (dashDir == Vector2.Zero)
           dashDir = Forward;
-        if (acceleration.Length() < baseSpeed * 1.5f) // Turn instantly when dash is initiated
+        if (acceleration.Length() < Speed * 1.5f) // Turn instantly when dash is initiated
           Rotation = Utility.Vector2ToAngle(dashDir);
         else
           TurnTowards(Pos + dashDir);
-        rotationModifier = 0.3f;
-        acceleration = Forward * baseSpeed * 2;
-        velocity = acceleration * speedModifier;
+        acceleration = Forward * Speed * 2;
+        velocity = acceleration;
         //dash trail
         Particle pr = world.Particles.CreateParticle(Pos + Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
         pr.Rotation = Rotation;
@@ -73,13 +74,13 @@ namespace Planet
           TurnTowards(Pos + movementDirection);
         else if (Target != null)
         {
-          if (leadShots)
+          if (LeadShots)
             LeadShot((Ship)Target);
           else
             TurnTowards(Target.Pos);
         }
-        velocity = movementDirection * baseSpeed * speedModifier;
-        velocity += acceleration * speedModifier;
+        velocity = movementDirection * Speed;
+        velocity += acceleration;
       }
 
       Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
@@ -87,11 +88,11 @@ namespace Planet
 
       movementDirection = Vector2.Zero;
       currentRotationSpeed = 0;
-      speedModifier = 1.0f;
-      rotationModifier = 1.0f;
+      //speedModifier = 1.0f;
+      //rotationModifier = 1.0f;
       acceleration *= 0.90f;
 
-      if (restrictToScreen)
+      if (ClampToScreen)
         RestrictToScreen();
 
       foreach (Weapon wpn in weapons)
@@ -103,14 +104,15 @@ namespace Planet
         alpha = 0.55f + (float)damageTimer.Fraction * 0.45f;
         damageTimer.Update(gt);
       }
-      base.DoUpdate(gt);
     }
     public virtual void Fire1()
     {
       if (!Dashing)
         CurrentWeapon.Fire();
     }
-    public virtual void Fire2() { }
+    public virtual void Fire2()
+    {
+    }
     public virtual void Switch()
     {
       if (++currentWeapon >= weapons.Count())
@@ -121,7 +123,7 @@ namespace Planet
     {
       Target = NextTarget();
     }
-    protected virtual GameObject NextTarget()
+    public GameObject NextTarget()
     {
       List<GameObject> go = world.GetGameObjects();
       GameObject nearest = null;
@@ -178,7 +180,7 @@ namespace Planet
       if (Math.Abs(angleToTarget * 60) < rotationSpeed) //turn fully if rotationspeed higher than difference
         rotation = angleToTarget * 60;
       else
-        rotation = MathHelper.Lerp(0, angleToTarget, rotationSpeed);
+        rotation = angleToTarget > 0 ? RotationSpeed : -RotationSpeed;
 
       currentRotationSpeed += rotation;
     }
@@ -219,7 +221,7 @@ namespace Planet
     {
       base.Draw(spriteBatch);
 
-      if (layer != Layer.PLAYER_SHIP)
+      if (layer != Layer.PLAYER_SHIP || !Visible)
         return;
       if (Target != null)
       {

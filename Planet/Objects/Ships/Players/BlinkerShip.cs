@@ -12,7 +12,6 @@ namespace Planet
         : base(pos, world, AssetManager.GetTexture("enemyBlue4"))
     {
       SetLayer(Layer.PLAYER_SHIP);
-      rotationSpeed = 15;
 
       maxHealth = 1000;
       currentHealth = maxHealth;

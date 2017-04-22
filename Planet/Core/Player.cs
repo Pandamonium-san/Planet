@@ -29,7 +29,6 @@ namespace Planet
     public void SetShip(Ship ship)
     {
       pc = new PlayerShipController(Index, ship);
-      ship.restrictToScreen = true;
     }
   }
 }

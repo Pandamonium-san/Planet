@@ -43,7 +43,7 @@ namespace Planet
       isActive = true;
       CollisionEnabled = true;
     }
-    public void Update(GameTime gt)
+    public virtual void Update(GameTime gt)
     {
       if (isDead)
       {

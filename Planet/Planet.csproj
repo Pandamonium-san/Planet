@@ -44,6 +44,7 @@
     <Compile Include="Core\ParticleManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Particle.cs" />
+    <Compile Include="Objects\Ships\Players\PossessorShip.cs" />
     <Compile Include="Objects\Sprite.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\GameStateManager.cs" />

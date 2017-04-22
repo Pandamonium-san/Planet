@@ -9,10 +9,13 @@ namespace Planet
 {
   public class AIController : ShipController
   {
+    protected Ship ship;
+    protected World world;
     protected List<Command> commands = new List<Command>();
 
-    public AIController(World world) : base(null, world)
+    public AIController(World world)
     {
+      this.world = world;
       commands = new List<Command>();
       AddCommand(CommandType.SetVelocity, -10, 0, 0, 1);
       AddCommand(CommandType.AddVelocity, 5, 5, 0, 200);
@@ -30,9 +33,16 @@ namespace Planet
       //AddCommand(CommandType.LookAtTarget, 0, 0, 0, 10000);
       AddCommand(CommandType.Fire, 0, 0, 0, 10000);
     }
-    public AIController(Ship ship, World world) : base(ship, world) { }
-
-    protected override void DoUpdate(GameTime gt)
+    public void Update(GameTime gt)
+    {
+      if (ship != null && ship.disposed)
+        ship = null;
+      if (ship == null || ship.isDead || !ship.isActive)
+        return;
+      else
+        DoUpdate(gt);
+    }
+    protected virtual void DoUpdate(GameTime gt)
     {
       ship.Target = FindNearestTarget();
       if (ship.Target != null && ship.Target.isActive && ship.Target.Pos != ship.Pos)
@@ -60,6 +70,8 @@ namespace Planet
       float nDistance = 1000000;
       foreach (GameObject p in players)
       {
+        if (!p.isActive)
+          continue;
         float distance = Utility.Distance(p.Pos, ship.Pos);
         if (distance < nDistance)
         {
@@ -105,6 +117,14 @@ namespace Planet
         default:
           break;
       }
+    }
+    public void SetShip(Ship ship)
+    {
+      if (this.ship != null)
+        this.ship.Controller = null;
+      if (ship != null)
+        ship.Controller = this;
+      this.ship = ship;
     }
   }
 

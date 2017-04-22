@@ -81,11 +81,11 @@ namespace Planet
       //perform bullet pattern operation
       if (pattern != null)
         pattern(this, gt);
-      //else
-      //{
-      //  Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
-      //  Rotation = Utility.Vector2ToAngle(velocity);
-      //}
+      else
+      {
+        Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+        Rotation = Utility.Vector2ToAngle(velocity);
+      }
 
       base.DoUpdate(gt);
     }

@@ -15,21 +15,22 @@ namespace Planet
     private World world;
     private EnemyManager enemyManager;
     private Player p1, p2;
-    private RewinderShip ship;
+    private Ship ship;
     private BlinkerShip ship2;
 
     public GameStatePlaying(GameStateManager gameStateManager)
     {
       gsm = gameStateManager;
       world = new World();
+      p1 = new Player(PlayerIndex.One);
+      p2 = new Player(PlayerIndex.Two);
 
-      ship = new RewinderShip(new Vector2(500, 500), world);
+      //ship = new RewinderShip(new Vector2(500, 500), world);
+      ship = new PossessorShip(new Vector2(500, 500), world, p1);
       world.PostGameObj(ship);
       ship2 = new BlinkerShip(new Vector2(1000, 500), world);
       world.PostGameObj(ship2);
 
-      p1 = new Player(PlayerIndex.One);
-      p2 = new Player(PlayerIndex.Two);
       p1.SetShip(ship);
       p2.SetShip(ship2);
 

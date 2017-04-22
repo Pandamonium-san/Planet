@@ -21,10 +21,16 @@ namespace Planet
       WpnDesc desc = new WpnDesc(1, 10f, 700, 1, 0, 5, 0, 1, 0, 0, 0, 5);
       //WpnDesc desc = new WpnDesc(0, 0, 250);
       //WpnDesc desc = new WpnDesc(10, 1, 200);
-      Weapon wpn = new Weapon(this, world, desc);
+      Weapon wpn = new Weapon(this, world, desc, "proj1", "BasicGun");
       //WHitScan wpn = new WHitScan(this, world, desc, 10, false);
       wpn.SetMuzzle(new Vector2(0, -10));
       weapons.Add(wpn);
+      desc = new WpnDesc(5, 10, 1000, 4, 1, 10, 1, 10, 3, 0, -4.5f, 3); 
+      wpn = new Weapon(this, world, desc, "laserBlue10", "Spinny");
+      wpn.Scale = 0.4f;
+      weapons.Add(wpn);
+
+      rotationSpeed = 5;
       currentHealth = 100;
       baseSpeed = 100;
     }

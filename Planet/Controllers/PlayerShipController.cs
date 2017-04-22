@@ -10,13 +10,13 @@ namespace Planet
   /// <summary>
   /// Sets bindings for, and controls the ship for the player
   /// </summary>
-  class PlayerShipController : PlayerController
+  class PlayerShipController : PlayerController, ShipController
   {
     public Ship Ship { get; set; }
     public PlayerShipController(PlayerIndex index, Ship ship)
       : base(index)
     {
-      this.Ship = ship;
+      SetShip(ship);
 
       SetBinding(PlayerInput.Up, Up, InputType.Down);
       SetBinding(PlayerInput.Down, Down, InputType.Down);
@@ -37,8 +37,18 @@ namespace Planet
     private void Fire1() { Ship.Fire1(); }
     private void Fire2() { Ship.Fire2(); }
     private void SwitchTarget() { Ship.SwitchTarget(); }
-    private void DashPressed() { Ship.Dashing = true; }
-    private void DashReleased() { Ship.Dashing = false; }
+    private void DashPressed() { Ship.Dashing = true; Ship.rotationModifier *= 0.7f; }
+    private void DashReleased() { Ship.Dashing = false; Ship.rotationModifier /= 0.7f; }
     private void Switch() { Ship.Switch(); }
+
+    public void SetShip(Ship ship)
+    {
+      if (Ship != null)
+        Ship.Controller = null;
+      if (ship != null)
+        ship.Controller = this;
+      this.Ship = ship;
+      Ship.ClampToScreen = true;
+    }
   }
 }
