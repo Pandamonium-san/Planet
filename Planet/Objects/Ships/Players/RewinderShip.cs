@@ -13,7 +13,7 @@ namespace Planet
     bool rewinding;
 
     public RewinderShip(Vector2 pos, World world)
-        : base(pos, world, AssetManager.GetTexture("enemyblue5"))
+        : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_002"))
     {
       SetLayer(Layer.PLAYER_SHIP);
 
@@ -45,6 +45,7 @@ namespace Planet
       wpn2.Name = "Line";
       weapons.Add(wpn2);
 
+      desc = new WpnDesc(1, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 3);           //normal laser
       LaserGun laser = new LaserGun(this, world, desc, 20, false);
       laser.SetMuzzle(new Vector2(0, -20));
       laser.Name = "Laser";

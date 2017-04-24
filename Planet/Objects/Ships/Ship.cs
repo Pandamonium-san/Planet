@@ -29,7 +29,6 @@ namespace Planet
     protected int currentWeapon;
     protected Timer damageTimer;
 
-    public float fireRateModifier = 1.0f;
     public float speedModifier = 1.0f;
     public float rotationModifier = 1.0f;
 
@@ -113,15 +112,20 @@ namespace Planet
     public virtual void Fire2()
     {
     }
-    public virtual void Switch()
+    public void Switch()
     {
       if (++currentWeapon >= weapons.Count())
         currentWeapon = 0;
       CurrentWeapon.ResetShootTimer();
     }
-    public virtual void SwitchTarget()
+    public void SwitchTarget()
     {
       Target = NextTarget();
+    }
+    public void SetWeapon(int index)
+    {
+      currentWeapon = MathHelper.Clamp(index, 0, weapons.Count());
+      CurrentWeapon.ResetShootTimer();
     }
     public GameObject NextTarget()
     {
@@ -184,7 +188,7 @@ namespace Planet
 
       currentRotationSpeed += rotation;
     }
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
       currentHealth -= amount;
       if (currentHealth <= 0)

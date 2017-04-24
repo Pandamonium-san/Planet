@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Planet
 {
-  public struct WpnDesc
+  public class WpnDesc
   {
     /// <summary>
     /// Contains information about the behaviour of a weapon.
@@ -24,7 +24,7 @@ namespace Planet
     /// <param name="projLifeTime">Time in seconds before bullet destroys itself</param>
     /// <param name="ignoreRotation">If true, does not take into account the ship's rotation when determining shot direction</param>
     public WpnDesc(
-        int damage,
+        float damage,
         float shotsPerSecond,
         float projectileSpeed,
         int nrOfBullets = 1,
@@ -52,8 +52,12 @@ namespace Planet
       this.projLifeTime = projLifeTime;
       this.ignoreRotation = ignoreRotation;
     }
+    public WpnDesc()
+    {
 
-    public int damage;
+    }
+
+    public float damage;
     public float shotsPerSecond;
     public float projSpeed;
     public int nrOfBullets;

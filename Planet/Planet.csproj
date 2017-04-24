@@ -72,7 +72,7 @@
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Objects\Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Objects\Ships\Enemies\PumpkinShip.cs" />
+    <Compile Include="Objects\Ships\Enemies\EnemyShip.cs" />
     <Compile Include="Objects\Ships\Ship.cs" />
     <Compile Include="Core\AssetManager.cs" />
     <Compile Include="Objects\Ships\Players\RewinderShip.cs" />

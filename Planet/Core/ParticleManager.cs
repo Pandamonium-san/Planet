@@ -44,6 +44,20 @@ namespace Planet
       AddParticle(p);
       return p;
     }
+    public Particle CreateHitEffect(Vector2 pos, float lifeTime, float minSpeed, float maxSpeed, Color color, float alpha, float scale, float variation)
+    {
+      string texPath = "star";
+      int i = Utility.RandomInt(1, 4);
+      texPath += i.ToString();
+      float r = 1 + Utility.RandomFloat(-variation, variation);
+
+      float xVel = Utility.RandomFloat(minSpeed, maxSpeed);
+      float yVel = Utility.RandomFloat(minSpeed, maxSpeed);
+
+      Particle p = new Particle(pos, AssetManager.GetTexture(texPath), new Vector2(xVel, yVel) * r, lifeTime * r, color, alpha, 0, scale * r);
+      AddParticle(p);
+      return p;
+    }
     public void Update(GameTime gameTime)
     {
       foreach (Particle p in particles)

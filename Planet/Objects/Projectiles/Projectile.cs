@@ -9,7 +9,7 @@ namespace Planet
 {
   public class Projectile : GameObject
   {
-    public int damage;
+    public float damage;
     public Ship instigator;
 
     public Vector2 dir;
@@ -28,7 +28,7 @@ namespace Planet
         Vector2 pos,
         Vector2 dir,
         float speed,
-        int damage = 1,
+        float damage = 1,
         Ship instigator = null,
         float lifeTime = 3,
         Pattern pattern = null,
@@ -59,13 +59,13 @@ namespace Planet
       {
         SetLayer(Layer.PLAYER_PROJECTILE);
         layerMask = Layer.ENEMY_SHIP;
-        color = Color.White;
+        //color = Color.White;
       }
       else if (instigator.layer == Layer.ENEMY_SHIP)
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
         layerMask = (Layer.PLAYER_SHIP);
-        color = Color.Red;
+        color = new Color(255,128,128);
       }
       layerDepth = 0.8f;
     }

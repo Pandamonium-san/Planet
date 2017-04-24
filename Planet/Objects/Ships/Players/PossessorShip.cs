@@ -15,7 +15,7 @@ namespace Planet
     ShipController oldController;
     Layer oldLayer;
     public PossessorShip(Vector2 pos, World world, Player pc)
-        : base(pos, world, AssetManager.GetTexture("enemyblue3"))
+        : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_009"))
     {
       SetLayer(Layer.PLAYER_SHIP);
 
@@ -38,7 +38,9 @@ namespace Planet
       {
         psc.Update(gt);
         if (possessedShip.isDead)
+        {
           Release();
+        }
       }
     }
     public override void Fire1()
@@ -76,6 +78,7 @@ namespace Planet
 
       possessedShip = (Ship)other;
 
+
       oldLayer = possessedShip.layer;
       oldController = possessedShip.Controller;
       psc = new PlayerShipController(player.Index, possessedShip);
@@ -83,7 +86,6 @@ namespace Planet
       oldController.SetShip(null);
       possessedShip.SetLayer(layer);
       possessedShip.speedModifier *= 4.0f;
-      possessedShip.fireRateModifier *= 2.0f;
       possessedShip.rotationModifier *= 1.5f;
       possessedShip.LeadShots = true;
       possessedShip.color = Color.Purple;
@@ -98,16 +100,15 @@ namespace Planet
       {
         oldController.SetShip(possessedShip);
         Pos = possessedShip.Pos;
-        movementDirection = Vector2.Zero;
+        movementDirection = Vector2.Zero; // prevents accumulation of movement during possession
         isActive = true;
         Visible = true;
         possessedShip.SetLayer(oldLayer);
         possessedShip.speedModifier /= 4.0f;
-        possessedShip.fireRateModifier /= 2.0f;
         possessedShip.rotationModifier /= 1.5f;
         possessedShip.LeadShots = false;
         possessedShip.color = Color.White;
-        possessedShip.Switch();
+        possessedShip.SetWeapon(0);
         possessedShip.TakeDamage(50);
         possessedShip = null;
         psc = null;

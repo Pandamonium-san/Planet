@@ -6,30 +6,24 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
+   *  - Design UI
    *  - Make proper weapons
-   *      - Laser
    *      - Missiles
-   *      - How to instantiate projectile based on class?
-   *      - How to implement different particle effects?
+   *      - Charged laser
    *  - Enemies
    *      - Waves/Levels
    *      - Enemy types
    *      - Enemy AI
-   *  - Score
-   *  - Weapons
-   *      - Missiles/destructible projectiles
-   *      - Explosions
-   *      - Lasers
    *  - Ships
    *      - Rewinder
    *          - Rewinds self
    *          - Manual save state (rewind to this point later)
-   *          - Shadows
+   *          - Shadows?
    *      - Possessor
-   *          - Possess enemy ship with improved weaponry
    *      - Blinker
-   *  - Stage design
-   *  - Camera?
+   *          - Make proper blink
+   *          - Slash dash?
+   *  - Score?
    *  - Effects/Shaders?
    */
 

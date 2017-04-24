@@ -9,7 +9,7 @@ namespace Planet
   class BlinkerShip : Ship
   {
     public BlinkerShip(Vector2 pos, World world)
-        : base(pos, world, AssetManager.GetTexture("enemyBlue4"))
+        : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_001"))
     {
       SetLayer(Layer.PLAYER_SHIP);
 

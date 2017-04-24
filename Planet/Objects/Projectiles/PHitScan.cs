@@ -15,7 +15,7 @@ namespace Planet
     private int width;      // increases width on both sides so actual width is 2x bigger
     public bool stickToInstigator;
 
-    public PHitScan(World world, Texture2D tex, Vector2 start, Vector2 dir, int damage, bool canPierce, int width, float length, Ship instigator, float lifeTime = 0.1f)
+    public PHitScan(World world, Texture2D tex, Vector2 start, Vector2 dir, float damage, bool canPierce, int width, float length, Ship instigator, float lifeTime = 0.1f)
       : base(world, tex, start, dir, 0, damage, instigator, lifeTime)
     {
       Rotation = Utility.Vector2ToAngle(dir);
