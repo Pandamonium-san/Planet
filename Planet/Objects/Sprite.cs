@@ -16,12 +16,14 @@ namespace Planet
     public Color color;
     public float alpha;
     public float layerDepth;
+    public SpriteEffects spriteEffects;
     public Sprite(Vector2 pos, Texture2D tex) : base(pos)
     {
       SetTexture(tex);
       Visible = true;
       color = Color.White;
       alpha = 1f;
+      spriteEffects = SpriteEffects.None;
       layerDepth = 0f;
     }
     protected virtual void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
@@ -38,7 +40,7 @@ namespace Planet
     public virtual void Draw(SpriteBatch spriteBatch)
     {
       if (Visible && tex != null)
-        spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+        spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, spriteEffects, layerDepth);
     }
   }
 }

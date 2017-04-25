@@ -25,7 +25,6 @@ namespace Planet
       p1 = new Player(PlayerIndex.One);
       p2 = new Player(PlayerIndex.Two);
 
-      //ship = new RewinderShip(new Vector2(500, 500), world);
       ship = new RewinderShip(new Vector2(500, 500), world);
       world.PostGameObj(ship);
       ship2 = new PossessorShip(new Vector2(1000, 500), world, p2);

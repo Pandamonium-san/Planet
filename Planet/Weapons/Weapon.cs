@@ -125,8 +125,8 @@ namespace Planet
     }
     public void SetMuzzle(Vector2 pos, float rotation = 0)
     {
-      localPos = pos;
-      localRotation = rotation;
+      LocalPos = pos;
+      LocalRotation = rotation;
     }
     public void SetDesc(WpnDesc desc)
     {

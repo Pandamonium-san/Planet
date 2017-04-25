@@ -703,30 +703,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/laserBlue06.png
 
-#begin C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue07.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue07.png
-
-#begin C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue08.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue08.png
-
 #begin Textures/laserBlue09.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -738,18 +714,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/laserBlue09.png
-
-#begin C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue10.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue10.png
 
 #begin Textures/laserBlue11.png
 /importer:TextureImporter
@@ -810,18 +774,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/laserBlue15.png
-
-#begin C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue16.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:C:/Users/Pandamonium/Downloads/kenney/spaceshooter/PNG/Lasers/laserBlue16.png
 
 #begin Textures/laserBlue01.png
 /importer:TextureImporter
@@ -1086,4 +1038,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/star3.png
+
+#begin Textures/grey_arrowDownWhite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/grey_arrowDownWhite.png
+
+#begin Textures/grey_sliderRight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/grey_sliderRight.png
 

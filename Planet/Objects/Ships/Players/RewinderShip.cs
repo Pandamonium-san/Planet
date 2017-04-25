@@ -21,7 +21,7 @@ namespace Planet
       LeadShots = true;
       Scale = .5f;
 
-      hitbox.localScale = 0.5f;
+      hitbox.LocalScale = 0.5f;
       origin += new Vector2(0, 2);
       layerDepth = 0.2f;
 

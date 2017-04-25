@@ -55,13 +55,16 @@ namespace Planet
           parent.AppendChild(this);
       }
     }
+    public Vector2 LocalPos { get { return localPos; } set { localPos = value; Update(); } }
+    public float LocalRotation { get { return localRotation; } set { localRotation = value;  Update(); } }
+    public float LocalScale { get { return localScale; } set { localScale = value;  Update(); } }
 
     // member variables
     private Transform parent;
     private List<Transform> children;
-    public Vector2 localPos;
-    public float localRotation;
-    public float localScale;
+    private Vector2 localPos;
+    private float localRotation;
+    private float localScale;
     public Vector2 localOrigin;
     private Vector2 worldPos;
     private float worldRotation;
@@ -94,7 +97,7 @@ namespace Planet
           children[i].Update();
       }
     }
-    protected virtual void Update()
+    private void Update()
     {
       worldPos = parent != null ? Utility.RotateVector2(parent.Pos + localPos, parent.Pos + localOrigin, parent.Rotation) : localPos;
       worldRotation = parent != null ? parent.Rotation + localRotation : localRotation;

@@ -12,17 +12,17 @@ namespace Planet
   {
     private GameStateManager gsm;
 
-    private MenuController mc;
+    private MenuCursor cursor1, cursor2;
+    private MenuController mc1, mc2;
     private Text titleText;
-    private SelectionList mainMenu;
+    private Menu mainMenu;
 
     public GameStateTitleScreen(GameStateManager gameStateManager)
     {
       gsm = gameStateManager;
-      mc = new MenuController(PlayerIndex.One, this);
 
       titleText = new Text(AssetManager.GetFont("future48"), "Planet", new Vector2(Game1.ScreenWidth / 2f, 200), Color.White);
-      mainMenu = new SelectionList(3);
+      mainMenu = new Menu(3);
 
       Button b = new Button(new Vector2(Game1.ScreenWidth / 2f, 300), "Play");
       b.AddText(AssetManager.GetFont("future18"), "Play");
@@ -35,18 +35,18 @@ namespace Planet
       b = new Button(new Vector2(Game1.ScreenWidth / 2f, 500), "Exit");
       b.AddText(AssetManager.GetFont("future18"), "Exit");
       mainMenu.AddSelection(2, b);
+
+      cursor1 = new MenuCursor(mainMenu, AssetManager.GetTexture("grey_sliderRight"), false);
+      cursor1.color = Color.PaleTurquoise;
+      mc1 = new MenuController(PlayerIndex.One, cursor1, this);
+
+      cursor2 = new MenuCursor(mainMenu, AssetManager.GetTexture("grey_sliderRight"), true);
+      cursor2.color = Color.CornflowerBlue;
+      mc2 = new MenuController(PlayerIndex.Two, cursor2, this);
     }
-    public void Next()
+    public void Confirm(MenuController mc)
     {
-      mainMenu.Next();
-    }
-    public void Previous()
-    {
-      mainMenu.Previous();
-    }
-    public void Confirm()
-    {
-      switch (mainMenu.Selected.Name)
+      switch (mc.GetSelected().Name)
       {
         case "Play":
           gsm.Push(new GameStatePlaying(gsm));
@@ -59,16 +59,19 @@ namespace Planet
           break;
       }
     }
-    public void Cancel()
+    public void Cancel(MenuController mc)
     {
     }
     public override void Update(GameTime gameTime)
     {
-      mc.Update(gameTime);
+      mc1.Update(gameTime);
+      mc2.Update(gameTime);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
+      cursor1.Draw(spriteBatch);
+      cursor2.Draw(spriteBatch);
       titleText.Draw(spriteBatch);
       mainMenu.Draw(spriteBatch);
       spriteBatch.End();

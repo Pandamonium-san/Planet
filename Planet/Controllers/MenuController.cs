@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,17 @@ using System.Text;
 namespace Planet
 {
   /// <summary>
-  /// Sets bindings for, and controls the ship for the player
+  /// Handles input for navigating menus
   /// </summary>
   class MenuController : PlayerController
   {
-    private IMenuGameState menu;
-    public MenuController(PlayerIndex index, IMenuGameState menu)
+    IMenuGameState gs;
+    MenuCursor cursor;
+    public MenuController(PlayerIndex index, MenuCursor cursor, IMenuGameState gs)
       : base(index)
     {
-      this.menu = menu;
+      this.gs = gs;
+      this.cursor = cursor;
 
       SetBinding(PlayerInput.Up, Previous, InputType.Pressed);
       SetBinding(PlayerInput.Down, Next, InputType.Pressed);
@@ -27,10 +30,19 @@ namespace Planet
       SetBinding(PlayerInput.Yellow, Confirm, InputType.Pressed);
       SetBinding(PlayerInput.Red, Cancel, InputType.Pressed);
     }
-
-    private void Next() { menu.Next(); }
-    private void Previous() { menu.Previous(); }
-    private void Confirm() { menu.Confirm(); }
-    private void Cancel() { menu.Cancel(); }
+    public Button GetSelected()
+    {
+      return cursor.GetSelected();
+    }
+    public void Next()
+    {
+      cursor.Next();
+    }
+    public void Previous()
+    {
+      cursor.Previous();
+    }
+    private void Confirm() { gs.Confirm(this); }
+    private void Cancel() { gs.Cancel(this); }
   }
 }

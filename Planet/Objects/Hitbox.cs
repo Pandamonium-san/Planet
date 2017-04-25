@@ -37,11 +37,6 @@ namespace Planet
       Vector2 drawPos = Pos - Vector2.One * Radius;
       spriteBatch.Draw(tex, drawPos, null, Color.Blue * 0.5f, 0f, Vector2.Zero, (Radius / (tex.Width * 0.5f)), SpriteEffects.None, 0.1f);
     }
-
-    protected override void Update()
-    {
-      base.Update();
-    }
   }
 
   //public class Hitbox
