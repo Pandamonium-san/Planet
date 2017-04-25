@@ -11,29 +11,45 @@ namespace Planet
   class GameStatePlaying : GameState
   {
     private GameStateManager gsm;
-
+    private GameSettings gameSettings;
     private World world;
     private EnemyManager enemyManager;
     private Player p1, p2;
-    private Ship ship;
-    private Ship ship2;
 
-    public GameStatePlaying(GameStateManager gameStateManager)
+    public GameStatePlaying(GameStateManager gameStateManager, GameSettings gameSettings)
     {
       gsm = gameStateManager;
+      this.gameSettings = gameSettings;
       world = new World();
       p1 = new Player(PlayerIndex.One);
       p2 = new Player(PlayerIndex.Two);
-
-      ship = new RewinderShip(new Vector2(500, 500), world);
-      world.PostGameObj(ship);
-      ship2 = new PossessorShip(new Vector2(1000, 500), world, p2);
-      world.PostGameObj(ship2);
-
-      p1.SetShip(ship);
-      p2.SetShip(ship2);
-
+      SetPlayerShip(p1).Pos = new Vector2(500, 500);
+      SetPlayerShip(p2).Pos = new Vector2(1000, 500);
       enemyManager = new EnemyManager(world);
+    }
+    Ship SetPlayerShip(Player p)
+    {
+      Ship ship = null;
+      if (p.Index == PlayerIndex.One)
+        ship = InstantiateShip(gameSettings.p1StarterShip, p);
+      else if (p.Index == PlayerIndex.Two)
+        ship = InstantiateShip(gameSettings.p2StarterShip, p);
+      p.SetShip(ship);
+      world.PostGameObj(ship);
+      return ship;
+    }
+    Ship InstantiateShip(string shipType, Player p)
+    {
+      switch (shipType)
+      {
+        case "RewinderShip":
+          return new RewinderShip(Vector2.Zero, world);
+        case "BlinkerShip":
+          return new BlinkerShip(Vector2.Zero, world);
+        case "PossessorShip":
+          return new PossessorShip(Vector2.Zero, world, p);
+      }
+      throw new Exception("Ship type '" + shipType + "' is not implemented");
     }
     public override void Entered()
     {

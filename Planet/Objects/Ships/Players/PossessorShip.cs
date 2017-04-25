@@ -100,6 +100,7 @@ namespace Planet
       {
         oldController.SetShip(possessedShip);
         Pos = possessedShip.Pos;
+        Rotation = possessedShip.Rotation;
         movementDirection = Vector2.Zero; // prevents accumulation of movement during possession
         isActive = true;
         Visible = true;

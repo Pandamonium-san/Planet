@@ -49,9 +49,11 @@ namespace Planet
       switch (mc.GetSelected().Name)
       {
         case "Play":
-          gsm.Push(new GameStatePlaying(gsm));
+          gsm.Push(new GameStateCharacterSelect(gsm));
+          //gsm.Push(new GameStatePlaying(gsm));
           break;
         case "Options":
+          gsm.Push(new GameStateCharacterSelect(gsm));
           //push options state to gsm
           break;
         case "Exit":
