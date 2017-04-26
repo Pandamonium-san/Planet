@@ -37,7 +37,7 @@ namespace Planet
       if (possessedShip != null)
       {
         psc.Update(gt);
-        if (possessedShip.isDead)
+        if (possessedShip.IsDead)
         {
           Release();
         }
@@ -45,7 +45,7 @@ namespace Planet
     }
     public override void Fire1()
     {
-      if (isActive)
+      if (IsActive)
         base.Fire1();
     }
     public override void Fire2()
@@ -73,25 +73,25 @@ namespace Planet
     }
     private void TakeOver(Projectile p, GameObject other)
     {
-      if (other.layer != Layer.ENEMY_SHIP || possessedShip != null)
+      if (other.Layer != Layer.ENEMY_SHIP || possessedShip != null)
         return;
 
       possessedShip = (Ship)other;
 
 
-      oldLayer = possessedShip.layer;
+      oldLayer = possessedShip.Layer;
       oldController = possessedShip.Controller;
       psc = new PlayerShipController(player.Index, possessedShip);
 
       oldController.SetShip(null);
-      possessedShip.SetLayer(layer);
+      possessedShip.SetLayer(Layer);
       possessedShip.speedModifier *= 4.0f;
       possessedShip.rotationModifier *= 1.5f;
       possessedShip.LeadShots = true;
-      possessedShip.color = Color.Purple;
+      possessedShip.color = Color.Turquoise;
       possessedShip.Switch();
 
-      isActive = false;
+      IsActive = false;
       Visible = false;
     }
     private void Release()
@@ -101,8 +101,7 @@ namespace Planet
         oldController.SetShip(possessedShip);
         Pos = possessedShip.Pos;
         Rotation = possessedShip.Rotation;
-        movementDirection = Vector2.Zero; // prevents accumulation of movement during possession
-        isActive = true;
+        IsActive = true;
         Visible = true;
         possessedShip.SetLayer(oldLayer);
         possessedShip.speedModifier /= 4.0f;

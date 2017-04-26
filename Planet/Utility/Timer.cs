@@ -8,7 +8,7 @@ namespace Planet
 {
   public struct Timer
   {
-    public bool counting { get; private set; }
+    public bool Counting { get; private set; }
     public double seconds { get; private set; }
     public double elapsedSeconds { get; private set; }
     public double Fraction { get { return elapsedSeconds / seconds; } }
@@ -24,28 +24,28 @@ namespace Planet
       this.seconds = timeInSeconds;
       this.action = action;
       this.elapsedSeconds = 0;
-      counting = start;
+      Counting = start;
     }
 
     public void Start()
     {
-      counting = true;
+      Counting = true;
       elapsedSeconds = 0;
     }
     public void Start(double seconds)
     {
-      counting = true;
+      Counting = true;
       this.seconds = seconds;
       elapsedSeconds = 0;
     }
     public void Update(GameTime gt)
     {
-      if (!counting)
+      if (!Counting)
         return;
       elapsedSeconds += gt.ElapsedGameTime.TotalSeconds;
       if (elapsedSeconds >= seconds)
       {
-        counting = false;
+        Counting = false;
         if (action != null)
           action.Invoke();
       }

@@ -56,7 +56,7 @@ namespace Planet
           SetPlayerShip(mc.PIndex, "PossessorShip");
           break;
       }
-      mc.GetCursor().color = Color.White;
+      mc.GetCursor().alpha = 0.5f;
       mc.GetCursor().Lock();
       if (cursor1.Locked && cursor2.Locked)
         gsm.Push(new GameStatePlaying(gsm, gameSettings));
@@ -75,7 +75,13 @@ namespace Planet
     }
     public void Cancel(MenuController mc)
     {
-      gsm.Pop();
+      if (mc.GetCursor().Locked)
+      {
+        mc.GetCursor().alpha = 1.0f;
+        mc.GetCursor().Unlock();
+      }
+      else
+        gsm.Pop();
     }
     public override void Update(GameTime gt)
     {
@@ -105,6 +111,10 @@ namespace Planet
 
     public override void Revealed()
     {
+      cursor1.Unlock();
+      cursor2.Unlock();
+      cursor1.alpha = 1.0f;
+      cursor2.alpha = 1.0f;
     }
   }
 }

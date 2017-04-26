@@ -37,7 +37,7 @@ namespace Planet
         desc.projLifeTime,
         (p, gt) => { p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds; });
       center.Scale = 1.0f;
-      center.layerMask = Layer.ZERO;
+      center.LayerMask = Layer.ZERO;
       center.Visible = false;
       world.PostProjectile(center);
 

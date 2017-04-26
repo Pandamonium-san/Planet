@@ -29,7 +29,7 @@ namespace Planet
         List<GameObject> gos = world.GetGameObjects();
         foreach (GameObject go in gos)
         {
-          if (go.isActive && go.layer == Layer.ENEMY_SHIP)
+          if (go.IsActive && go.Layer == Layer.ENEMY_SHIP)
           {
             float distance = Utility.DistanceSquared(p.Pos, go.Pos);
             if (distance < near)

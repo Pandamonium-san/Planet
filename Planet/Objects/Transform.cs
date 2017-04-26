@@ -26,7 +26,6 @@ namespace Planet
       {
         localRotation = parent != null ? value - parent.Rotation : value;
         Update();
-        UpdateChildren();
       }
     }
     public float Scale
@@ -102,6 +101,7 @@ namespace Planet
       worldPos = parent != null ? Utility.RotateVector2(parent.Pos + localPos, parent.Pos + localOrigin, parent.Rotation) : localPos;
       worldRotation = parent != null ? parent.Rotation + localRotation : localRotation;
       worldScale = parent != null ? parent.Scale * localScale : localScale;
+      UpdateChildren();
     }
   }
 }

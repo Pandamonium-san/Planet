@@ -22,7 +22,7 @@ namespace Planet
     protected Vector2 velocity;
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
-    protected float baseSpeed = 400;
+    protected float baseSpeed = 300;
     protected float rotationSpeed = 10;
 
     protected List<Weapon> weapons;
@@ -47,7 +47,7 @@ namespace Planet
     }
     protected override void DoUpdate(GameTime gt)
     {
-      if (Target == null || !Target.isActive || Target.layer == layer)
+      if (Target == null || !Target.IsActive || Target.Layer == Layer)
         Target = NextTarget();
 
       if (Dashing)
@@ -98,7 +98,7 @@ namespace Planet
         wpn.Update(gt);
 
       // flash when damaged
-      if (damageTimer.counting)
+      if (damageTimer.Counting)
       {
         alpha = 0.55f + (float)damageTimer.Fraction * 0.45f;
         damageTimer.Update(gt);
@@ -134,7 +134,7 @@ namespace Planet
       float nearestDistance = float.MaxValue;
       foreach (GameObject g in go)
       {
-        if (!(g is Ship) || g.layer == layer || !g.isActive || g == Target)
+        if (!(g is Ship) || g.Layer == Layer || !g.IsActive || g == Target)
           continue;
         float distance = Vector2.DistanceSquared(Pos, g.Pos);
         if (distance < nearestDistance)
@@ -168,7 +168,8 @@ namespace Planet
     }
     public void Move(Vector2 direction)
     {
-      movementDirection += direction;
+      if (IsActive)
+        movementDirection += direction;
     }
     public void TurnTowards(Vector2 point)
     {
@@ -225,7 +226,7 @@ namespace Planet
     {
       base.Draw(spriteBatch);
 
-      if (layer != Layer.PLAYER_SHIP || !Visible)
+      if (Layer != Layer.PLAYER_SHIP || !Visible)
         return;
       if (Target != null)
       {

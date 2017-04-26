@@ -15,17 +15,17 @@ namespace Planet
       if (instigator == null)
       {
         SetLayer(Layer.PLAYER_PROJECTILE | Layer.ENEMY_PROJECTILE);
-        layerMask = ~Layer.ZERO;
+        LayerMask = ~Layer.ZERO;
       }
-      else if (instigator.layer == Layer.PLAYER_SHIP)
+      else if (instigator.Layer == Layer.PLAYER_SHIP)
       {
         SetLayer(Layer.PLAYER_PROJECTILE);
-        layerMask = (Layer.ENEMY_SHIP | Layer.ENEMY_PROJECTILE);
+        LayerMask = (Layer.ENEMY_SHIP | Layer.ENEMY_PROJECTILE);
       }
-      else if (instigator.layer == Layer.ENEMY_SHIP)
+      else if (instigator.Layer == Layer.ENEMY_SHIP)
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
-        layerMask = (Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE);
+        LayerMask = (Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE);
       }
     }
 

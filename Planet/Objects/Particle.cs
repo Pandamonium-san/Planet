@@ -32,8 +32,8 @@ namespace Planet
     {
       lifeTimer.Update(gameTime);
       alpha = InitialAlpha - InitialAlpha * (float)lifeTimer.Fraction;
-      this.Pos += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-      this.Rotation += RotationSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+      this.LocalPos += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+      this.LocalRotation += RotationSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
   }
 }

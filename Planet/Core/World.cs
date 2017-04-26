@@ -45,34 +45,34 @@ namespace Planet
       {
         GameObject go = gameObjects[i];
         go.Update(gameTime);
-        if (!go.isActive || !go.CollisionEnabled)
+        if (!go.IsActive || !go.CollisionEnabled)
           continue;
 
         for (int j = 0; j < projectiles.Count(); j++)
         {
           Projectile p = projectiles[j];
-          if (!p.isActive)
+          if (!p.IsActive)
             continue;
           if (p.IsColliding(go))
           {
             go.DoCollision(p);
             p.DoCollision(go);
-            if (!go.isActive)
+            if (!go.IsActive)
               break;
           }
         }
       }
       Particles.Update(gameTime);
 
-      projectiles.RemoveAll(x => x.disposed);
-      gameObjects.RemoveAll(x => x.disposed == true);
+      projectiles.RemoveAll(x => x.Disposed);
+      gameObjects.RemoveAll(x => x.Disposed == true);
     }
     public List<GameObject> GetPlayers()
     {
       List<GameObject> result = new List<GameObject>();
       foreach (GameObject go in gameObjects)
       {
-        if (go.layer == Layer.PLAYER_SHIP)
+        if (go.Layer == Layer.PLAYER_SHIP)
           result.Add(go);
       }
       return result;

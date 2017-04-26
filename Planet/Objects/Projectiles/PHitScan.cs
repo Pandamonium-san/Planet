@@ -27,19 +27,20 @@ namespace Planet
     }
     protected override void DoUpdate(GameTime gt)
     {
-      lifeTimer.Update(gt);
-      alpha = 1 - (float)lifeTimer.Fraction;
-
       if (frame != 0)
+      {
+        lifeTimer.Update(gt);
+        alpha = 1 - (float)lifeTimer.Fraction;
         return;
+      }
 
       List<GameObject> objects = world.GetGameObjects();
       List<GameObject> hits = new List<GameObject>();
       foreach (GameObject go in objects)
       {
-        if (!go.isDead && (layerMask & go.layer) != Layer.ZERO)
+        if (!go.IsDead && (LayerMask & go.Layer) != Layer.ZERO)
         {
-          if (Utility.RayCast(Pos, Pos + dir * length, go.Pos, go.hitbox.Radius + width / 2f, ref hit))
+          if (Utility.RayCast(Pos, Pos + dir * length, go.Pos, go.Hitbox.Radius + width / 2f, ref hit))
           {
             if (canPierce)
             {
@@ -74,15 +75,15 @@ namespace Planet
             nDistance = distance;
           }
         }
-        Utility.RayCast(Pos, Pos + dir * length, near.Pos, near.hitbox.Radius, ref hit); // set the hit position at nearest
+        Utility.RayCast(Pos, Pos + dir * length, near.Pos, near.Hitbox.Radius, ref hit); // set the hit position at nearest
         near.DoCollision(this);
         DoCollision(near);
       }
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
-      if (frame != 1)
-        return;
+      //if (frame != 1)
+      //  return;
       Vector2 start = Pos;
       if (stickToInstigator)
         start = instigator.Pos;
@@ -93,7 +94,7 @@ namespace Planet
         tex,
         new Rectangle((int)start.X, (int)start.Y, width, (int)edge.Length()),
         null,
-        color,
+        color * alpha,
         angle,
         new Vector2(tex.Width / 2f, 0),
         SpriteEffects.None,

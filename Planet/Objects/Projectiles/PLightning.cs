@@ -151,7 +151,7 @@ namespace Planet
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
-      if (isActive)
+      if (IsActive)
       {
         for (int i = 0; i < LBranches.Count(); i++)
         {

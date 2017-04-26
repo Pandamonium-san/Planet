@@ -20,7 +20,7 @@ namespace Planet
       this.PIndex = index;
       bindings = new List<KeyBinding>();
     }
-    public void Update(GameTime gt)
+    public virtual void Update(GameTime gt)
     {
       foreach (KeyBinding kb in bindings)
       {

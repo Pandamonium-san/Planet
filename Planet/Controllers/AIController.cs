@@ -35,9 +35,9 @@ namespace Planet
     }
     public void Update(GameTime gt)
     {
-      if (ship != null && ship.disposed)
+      if (ship != null && ship.Disposed)
         ship = null;
-      if (ship == null || ship.isDead || !ship.isActive)
+      if (ship == null || ship.IsDead || !ship.IsActive)
         return;
       else
         DoUpdate(gt);
@@ -45,7 +45,7 @@ namespace Planet
     protected virtual void DoUpdate(GameTime gt)
     {
       ship.Target = FindNearestTarget();
-      if (ship.Target != null && ship.Target.isActive && ship.Target.Pos != ship.Pos)
+      if (ship.Target != null && ship.Target.IsActive && ship.Target.Pos != ship.Pos)
       {
         foreach (Command command in commands)
         {
@@ -70,7 +70,7 @@ namespace Planet
       float nDistance = 1000000;
       foreach (GameObject p in players)
       {
-        if (!p.isActive)
+        if (!p.IsActive)
           continue;
         float distance = Utility.Distance(p.Pos, ship.Pos);
         if (distance < nDistance)

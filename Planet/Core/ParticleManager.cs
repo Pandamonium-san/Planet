@@ -54,6 +54,9 @@ namespace Planet
       float xVel = Utility.RandomFloat(minSpeed, maxSpeed);
       float yVel = Utility.RandomFloat(minSpeed, maxSpeed);
 
+      color = color * r;
+      color.A = 255;
+
       Particle p = new Particle(pos, AssetManager.GetTexture(texPath), new Vector2(xVel, yVel) * r, lifeTime * r, color, alpha, 0, scale * r);
       AddParticle(p);
       return p;

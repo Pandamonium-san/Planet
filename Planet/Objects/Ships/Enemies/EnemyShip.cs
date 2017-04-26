@@ -21,7 +21,7 @@ namespace Planet
     public Enemy1(Vector2 pos, World world)
       : base(pos, world, AssetManager.GetTexture(@"ships/red/enemy1"))
     {
-      WpnDesc desc = new WpnDesc(1, 5f, 200, 1, 5, 5, 0, 1, 0, 0, 0, 5);
+      WpnDesc desc = new WpnDesc(1, 3f, 300, 1, 10, 10, 3, 9, 0, 0, 0, 5);
       Weapon wpn = new Weapon(this, world, desc, "laserRed10", "BasicGun");
       wpn.Scale = 0.4f;
       //wpn.SetMuzzle(new Vector2(0, -10));

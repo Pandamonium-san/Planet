@@ -30,6 +30,11 @@ namespace Planet
       SetBinding(PlayerInput.Red, DashReleased, InputType.Released);
       SetBinding(PlayerInput.A, Switch, InputType.Pressed);
     }
+    public override void Update(GameTime gt)
+    {
+      if (!Ship.IsDead)
+        base.Update(gt);
+    }
     private void Up() { Ship.Move(-Vector2.UnitY); }
     private void Down() { Ship.Move(Vector2.UnitY); }
     private void Left() { Ship.Move(-Vector2.UnitX); }

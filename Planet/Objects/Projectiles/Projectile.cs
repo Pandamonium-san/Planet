@@ -53,18 +53,18 @@ namespace Planet
       if (instigator == null)
       {
         SetLayer(Layer.PLAYER_PROJECTILE | Layer.ENEMY_PROJECTILE);
-        layerMask = Layer.PLAYER_SHIP | Layer.ENEMY_SHIP;
+        LayerMask = Layer.PLAYER_SHIP | Layer.ENEMY_SHIP;
       }
-      else if (instigator.layer == Layer.PLAYER_SHIP)
+      else if (instigator.Layer == Layer.PLAYER_SHIP)
       {
         SetLayer(Layer.PLAYER_PROJECTILE);
-        layerMask = Layer.ENEMY_SHIP;
+        LayerMask = Layer.ENEMY_SHIP;
         //color = Color.White;
       }
-      else if (instigator.layer == Layer.ENEMY_SHIP)
+      else if (instigator.Layer == Layer.ENEMY_SHIP)
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
-        layerMask = (Layer.PLAYER_SHIP);
+        LayerMask = (Layer.PLAYER_SHIP);
         color = new Color(255,128,128);
       }
       layerDepth = 0.8f;
@@ -83,8 +83,8 @@ namespace Planet
         pattern(this, gt);
       else
       {
-        Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
-        Rotation = Utility.Vector2ToAngle(velocity);
+        LocalPos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+        LocalRotation = Utility.Vector2ToAngle(velocity);
       }
 
       base.DoUpdate(gt);
@@ -108,6 +108,13 @@ namespace Planet
     {
       if (onCollision != null)
         onCollision(this, other);
+      else
+      {
+        for (int i = 0; i < 3; i++)
+        {
+          world.Particles.CreateHitEffect(Pos, 0.3f, -100, 100, color, 0.5f, 0.5f, 0.3f);
+        }
+      }
       Die();
     }
   }

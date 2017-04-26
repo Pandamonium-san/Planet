@@ -20,18 +20,18 @@ namespace Planet
   {
     public Vector2 Forward { get { return Utility.AngleToVector2(Rotation); } }
     public Vector2 Right { get { return Utility.AngleToVector2(Rotation + (float)Math.PI / 2); } }
-
     // collision
-    public Hitbox hitbox;
-    public Layer layer { get; private set; }
-    public Layer layerMask;
+    public Hitbox Hitbox { get; set; }
+    public Layer Layer { get; private set; }
+    public Layer LayerMask { get; set; }
     // game
-    protected World world;
     public int frame;
-    public bool disposed { get; set; }               // if true, object will be deleted at the end of the frame
-    public bool isActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
-    public bool isDead { get; protected set; }                 // will set to dispose after a number of frames
+    public bool Disposed { get; set; }               // if true, object will be deleted at the end of the frame
+    public bool IsActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
+    public bool IsDead { get; protected set; }                 // will set to dispose after a number of frames
     public bool CollisionEnabled { get; set; }
+
+    protected World world;
     // debug
     protected bool drawHitbox = false;
 
@@ -40,16 +40,16 @@ namespace Planet
     {
       this.world = world;
       Scale = .5f;
-      isActive = true;
+      IsActive = true;
       CollisionEnabled = true;
     }
     public virtual void Update(GameTime gt)
     {
-      if (isDead)
+      if (IsDead)
       {
-        disposed = true;
+        Disposed = true;
       }
-      if (isActive)
+      if (IsActive)
       {
         DoUpdate(gt);
       }
@@ -61,12 +61,12 @@ namespace Planet
     protected override void SetTexture(Texture2D tex, Rectangle? sourceRec = null)
     {
       base.SetTexture(tex, sourceRec);
-      hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
+      Hitbox = new Hitbox(this, Math.Min(spriteRec.Width / 2.0f, spriteRec.Height / 2.0f));
     }
     public virtual void Die()
     {
-      isDead = true;
-      isActive = false;
+      IsDead = true;
+      IsActive = false;
     }
     public virtual void DoCollision(GameObject other)
     {
@@ -74,16 +74,16 @@ namespace Planet
     }
     public bool IsColliding(GameObject other)
     {
-      if ((layerMask & other.layer) != Layer.ZERO)
+      if ((LayerMask & other.Layer) != Layer.ZERO)
       {
         ++Game1.collisionChecksPerFrame;
-        return hitbox.Colliding(other.hitbox);
+        return Hitbox.Colliding(other.Hitbox);
       }
       return false;
     }
     public void SetLayer(Layer layer)
     {
-      this.layer = layer;
+      this.Layer = layer;
 
       switch (layer)
       {
@@ -107,12 +107,12 @@ namespace Planet
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
-      if (tex != null && isActive)
+      if (tex != null && IsActive)
       {
         base.Draw(spriteBatch);
 
         if (drawHitbox)
-          hitbox.Draw(spriteBatch);
+          Hitbox.Draw(spriteBatch);
       }
     }
   }
