@@ -9,12 +9,13 @@ namespace Planet
 {
   public abstract class Ship : GameObject
   {
-    public Weapon CurrentWeapon { get { return weapons[currentWeapon]; } }
+    public Weapon CurrentWeapon { get { return weapons[weaponIndex]; } }
+    public float Speed { get { return baseSpeed * speedModifier; } }
+    public float RotationSpeed { get { return rotationSpeed * rotationModifier; } }
+
     public bool Dashing { get; set; }
     public GameObject Target { get; set; }
     public ShipController Controller { get; set; }
-    public float Speed { get { return baseSpeed * speedModifier; } }
-    public float RotationSpeed { get { return rotationSpeed * rotationModifier; } }
     public bool ClampToScreen { get; set; }
     public bool LeadShots { get; set; }
 
@@ -22,11 +23,11 @@ namespace Planet
     protected Vector2 velocity;
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
-    protected float baseSpeed = 300;
-    protected float rotationSpeed = 10;
+    public float baseSpeed = 300;
+    public float rotationSpeed = 10;
 
     protected List<Weapon> weapons;
-    protected int currentWeapon;
+    protected int weaponIndex;
     protected Timer damageTimer;
 
     public float speedModifier = 1.0f;
@@ -39,7 +40,7 @@ namespace Planet
       : base(pos, world, tex)
     {
       weapons = new List<Weapon>();
-      currentWeapon = 0;
+      weaponIndex = 0;
       maxHealth = 10;
       currentHealth = maxHealth;
 
@@ -112,19 +113,27 @@ namespace Planet
     public virtual void Fire2()
     {
     }
-    public void Switch()
+    public virtual void Switch()
     {
-      if (++currentWeapon >= weapons.Count())
-        currentWeapon = 0;
+      if (++weaponIndex >= weapons.Count())
+        weaponIndex = 0;
       CurrentWeapon.ResetShootTimer();
     }
-    public void SwitchTarget()
+    public virtual void SwitchTarget()
     {
       Target = NextTarget();
     }
+    public virtual void ToggleDash()
+    {
+      Dashing = !Dashing;
+      if (Dashing)
+        rotationModifier *= 0.7f;
+      else if (!Dashing)
+        rotationModifier /= 0.7f;
+    }
     public void SetWeapon(int index)
     {
-      currentWeapon = MathHelper.Clamp(index, 0, weapons.Count());
+      weaponIndex = MathHelper.Clamp(index, 0, weapons.Count());
       CurrentWeapon.ResetShootTimer();
     }
     public GameObject NextTarget()
@@ -204,7 +213,7 @@ namespace Planet
       Vector2 u = t.velocity;
       Vector2 uj = Vector2.Dot(AB, u) * AB;
       Vector2 ui = u - uj;
-      float vLenSq = (float)Math.Pow(weapons[currentWeapon].Desc.projSpeed, 2);
+      float vLenSq = (float)Math.Pow(weapons[weaponIndex].Desc.projSpeed, 2);
       Vector2 vi = ui;
       float viLenSq = vi.LengthSquared();
       float vjLenSq = vLenSq - viLenSq;

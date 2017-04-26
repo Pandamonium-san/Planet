@@ -19,6 +19,13 @@ namespace Planet
       this.canPierce = canPierce;
       this.desc.projSpeed = 10000;
     }
+    public WHitScan(WHitScan other) : base(other)
+    {
+      width = other.width;
+      range = other.range;
+      canPierce = other.canPierce;
+      desc.projSpeed = 10000;
+    }
     protected override void CreateBullet()
     {
       float shotAngle = currentBulletAngle + currentShotAngle;
@@ -37,7 +44,8 @@ namespace Planet
         canPierce,
         width,
         range,
-        ship);
+        ship,
+        desc.projLifeTime);
       p.onCollision = OnProjectileCollision;
       world.PostProjectile(p);
     }

@@ -17,6 +17,11 @@ namespace Planet
     {
       this.Length = size;
     }
+    public FixedList(IEnumerable<T> collection) 
+      : base(collection)
+    {
+      Length = collection.Count();
+    }
 
     public new void AddFirst(T obj)
     {

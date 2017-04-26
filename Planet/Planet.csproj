@@ -45,6 +45,7 @@
     <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Particle.cs" />
     <Compile Include="Objects\Ships\Players\PossessorShip.cs" />
+    <Compile Include="Objects\Ships\Players\RewinderShipShadow.cs" />
     <Compile Include="Objects\Sprite.cs" />
     <Compile Include="States\GameSettings.cs" />
     <Compile Include="States\GameState.cs" />

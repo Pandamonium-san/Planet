@@ -28,7 +28,6 @@ namespace Planet
     public int frame;
     public bool Disposed { get; set; }               // if true, object will be deleted at the end of the frame
     public bool IsActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
-    public bool IsDead { get; protected set; }                 // will set to dispose after a number of frames
     public bool CollisionEnabled { get; set; }
 
     protected World world;
@@ -45,10 +44,6 @@ namespace Planet
     }
     public virtual void Update(GameTime gt)
     {
-      if (IsDead)
-      {
-        Disposed = true;
-      }
       if (IsActive)
       {
         DoUpdate(gt);
@@ -65,8 +60,9 @@ namespace Planet
     }
     public virtual void Die()
     {
-      IsDead = true;
+      Disposed = true;
       IsActive = false;
+      CollisionEnabled = false;
     }
     public virtual void DoCollision(GameObject other)
     {

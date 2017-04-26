@@ -37,7 +37,7 @@ namespace Planet
     {
       if (ship != null && ship.Disposed)
         ship = null;
-      if (ship == null || ship.IsDead || !ship.IsActive)
+      if (ship == null || !ship.IsActive)
         return;
       else
         DoUpdate(gt);

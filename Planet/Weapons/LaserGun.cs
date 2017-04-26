@@ -14,6 +14,11 @@ namespace Planet
     {
       projTex = AssetManager.GetTexture("laserBlue_m");
     }
+    public LaserGun(LaserGun other) : base(other)
+    {
+      projTex = other.projTex;
+      prevRotation = other.prevRotation;
+    }
     protected override void Shoot()
     {
       base.Shoot();
@@ -33,7 +38,7 @@ namespace Planet
       PHitScan ph = (PHitScan)p;
       Vector2 prPos = ph.hit;
       Particle pr = world.Particles.CreateParticle(prPos, AssetManager.GetTexture("laserBlue10"), Vector2.Zero, 0.1f, Color.White, 0.8f, 4f, 1.0f * width / 20f);
-      pr.Rotation = prevRotation += (float)Math.PI/24;
+      pr.Rotation = prevRotation += (float)Math.PI / 24;
 
       Vector2 prDir = -ph.dir;
       ApplyInaccuracy(ref prDir, 65);

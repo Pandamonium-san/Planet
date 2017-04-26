@@ -37,7 +37,7 @@ namespace Planet
       if (possessedShip != null)
       {
         psc.Update(gt);
-        if (possessedShip.IsDead)
+        if (possessedShip.Disposed)
         {
           Release();
         }

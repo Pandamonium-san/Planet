@@ -22,6 +22,10 @@ namespace Planet
       desc.magReloadTime = 1;
       SetDesc(desc);
     }
+    public CycloneGun(CycloneGun other) : base(other)
+    {
+      SetDesc(other.desc);
+    }
 
     protected override void Shoot()
     {

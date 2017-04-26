@@ -20,6 +20,10 @@ namespace Planet
       desc.magReloadTime = 1;
       SetDesc(desc);
     }
+    public TurretGun(TurretGun other) : base(other)
+    {
+      SetDesc(other.desc);
+    }
     protected override void BulletPattern(Projectile p, GameTime gt)
     {
       if (p.frame >= 120 && p.frame % 10 == 0)

@@ -22,6 +22,11 @@ namespace Planet
       desc.projSpeed = 10000;
       SetDesc(desc);
     }
+    public LightningGun(LightningGun other) : base(other)
+    {
+      this.width = other.width;
+      SetDesc(other.desc);
+    }
     protected override void CreateBullet()
     {
       float shotAngle = currentBulletAngle + currentShotAngle;

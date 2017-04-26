@@ -26,14 +26,16 @@ namespace Planet
       SetBinding(PlayerInput.Yellow, Fire1, InputType.Down);
       SetBinding(PlayerInput.B, Fire2, InputType.Pressed);
       SetBinding(PlayerInput.Blue, SwitchTarget, InputType.Released);
-      SetBinding(PlayerInput.Red, DashPressed, InputType.Pressed);
-      SetBinding(PlayerInput.Red, DashReleased, InputType.Released);
+      SetBinding(PlayerInput.Red, ToggleDash, InputType.Pressed);
+      SetBinding(PlayerInput.Red, ToggleDash, InputType.Released);
       SetBinding(PlayerInput.A, Switch, InputType.Pressed);
     }
     public override void Update(GameTime gt)
     {
-      if (!Ship.IsDead)
+      if (!Ship.Disposed)
         base.Update(gt);
+      else
+        Ship = null;
     }
     private void Up() { Ship.Move(-Vector2.UnitY); }
     private void Down() { Ship.Move(Vector2.UnitY); }
@@ -42,8 +44,7 @@ namespace Planet
     private void Fire1() { Ship.Fire1(); }
     private void Fire2() { Ship.Fire2(); }
     private void SwitchTarget() { Ship.SwitchTarget(); }
-    private void DashPressed() { Ship.Dashing = true; Ship.rotationModifier *= 0.7f; }
-    private void DashReleased() { Ship.Dashing = false; Ship.rotationModifier /= 0.7f; }
+    private void ToggleDash() { Ship.ToggleDash(); }
     private void Switch() { Ship.Switch(); }
 
     public void SetShip(Ship ship)

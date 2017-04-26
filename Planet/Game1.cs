@@ -19,6 +19,7 @@ namespace Planet
    *          - Rewinds self
    *          - Manual save state (rewind to this point later)
    *          - Shadows?
+   *            - Fix weapon copying
    *      - Possessor
    *      - Blinker
    *          - Make proper blink

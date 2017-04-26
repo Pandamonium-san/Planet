@@ -23,6 +23,11 @@ namespace Planet
       timer = new Timer();
       spawned = 0;
     }
+    public NewTestWeapon(NewTestWeapon other) : base(other)
+    {
+      timer = other.timer;
+      projTex2 = other.projTex2;
+    }
     public override void Update(GameTime gameTime)
     {
       base.Update(gameTime);

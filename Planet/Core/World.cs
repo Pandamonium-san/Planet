@@ -20,6 +20,8 @@ namespace Planet
 
     private List<GameObject> gameObjects;
     private List<Projectile> projectiles;
+    private Queue<GameObject> goToAdd;
+    private Queue<Projectile> pToAdd;
     private SpriteFont font;
     private Effect effect;
     private Matrix transformMatrix;
@@ -29,6 +31,8 @@ namespace Planet
       font = AssetManager.GetFont("font1");
       effect = AssetManager.GetEffect("ColorChanger");
       Particles = new ParticleManager();
+      goToAdd = new Queue<GameObject>();
+      pToAdd = new Queue<Projectile>();
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
       transformMatrix = Matrix.CreateScale(1.0f);
@@ -36,32 +40,36 @@ namespace Planet
 
     public void Update(GameTime gameTime)
     {
-      for (int i = 0; i < projectiles.Count(); i++)
-      {
-        projectiles[i].Update(gameTime);
-      }
+      while (goToAdd.Count > 0)
+        gameObjects.Add(goToAdd.Dequeue());
+      while (pToAdd.Count > 0)
+        projectiles.Add(pToAdd.Dequeue());
 
+      for (int i = 0; i < projectiles.Count(); i++)
+        projectiles[i].Update(gameTime);
+      for (int i = 0; i < gameObjects.Count(); i++)
+        gameObjects[i].Update(gameTime);
       for (int i = 0; i < gameObjects.Count(); i++)
       {
         GameObject go = gameObjects[i];
-        go.Update(gameTime);
         if (!go.IsActive || !go.CollisionEnabled)
           continue;
 
         for (int j = 0; j < projectiles.Count(); j++)
         {
           Projectile p = projectiles[j];
-          if (!p.IsActive)
+          if (!p.IsActive || !p.CollisionEnabled)
             continue;
           if (p.IsColliding(go))
           {
             go.DoCollision(p);
             p.DoCollision(go);
-            if (!go.IsActive)
+            if (!go.IsActive || !go.CollisionEnabled)
               break;
           }
         }
       }
+
       Particles.Update(gameTime);
 
       projectiles.RemoveAll(x => x.Disposed);
@@ -83,12 +91,11 @@ namespace Planet
     }
     public void PostGameObj(GameObject go)
     {
-      gameObjects.Add(go);
+      goToAdd.Enqueue(go);
     }
-
     public void PostProjectile(Projectile p)
     {
-      projectiles.Add(p);
+      pToAdd.Enqueue(p);
     }
     public void Draw(SpriteBatch spriteBatch)
     {

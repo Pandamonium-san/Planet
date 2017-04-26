@@ -12,8 +12,9 @@ namespace Planet
   {
     public string Name { get; set; }
     public WpnDesc Desc { get { return desc; } }
+
     protected Texture2D projTex;
-    protected Ship ship;
+    public Ship ship;
     protected World world;
     protected WpnDesc desc;
 
@@ -29,11 +30,24 @@ namespace Planet
       Name = name;
       if (pTex == "")
         projTex = null;
-      projTex = AssetManager.GetTexture(pTex);
+      else
+        projTex = AssetManager.GetTexture(pTex);
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
       SetMuzzle(Vector2.Zero);
+    }
+    public Weapon(Weapon wpn) : base(wpn.Pos, wpn.Rotation, wpn.Scale, wpn.Parent)
+    {
+      Name = wpn.Name;
+      projTex = wpn.projTex;
+      ship = wpn.ship;
+      world = wpn.world;
+      desc = wpn.Desc;
+      currentMagCount = wpn.currentMagCount;
+      currentBulletAngle = wpn.currentBulletAngle;
+      currentShotAngle = wpn.currentShotAngle;
+      shootTimer = wpn.shootTimer;
     }
     public virtual void Update(GameTime gt)
     {
@@ -135,6 +149,18 @@ namespace Planet
       this.desc = desc;
       currentMagCount = desc.magSize;
       shootTimer = new Timer(100);
+    }
+    public void SetShip(Ship ship)
+    {
+      Vector2 localPos = LocalPos;
+      float localRotation = LocalRotation;
+      float localScale = LocalScale;
+      this.Parent = ship;
+      LocalPos = localPos;
+      LocalRotation = localRotation;
+      LocalScale = localScale;
+
+      this.ship = ship;
     }
   }
 }

@@ -20,6 +20,11 @@ namespace Planet
       desc.magReloadTime = 1;
       SetDesc(desc);
     }
+    public ExplodeGun(ExplodeGun other) 
+      :base(other)
+    {
+      SetDesc(other.desc);
+    }
     void Explode(Projectile p)
     {
       float angle = 0f;

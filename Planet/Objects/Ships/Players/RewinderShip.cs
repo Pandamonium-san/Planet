@@ -9,7 +9,10 @@ namespace Planet
 {
   class RewinderShip : Ship
   {
+    readonly int RewindableFrames = 180;
+
     FixedList<State> states;
+    Stack<State> shadowStack;
     bool rewinding;
 
     public RewinderShip(Vector2 pos, World world)
@@ -17,7 +20,7 @@ namespace Planet
     {
       SetLayer(Layer.PLAYER_SHIP);
 
-      states = new FixedList<State>(120);
+      states = new FixedList<State>(RewindableFrames);
       LeadShots = true;
       Scale = .5f;
 
@@ -45,7 +48,7 @@ namespace Planet
       wpn2.Name = "Line";
       weapons.Add(wpn2);
 
-      desc = new WpnDesc(1, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 3);           //normal laser
+      desc = new WpnDesc(1, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 0.1f);           //normal laser
       LaserGun laser = new LaserGun(this, world, desc, 20, false);
       laser.SetMuzzle(new Vector2(0, -20));
       laser.Name = "Laser";
@@ -64,7 +67,7 @@ namespace Planet
       wpn4.Name = "Grenade";
       weapons.Add(wpn4);
 
-      desc = new WpnDesc(20, 1, 1000, 1, 0, 0, 0, 1, 0, 0, 0, 3);
+      desc = new WpnDesc(200, 30, 4000, 1, 0, 0, 0, 1, 0, 0, 0, 3);
       Weapon wpn5 = new NewTestWeapon(this, world, desc, "Experimental");
       weapons.Add(wpn5);
 
@@ -76,37 +79,79 @@ namespace Planet
     public override void Fire1()
     {
       if (!rewinding)
+      {
         base.Fire1();
+        if (states.Count > 0)
+          states.Peek().firing = true;
+      }
     }
     public override void Fire2()
     {
-      rewinding = !rewinding;
+      if (!rewinding)
+      {
+        StartRewind();
+      }
+      else if (rewinding)
+      {
+        StopRewind();
+      }
+    }
+    public override void Switch()
+    {
+      base.Switch();
+      if (states.Count > 0)
+        states.Peek().switching = true;
+    }
+    public override void SwitchTarget()
+    {
+      base.SwitchTarget();
+      if (states.Count > 0)
+        states.Peek().switchingTarget = true;
+    }
+    private void StartRewind()
+    {
+      rewinding = true;
+      color = Color.Turquoise * 0.4f;
+      CollisionEnabled = false;
+      shadowStack = new Stack<State>();
+    }
+    private void StopRewind()
+    {
+      rewinding = false;
+      color = Color.White;
+      CollisionEnabled = true;
+      RewinderShipShadow rss = new RewinderShipShadow(world, this, weapons, shadowStack);
+      world.PostGameObj(rss);
     }
     protected override void DoUpdate(GameTime gt)
     {
-      base.DoUpdate(gt);
       if (rewinding && states.Count > 0)
       {
-        LoadState(states.Pop());
-        color = Color.Turquoise * 0.4f;
-        CollisionEnabled = false;
-        Particle p = world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue16"), -150, 150, -150, 150, 0.5f, Color.White, 0.5f, 16.0f, 0.2f);
+        for (int i = 0; i < 2; i++)
+        {
+          shadowStack.Push(states.Peek());
+          LoadState(states.Pop());
+          Particle p = world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue16"), -150, 150, -150, 150, 0.5f, Color.White, 0.5f, 16.0f, 0.2f);
+          if (states.Count == 0)
+          {
+            StopRewind();
+            break;
+          }
+        }
       }
       else
       {
-        color = Color.White;
-        CollisionEnabled = true;
         SaveState();
-        if(frame % 10 == 0)
-          world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 2.0f, Color.White, 0.4f, 1.0f, 0.3f);
-        rewinding = false;
+        if (frame % 10 == 0)
+          world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, RewindableFrames / 60.0f, Color.White, 0.4f, 1.0f, 0.3f);
       }
+      base.DoUpdate(gt);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       base.Draw(spriteBatch);
       if (states.Count > 0)
-        spriteBatch.Draw(tex, states.Last.Value.pos, spriteRec, Color.Gray * 0.3f, states.Last.Value.rotation, origin, Scale, SpriteEffects.None, layerDepth + 0.1f);
+        spriteBatch.Draw(tex, states.Last.Value.pos, spriteRec, Color.Gray * 0.15f, states.Last.Value.rotation, origin, Scale, SpriteEffects.None, layerDepth + 0.1f);
     }
     private void LoadState(State state)
     {
@@ -118,16 +163,35 @@ namespace Planet
     {
       states.AddFirst(new State(this));
     }
-    class State
+    public class State
     {
       public float currentHealth;
       public Vector2 pos;
       public float rotation;
+
+      // shadow variables
+      public Vector2 movementDirection;
+      public bool dashing;
+      public bool firing;
+      public bool switching;
+      public bool switchingTarget;
+      public int weaponIndex;
+      public float rotationModifier;
+      public float speedModifier;
+
       public State(RewinderShip rs)
       {
         currentHealth = rs.currentHealth;
         pos = rs.Pos;
         rotation = rs.Rotation;
+        movementDirection = rs.movementDirection;
+        weaponIndex = rs.weaponIndex;
+        dashing = rs.Dashing;
+        rotationModifier = rs.rotationModifier;
+        speedModifier = rs.speedModifier;
+        firing = false;
+        switching = false;
+        switchingTarget = false;
       }
     }
   }
