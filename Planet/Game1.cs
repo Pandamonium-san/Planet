@@ -11,15 +11,13 @@ namespace Planet
    *      - Missiles
    *      - Charged laser
    *  - Enemies
+   *      - Enemy AI
    *      - Waves/Levels
    *      - Enemy types
-   *      - Enemy AI
    *  - Ships
    *      - Rewinder
    *          - Rewinds self
    *          - Manual save state (rewind to this point later)
-   *          - Shadows?
-   *            - Fix weapon copying
    *      - Possessor
    *      - Blinker
    *          - Make proper blink

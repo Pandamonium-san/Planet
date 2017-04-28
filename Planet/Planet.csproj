@@ -67,6 +67,7 @@
     <Compile Include="Utility\FixedList.cs" />
     <Compile Include="Objects\Ships\Players\BlinkerShip.cs" />
     <Compile Include="Utility\Timer.cs" />
+    <Compile Include="Weapons\ChargeLaser.cs" />
     <Compile Include="Weapons\CycloneGun.cs" />
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Game1.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="Core\World.cs" />
     <Compile Include="Weapons\ExplodeGun.cs" />
     <Compile Include="Weapons\LaserGun.cs" />
-    <Compile Include="Weapons\LightningGun.cs" />
     <Compile Include="Weapons\NewTestWeapon.cs" />
     <Compile Include="Weapons\TurretGun.cs" />
     <Compile Include="Weapons\Weapon.cs" />

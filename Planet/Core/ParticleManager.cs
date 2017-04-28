@@ -47,7 +47,7 @@ namespace Planet
     public Particle CreateHitEffect(Vector2 pos, float lifeTime, float minSpeed, float maxSpeed, Color color, float alpha, float scale, float variation)
     {
       string texPath = "star";
-      int i = Utility.RandomInt(1, 4);
+      int i = Utility.RandomInt(1, 3);
       texPath += i.ToString();
       float r = 1 + Utility.RandomFloat(-variation, variation);
 

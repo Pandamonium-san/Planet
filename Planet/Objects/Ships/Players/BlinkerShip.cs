@@ -11,13 +11,16 @@ namespace Planet
   {
     Color blinkColor = Color.DeepSkyBlue;
     float blinkRange = 200;
-    Timer blinkDelay;
+    float blinkDelay = 0.5f;
+    Timer blinkTimer1;
+    Timer blinkTimer2;
     Vector2 blinkDirection;
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_001"))
     {
       SetLayer(Layer.PLAYER_SHIP);
-      blinkDelay = new Timer(0.2, Blink, false);
+      blinkTimer1 = new Timer(blinkDelay, Blink1, false);
+      blinkTimer2 = new Timer(blinkDelay, Blink2, false);
       maxHealth = 100;
       currentHealth = maxHealth;
 
@@ -35,7 +38,8 @@ namespace Planet
     public override void Update(GameTime gt)
     {
       base.Update(gt);
-      blinkDelay.Update(gt);
+      blinkTimer1.Update(gt);
+      blinkTimer2.Update(gt);
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -47,33 +51,41 @@ namespace Planet
     }
     public override void Fire2()
     {
-      blinkDelay.Start();
+      if (blinkTimer2.Counting)
+        return;
       blinkDirection = movementDirection;
-      CreateBlinkParticle(false);
       IsActive = false;
       Visible = false;
       CollisionEnabled = false;
+      CreateBlinkParticle(false);
+      CreateBlinkParticle2();
+      blinkTimer1.Start();
     }
-    private void Blink()
+    private void Blink1()
     {
       Vector2 dir = blinkDirection;
       if (dir != Vector2.Zero)
         dir.Normalize();
       Pos += dir * blinkRange;
+
       CreateBlinkParticle(true);
+      blinkTimer2.Start();
+    }
+    private void Blink2()
+    {
       IsActive = true;
       Visible = true;
       CollisionEnabled = true;
+      CreateBlinkParticle2();
     }
-
     private void CreateBlinkParticle(bool implode)
     {
       int n = 6;
       Texture2D tex = AssetManager.GetTexture("star1");
-      float speed = 500;
-      float lifeTime = (float)blinkDelay.seconds;
-      float alpha = 1.0f;
-      float rotationSpeed = (float)Math.PI * 8;
+      float speed = 400;
+      float lifeTime = (float)blinkTimer1.seconds;
+      float alpha = 1f;
+      float rotationSpeed = (float)Math.PI * 6;
       float scale = 1.3f;
 
       for (int i = 0; i < n; i++)
@@ -89,12 +101,18 @@ namespace Planet
 
         Projectile p = new Projectile(world, tex, pos, dir, speed, 40, this, lifeTime);
         p.Scale = scale;
-        p.color = blinkColor;
+        p.color = Color.Transparent;
         world.PostProjectile(p);
 
         Particle pr = new Particle(pos, tex, dir * speed, lifeTime, blinkColor, alpha, rotationSpeed, scale);
+        pr.FadeIn = implode;
         world.Particles.AddParticle(pr);
       }
+    }
+    private void CreateBlinkParticle2()
+    {
+      for (int i = 0; i < 10; i++)
+        world.Particles.CreateHitEffect(Pos, .7f, -50, 50, blinkColor, 0.7f, .5f, 0.4f);
     }
   }
 }

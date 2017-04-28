@@ -8,6 +8,7 @@ namespace Planet
 {
   public struct Timer
   {
+    public bool Finished { get; private set; }
     public bool Counting { get; private set; }
     public double seconds { get; private set; }
     public double elapsedSeconds { get; private set; }
@@ -25,16 +26,19 @@ namespace Planet
       this.action = action;
       this.elapsedSeconds = 0;
       Counting = start;
+      Finished = false;
     }
 
     public void Start()
     {
       Counting = true;
+      Finished = false;
       elapsedSeconds = 0;
     }
     public void Start(double seconds)
     {
       Counting = true;
+      Finished = false;
       this.seconds = seconds;
       elapsedSeconds = 0;
     }
@@ -46,6 +50,7 @@ namespace Planet
       if (elapsedSeconds >= seconds)
       {
         Counting = false;
+        Finished = true;
         if (action != null)
           action.Invoke();
       }

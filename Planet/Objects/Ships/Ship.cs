@@ -107,7 +107,7 @@ namespace Planet
     }
     public virtual void Fire1()
     {
-      if (!Dashing)
+      if (IsActive && !Dashing)
         CurrentWeapon.Fire();
     }
     public virtual void Fire2()

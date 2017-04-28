@@ -58,7 +58,7 @@ namespace Planet
         Reload();
       }
     }
-    public void Fire()
+    public virtual void Fire()
     {
       if (currentMagCount > 0 && CanShoot())
       {
@@ -76,7 +76,7 @@ namespace Planet
     {
       shootTimer.Start();
     }
-    private void Reload()
+    protected void Reload()
     {
       currentMagCount = desc.magSize;
       currentShotAngle = 0;

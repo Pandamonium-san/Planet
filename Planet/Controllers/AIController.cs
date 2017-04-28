@@ -62,7 +62,6 @@ namespace Planet
         ship.Move(direction);
       }
     }
-
     protected virtual GameObject FindNearestTarget()
     {
       List<GameObject> players = world.GetPlayers();
@@ -72,7 +71,7 @@ namespace Planet
       {
         if (!p.IsActive)
           continue;
-        float distance = Utility.Distance(p.Pos, ship.Pos);
+        float distance = Utility.DistanceSquared(p.Pos, ship.Pos);
         if (distance < nDistance)
         {
           nearest = p;

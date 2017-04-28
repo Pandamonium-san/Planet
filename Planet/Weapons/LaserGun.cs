@@ -24,6 +24,7 @@ namespace Planet
       base.Shoot();
       if (ship.frame % 4 != 0)
         return;
+
       Vector2 prDir = ship.Forward;
       ApplyInaccuracy(ref prDir, 55);
       float speed = Utility.RandomFloat(130, 175);

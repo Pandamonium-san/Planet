@@ -54,13 +54,11 @@ namespace Planet
       laser.Name = "Laser";
       weapons.Add(laser);
 
-      Weapon wpn3;
-      wpn3 = new LightningGun(this, world, 2);
-      //wpn2 = new ExplodeGun(this, world);
-      //wpn2 = new TurretGun(this, world);
-      //wpn2 = new LightningGun(this, world, 2);
+      //wpn3 = new ExplodeGun(this, world);
+      //wpn3 = new TurretGun(this, world);
+      Weapon wpn3 = new CycloneGun(this, world);
       wpn3.SetMuzzle(new Vector2(0, -30));
-      wpn3.Name = "Lightning";
+      wpn3.Name = "Cyclone";
 
       weapons.Add(wpn3);
       Weapon wpn4 = new ExplodeGun(this, world);

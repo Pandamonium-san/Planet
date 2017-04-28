@@ -27,7 +27,6 @@ namespace Planet
       rotationSpeed = rs.rotationSpeed;
       Target = rs.Target;
 
-
       this.weaponIndex = stateStack.Peek().weaponIndex;
       foreach (Weapon wpn in rsWeapons)
       {
