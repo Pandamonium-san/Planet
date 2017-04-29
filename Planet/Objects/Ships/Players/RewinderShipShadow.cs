@@ -14,6 +14,7 @@ namespace Planet
     public RewinderShipShadow(World world, RewinderShip rs, List<Weapon> rsWeapons, Stack<RewinderShip.State> stateStack)
       : base(rs.Pos, world, rs.tex)
     {
+      flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_002");
       SetLayer(rs.Layer);
       LeadShots = rs.LeadShots;
       Rotation = rs.Rotation;

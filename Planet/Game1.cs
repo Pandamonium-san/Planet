@@ -9,7 +9,6 @@ namespace Planet
    *  - Design UI
    *  - Make proper weapons
    *      - Missiles
-   *      - Charged laser
    *  - Enemies
    *      - Enemy AI
    *      - Waves/Levels
@@ -20,7 +19,6 @@ namespace Planet
    *          - Manual save state (rewind to this point later)
    *      - Possessor
    *      - Blinker
-   *          - Make proper blink
    *          - Slash dash?
    *  - Score?
    *  - Effects/Shaders?

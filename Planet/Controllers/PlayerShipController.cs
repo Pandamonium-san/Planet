@@ -32,7 +32,7 @@ namespace Planet
     }
     public override void Update(GameTime gt)
     {
-      if (!Ship.Disposed)
+      if (Ship != null && !Ship.Disposed)
         base.Update(gt);
       else
         Ship = null;

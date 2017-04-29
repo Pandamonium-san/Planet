@@ -18,6 +18,7 @@ namespace Planet
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_001"))
     {
+      flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_001");
       SetLayer(Layer.PLAYER_SHIP);
       blinkTimer1 = new Timer(blinkDelay, Blink1, false);
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);

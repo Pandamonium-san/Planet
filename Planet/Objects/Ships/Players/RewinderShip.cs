@@ -18,6 +18,7 @@ namespace Planet
     public RewinderShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_002"))
     {
+      flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_002");
       SetLayer(Layer.PLAYER_SHIP);
 
       states = new FixedList<State>(RewindableFrames);

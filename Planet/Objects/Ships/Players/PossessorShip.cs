@@ -17,6 +17,7 @@ namespace Planet
     public PossessorShip(Vector2 pos, World world, Player pc)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_009"))
     {
+      flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_009");
       SetLayer(Layer.PLAYER_SHIP);
 
       player = pc;

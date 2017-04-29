@@ -12,6 +12,8 @@ namespace Planet
     public Weapon CurrentWeapon { get { return weapons[weaponIndex]; } }
     public float Speed { get { return baseSpeed * speedModifier; } }
     public float RotationSpeed { get { return rotationSpeed * rotationModifier; } }
+    public Vector2 Velocity { get; set; }
+    public Vector2 Acceleration { get; set; }
 
     public bool Dashing { get; set; }
     public GameObject Target { get; set; }
@@ -19,16 +21,19 @@ namespace Planet
     public bool ClampToScreen { get; set; }
     public bool LeadShots { get; set; }
 
-    protected Vector2 acceleration;
-    protected Vector2 velocity;
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
     public float baseSpeed = 300;
     public float rotationSpeed = 10;
 
+    protected Texture2D flashTex;
+    protected float flashAlpha;
+    protected float flashInitial;
+    protected bool flashRisingAlpha;
+    protected Timer flashTimer;
+
     protected List<Weapon> weapons;
     protected int weaponIndex;
-    protected Timer damageTimer;
 
     public float speedModifier = 1.0f;
     public float rotationModifier = 1.0f;
@@ -44,24 +49,26 @@ namespace Planet
       maxHealth = 10;
       currentHealth = maxHealth;
 
-      damageTimer = new Timer(0.25f);
+      flashTimer = new Timer(0.25f, () => flashAlpha = 0, false);
     }
     protected override void DoUpdate(GameTime gt)
     {
       if (Target == null || !Target.IsActive || Target.Layer == Layer)
         Target = NextTarget();
 
+      if (movementDirection != Vector2.Zero)
+        movementDirection.Normalize();
       if (Dashing)
       {
         Vector2 dashDir = movementDirection;
         if (dashDir == Vector2.Zero)
           dashDir = Forward;
-        if (acceleration.Length() < Speed * 1.5f) // Turn instantly when dash is initiated
+        if (Acceleration.Length() < Speed * 1.5f) // Turn instantly when dash is initiated
           Rotation = Utility.Vector2ToAngle(dashDir);
         else
           TurnTowards(Pos + dashDir);
-        acceleration = Forward * Speed * 2;
-        velocity = acceleration;
+        Acceleration = Forward * Speed * 2;
+        Velocity = Acceleration;
         //dash trail
         Particle pr = world.Particles.CreateParticle(Pos + Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
         pr.Rotation = Rotation;
@@ -79,18 +86,18 @@ namespace Planet
           else
             TurnTowards(Target.Pos);
         }
-        velocity = movementDirection * Speed;
-        velocity += acceleration;
+        Velocity = movementDirection * Speed;
+        Velocity += Acceleration;
       }
 
-      Pos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+      Pos += Velocity * (float)gt.ElapsedGameTime.TotalSeconds;
       Rotation += currentRotationSpeed * rotationModifier * (float)gt.ElapsedGameTime.TotalSeconds;
 
       movementDirection = Vector2.Zero;
       currentRotationSpeed = 0;
       //speedModifier = 1.0f;
       //rotationModifier = 1.0f;
-      acceleration *= 0.90f;
+      Acceleration *= 0.90f;
 
       if (ClampToScreen)
         RestrictToScreen();
@@ -99,10 +106,13 @@ namespace Planet
         wpn.Update(gt);
 
       // flash when damaged
-      if (damageTimer.Counting)
+      if (flashTimer.Counting)
       {
-        alpha = 0.55f + (float)damageTimer.Fraction * 0.45f;
-        damageTimer.Update(gt);
+        if (flashRisingAlpha)
+          flashAlpha = (float)flashTimer.Fraction * flashInitial;
+        else
+          flashAlpha = flashInitial - (float)flashTimer.Fraction * flashInitial;
+        flashTimer.Update(gt);
       }
     }
     public virtual void Fire1()
@@ -167,13 +177,19 @@ namespace Planet
       base.Die();
       world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
     }
+    public void StartFlash(double flashTime, bool risingAlpha, float initialAlpha = 1.0f)
+    {
+      flashTimer.Start(flashTime);
+      flashRisingAlpha = risingAlpha;
+      flashInitial = initialAlpha;
+    }
     public void AddAcceleration(Vector2 v)
     {
-      acceleration += v;
+      Acceleration += v;
     }
     public void SetAcceleration(Vector2 v)
     {
-      acceleration = v;
+      Acceleration = v;
     }
     public void Move(Vector2 direction)
     {
@@ -203,14 +219,14 @@ namespace Planet
       currentHealth -= amount;
       if (currentHealth <= 0)
         Die();
-      damageTimer.Start();
+      StartFlash(0.25, false, 0.8f);
     }
     protected void LeadShot(Ship target)
     {
       Ship t = (Ship)target;
       Vector2 AB = t.Pos - Pos;
       AB.Normalize();
-      Vector2 u = t.velocity;
+      Vector2 u = t.Velocity;
       Vector2 uj = Vector2.Dot(AB, u) * AB;
       Vector2 ui = u - uj;
       float vLenSq = (float)Math.Pow(weapons[weaponIndex].Desc.projSpeed, 2);
@@ -234,7 +250,8 @@ namespace Planet
     public override void Draw(SpriteBatch spriteBatch)
     {
       base.Draw(spriteBatch);
-
+      if (flashTex != null)
+        spriteBatch.Draw(flashTex, Pos, spriteRec, Color.White * flashAlpha, Rotation, origin, Scale, spriteEffects, layerDepth - 0.1f);
       if (Layer != Layer.PLAYER_SHIP || !Visible)
         return;
       if (Target != null)
