@@ -13,7 +13,6 @@ namespace Planet
         : base(pos, world, tex)
     {
       SetLayer(Layer.ENEMY_SHIP);
-      layerDepth = 0.8f;
     }
   }
   class Enemy1 : EnemyShip
@@ -36,6 +35,30 @@ namespace Planet
       rotationSpeed = 5;
       baseSpeed = 100;
       maxHealth = 100;
+      currentHealth = maxHealth;
+    }
+  }
+  class Enemy2 : EnemyShip
+  {
+    public Enemy2(Vector2 pos, World world)
+      : base(pos, world, AssetManager.GetTexture(@"ships\red\enemy2"))
+    {
+      flashTex = AssetManager.GetTexture(@"ships\flash\enemy2");
+      WpnDesc desc = new WpnDesc(10, 3f, 500, 1, 2, 0, 5, 3, 0, 0, 0, 3);
+      Weapon wpn = new Weapon(this, world, desc, "laserRed07", "Rifle");
+      wpn.Scale = 1.0f;
+      wpn.LocalPos = new Vector2(0, -20);
+      weapons.Add(wpn);
+
+      desc = new WpnDesc(30, 2.0f, 800, 1, 0, 0, 1, 3, 0, 0, 0, 3, false, true);
+      wpn = new Weapon(this, world, desc, "laserBlue01", "Rifle+");
+      wpn.Scale = 1.2f;
+      wpn.LocalPos = new Vector2(0, -20);
+      weapons.Add(wpn);
+
+      rotationSpeed = 10;
+      baseSpeed = 100;
+      maxHealth = 300;
       currentHealth = maxHealth;
     }
   }

@@ -44,7 +44,7 @@ namespace Planet
       AddParticle(p);
       return p;
     }
-    public Particle CreateHitEffect(Vector2 pos, float lifeTime, float minSpeed, float maxSpeed, Color color, float alpha, float scale, float variation)
+    public Particle CreateStar(Vector2 pos, float lifeTime, float minSpeed, float maxSpeed, Color color, float alpha, float scale, float variation)
     {
       string texPath = "star";
       int i = Utility.RandomInt(1, 3);

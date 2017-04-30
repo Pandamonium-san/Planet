@@ -37,7 +37,7 @@ namespace Planet
       if (!(p is PHitScan) || other.frame % 2 == 0)
         return;
       PHitScan ph = (PHitScan)p;
-      Vector2 prPos = ph.hit;
+      Vector2 prPos = ph.hitPos;
       Particle pr = world.Particles.CreateParticle(prPos, AssetManager.GetTexture("laserBlue10"), Vector2.Zero, 0.1f, Color.White, 0.8f, 4f, 1.0f * width / 20f);
       pr.Rotation = prevRotation += (float)Math.PI / 24;
 

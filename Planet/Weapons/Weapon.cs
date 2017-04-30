@@ -109,7 +109,8 @@ namespace Planet
         ship,
         desc.projLifeTime,
         BulletPattern,
-        OnProjectileCollision
+        OnProjectileCollision,
+        desc.piercing
         );
       p.Scale *= Scale;
       world.PostProjectile(p);
@@ -123,7 +124,7 @@ namespace Planet
     {
       for (int i = 0; i < 3; i++)
       {
-        world.Particles.CreateHitEffect(p.Pos, 0.3f, -100, 100, p.color, 0.5f, 0.5f, 0.3f);
+        world.Particles.CreateStar(p.Pos, 0.3f, -100, 100, p.color, 0.5f, 0.5f, 0.3f);
       }
 
       //world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.7f, 4f, p.Scale * 0.7f);

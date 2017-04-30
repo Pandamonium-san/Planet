@@ -26,8 +26,8 @@ namespace Planet
       SetBinding(PlayerInput.Yellow, Fire1, InputType.Down);
       SetBinding(PlayerInput.B, Fire2, InputType.Pressed);
       SetBinding(PlayerInput.Blue, SwitchTarget, InputType.Released);
-      SetBinding(PlayerInput.Red, ToggleDash, InputType.Pressed);
-      SetBinding(PlayerInput.Red, ToggleDash, InputType.Released);
+      SetBinding(PlayerInput.Red, DashPressed, InputType.Down);
+      SetBinding(PlayerInput.Red, DashReleased, InputType.Up);
       SetBinding(PlayerInput.A, Switch, InputType.Pressed);
     }
     public override void Update(GameTime gt)
@@ -44,7 +44,8 @@ namespace Planet
     private void Fire1() { Ship.Fire1(); }
     private void Fire2() { Ship.Fire2(); }
     private void SwitchTarget() { Ship.SwitchTarget(); }
-    private void ToggleDash() { Ship.ToggleDash(); }
+    private void DashPressed() { Ship.SetDash(true); }
+    private void DashReleased() { Ship.SetDash(false); }
     private void Switch() { Ship.Switch(); }
 
     public void SetShip(Ship ship)

@@ -9,27 +9,23 @@ namespace Planet
 {
   class PHitScan : Projectile
   {
-    public Vector2 hit;
+    public Vector2 hitPos;
     public float length;
     public bool stickToInstigator;
 
-    private bool fired;
-    private bool canPierce;
     private int width;      // increases width on both sides so actual width is 2x bigger
 
     public PHitScan(World world, Texture2D tex, Vector2 start, Vector2 dir, float damage, bool canPierce, int width, float length, Ship instigator, float lifeTime = 0.1f)
-      : base(world, tex, start, dir, 0, damage, instigator, lifeTime)
+      : base(world, tex, start, dir, 0, damage, instigator, lifeTime, null, null, canPierce)
     {
       Rotation = Utility.Vector2ToAngle(dir);
-      hit = Pos + dir * length;
-      this.canPierce = canPierce;
+      hitPos = Pos + dir * length;
       this.width = width;
       this.length = length;
       stickToInstigator = true;
     }
     void RayCast()
     {
-      fired = true;
       List<GameObject> objects = world.GetGameObjects();
       List<GameObject> hits = new List<GameObject>();
       foreach (GameObject go in objects)
@@ -37,9 +33,9 @@ namespace Planet
         if (!go.IsActive || !go.CollisionEnabled || (LayerMask & go.Layer) == Layer.ZERO)
           continue;
 
-        if (Utility.RayCast(Pos, Pos + dir * length, go.Pos, go.Hitbox.Radius + width / 2f, ref hit))
+        if (Utility.RayCast(Pos, Pos + dir * length, go.Pos, go.Hitbox.Radius + width / 2f, ref hitPos))
         {
-          if (canPierce)
+          if (Piercing)
           {
             go.DoCollision(this);
             DoCollision(go);
@@ -51,9 +47,9 @@ namespace Planet
       if (hits.Count == 0)
         return;
 
-      if (canPierce)
+      if (Piercing)
       {
-        hit = Pos + dir * length;
+        hitPos = Pos + dir * length;
       }
       // selects the closest target that was hit, may be inaccurate if hitboxes have different sizes
       else
@@ -71,21 +67,9 @@ namespace Planet
             nDistance = distance;
           }
         }
-        Utility.RayCast(Pos, Pos + dir * length, near.Pos, near.Hitbox.Radius + width / 2f, ref hit); // set the hit position at nearest
+        Utility.RayCast(Pos, Pos + dir * length, near.Pos, near.Hitbox.Radius + width / 2f, ref hitPos); // set the hit position at nearest
         near.DoCollision(this);
         DoCollision(near);
-      }
-    }
-    public override void DoCollision(GameObject other)
-    {
-      if (onCollision != null)
-        onCollision(this, other);
-      else
-      {
-        for (int i = 0; i < 3; i++)
-        {
-          world.Particles.CreateHitEffect(Pos, 0.3f, -100, 100, color, 0.5f, 0.5f, 0.3f);
-        }
       }
     }
     protected override void DoUpdate(GameTime gt)
@@ -95,14 +79,28 @@ namespace Planet
       lifeTimer.Update(gt);
       alpha = 1 - (float)lifeTimer.Fraction;
     }
+    public override void DoCollision(GameObject other)
+    {
+      if (other is Ship)
+      {
+        ((Ship)other).TakeDamage(damage);
+      }
+      if (onCollision != null)
+        onCollision(this, other);
+      else
+      {
+        for (int i = 0; i < 3; i++)
+        {
+          world.Particles.CreateStar(Pos, 0.3f, -100, 100, color, 0.5f, 0.5f, 0.3f);
+        }
+      }
+    }
     public override void Draw(SpriteBatch spriteBatch)
     {
-      if (!fired)
-        return;
       Vector2 start = Pos;
       if (stickToInstigator)
         start = instigator.Pos;
-      Vector2 end = hit;
+      Vector2 end = hitPos;
       Vector2 edge = end - start;
       float angle = (float)-Math.Atan2(edge.X, edge.Y);
       spriteBatch.Draw(

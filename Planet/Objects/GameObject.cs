@@ -84,18 +84,23 @@ namespace Planet
       switch (layer)
       {
         case Layer.ZERO:
+          layerDepth = 0.5f;
           break;
         case Layer.PLAYER_SHIP:
           layerDepth = 0.1f;
+          LayerMask = Layer.PLAYER_SHIP | Layer.ENEMY_SHIP | Layer.ENEMY_PROJECTILE;
           break;
         case Layer.PLAYER_PROJECTILE:
           layerDepth = 0.4f;
+          LayerMask = Layer.ENEMY_SHIP | Layer.ENEMY_PROJECTILE;
           break;
         case Layer.ENEMY_SHIP:
           layerDepth = 0.3f;
+          LayerMask = Layer.PLAYER_SHIP | Layer.ENEMY_SHIP | Layer.PLAYER_PROJECTILE;
           break;
         case Layer.ENEMY_PROJECTILE:
           layerDepth = 0.2f;
+          LayerMask = Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE;
           break;
         default:
           break;

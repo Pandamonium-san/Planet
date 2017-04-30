@@ -8,12 +8,11 @@ namespace Planet
 {
   class EnemyManager
   {
-    int frames;
-    Timer spawnTimer;
-    World world;
-    List<AIController> controllers;
-    Queue<Spawn> spawnQueue;
-    Spawn nextSpawn;
+    private Timer spawnTimer;
+    private World world;
+    private List<AIController> controllers;
+    private Queue<Spawn> spawnQueue;
+    private Spawn nextSpawn;
 
     public EnemyManager(World world)
     {
@@ -41,29 +40,48 @@ namespace Planet
       Vector2 spawnPos = new Vector2(100, 100);
       for (int i = 0; i < 15; i++)
       {
-        QueueSpawn(new Enemy1(spawnPos, world), new AIController(world), 0.1);
+        AIController aic;
+        if (i % 2 == 0)
+          aic = new AIController(world);
+        else
+          aic = new EnemyController1(world);
+        QueueSpawn(new Enemy1(spawnPos, world), aic, 0.1);
         spawnPos += new Vector2(50, 0);
       }
       for (int i = 0; i < 7; i++)
       {
-        QueueSpawn(new Enemy1(spawnPos, world), new AIController(world), 0.1);
+        AIController aic;
+        if (i % 2 == 0)
+          aic = new AIController(world);
+        else
+          aic = new EnemyController1(world);
+        QueueSpawn(new Enemy2(spawnPos, world), aic, 0.1);
         spawnPos += new Vector2(0, 50);
       }
       for (int i = 0; i < 15; i++)
       {
-        QueueSpawn(new Enemy1(spawnPos, world), new AIController(world), 0.1);
+        AIController aic;
+        if (i % 2 == 0)
+          aic = new AIController(world);
+        else
+          aic = new EnemyController1(world);
+        QueueSpawn(new Enemy2(spawnPos, world), aic, 0.1);
         spawnPos += new Vector2(-50, 0);
       }
       for (int i = 0; i < 7; i++)
       {
-        QueueSpawn(new Enemy1(spawnPos, world), new AIController(world), 0.1);
+        AIController aic;
+        if (i % 2 == 0)
+          aic = new AIController(world);
+        else
+          aic = new EnemyController1(world);
+        QueueSpawn(new Enemy2(spawnPos, world), aic, 0.1);
         spawnPos += new Vector2(0, -50);
       }
       DequeueSpawn();
     }
     public void Update(GameTime gt)
     {
-      ++frames;
       spawnTimer.Update(gt);
       foreach (AIController aic in controllers)
       {
@@ -75,7 +93,7 @@ namespace Planet
       Spawn s = new Spawn(enemy, controller, spawnTime);
       spawnQueue.Enqueue(s);
     }
-    void DequeueSpawn()
+    private void DequeueSpawn()
     {
       if (spawnQueue.Count == 0)
         return;
@@ -85,7 +103,7 @@ namespace Planet
       else
         spawnTimer.Start(nextSpawn.timeToSpawn);
     }
-    void SpawnNext()
+    private void SpawnNext()
     {
       Type enemyType = nextSpawn.enemy.GetType();
       Type aic = nextSpawn.controller.GetType();

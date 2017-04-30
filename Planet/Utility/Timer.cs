@@ -10,36 +10,32 @@ namespace Planet
   {
     public bool Finished { get; private set; }
     public bool Counting { get; private set; }
+    public bool Repeats { get; set; }
     public double seconds { get; private set; }
     public double elapsedSeconds { get; private set; }
     public double Fraction { get { return elapsedSeconds / seconds; } }
     public double Remaining { get { return seconds - elapsedSeconds; } }
-
     private Action action;
 
     /// <param name="timeInSeconds">Time before action is invoked.</param>
     /// <param name="action">Action to invoke after set amount of time.</param>
     /// <param name="start">Start the timer immediately without calling Start.</param>
-    public Timer(double timeInSeconds, Action action = null, bool start = true) : this()
+    public Timer(double timeInSeconds, Action action = null, bool start = true, bool repeat = false) : this()
     {
       this.seconds = timeInSeconds;
       this.action = action;
       this.elapsedSeconds = 0;
       Counting = start;
       Finished = false;
+      Repeats = repeat;
     }
 
-    public void Start()
+    public void Start(double seconds = -1)
     {
       Counting = true;
       Finished = false;
-      elapsedSeconds = 0;
-    }
-    public void Start(double seconds)
-    {
-      Counting = true;
-      Finished = false;
-      this.seconds = seconds;
+      if (seconds > 0)
+        this.seconds = seconds;
       elapsedSeconds = 0;
     }
     public void Update(GameTime gt)
@@ -53,10 +49,12 @@ namespace Planet
         Finished = true;
         if (action != null)
           action.Invoke();
+        if (Repeats)
+          Start();
       }
     }
   }
-  
+
   public struct FrameTimer
   {
     public bool counting { get; private set; }

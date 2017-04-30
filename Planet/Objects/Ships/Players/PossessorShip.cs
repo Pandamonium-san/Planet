@@ -9,11 +9,12 @@ namespace Planet
 {
   class PossessorShip : Ship
   {
-    Player player;
-    Ship possessedShip;
-    PlayerShipController psc;
-    ShipController oldController;
-    Layer oldLayer;
+    private Player player;
+    private Ship possessedShip;
+    private PlayerShipController psc;
+    private ShipController oldController;
+    private Layer oldLayer;
+
     public PossessorShip(Vector2 pos, World world, Player pc)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_009"))
     {
@@ -86,7 +87,7 @@ namespace Planet
 
       oldController.SetShip(null);
       possessedShip.SetLayer(Layer);
-      possessedShip.speedModifier *= 4.0f;
+      possessedShip.speedModifier *= 3.0f;
       possessedShip.rotationModifier *= 1.5f;
       possessedShip.LeadShots = true;
       possessedShip.color = Color.Turquoise;
@@ -104,8 +105,9 @@ namespace Planet
         Rotation = possessedShip.Rotation;
         IsActive = true;
         Visible = true;
+        possessedShip.SetDash(false);
         possessedShip.SetLayer(oldLayer);
-        possessedShip.speedModifier /= 4.0f;
+        possessedShip.speedModifier /= 3.0f;
         possessedShip.rotationModifier /= 1.5f;
         possessedShip.LeadShots = false;
         possessedShip.color = Color.White;

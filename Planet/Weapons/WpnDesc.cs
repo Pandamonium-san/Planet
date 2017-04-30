@@ -23,6 +23,7 @@ namespace Planet
     /// <param name="startingAngleDegrees">First bullet in each shot is fired at an angle instead of going straight</param>
     /// <param name="projLifeTime">Time in seconds before bullet destroys itself</param>
     /// <param name="ignoreRotation">If true, does not take into account the ship's rotation when determining shot direction</param>
+    /// <param name="piercing">Determines whether the projectile will disappear upon hitting an enemy</param>
     public WpnDesc(
         float damage,
         float shotsPerSecond,
@@ -36,7 +37,8 @@ namespace Planet
         float degreesBetweenShots = 0,
         float startingAngleDegrees = 0,
         float projLifeTime = 10,
-        bool ignoreRotation = false)
+        bool ignoreRotation = false,
+        bool piercing = false)
     {
       this.damage = damage;
       this.shotsPerSecond = shotsPerSecond;
@@ -51,6 +53,7 @@ namespace Planet
       this.startingAngleDegrees = startingAngleDegrees;
       this.projLifeTime = projLifeTime;
       this.ignoreRotation = ignoreRotation;
+      this.piercing = piercing;
     }
     public WpnDesc()
     {
@@ -70,5 +73,6 @@ namespace Planet
     public float startingAngleDegrees;
     public float projLifeTime;
     public bool ignoreRotation;
+    public bool piercing;
   }
 }

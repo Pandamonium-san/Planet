@@ -16,14 +16,17 @@ namespace Planet
     public bool FadeIn { get; set; }
 
     Timer lifeTimer;
-    public Particle(Vector2 pos, Texture2D tex, Vector2 velocity, float lifeTime, Color color, float alpha, float rotationSpeed = 0.0f, float scale = 1.0f)
+    public Particle(Vector2 pos, Texture2D tex, Vector2 velocity, float lifeTime, Color color, float alpha, float rotationSpeed = 0.0f, float scale = 1.0f, bool fadeIn = false)
       : base(pos, tex)
     {
+      layerDepth = 0.0f;
+      this.alpha = alpha;
       this.InitialAlpha = alpha;
       this.color = color;
       this.Scale = scale;
       this.Velocity = velocity;
       this.RotationSpeed = rotationSpeed;
+      this.FadeIn = fadeIn;
       lifeTimer = new Timer(lifeTime, () => Die(), true);
     }
     public void Die()

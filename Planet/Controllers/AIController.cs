@@ -12,11 +12,15 @@ namespace Planet
     public bool IsActive { get; set; }
     protected Ship ship;
     protected World world;
+    protected double targetRefreshTime;
+    protected Timer targetRefresher;
 
     public AIController(World world)
     {
       this.world = world;
       IsActive = true;
+      targetRefreshTime = 3;
+      targetRefresher = new Timer(targetRefreshTime, FindNearestTarget, true);
     }
     public void Update(GameTime gt)
     {
@@ -29,29 +33,26 @@ namespace Planet
     }
     protected virtual void DoUpdate(GameTime gt)
     {
-      ship.Target = FindNearestTarget();
+      if (targetRefresher.Counting)
+        targetRefresher.Update(gt);
+      else
+        targetRefresher.Start(targetRefreshTime);
       if (ship.Target != null && ship.Target.IsActive && ship.Target.Pos != ship.Pos)
       {
         ship.Fire1();
       }
     }
-    protected virtual void MoveTowards(Vector2 point)
+    protected void MoveTowards(Vector2 point, bool dash = false)
     {
       if (ship.Pos != point)
       {
         Vector2 direction = point - ship.Pos;
         if (direction != Vector2.Zero)
           ship.Move(direction);
+        ship.SetDash(dash);
       }
     }
-    protected void Seek(Vector2 point)
-    {
-      Vector2 desired = Vector2.Normalize(point - ship.Pos) * ship.Speed;
-      Vector2 steering = desired - ship.Acceleration;
-      ship.Acceleration += steering;
-      ship.SetAcceleration(Vector2.Normalize(ship.Acceleration) * ship.Speed);
-    }
-    protected virtual GameObject FindNearestTarget()
+    protected void FindNearestTarget()
     {
       List<GameObject> players = world.GetPlayers();
       GameObject nearest = null;
@@ -67,7 +68,7 @@ namespace Planet
           nDistance = distance;
         }
       }
-      return nearest;
+      ship.Target = nearest;
     }
     public void SetShip(Ship ship)
     {

@@ -14,32 +14,27 @@ namespace Planet
     public float RotationSpeed { get { return rotationSpeed * rotationModifier; } }
     public Vector2 Velocity { get; set; }
     public Vector2 Acceleration { get; set; }
-
     public bool Dashing { get; set; }
     public GameObject Target { get; set; }
     public ShipController Controller { get; set; }
     public bool ClampToScreen { get; set; }
     public bool LeadShots { get; set; }
+    public bool Invulnerable { get; set; }
+
+    public float baseSpeed = 300;
+    public float rotationSpeed = 10;
+    public float speedModifier = 1.0f;
+    public float rotationModifier = 1.0f;
+    public float currentHealth;
+    public float maxHealth;
 
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
-    public float baseSpeed = 300;
-    public float rotationSpeed = 10;
-
+    protected Timer invulnerabilityTimer;
+    protected Particle flashParticle;
     protected Texture2D flashTex;
-    protected float flashAlpha;
-    protected float flashInitial;
-    protected bool flashRisingAlpha;
-    protected Timer flashTimer;
-
     protected List<Weapon> weapons;
     protected int weaponIndex;
-
-    public float speedModifier = 1.0f;
-    public float rotationModifier = 1.0f;
-
-    public float currentHealth;
-    public float maxHealth;
 
     public Ship(Vector2 pos, World world, Texture2D tex)
       : base(pos, world, tex)
@@ -48,8 +43,7 @@ namespace Planet
       weaponIndex = 0;
       maxHealth = 10;
       currentHealth = maxHealth;
-
-      flashTimer = new Timer(0.25f, () => flashAlpha = 0, false);
+      invulnerabilityTimer = new Timer(0.0, () => Invulnerable = false, false);
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -105,15 +99,27 @@ namespace Planet
       foreach (Weapon wpn in weapons)
         wpn.Update(gt);
 
-      // flash when damaged
-      if (flashTimer.Counting)
+      if (flashParticle != null)
+        flashParticle.Update(gt);
+      invulnerabilityTimer.Update(gt);
+    }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+      if (!Visible)
+        return;
+      base.Draw(spriteBatch);
+      if (flashParticle != null)
+        flashParticle.Draw(spriteBatch);
+
+      if (Layer != Layer.PLAYER_SHIP)
+        return;
+      if (Target != null)
       {
-        if (flashRisingAlpha)
-          flashAlpha = (float)flashTimer.Fraction * flashInitial;
-        else
-          flashAlpha = flashInitial - (float)flashTimer.Fraction * flashInitial;
-        flashTimer.Update(gt);
+        Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
+        spriteBatch.Draw(circle, Target.Pos, null, Color.Green * 0.5f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
       }
+      Text weaponText = new Text(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 30, Color.Green);
+      weaponText.Draw(spriteBatch);
     }
     public virtual void Fire1()
     {
@@ -141,6 +147,13 @@ namespace Planet
       else if (!Dashing)
         rotationModifier /= 0.7f;
     }
+    public void SetDash(bool dashing)
+    {
+      if (Dashing == dashing)
+        return;
+      else
+        ToggleDash();
+    }
     public void SetWeapon(int index)
     {
       weaponIndex = MathHelper.Clamp(index, 0, weapons.Count());
@@ -166,10 +179,9 @@ namespace Planet
     }
     public override void DoCollision(GameObject other)
     {
-      if (other is Projectile)
+      if (other is Ship)
       {
-        Projectile p = (Projectile)other;
-        TakeDamage(p.damage);
+        Separate(other);
       }
     }
     public override void Die()
@@ -177,11 +189,23 @@ namespace Planet
       base.Die();
       world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
     }
-    public void StartFlash(double flashTime, bool risingAlpha, float initialAlpha = 1.0f)
+    public void SetInvulnerable(float invulnerabilityTime)
     {
-      flashTimer.Start(flashTime);
-      flashRisingAlpha = risingAlpha;
-      flashInitial = initialAlpha;
+      Invulnerable = true;
+      invulnerabilityTimer.Start(invulnerabilityTime);
+    }
+    public void Flash(float flashTime, Color color, bool fadeIn, float initialAlpha = 1.0f, bool separate = false)
+    {
+      flashParticle = new Particle(Pos, flashTex, Vector2.Zero, flashTime, color, initialAlpha, 0, Scale, fadeIn);
+      flashParticle.Rotation = Rotation;
+      if (separate)
+      {
+        world.Particles.AddParticle(flashParticle);
+        flashParticle = null;
+        return;
+      }
+      flashParticle.Parent = this;
+      flashParticle.layerDepth = layerDepth - 0.01f;
     }
     public void AddAcceleration(Vector2 v)
     {
@@ -207,7 +231,7 @@ namespace Planet
 
       float angleToTarget = desiredAngle - Rotation;
       angleToTarget = MathHelper.WrapAngle(angleToTarget);
-      if (Math.Abs(angleToTarget * 60) < rotationSpeed) //turn fully if rotationspeed higher than difference
+      if (Math.Abs(angleToTarget * 60) < RotationSpeed) //turn fully if rotationspeed higher than difference
         rotation = angleToTarget * 60;
       else
         rotation = angleToTarget > 0 ? RotationSpeed : -RotationSpeed;
@@ -216,10 +240,14 @@ namespace Planet
     }
     public void TakeDamage(float amount)
     {
+      if (Invulnerable)
+        return;
       currentHealth -= amount;
       if (currentHealth <= 0)
         Die();
-      StartFlash(0.25, false, 0.8f);
+      Flash(0.25f, Color.White, false, 0.8f);
+      if (Layer == Layer.PLAYER_SHIP)
+        SetInvulnerable(0.25f);
     }
     protected void LeadShot(Ship target)
     {
@@ -240,27 +268,21 @@ namespace Planet
         v = t.Pos + u - Pos;
       TurnTowards(Pos + v);
     }
+    private void Separate(GameObject other)
+    {
+      Vector2 dir = Pos - other.Pos;
+      if (dir == Vector2.Zero)
+        dir = new Vector2(1, 0);
+      else
+        dir.Normalize();
+      AddAcceleration(dir * 2);
+    }
     private void RestrictToScreen()
     {
       Pos = new Vector2(
         MathHelper.Clamp(Pos.X, 0, Game1.ScreenWidth),
         MathHelper.Clamp(Pos.Y, 0, Game1.ScreenHeight)
         );
-    }
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-      base.Draw(spriteBatch);
-      if (flashTex != null)
-        spriteBatch.Draw(flashTex, Pos, spriteRec, Color.White * flashAlpha, Rotation, origin, Scale, spriteEffects, layerDepth - 0.1f);
-      if (Layer != Layer.PLAYER_SHIP || !Visible)
-        return;
-      if (Target != null)
-      {
-        Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
-        spriteBatch.Draw(circle, Target.Pos, null, Color.Green * 0.5f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
-      }
-      Text weaponText = new Text(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 30, Color.Green);
-      weaponText.Draw(spriteBatch);
     }
   }
 }

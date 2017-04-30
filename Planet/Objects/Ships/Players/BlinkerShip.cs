@@ -14,6 +14,7 @@ namespace Planet
     float blinkDelay = 0.5f;
     Timer blinkTimer1;
     Timer blinkTimer2;
+    Timer blinkTimer3;
     Vector2 blinkDirection;
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_001"))
@@ -22,6 +23,7 @@ namespace Planet
       SetLayer(Layer.PLAYER_SHIP);
       blinkTimer1 = new Timer(blinkDelay, Blink1, false);
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);
+      blinkTimer3 = new Timer(blinkDelay, Blink3, false);
       maxHealth = 100;
       currentHealth = maxHealth;
 
@@ -41,6 +43,7 @@ namespace Planet
       base.Update(gt);
       blinkTimer1.Update(gt);
       blinkTimer2.Update(gt);
+      blinkTimer3.Update(gt);
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -50,10 +53,12 @@ namespace Planet
     {
       CurrentWeapon.Fire();
     }
+    // ship disappears, particles spawn
     public override void Fire2()
     {
       if (blinkTimer2.Counting)
         return;
+      Flash(0.15f, blinkColor, false, 1.0f, true);
       blinkDirection = movementDirection;
       IsActive = false;
       Visible = false;
@@ -62,6 +67,7 @@ namespace Planet
       CreateBlinkParticle2();
       blinkTimer1.Start();
     }
+    // particles reappear
     private void Blink1()
     {
       Vector2 dir = blinkDirection;
@@ -72,12 +78,19 @@ namespace Planet
       CreateBlinkParticle(true);
       blinkTimer2.Start();
     }
+    // ship reappears
     private void Blink2()
     {
+      Flash(0.5f, blinkColor, false, 0.9f);
       IsActive = true;
       Visible = true;
-      CollisionEnabled = true;
       CreateBlinkParticle2();
+      blinkTimer3.Start();
+    }
+    // collision is enabled
+    private void Blink3()
+    {
+      CollisionEnabled = true;
     }
     private void CreateBlinkParticle(bool implode)
     {
@@ -102,7 +115,8 @@ namespace Planet
 
         Projectile p = new Projectile(world, tex, pos, dir, speed, 40, this, lifeTime);
         p.Scale = scale;
-        p.color = Color.Transparent;
+        p.color = blinkColor;//Color.Transparent;
+        p.Visible = false;
         world.PostProjectile(p);
 
         Particle pr = new Particle(pos, tex, dir * speed, lifeTime, blinkColor, alpha, rotationSpeed, scale);
@@ -112,8 +126,8 @@ namespace Planet
     }
     private void CreateBlinkParticle2()
     {
-      for (int i = 0; i < 10; i++)
-        world.Particles.CreateHitEffect(Pos, .7f, -50, 50, blinkColor, 0.7f, .5f, 0.4f);
+      for (int i = 0; i < 15; i++)
+        world.Particles.CreateStar(Pos, .7f, -50, 50, blinkColor, 0.7f, .5f, 0.4f);
     }
   }
 }

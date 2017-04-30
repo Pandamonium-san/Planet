@@ -9,7 +9,7 @@ namespace Planet
 {
   class RewinderShip : Ship
   {
-    readonly int RewindableFrames = 180;
+    readonly int RewindableFrames = 300;
 
     FixedList<State> states;
     Stack<State> shadowStack;
@@ -27,7 +27,6 @@ namespace Planet
 
       Hitbox.LocalScale = 0.5f;
       origin += new Vector2(0, 2);
-      layerDepth = 0.2f;
 
       Weapon wpn;
       //WpnDesc desc = new WpnDesc(1, 60, 700, 4, 0, 0, 0, 60*6, 90, 60*6/360, 0, 1, true); // spinny laser thing
@@ -35,8 +34,9 @@ namespace Planet
       //WpnDesc desc = new WpnDesc(40, 60, 400, 1, 20, 50, 1, 30, 0, 0, 0, 10);              // burst shotgun
       //WpnDesc desc = new WpnDesc(1, 30, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 3);           //normal laser
       //WpnDesc desc = new WpnDesc(10, 20, 1000, 1, 5, 0, 0, 30, 0, 0, 0, 3);           //machine gun
-      WpnDesc desc = new WpnDesc(30, 1, 2500, 5, 0, 0, 0, 1, 0, 0, 0, 3);           //sniper
+      //WpnDesc desc = new WpnDesc(30, 1, 2500, 5, 0, 0, 0, 1, 0, 0, 0, 3);           //sniper
       //WpnDesc desc = new WpnDesc(0, 4, 10, 100, 0, 0, 0, 1, 360/100f, 0, 0, 10);           //stress test
+      WpnDesc desc = new WpnDesc(1000, 30, 1000, 10, 45, 500, 0, 1, 360/10f, 0, 360/10/2, 10, false, true);           //cleanup
       wpn = new Weapon(this, world, desc, "laserBlue16");
       wpn.SetMuzzle(new Vector2(0, -30));
       wpn.Name = "Weapon1";
@@ -49,7 +49,7 @@ namespace Planet
       wpn2.Name = "Line";
       weapons.Add(wpn2);
 
-      desc = new WpnDesc(1, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 0.1f);           //normal laser
+      desc = new WpnDesc(1, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 0.1f);           // laser
       LaserGun laser = new LaserGun(this, world, desc, 20, false);
       laser.SetMuzzle(new Vector2(0, -20));
       laser.Name = "Laser";
@@ -66,7 +66,7 @@ namespace Planet
       wpn4.Name = "Grenade";
       weapons.Add(wpn4);
 
-      desc = new WpnDesc(200, 30, 4000, 1, 0, 0, 0, 1, 0, 0, 0, 3);
+      desc = new WpnDesc(30, 1, 1000, 5, 0, 0, 0, 1, 0, 0, 0, 3);           //sniper
       Weapon wpn5 = new NewTestWeapon(this, world, desc, "Experimental");
       weapons.Add(wpn5);
 
@@ -113,6 +113,7 @@ namespace Planet
       color = Color.Turquoise * 0.4f;
       CollisionEnabled = false;
       shadowStack = new Stack<State>();
+      flashParticle = null;
     }
     private void StopRewind()
     {
@@ -122,7 +123,7 @@ namespace Planet
       RewinderShipShadow rss = new RewinderShipShadow(world, this, weapons, shadowStack);
       world.PostGameObj(rss);
     }
-    protected override void DoUpdate(GameTime gt)
+    public override void Update(GameTime gt)
     {
       if (rewinding && states.Count > 0)
       {
@@ -143,8 +144,8 @@ namespace Planet
         SaveState();
         if (frame % 10 == 0)
           world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, RewindableFrames / 60.0f, Color.White, 0.4f, 1.0f, 0.3f);
+        base.Update(gt);
       }
-      base.DoUpdate(gt);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {

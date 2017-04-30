@@ -9,6 +9,9 @@ namespace Planet
 {
   public class Projectile : GameObject
   {
+    public bool Piercing { get; private set; }
+    private List<GameObject> hitObjects;
+
     public float damage;
     public Ship instigator;
 
@@ -32,7 +35,8 @@ namespace Planet
         Ship instigator = null,
         float lifeTime = 3,
         Pattern pattern = null,
-        OnCollision collisionEffect = null)
+        OnCollision collisionEffect = null,
+        bool piercing = false)
       : base(pos, world, tex)
     {
       this.pattern = pattern;
@@ -42,6 +46,7 @@ namespace Planet
       this.instigator = instigator;
       this.damage = damage;
       this.lifeTime = lifeTime;
+      this.Piercing = piercing;
 
       if (dir != Vector2.Zero)
         dir.Normalize();
@@ -49,6 +54,9 @@ namespace Planet
 
       lifeTimer = new Timer(lifeTime, Die);
       velocity = dir * speed;
+
+      if (Piercing)
+        hitObjects = new List<GameObject>();
 
       if (instigator == null)
       {
@@ -65,7 +73,7 @@ namespace Planet
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
         LayerMask = (Layer.PLAYER_SHIP);
-        color = new Color(255,128,128);
+        color = new Color(255, 128, 128);
       }
       layerDepth = 0.8f;
     }
@@ -75,8 +83,8 @@ namespace Planet
       if (lifeTimer.Remaining < 0.5)  //Fade-out effect
         alpha = (float)(0.25 + lifeTimer.Remaining / 0.5);
 
-      //if (IsOutsideScreen())
-      //  Die();
+      if (IsOutsideScreen())
+        Die();
 
       //perform bullet pattern operation
       if (pattern != null)
@@ -91,10 +99,10 @@ namespace Planet
     }
     private bool IsOutsideScreen()
     {
-      int xMax = Game1.ScreenWidth + 100;
-      int xMin = -100;
-      int yMax = Game1.ScreenHeight + 100;
-      int yMin = -100;
+      int xMax = Game1.ScreenWidth + 300;
+      int xMin = -300;
+      int yMax = Game1.ScreenHeight + 300;
+      int yMin = -300;
 
       if (Pos.X > xMax ||
           Pos.X < xMin ||
@@ -106,16 +114,27 @@ namespace Planet
     }
     public override void DoCollision(GameObject other)
     {
+      if (Piercing && hitObjects.Contains(other))
+        return;
+      if (other is Ship)
+      {
+        ((Ship)other).TakeDamage(damage);
+      }
       if (onCollision != null)
         onCollision(this, other);
       else
       {
         for (int i = 0; i < 3; i++)
         {
-          world.Particles.CreateHitEffect(Pos, 0.3f, -100, 100, color, 0.5f, 0.5f, 0.3f);
+          world.Particles.CreateStar(Pos, 0.3f, -100, 100, color, 0.5f, 0.5f, 0.3f);
         }
       }
-      Die();
+      if (!Piercing)
+        Die();
+      else
+      {
+        hitObjects.Add(other);
+      }
     }
   }
 }

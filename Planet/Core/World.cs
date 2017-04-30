@@ -49,11 +49,26 @@ namespace Planet
         projectiles[i].Update(gameTime);
       for (int i = 0; i < gameObjects.Count(); i++)
         gameObjects[i].Update(gameTime);
+
       for (int i = 0; i < gameObjects.Count(); i++)
       {
         GameObject go = gameObjects[i];
         if (!go.IsActive || !go.CollisionEnabled)
           continue;
+
+        for (int j = 0; j < gameObjects.Count(); j++)
+        {
+          GameObject go2 = gameObjects[j];
+          if (!go2.IsActive || !go2.CollisionEnabled || go == go2)
+            continue;
+          if (go.IsColliding(go2))
+          {
+            go.DoCollision(go2);
+            go2.DoCollision(go);
+            if (!go.IsActive || !go.CollisionEnabled)
+              break;
+          }
+        }
 
         for (int j = 0; j < projectiles.Count(); j++)
         {
@@ -92,10 +107,12 @@ namespace Planet
     public void PostGameObj(GameObject go)
     {
       goToAdd.Enqueue(go);
+      go.layerDepth += 0.00001f * gameObjects.Count;
     }
     public void PostProjectile(Projectile p)
     {
       pToAdd.Enqueue(p);
+      p.layerDepth += 0.00001f * projectiles.Count;
     }
     public void Draw(SpriteBatch spriteBatch)
     {
