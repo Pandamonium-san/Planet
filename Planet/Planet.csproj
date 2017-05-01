@@ -60,8 +60,10 @@
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Projectiles\PHitScan.cs" />
     <Compile Include="Objects\Projectiles\PLightning.cs" />
+    <Compile Include="UI\HUD.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuCursor.cs" />
+    <Compile Include="UI\HealthBar.cs" />
     <Compile Include="UI\Text.cs" />
     <Compile Include="Utility\DebugFunc.cs" />
     <Compile Include="Utility\FixedList.cs" />

@@ -13,6 +13,7 @@ namespace Planet
     private GameStateManager gsm;
     private GameSettings gameSettings;
     private World world;
+    private HUD hud;
     private EnemyManager enemyManager;
     private Player p1, p2;
 
@@ -26,6 +27,7 @@ namespace Planet
       SetPlayerShip(p1).Pos = new Vector2(500, 500);
       SetPlayerShip(p2).Pos = new Vector2(1000, 500);
       enemyManager = new EnemyManager(world);
+      hud = new HUD(world, p1, p2);
     }
     Ship SetPlayerShip(Player p)
     {
@@ -76,10 +78,12 @@ namespace Planet
       p2.Update(gameTime);
       enemyManager.Update(gameTime);
       world.Update(gameTime);
+      hud.Update(gameTime);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       world.Draw(spriteBatch);
+      hud.Draw(spriteBatch);
     }
   }
 }

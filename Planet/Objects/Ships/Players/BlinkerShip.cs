@@ -21,11 +21,15 @@ namespace Planet
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_001");
       SetLayer(Layer.PLAYER_SHIP);
+
+      maxHealth = 100;
+      currentHealth = maxHealth;
+      LeadShots = true;
+      Hitbox.LocalScale = 0.5f;
+
       blinkTimer1 = new Timer(blinkDelay, Blink1, false);
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);
       blinkTimer3 = new Timer(blinkDelay, Blink3, false);
-      maxHealth = 100;
-      currentHealth = maxHealth;
 
       WpnDesc desc = new WpnDesc(15, 1, 700, 12, 10, 100, 0, 1, 0, 0, 0, 1);              // burst shotgun
       Weapon wpn = new Weapon(this, world, desc, "laserBlue07");

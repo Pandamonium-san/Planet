@@ -44,6 +44,7 @@ namespace Planet
     private GameStateManager gameStateManager;
 
     //debug variables
+    public static bool debugMode;
     public static int frames;
     int slowFrames;
     public static Vector2 intersectPoint;
@@ -104,6 +105,11 @@ namespace Planet
                 Exit();
 #endif
       ++frames;
+      if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Side, true) &&
+      InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side) && InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.Side, true))
+      {
+        debugMode = !debugMode;
+      }
       collisionChecksPerFrame = 0;
       runningSlowly = gameTime.IsRunningSlowly;
       gameStateManager.Update(gameTime);
@@ -122,19 +128,21 @@ namespace Planet
       gameStateManager.Draw(spriteBatch);
 
       // draw debug info
-      spriteBatch.Begin();
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "FPS: " + fc.CurrentFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
-      if (fc.CurrentFramesPerSecond < 30)
+      if (debugMode)
       {
-        slowFrames++;
+        spriteBatch.Begin();
+        spriteBatch.DrawString(AssetManager.GetFont("font1"), "FPS: " + fc.CurrentFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
+        if (fc.CurrentFramesPerSecond < 30)
+        {
+          slowFrames++;
+        }
+        spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow: " + runningSlowly.ToString(), new Vector2(150, 0), Color.Red);
+        spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow frames: " + slowFrames.ToString(), new Vector2(150, 20), Color.Red);
+        spriteBatch.DrawString(AssetManager.GetFont("font1"), "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
+        spriteBatch.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
+        spriteBatch.DrawString(AssetManager.GetFont("font1"), "Game State: " + gameStateManager.Peek().ToString(), new Vector2(300, 0), Color.Red);
+        spriteBatch.End();
       }
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow: " + runningSlowly.ToString(), new Vector2(150, 0), Color.Red);
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow frames: " + slowFrames.ToString(), new Vector2(150, 20), Color.Red);
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
-      spriteBatch.DrawString(AssetManager.GetFont("font1"), "Game State: " + gameStateManager.Peek().ToString(), new Vector2(300, 0), Color.Red);
-      spriteBatch.End();
-
       base.Draw(gameTime);
     }
   }

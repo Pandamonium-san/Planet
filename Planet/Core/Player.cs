@@ -28,6 +28,7 @@ namespace Planet
     }
     public void SetShip(Ship ship)
     {
+      Ship = ship;
       pc = new PlayerShipController(Index, ship);
     }
   }

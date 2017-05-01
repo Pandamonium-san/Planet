@@ -77,6 +77,17 @@ namespace Planet
       this.Scale = scale;
       localOrigin = Vector2.Zero;
     }
+    public Transform(Transform other)
+    {
+      parent = other.parent;
+      localPos = other.localPos;
+      localRotation = other.localRotation;
+      localScale = other.localScale;
+      worldPos = other.worldPos;
+      worldRotation = other.worldRotation;
+      worldScale = other.worldScale;
+      localOrigin = other.localOrigin;
+    }
 
     private void AppendChild(Transform child)
     {

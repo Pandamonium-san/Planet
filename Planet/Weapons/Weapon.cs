@@ -37,7 +37,7 @@ namespace Planet
       SetDesc(desc);
       SetMuzzle(Vector2.Zero);
     }
-    public Weapon(Weapon wpn) : base(wpn.Pos, wpn.Rotation, wpn.Scale, wpn.Parent)
+    public Weapon(Weapon wpn) : base(wpn)
     {
       Name = wpn.Name;
       projTex = wpn.projTex;

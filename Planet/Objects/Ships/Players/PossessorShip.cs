@@ -21,7 +21,13 @@ namespace Planet
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_009");
       SetLayer(Layer.PLAYER_SHIP);
 
+      maxHealth = 100;
+      currentHealth = maxHealth;
+      LeadShots = true;
+      Hitbox.LocalScale = 0.5f;
+
       player = pc;
+
       Weapon wpn;
       WpnDesc desc = new WpnDesc(30, 1, 2500, 5, 0, 0, 0, 1, 0, 0, 0, 3);           //sniper
       wpn = new Weapon(this, world, desc, "laserBlue16");
@@ -29,9 +35,6 @@ namespace Planet
       wpn.Name = "Sniper";
       wpn.Scale = 1.5f;
       weapons.Add(wpn);
-
-      maxHealth = 1000;
-      currentHealth = maxHealth;
     }
     public override void Update(GameTime gt)
     {
