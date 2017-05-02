@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Planet
 {
-  class EnemyShip : Ship
+  abstract class EnemyShip : Ship
   {
     public EnemyShip(Vector2 pos, World world, Texture2D tex)
         : base(pos, world, tex)
@@ -21,13 +21,13 @@ namespace Planet
       : base(pos, world, AssetManager.GetTexture(@"ships\red\enemy1"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\enemy1");
-      WpnDesc desc = new WpnDesc(1, 3f, 300, 1, 10, 10, 3, 9, 0, 0, 0, 5);
+      WpnDesc desc = new WpnDesc(5, 3f, 300, 1, 10, 10, 3, 9, 0, 0, 0, 5);
       Weapon wpn = new Weapon(this, world, desc, "laserRed10", "BasicGun");
       wpn.Scale = 0.4f;
       //wpn.SetMuzzle(new Vector2(0, -10));
       weapons.Add(wpn);
 
-      desc = new WpnDesc(5, 10, 1000, 4, 1, 10, 1, 10, 3, 0, -4.5f, 3);
+      desc = new WpnDesc(1, 10, 1000, 4, 1, 10, 1, 10, 3, 0, -4.5f, 3);
       wpn = new Weapon(this, world, desc, "laserBlue10", "Spinny");
       wpn.Scale = 0.4f;
       weapons.Add(wpn);
@@ -50,7 +50,7 @@ namespace Planet
       wpn.LocalPos = new Vector2(0, -20);
       weapons.Add(wpn);
 
-      desc = new WpnDesc(30, 2.0f, 800, 1, 0, 0, 1, 3, 0, 0, 0, 3, false, true);
+      desc = new WpnDesc(6, 2.0f, 800, 1, 0, 0, 1, 3, 0, 0, 0, 3, false, true);
       wpn = new Weapon(this, world, desc, "laserBlue01", "Rifle+");
       wpn.Scale = 1.2f;
       wpn.LocalPos = new Vector2(0, -20);

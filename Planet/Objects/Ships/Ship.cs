@@ -23,10 +23,17 @@ namespace Planet
 
     public float baseSpeed = 300;
     public float rotationSpeed = 10;
+    public float damageModifier = 1.0f;
     public float speedModifier = 1.0f;
     public float rotationModifier = 1.0f;
     public float currentHealth;
     public float maxHealth;
+
+    public float currentShield;
+    public float maxShield;
+    public float shieldRechargeRate;
+    public Timer shieldRechargeDelay;
+    public bool recharging;
 
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
@@ -43,6 +50,9 @@ namespace Planet
       weaponIndex = 0;
       maxHealth = 10;
       currentHealth = maxHealth;
+
+      shieldRechargeRate = 5;
+      shieldRechargeDelay = new Timer(3, () => recharging = true, false, false);
       invulnerabilityTimer = new Timer(0.0, () => Invulnerable = false, false);
     }
     protected override void DoUpdate(GameTime gt)
@@ -92,6 +102,12 @@ namespace Planet
       //speedModifier = 1.0f;
       //rotationModifier = 1.0f;
       Acceleration *= 0.90f;
+
+      shieldRechargeDelay.Update(gt);
+      if (recharging && currentShield < maxShield)
+      {
+        currentShield += shieldRechargeRate * (float)gt.ElapsedGameTime.TotalSeconds;
+      }
 
       if (ClampToScreen)
         RestrictToScreen();
@@ -189,7 +205,7 @@ namespace Planet
       base.Die();
       world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
     }
-    public void SetInvulnerable(float invulnerabilityTime)
+    public void MakeInvulnerable(float invulnerabilityTime)
     {
       Invulnerable = true;
       invulnerabilityTimer.Start(invulnerabilityTime);
@@ -242,19 +258,45 @@ namespace Planet
     {
       if (Invulnerable)
         return;
-      currentHealth -= amount;
+      shieldRechargeDelay.Start();
+      recharging = false;
+      if (currentShield > 0)
+        currentShield -= amount;
+      else
+        currentHealth -= amount;
       if (currentHealth <= 0)
         Die();
       Flash(0.25f, Color.White, false, 0.8f);
       if (Layer == Layer.PLAYER_SHIP)
-        SetInvulnerable(0.25f);
+        MakeInvulnerable(0.25f);
+    }
+    public void TakeDamage(Projectile p)
+    {
+      if (Invulnerable)
+        return;
+      shieldRechargeDelay.Start();
+      recharging = false;
+      if (currentShield > 0)
+      {
+        currentShield -= p.damage;
+        CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos));
+        MakeInvulnerable(0.25f);
+      }
+      else
+      {
+        currentHealth -= p.damage;
+        Flash(0.5f, Color.White, false, 0.8f);
+        if (currentHealth <= 0)
+          Die();
+        if (Layer == Layer.PLAYER_SHIP)
+          MakeInvulnerable(0.5f);
+      }
     }
     protected void LeadShot(Ship target)
     {
-      Ship t = (Ship)target;
-      Vector2 AB = t.Pos - Pos;
+      Vector2 AB = target.Pos - Pos;
       AB.Normalize();
-      Vector2 u = t.Velocity;
+      Vector2 u = target.Velocity;
       Vector2 uj = Vector2.Dot(AB, u) * AB;
       Vector2 ui = u - uj;
       float vLenSq = (float)Math.Pow(weapons[weaponIndex].Desc.projSpeed, 2);
@@ -265,8 +307,31 @@ namespace Planet
       Vector2 vj = AB * vjLen;
       Vector2 v = vi + vj;
       if (vjLenSq < 0)
-        v = t.Pos + u - Pos;
+        v = target.Pos + u - Pos;
       TurnTowards(Pos + v);
+    }
+    private void CreateShieldParticle(float rotation)
+    {
+      string shieldTex;
+      float f = currentShield / maxShield;
+      if (f > 0.7f)
+        shieldTex = "shield3";
+      else if (f > 0.4f)
+        shieldTex = "shield2";
+      else
+        shieldTex = "shield1";
+      Particle shield = world.Particles.CreateParticle(
+        Pos,
+        AssetManager.GetTexture(shieldTex),
+        Vector2.Zero,
+        0.25f,
+        Color.Turquoise,
+        1.2f * (f + 0.5f),
+        0,
+        Scale,
+        rotation);
+      shield.Parent = this;
+      Flash(0.25f, Color.Turquoise, false, 0.5f * (f + 0.5f));
     }
     private void Separate(GameObject other)
     {

@@ -8,28 +8,37 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
-  class HealthBar
+  class ValueBar
   {
     public float Value { get { return value; } set { this.value = value > maxValue ? maxValue : value; } }
     public float MaxValue { get { return maxValue; } protected set { value = maxValue; } }
 
     public Rectangle rec;
-    Texture2D pixel;
     Texture2D frontTex, backTex;
     float value, maxValue;
     Color foreColor, backColor;
     bool mirrored;
 
-    public HealthBar(Rectangle rec, float maxValue, float value, Color foreColor, Color backColor, bool mirrored = false)
+    public ValueBar(Rectangle rec, float maxValue, float value, Color foreColor, Color backColor, bool mirrored = false)
     {
-      pixel = AssetManager.GetTexture("pixel");
-      frontTex = AssetManager.GetTexture("green_button05");
-      backTex = AssetManager.GetTexture("grey_button05");
+      frontTex = AssetManager.GetTexture("pixel");
+      backTex = frontTex;
       this.rec = rec;
       this.maxValue = maxValue;
       this.value = value;
       this.foreColor = foreColor;
       this.backColor = backColor;
+      this.mirrored = mirrored;
+    }
+    public ValueBar(Rectangle rec, float maxValue, float value, Texture2D front, Texture2D back, bool mirrored = false)
+    {
+      frontTex = front;
+      backTex = back;
+      this.rec = rec;
+      this.maxValue = maxValue;
+      this.value = value;
+      this.foreColor = Color.White;
+      this.backColor = Color.White;
       this.mirrored = mirrored;
     }
     public void SetPos(Vector2 position)
@@ -59,7 +68,8 @@ namespace Planet
     }
     public void Draw(SpriteBatch sb)
     {
-      sb.Draw(backTex, rec, null, backColor);
+      if (backTex != null)
+        sb.Draw(backTex, rec, null, backColor);
       sb.Draw(frontTex, CalculateFrontRectangle(), null, foreColor);
     }
   }

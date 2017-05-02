@@ -40,7 +40,7 @@ namespace Planet
           p.Pos,
           direction,
           sv + desc.projSpeed,
-          desc.damage / 5,
+          Damage / 5,
           ship,
           0.2f + Utility.RandomFloat(-0.1f, 0.1f),
           base.BulletPattern);

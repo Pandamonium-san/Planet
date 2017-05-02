@@ -24,6 +24,8 @@ namespace Planet
       layerDepth = rs.layerDepth + 0.1f;
       maxHealth = rs.maxHealth;
       currentHealth = maxHealth;
+      maxShield = rs.maxShield;
+      currentShield = rs.currentShield;
       baseSpeed = rs.baseSpeed;
       rotationSpeed = rs.rotationSpeed;
       Target = rs.Target;

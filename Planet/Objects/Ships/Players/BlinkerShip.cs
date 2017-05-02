@@ -24,6 +24,8 @@ namespace Planet
 
       maxHealth = 100;
       currentHealth = maxHealth;
+      maxShield = 20;
+      currentShield = maxShield;
       LeadShots = true;
       Hitbox.LocalScale = 0.5f;
 
@@ -48,10 +50,6 @@ namespace Planet
       blinkTimer1.Update(gt);
       blinkTimer2.Update(gt);
       blinkTimer3.Update(gt);
-    }
-    protected override void DoUpdate(GameTime gt)
-    {
-      base.DoUpdate(gt);
     }
     public override void Fire1()
     {

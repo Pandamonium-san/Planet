@@ -52,7 +52,7 @@ namespace Planet
             p.Pos,
             nDir,
             desc.projSpeed * 3f,
-            desc.damage,
+            Damage,
             ship,
             5f,
             base.BulletPattern);

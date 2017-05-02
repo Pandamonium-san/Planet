@@ -29,9 +29,10 @@ namespace Planet
       AddParticle(p);
       return p;
     }
-    public Particle CreateParticle(Vector2 pos, Texture2D tex, Vector2 velocity, float lifeTime, Color color, float alpha, float rotationSpeed = 0.0f, float scale = 1.0f)
+    public Particle CreateParticle(Vector2 pos, Texture2D tex, Vector2 velocity, float lifeTime, Color color, float alpha, float rotationSpeed = 0.0f, float scale = 1.0f, float rotation = 0.0f)
     {
       Particle p = new Particle(pos, tex, velocity, lifeTime, color, alpha, rotationSpeed, scale);
+      p.Rotation = rotation;
       AddParticle(p);
       return p;
     }
@@ -61,6 +62,7 @@ namespace Planet
       AddParticle(p);
       return p;
     }
+
     public void Update(GameTime gameTime)
     {
       foreach (Particle p in particles)

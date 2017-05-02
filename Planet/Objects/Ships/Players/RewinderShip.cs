@@ -23,7 +23,9 @@ namespace Planet
       SetLayer(Layer.PLAYER_SHIP);
 
       maxHealth = 100;
+      maxShield = 20;
       currentHealth = maxHealth;
+      currentShield = maxShield;
       LeadShots = true;
       Hitbox.LocalScale = 0.5f;
 
@@ -120,6 +122,8 @@ namespace Planet
       CollisionEnabled = true;
       RewinderShipShadow rss = new RewinderShipShadow(world, this, weapons, shadowStack);
       world.PostGameObj(rss);
+      foreach (Weapon wpn in weapons)
+        wpn.Reload();
     }
     public override void Update(GameTime gt)
     {
@@ -157,6 +161,7 @@ namespace Planet
       Pos = state.pos;
       Rotation = state.rotation;
       currentHealth = state.currentHealth;
+      currentShield = state.currentShield;
     }
     private void SaveState()
     {
@@ -165,6 +170,7 @@ namespace Planet
     public class State
     {
       public float currentHealth;
+      public float currentShield;
       public Vector2 pos;
       public float rotation;
 
@@ -181,6 +187,7 @@ namespace Planet
       public State(RewinderShip rs)
       {
         currentHealth = rs.currentHealth;
+        currentShield = rs.currentShield;
         pos = rs.Pos;
         rotation = rs.Rotation;
         movementDirection = rs.movementDirection;

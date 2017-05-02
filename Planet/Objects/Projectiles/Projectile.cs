@@ -118,7 +118,7 @@ namespace Planet
         return;
       if (other is Ship)
       {
-        ((Ship)other).TakeDamage(damage);
+        ((Ship)other).TakeDamage(this);
       }
       if (onCollision != null)
         onCollision(this, other);

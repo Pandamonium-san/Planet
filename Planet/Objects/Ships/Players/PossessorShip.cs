@@ -23,6 +23,8 @@ namespace Planet
 
       maxHealth = 100;
       currentHealth = maxHealth;
+      maxShield = 20;
+      currentShield = 20;
       LeadShots = true;
       Hitbox.LocalScale = 0.5f;
 
@@ -90,6 +92,7 @@ namespace Planet
 
       oldController.SetShip(null);
       possessedShip.SetLayer(Layer);
+      possessedShip.damageModifier *= 5.0f;
       possessedShip.speedModifier *= 3.0f;
       possessedShip.rotationModifier *= 1.5f;
       possessedShip.LeadShots = true;
@@ -110,6 +113,7 @@ namespace Planet
         Visible = true;
         possessedShip.SetDash(false);
         possessedShip.SetLayer(oldLayer);
+        possessedShip.damageModifier /= 5.0f;
         possessedShip.speedModifier /= 3.0f;
         possessedShip.rotationModifier /= 1.5f;
         possessedShip.LeadShots = false;

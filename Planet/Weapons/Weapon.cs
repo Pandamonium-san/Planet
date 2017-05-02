@@ -11,6 +11,7 @@ namespace Planet
   public class Weapon : Transform
   {
     public string Name { get; set; }
+    public float Damage { get { return desc.damage * ship.damageModifier; } }
     public WpnDesc Desc { get { return desc; } }
 
     protected Texture2D projTex;
@@ -76,7 +77,7 @@ namespace Planet
     {
       shootTimer.Start();
     }
-    protected void Reload()
+    public void Reload()
     {
       currentMagCount = desc.magSize;
       currentShotAngle = 0;
@@ -105,7 +106,7 @@ namespace Planet
         Pos,
         direction,
         sv + desc.projSpeed,
-        desc.damage,
+        Damage,
         ship,
         desc.projLifeTime,
         BulletPattern,
@@ -160,7 +161,7 @@ namespace Planet
       LocalPos = localPos;
       LocalRotation = localRotation;
       LocalScale = localScale;
-
+      
       this.ship = ship;
     }
   }

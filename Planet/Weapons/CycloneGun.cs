@@ -65,7 +65,7 @@ namespace Planet
           ship.Pos,
           direction,
           sv + desc.projSpeed,
-          desc.damage,
+          Damage,
           ship,
           desc.projLifeTime,
           BulletPattern);
@@ -104,7 +104,7 @@ namespace Planet
             p.Pos,
             direction,
             sv + desc.projSpeed*1.5f,
-            desc.damage,
+            Damage,
             ship,
             1f,
             base.BulletPattern);

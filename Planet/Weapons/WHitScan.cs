@@ -40,7 +40,7 @@ namespace Planet
         projTex,
         Pos,
         direction,
-        desc.damage,
+        Damage,
         canPierce,
         width,
         range,
