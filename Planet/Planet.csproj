@@ -44,6 +44,7 @@
     <Compile Include="Core\ParticleManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Particle.cs" />
+    <Compile Include="Objects\Ships\Players\IPlayerShip.cs" />
     <Compile Include="Objects\Ships\Players\PossessorShip.cs" />
     <Compile Include="Objects\Ships\Players\RewinderShipShadow.cs" />
     <Compile Include="Objects\Sprite.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="States\GameStatePlaying.cs" />
     <Compile Include="States\GameStateTitleScreen.cs" />
     <Compile Include="States\IMenuGameState.cs" />
+    <Compile Include="UI\AbilityIcon.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="Controllers\AIController.cs" />
     <Compile Include="Controllers\ShipController.cs" />

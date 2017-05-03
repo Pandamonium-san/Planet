@@ -7,14 +7,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
-  class RewinderShip : Ship
+  class RewinderShip : Ship, IPlayerShip
   {
-    readonly int RewindableFrames = 300;
+    public Timer AbilityCooldown { get; set; }
 
-    Timer rewindCooldown;
-    FixedList<State> states;
-    Stack<State> shadowStack;
-    bool rewinding;
+    private readonly int RewindableFrames = 300;
+    private FixedList<State> states;
+    private Stack<State> shadowStack;
+    private bool rewinding;
 
     public RewinderShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_002"))
@@ -29,8 +29,8 @@ namespace Planet
       LeadShots = true;
       Hitbox.LocalScale = 0.5f;
 
+      AbilityCooldown = new Timer(10, null, false);
       states = new FixedList<State>(RewindableFrames);
-      rewindCooldown = new Timer(10, null, false);
 
       Weapon wpn;
       //WpnDesc desc = new WpnDesc(1, 60, 700, 4, 0, 0, 0, 60*6, 90, 60*6/360, 0, 1, true); // spinny laser thing
@@ -85,10 +85,10 @@ namespace Planet
     }
     public override void Fire2()
     {
-      if (!rewinding && !rewindCooldown.Counting)
+      if (!rewinding && !AbilityCooldown.Counting)
       {
         StartRewind();
-        rewindCooldown.Start();
+        AbilityCooldown.Start();
       }
       else if (rewinding)
       {
@@ -143,7 +143,7 @@ namespace Planet
       }
       else
       {
-        rewindCooldown.Update(gt);
+        AbilityCooldown.Update(gt);
         SaveState();
         if (frame % 10 == 0)
           world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, RewindableFrames / 60.0f, Color.White, 0.4f, 1.0f, 0.3f);

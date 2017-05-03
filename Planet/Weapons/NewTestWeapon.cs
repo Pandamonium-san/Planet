@@ -20,7 +20,7 @@ namespace Planet
     public NewTestWeapon(Ship ship, World world, WpnDesc desc, string name) : base(ship, world, desc, "laserBlue16", name)
     {
       projTex2 = AssetManager.GetTexture("laserBlue07");
-      timer = new Timer();
+      timer = new Timer(timeBetweenSpawns, BulletRing, false);
       spawned = 0;
     }
     public NewTestWeapon(NewTestWeapon other) : base(other)
@@ -83,7 +83,7 @@ namespace Planet
     protected override void OnProjectileCollision(Projectile p, GameObject other)
     {
       spawned = 0;
-      timer = new Timer(timeBetweenSpawns, BulletRing, true);
+      timer.Start();
       impactPos = p.Pos;
       hit = other;
       world.Particles.CreateParticle(p.Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.2f, Color.White, 0.5f, 0, 1.0f);

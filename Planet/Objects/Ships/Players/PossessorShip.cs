@@ -7,8 +7,12 @@ using System.Text;
 
 namespace Planet
 {
-  class PossessorShip : Ship
+  class PossessorShip : Ship, IPlayerShip
   {
+    public Timer AbilityCooldown { get; set; }
+    public Ship PossessedShip { get { return possessedShip; } }
+
+    private Projectile parasite;
     private Player player;
     private Ship possessedShip;
     private PlayerShipController psc;
@@ -16,7 +20,7 @@ namespace Planet
     private Layer oldLayer;
 
     public PossessorShip(Vector2 pos, World world, Player pc)
-        : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_009"))
+      : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_009"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_009");
       SetLayer(Layer.PLAYER_SHIP);
@@ -28,6 +32,7 @@ namespace Planet
       LeadShots = true;
       Hitbox.LocalScale = 0.5f;
 
+      AbilityCooldown = new Timer(10, null, false);
       player = pc;
 
       Weapon wpn;
@@ -41,6 +46,7 @@ namespace Planet
     public override void Update(GameTime gt)
     {
       base.Update(gt);
+      AbilityCooldown.Update(gt);
       if (possessedShip != null)
       {
         psc.Update(gt);
@@ -62,7 +68,10 @@ namespace Planet
         Release();
         return;
       }
-      Projectile p = new Projectile(
+      if (AbilityCooldown.Counting || (parasite != null && !parasite.Disposed))
+        return;
+
+      parasite = new Projectile(
       world,
       tex,
       Pos,
@@ -74,9 +83,9 @@ namespace Planet
       null,
       TakeOver
       );
-      p.color = Color.Purple;
-      p.Scale *= Scale * 0.2f;
-      world.PostProjectile(p);
+      parasite.color = Color.Purple;
+      parasite.Scale *= Scale * 0.2f;
+      world.PostProjectile(parasite);
     }
     private void TakeOver(Projectile p, GameObject other)
     {
@@ -122,6 +131,7 @@ namespace Planet
         possessedShip.TakeDamage(50);
         possessedShip = null;
         psc = null;
+        AbilityCooldown.Start();
       }
     }
   }

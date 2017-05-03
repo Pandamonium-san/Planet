@@ -7,6 +7,8 @@ namespace Planet
 {
   /*  TO DO
    *  - Design UI
+   *      - Make HUD objects Transforms
+   *  - Add juice to possess
    *  - Make proper weapons
    *      - Missiles
    *  - Enemies

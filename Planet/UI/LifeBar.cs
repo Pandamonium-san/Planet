@@ -9,10 +9,11 @@ namespace Planet
 {
   class LifeBar
   {
+    public Ship Ship { get { return ship; } }
     private Ship ship;
     private ValueBar healthBar, shieldBar;
 
-    public LifeBar(Ship ship, int x, int y, int width, int height)
+    public LifeBar(Ship ship, int x, int y, int width, int height, bool mirrored = false, int shieldWidth = 4)
     {
       this.ship = ship;
       shieldBar = new ValueBar(
@@ -20,15 +21,17 @@ namespace Planet
         ship.maxShield,
         ship.currentShield,
         AssetManager.GetTexture("blue_button05"),
-        null);
+        null,
+        mirrored);
       healthBar = new ValueBar(
-        new Rectangle(x + 5, y + 5, width - 10, height - 10),
+        new Rectangle(x + shieldWidth, y + shieldWidth, width - shieldWidth * 2, height - shieldWidth * 2),
         ship.maxHealth,
         ship.currentHealth,
         AssetManager.GetTexture("green_button05"),
-        AssetManager.GetTexture("grey_button05"));
+        AssetManager.GetTexture("grey_button05"),
+        mirrored);
     }
-    public void Update(GameTime gameTime)
+    public void Update()
     {
       healthBar.Value = ship.currentHealth;
       shieldBar.Value = ship.currentShield;

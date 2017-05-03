@@ -8,30 +8,39 @@ namespace Planet
 {
   class EnemyController1 : AIController
   {
+    Timer chaseTimer;
     Timer moveTimer;
     bool chasing;
     public EnemyController1(World world) : base(world)
     {
-      moveTimer = new Timer(2, StartChase, true);
+      moveTimer = new Timer(1, StartChase, true);
+      chaseTimer = new Timer(2, null, false);
     }
     void StartChase()
     {
       chasing = true;
+      chaseTimer.Start(Utility.RandomFloat(2, 3));
+    }
+    void StopChase()
+    {
+      chasing = false;
+      moveTimer.Start(Utility.RandomFloat(1, 2));
+      ship.SetDash(false);
     }
     protected override void DoUpdate(GameTime gt)
     {
+      chaseTimer.Update(gt);
       moveTimer.Update(gt);
       FindNearestTarget();
       if (ship.Target != null && ship.Target.IsActive && ship.Target.Pos != ship.Pos)
       {
-        if (Vector2.Distance(ship.Target.Pos, ship.Pos) < 200)
-        {
-          chasing = false;
-          moveTimer.Start();
-          ship.SetDash(false);
-        }
+
         if (chasing)
+        {
           MoveTowards(ship.Target.Pos, true);
+          if (Vector2.Distance(ship.Target.Pos, ship.Pos) < 300 || chaseTimer.Finished)
+            StopChase();
+        }
         else
         {
           ship.Fire1();

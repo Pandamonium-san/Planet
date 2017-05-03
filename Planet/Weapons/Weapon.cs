@@ -48,7 +48,7 @@ namespace Planet
       currentMagCount = wpn.currentMagCount;
       currentBulletAngle = wpn.currentBulletAngle;
       currentShotAngle = wpn.currentShotAngle;
-      shootTimer = wpn.shootTimer;
+      shootTimer = new Timer(wpn.shootTimer);
     }
     public virtual void Update(GameTime gt)
     {

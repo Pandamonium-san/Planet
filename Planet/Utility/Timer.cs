@@ -6,21 +6,23 @@ using System.Text;
 
 namespace Planet
 {
-  public struct Timer
+  public class Timer
   {
+    public double Fraction { get { return elapsedSeconds / seconds; } }
+    public double Remaining { get { return seconds - elapsedSeconds; } }
+
     public bool Finished { get; private set; }
     public bool Counting { get; private set; }
     public bool Repeats { get; set; }
     public double seconds { get; private set; }
     public double elapsedSeconds { get; private set; }
-    public double Fraction { get { return elapsedSeconds / seconds; } }
-    public double Remaining { get { return seconds - elapsedSeconds; } }
+
     private Action action;
 
     /// <param name="timeInSeconds">Time before action is invoked.</param>
     /// <param name="action">Action to invoke after set amount of time.</param>
     /// <param name="start">Start the timer immediately without calling Start.</param>
-    public Timer(double timeInSeconds, Action action = null, bool start = true, bool repeat = false) : this()
+    public Timer(double timeInSeconds, Action action = null, bool start = true, bool repeat = false)
     {
       this.seconds = timeInSeconds;
       this.action = action;
@@ -28,6 +30,15 @@ namespace Planet
       Counting = start;
       Finished = false;
       Repeats = repeat;
+    }
+    public Timer(Timer other)
+    {
+      this.seconds = other.seconds;
+      this.action = other.action;
+      this.elapsedSeconds = other.elapsedSeconds;
+      Counting = other.Counting;
+      Finished = other.Finished;
+      Repeats = other.Repeats;
     }
 
     public void Start(double seconds = -1)

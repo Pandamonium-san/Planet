@@ -7,15 +7,18 @@ using System.Text;
 
 namespace Planet
 {
-  class BlinkerShip : Ship
+  class BlinkerShip : Ship, IPlayerShip
   {
-    Color blinkColor = Color.DeepSkyBlue;
-    float blinkRange = 200;
-    float blinkDelay = 0.5f;
-    Timer blinkTimer1;
-    Timer blinkTimer2;
-    Timer blinkTimer3;
-    Vector2 blinkDirection;
+    public Timer AbilityCooldown { get; set; }
+
+    private Color blinkColor = Color.DeepSkyBlue;
+    private float blinkRange = 200;
+    private float blinkDelay = 0.5f;
+    private Timer blinkTimer1;
+    private Timer blinkTimer2;
+    private Timer blinkTimer3;
+    private Vector2 blinkDirection;
+
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_001"))
     {
@@ -29,6 +32,7 @@ namespace Planet
       LeadShots = true;
       Hitbox.LocalScale = 0.5f;
 
+      AbilityCooldown = new Timer(3.5f, null, false);
       blinkTimer1 = new Timer(blinkDelay, Blink1, false);
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);
       blinkTimer3 = new Timer(blinkDelay, Blink3, false);
@@ -47,6 +51,7 @@ namespace Planet
     public override void Update(GameTime gt)
     {
       base.Update(gt);
+      AbilityCooldown.Update(gt);
       blinkTimer1.Update(gt);
       blinkTimer2.Update(gt);
       blinkTimer3.Update(gt);
@@ -58,8 +63,9 @@ namespace Planet
     // ship disappears, particles spawn
     public override void Fire2()
     {
-      if (blinkTimer2.Counting)
+      if (blinkTimer1.Counting || blinkTimer2.Counting || AbilityCooldown.Counting)
         return;
+      AbilityCooldown.Start();
       Flash(0.15f, blinkColor, false, 1.0f, true);
       blinkDirection = movementDirection;
       IsActive = false;

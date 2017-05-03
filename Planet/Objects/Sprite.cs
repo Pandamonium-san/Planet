@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Planet
 {
-  public abstract class Sprite : Transform
+  public class Sprite : Transform
   {
     public bool Visible { get; set; }
     public Texture2D tex { get; private set; }
