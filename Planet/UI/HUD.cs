@@ -38,6 +38,8 @@ namespace Planet
         PossessorShip ps = (PossessorShip)p1.Ship;
         if (ps.PossessedShip != null)
           lifeBar3 = new LifeBar(ps.PossessedShip, 45, 85, 150, 10, false, 2);
+        else
+          lifeBar3 = null;
       }
       ability1.Update();
       ability2.Update();

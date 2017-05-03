@@ -182,7 +182,7 @@ namespace Planet
       float nearestDistance = float.MaxValue;
       foreach (GameObject g in go)
       {
-        if (!(g is Ship) || g.Layer == Layer || !g.IsActive || g == Target)
+        if (!(g is Ship) || g.Layer == Layer || !g.IsActive || g == Target || g.Untargetable)
           continue;
         float distance = Vector2.DistanceSquared(Pos, g.Pos);
         if (distance < nearestDistance)
@@ -210,9 +210,12 @@ namespace Planet
       Invulnerable = true;
       invulnerabilityTimer.Start(invulnerabilityTime);
     }
-    public void Flash(float flashTime, Color color, bool fadeIn, float initialAlpha = 1.0f, bool separate = false)
+    public void Flash(float flashTime, Color color, bool fadeIn, float initialAlpha = 1.0f, bool separate = false, bool defaultTex = false)
     {
-      flashParticle = new Particle(Pos, flashTex, Vector2.Zero, flashTime, color, initialAlpha, 0, Scale, fadeIn);
+      Texture2D tex = flashTex;
+      if (defaultTex)
+        tex = this.tex;
+      flashParticle = new Particle(Pos, tex, Vector2.Zero, flashTime, color, initialAlpha, 0, Scale, fadeIn);
       flashParticle.Rotation = Rotation;
       if (separate)
       {

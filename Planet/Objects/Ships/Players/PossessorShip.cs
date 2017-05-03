@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
@@ -13,11 +14,15 @@ namespace Planet
     public Ship PossessedShip { get { return possessedShip; } }
 
     private Projectile parasite;
+    private List<Sprite> parasiteLink;
     private Player player;
     private Ship possessedShip;
     private PlayerShipController psc;
     private ShipController oldController;
     private Layer oldLayer;
+
+    private Ship latchedShip;
+    private bool latched;
 
     public PossessorShip(Vector2 pos, World world, Player pc)
       : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_009"))
@@ -32,7 +37,7 @@ namespace Planet
       LeadShots = true;
       Hitbox.LocalScale = 0.5f;
 
-      AbilityCooldown = new Timer(10, null, false);
+      AbilityCooldown = new Timer(0.1, null, false);
       player = pc;
 
       Weapon wpn;
@@ -55,6 +60,45 @@ namespace Planet
           Release();
         }
       }
+      if (parasite != null && parasite.Disposed)
+      {
+        parasite = null;
+        if (!latched)
+          parasiteLink = null;
+      }
+      if (parasiteLink != null)
+      {
+        Vector2 dir;
+        if(!latched)
+          dir = parasite.Pos - Pos;
+        else
+          dir = latchedShip.Pos - Pos;
+        for (int i = 0; i < parasiteLink.Count(); i++)
+        {
+          parasiteLink[i].Pos = Pos + dir / parasiteLink.Count() * i;
+        }
+      }
+      if (latched)
+      {
+        Vector2 pull = Vector2.Normalize(latchedShip.Pos - Pos) * 500;
+        Acceleration = pull;
+        latchedShip.Acceleration = -pull;
+        if (Vector2.Distance(Pos, latchedShip.Pos) < 10)
+        {
+          TakeOver(latchedShip);
+          parasite = null;
+          parasiteLink = null;
+          latchedShip = null;
+          latched = false;
+        }
+      }
+    }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+      base.Draw(spriteBatch);
+      if (parasiteLink != null)
+        foreach (Sprite sp in parasiteLink)
+          sp.Draw(spriteBatch);
     }
     public override void Fire1()
     {
@@ -70,6 +114,11 @@ namespace Planet
       }
       if (AbilityCooldown.Counting || (parasite != null && !parasite.Disposed))
         return;
+      parasiteLink = new List<Sprite>();
+      for (int i = 0; i < 15; i++)
+      {
+        parasiteLink.Add(new Sprite(Pos, AssetManager.GetTexture("proj1")));
+      }
 
       parasite = new Projectile(
       world,
@@ -79,21 +128,34 @@ namespace Planet
       500.0f,
       0,
       this,
-      1.0f,
-      null,
-      TakeOver
+      0.7f,
+      ParasiteBehaviour,
+      LatchOn
       );
-      parasite.color = Color.Purple;
-      parasite.Scale *= Scale * 0.2f;
+      parasite.color = Color.Red;
+      parasite.Scale *= Scale * 0.4f;
       world.PostProjectile(parasite);
     }
-    private void TakeOver(Projectile p, GameObject other)
+    private void ParasiteBehaviour(Projectile p, GameTime gt)
+    {
+      p.LocalPos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
+      p.LocalRotation = Utility.Vector2ToAngle(p.Pos - Pos);
+    }
+    private void LatchOn(Projectile p, GameObject other)
+    {
+      if (other.Layer != Layer.ENEMY_SHIP || possessedShip != null)
+        return;
+      parasite.Pos = other.Pos;
+      CollisionEnabled = false;
+      latched = true;
+      latchedShip = (Ship)other;
+    }
+    private void TakeOver(Ship other)
     {
       if (other.Layer != Layer.ENEMY_SHIP || possessedShip != null)
         return;
 
-      possessedShip = (Ship)other;
-
+      possessedShip = other;
 
       oldLayer = possessedShip.Layer;
       oldController = possessedShip.Controller;
@@ -120,6 +182,7 @@ namespace Planet
         Rotation = possessedShip.Rotation;
         IsActive = true;
         Visible = true;
+        CollisionEnabled = true;
         possessedShip.SetDash(false);
         possessedShip.SetLayer(oldLayer);
         possessedShip.damageModifier /= 5.0f;

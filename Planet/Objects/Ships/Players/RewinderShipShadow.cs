@@ -62,5 +62,12 @@ namespace Planet
 
       base.DoUpdate(gt);
     }
+    public override void Die()
+    {
+      Disposed = true;
+      IsActive = false;
+      CollisionEnabled = false;
+      Flash(0.5f, color * alpha, false, 1.0f, true, true);
+    }
   }
 }

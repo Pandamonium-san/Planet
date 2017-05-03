@@ -19,7 +19,7 @@ namespace Planet
     {
       this.world = world;
       IsActive = true;
-      targetRefreshTime = 3;
+      targetRefreshTime = 1;
       targetRefresher = new Timer(targetRefreshTime, FindNearestTarget, true);
     }
     public void Update(GameTime gt)
@@ -37,7 +37,7 @@ namespace Planet
         targetRefresher.Update(gt);
       else
         targetRefresher.Start(targetRefreshTime);
-      if (ship.Target != null && ship.Target.IsActive && ship.Target.Pos != ship.Pos)
+      if (ship.Target != null && ship.Target.IsActive && !ship.Target.Untargetable)
       {
         ship.Fire1();
       }
@@ -54,17 +54,17 @@ namespace Planet
     }
     protected void FindNearestTarget()
     {
-      List<GameObject> players = world.GetPlayers();
-      GameObject nearest = null;
+      List<Ship> players = world.GetPlayers();
+      Ship nearest = null;
       float nDistance = 1000000;
-      foreach (GameObject p in players)
+      foreach (Ship ship in players)
       {
-        if (!p.IsActive)
+        if (!ship.IsActive || ship.Untargetable)
           continue;
-        float distance = Utility.DistanceSquared(p.Pos, ship.Pos);
+        float distance = Utility.DistanceSquared(ship.Pos, this.ship.Pos);
         if (distance < nDistance)
         {
-          nearest = p;
+          nearest = ship;
           nDistance = distance;
         }
       }

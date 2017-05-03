@@ -15,6 +15,7 @@ namespace Planet
     private FixedList<State> states;
     private Stack<State> shadowStack;
     private bool rewinding;
+    private Color rewindColor = Color.Turquoise;// new Color(93, 50, 234);
 
     public RewinderShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_002"))
@@ -110,30 +111,43 @@ namespace Planet
     private void StartRewind()
     {
       rewinding = true;
-      color = Color.Turquoise * 0.4f;
+      Untargetable = true;
       CollisionEnabled = false;
+      color = rewindColor * 0.6f;
       shadowStack = new Stack<State>();
       flashParticle = null;
+      Flash(0.5f, rewindColor, false, 0.8f, true, false);
+      for (int i = 0; i < 10; i++)
+        world.Particles.CreateStar(Pos, 0.5f, -70, 70, rewindColor, 0.5f, 0.7f, 0.4f);
     }
     private void StopRewind()
     {
       rewinding = false;
-      color = Color.White;
+      Untargetable = false;
       CollisionEnabled = true;
+      color = Color.White;
+      Acceleration = Vector2.Zero;
+      Velocity = Vector2.Zero;
       RewinderShipShadow rss = new RewinderShipShadow(world, this, weapons, shadowStack);
+      rss.color = rewindColor * 0.4f;
       world.PostGameObj(rss);
       foreach (Weapon wpn in weapons)
         wpn.Reload();
+      MakeInvulnerable(0.5f);
+      Flash(0.5f, rewindColor, false);
+      for (int i = 0; i < 20; i++)
+        world.Particles.CreateStar(Pos, 0.5f, -100, 100, rewindColor, 0.5f, 0.7f, 0.4f);
     }
     public override void Update(GameTime gt)
     {
       if (rewinding && states.Count > 0)
       {
+        if (states.Count / 2 % 2 == 0)
+          Flash(0.3f, rewindColor, false, 0.3f, true, true);
         for (int i = 0; i < 2; i++)
         {
           shadowStack.Push(states.Peek());
           LoadState(states.Pop());
-          Particle p = world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue16"), -150, 150, -150, 150, 0.5f, Color.White, 0.5f, 16.0f, 0.2f);
           if (states.Count == 0)
           {
             StopRewind();
@@ -146,7 +160,7 @@ namespace Planet
         AbilityCooldown.Update(gt);
         SaveState();
         if (frame % 10 == 0)
-          world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, RewindableFrames / 60.0f, Color.White, 0.4f, 1.0f, 0.3f);
+          world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.3f + RewindableFrames / 60.0f, Color.White, 0.4f, 1.0f, 0.3f);
         base.Update(gt);
       }
     }

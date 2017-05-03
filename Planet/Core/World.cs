@@ -90,13 +90,13 @@ namespace Planet
       projectiles.RemoveAll(x => x.Disposed);
       gameObjects.RemoveAll(x => x.Disposed == true);
     }
-    public List<GameObject> GetPlayers()
+    public List<Ship> GetPlayers()
     {
-      List<GameObject> result = new List<GameObject>();
+      List<Ship> result = new List<Ship>();
       foreach (GameObject go in gameObjects)
       {
         if (go.Layer == Layer.PLAYER_SHIP)
-          result.Add(go);
+          result.Add((Ship)go);
       }
       return result;
     }
