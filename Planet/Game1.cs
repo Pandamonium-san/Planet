@@ -8,7 +8,8 @@ namespace Planet
   /*  TO DO
    *  - Design UI
    *      - Make HUD objects Transforms
-   *  - Add juice to possess
+   *  x Add juice to possess
+   *      - Refactor the code, mmkay
    *  - Make proper weapons
    *      - Missiles
    *  - Enemies
@@ -17,11 +18,8 @@ namespace Planet
    *      - Enemy types
    *  - Ships
    *      - Rewinder
-   *          - Rewinds self
-   *          - Manual save state (rewind to this point later)
    *      - Possessor
    *      - Blinker
-   *          - Slash dash?
    *  - Score?
    *  - Effects/Shaders?
    */

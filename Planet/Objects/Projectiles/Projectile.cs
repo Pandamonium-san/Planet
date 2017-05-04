@@ -18,8 +18,8 @@ namespace Planet
     public Vector2 dir;
     public Vector2 velocity;
     public float speed;
-    public float lifeTime;
-    protected Timer lifeTimer;
+    public float initialLifeTime;
+    public Timer lifeTimer;
     public delegate void Pattern(Projectile p, GameTime gt);
     public Pattern pattern;
     public delegate void OnCollision(Projectile p, GameObject other);
@@ -45,7 +45,7 @@ namespace Planet
       this.speed = speed;
       this.instigator = instigator;
       this.damage = damage;
-      this.lifeTime = lifeTime;
+      this.initialLifeTime = lifeTime;
       this.Piercing = piercing;
 
       if (dir != Vector2.Zero)

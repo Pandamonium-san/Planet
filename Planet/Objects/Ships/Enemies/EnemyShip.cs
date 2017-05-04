@@ -27,7 +27,7 @@ namespace Planet
       //wpn.SetMuzzle(new Vector2(0, -10));
       weapons.Add(wpn);
 
-      desc = new WpnDesc(1, 10, 1000, 4, 1, 10, 1, 10, 3, 0, -4.5f, 3);
+      desc = new WpnDesc(1.5f, 10, 1000, 4, 1, 10, 1, 10, 3, 0, -4.5f, 3);
       wpn = new Weapon(this, world, desc, "laserBlue10", "Spinny");
       wpn.Scale = 0.4f;
       weapons.Add(wpn);

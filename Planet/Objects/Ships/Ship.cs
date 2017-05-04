@@ -163,12 +163,17 @@ namespace Planet
       else if (!Dashing)
         rotationModifier /= 0.7f;
     }
-    public void SetDash(bool dashing)
+    public virtual void SetDash(bool dashing)
     {
       if (Dashing == dashing)
         return;
       else
         ToggleDash();
+    }
+    public Weapon GetWeapon(int index)
+    {
+      index = MathHelper.Clamp(index, 0, weapons.Count());
+      return weapons[index];
     }
     public void SetWeapon(int index)
     {
@@ -309,9 +314,10 @@ namespace Planet
       float vjLen = (float)Math.Sqrt(vLenSq - viLenSq); //NaN if vjLenSq is negative
       Vector2 vj = AB * vjLen;
       Vector2 v = vi + vj;
-      if (vjLenSq < 0)
-        v = target.Pos + u - Pos;
-      TurnTowards(Pos + v);
+      if (vjLenSq <= 0)
+        TurnTowards(target.Pos);
+      else
+        TurnTowards(Pos + v);
     }
     private void CreateShieldParticle(float rotation)
     {

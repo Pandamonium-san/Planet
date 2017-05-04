@@ -27,7 +27,7 @@ namespace Planet
     // game
     public int frame;
     public bool Disposed { get; set; }               // if true, object will be deleted at the end of the frame
-    public bool IsActive { get; protected set; }               // determines whether or not to draw/update/collision check the object
+    public bool IsActive { get; set; }               // determines whether or not to draw/update/collision check the object
     public bool CollisionEnabled { get; set; }
     public bool Untargetable { get; set; }
 

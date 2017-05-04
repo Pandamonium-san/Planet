@@ -20,8 +20,8 @@ namespace Planet
       desc.magReloadTime = 1;
       SetDesc(desc);
     }
-    public ExplodeGun(ExplodeGun other) 
-      :base(other)
+    public ExplodeGun(ExplodeGun other)
+      : base(other)
     {
       SetDesc(other.desc);
     }
@@ -49,13 +49,11 @@ namespace Planet
     }
     protected override void BulletPattern(Projectile p, GameTime gt)
     {
-      if (p.frame >= 34)
+      if (p.lifeTimer.Finished)
       {
         Explode(p);
-        if (p.frame >= 35)
-          p.Die();
       }
-      else if (p.frame < 120)
+      else
       {
         p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
         p.Rotation = Utility.Vector2ToAngle(p.velocity);

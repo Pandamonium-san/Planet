@@ -43,7 +43,7 @@ namespace Planet
         {
           case 'G':
           case 'F':
-            PHitScan branch = new PHitScan(world, tex, cPos, cDir, damage, true, width, length, instigator, lifeTime);
+            PHitScan branch = new PHitScan(world, tex, cPos, cDir, damage, true, width, length, instigator, initialLifeTime);
             branch.color = new Color(100, 100, 255);
             LBranches.Add(branch);
             positions.RemoveFirst();
