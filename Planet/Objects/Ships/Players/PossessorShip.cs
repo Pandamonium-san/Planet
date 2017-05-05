@@ -41,6 +41,7 @@ namespace Planet
       weapons.Add(laser);
 
       desc = new WpnDesc(20, 1.5f, 0, 1, 0, 0, 1, 3, 0, 0, 0, 10.0f);           // laser
+      desc = new WpnDesc(3000, 1, 2500, 5, 0, 0, 0, 1, 0, 0, 0, 3);           //sniper
       ExplodeGun wpn = new ExplodeGun(this, world);
       wpn.SetDesc(desc);
       wpn.Scale = 2.0f;

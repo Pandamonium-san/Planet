@@ -7,14 +7,13 @@ namespace Planet
 {
   /*  TO DO
    *  - Design UI
-   *      - Make HUD objects Transforms
-   *  x Add juice to possess
-   *      - Refactor the code, mmkay
    *  - Make proper weapons
-   *      - Missiles
+   *      - Missiles?
    *  - Enemies
    *      - Enemy AI
-   *      - Waves/Levels
+   *      - Survival Mode
+   *      - VS Mode?
+   *      - Waves/Levels?
    *      - Enemy types
    *  - Ships
    *      - Rewinder

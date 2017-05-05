@@ -29,7 +29,6 @@ namespace Planet
       icon = new Sprite(Vector2.Zero, iconTex);
       icon.color = Color.AliceBlue;
       icon.Scale = 0.9f;
-
       icon.Parent = this;
 
       back = new Sprite(Vector2.Zero, AssetManager.GetTexture("grey_button13"));

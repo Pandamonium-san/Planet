@@ -43,6 +43,7 @@
     <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\ParticleManager.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
+    <Compile Include="Objects\Background.cs" />
     <Compile Include="Objects\Particle.cs" />
     <Compile Include="Objects\Projectiles\Parasite.cs" />
     <Compile Include="Objects\Ships\Players\IPlayerShip.cs" />

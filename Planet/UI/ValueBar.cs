@@ -8,69 +8,78 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
-  class ValueBar
+  class ValueBar : Transform
   {
     public float Value { get { return value; } set { this.value = value > maxValue ? maxValue : value; } }
     public float MaxValue { get { return maxValue; } protected set { value = maxValue; } }
+    public int Width { get; set; }
+    public int Height { get; set; }
 
-    public Rectangle rec;
     Texture2D frontTex, backTex;
     float value, maxValue;
     Color foreColor, backColor;
     bool mirrored;
 
-    public ValueBar(Rectangle rec, float maxValue, float value, Color foreColor, Color backColor, bool mirrored = false)
+    public ValueBar(Vector2 pos, int width, int height, float maxValue, Color foreColor, Color backColor, bool mirrored = false)
+      : base(pos)
     {
+      Width = width;
+      Height = height;
       frontTex = AssetManager.GetTexture("pixel");
       backTex = frontTex;
-      this.rec = rec;
       this.maxValue = maxValue;
-      this.value = value;
+      this.value = maxValue;
       this.foreColor = foreColor;
       this.backColor = backColor;
       this.mirrored = mirrored;
     }
-    public ValueBar(Rectangle rec, float maxValue, float value, Texture2D front, Texture2D back, bool mirrored = false)
+    public ValueBar(Vector2 pos, int width, int height, float maxValue, Texture2D front, Texture2D back, bool mirrored = false)
+      : base(pos)
     {
+      Width = width;
+      Height = height;
       frontTex = front;
       backTex = back;
-      this.rec = rec;
       this.maxValue = maxValue;
-      this.value = value;
+      this.value = maxValue;
       this.foreColor = Color.White;
       this.backColor = Color.White;
       this.mirrored = mirrored;
     }
-    public void SetPos(Vector2 position)
+    private Rectangle BackRectangle()
     {
-      rec.X = (int)position.X - (int)(rec.Width / 2.0f);
-      rec.Y = (int)position.Y - (int)(rec.Height / 2.0f);
+      int posX = (int)Pos.X;
+      int posY = (int)Pos.Y;
+      Rectangle front = new Rectangle(posX, posY, Width, Height);
+      return front;
     }
-    private Rectangle CalculateFrontRectangle()
+    private Rectangle FrontRectangle()
     {
       int X, width;
 
       float fraction = value / maxValue;
+      int posX = (int)Pos.X;
+      int posY = (int)Pos.Y;
 
       if (mirrored)
       {
-        X = rec.X + (int)(rec.Width * (1 - fraction));
-        width = rec.Width - (int)(rec.Width * (1 - fraction));
+        X = posX + (int)(Width * (1 - fraction));
+        width = Width - (int)(Width * (1 - fraction));
       }
       else
       {
-        X = rec.X;
-        width = (int)(rec.Width * fraction);
+        X = posX;
+        width = (int)(Width * fraction);
       }
 
-      Rectangle front = new Rectangle(X, rec.Y, width, rec.Height);
+      Rectangle front = new Rectangle(X, posY, width, Height);
       return front;
     }
     public void Draw(SpriteBatch sb)
     {
       if (backTex != null)
-        sb.Draw(backTex, rec, null, backColor);
-      sb.Draw(frontTex, CalculateFrontRectangle(), null, foreColor);
+        sb.Draw(backTex, BackRectangle(), null, backColor);
+      sb.Draw(frontTex, FrontRectangle(), null, foreColor);
     }
   }
 }

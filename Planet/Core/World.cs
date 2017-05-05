@@ -18,28 +18,28 @@ namespace Planet
     public int Frames { get; private set; }
     public ParticleManager Particles { get; private set; }
 
+    private SpriteFont future18;
+
     private List<GameObject> gameObjects;
     private List<Projectile> projectiles;
     private Queue<GameObject> goToAdd;
     private Queue<Projectile> pToAdd;
-    private SpriteFont font;
-    private Effect effect;
-    private Matrix transformMatrix;
+    private Background background;
 
     public World()
     {
-      font = AssetManager.GetFont("font1");
-      effect = AssetManager.GetEffect("ColorChanger");
+      future18 = AssetManager.GetFont("future18");
       Particles = new ParticleManager();
       goToAdd = new Queue<GameObject>();
       pToAdd = new Queue<Projectile>();
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
-      transformMatrix = Matrix.CreateScale(1.0f);
+      background = new Background(this);
     }
 
     public void Update(GameTime gameTime)
     {
+      background.Update(gameTime);
       while (goToAdd.Count > 0)
         gameObjects.Add(goToAdd.Dequeue());
       while (pToAdd.Count > 0)
@@ -119,12 +119,11 @@ namespace Planet
       spriteBatch.Begin(
         SpriteSortMode.BackToFront,
         BlendState.AlphaBlend,
-        SamplerState.LinearClamp,
+        SamplerState.LinearWrap,
         DepthStencilState.None,
-        RasterizerState.CullCounterClockwise,
-        effect,
-        transformMatrix
+        RasterizerState.CullCounterClockwise
         );
+      background.Draw(spriteBatch);
       foreach (GameObject go in gameObjects)
       {
         go.Draw(spriteBatch);
@@ -138,8 +137,8 @@ namespace Planet
       //debug
       if (Game1.debugMode)
       {
-        spriteBatch.DrawString(font, "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
-        spriteBatch.DrawString(font, "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
+        spriteBatch.DrawString(future18, "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
+        spriteBatch.DrawString(future18, "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
       }
 
       spriteBatch.End();

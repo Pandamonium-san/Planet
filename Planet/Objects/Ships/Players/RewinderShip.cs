@@ -160,7 +160,7 @@ namespace Planet
         AbilityCooldown.Update(gt);
         SaveState();
         if (frame % 10 == 0)
-          world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.3f + RewindableFrames / 60.0f, Color.White, 0.4f, 1.0f, 0.3f);
+          world.Particles.CreateParticle(Pos, AssetManager.GetTexture("laserBlue08"), Vector2.Zero, 0.3f + RewindableFrames / 60.0f, Color.White, 0.8f, 1.0f, 0.3f);
         base.Update(gt);
       }
     }

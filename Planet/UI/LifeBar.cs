@@ -7,29 +7,35 @@ using System.Text;
 
 namespace Planet
 {
-  class LifeBar
+  class LifeBar : Transform
   {
     public Ship Ship { get { return ship; } }
     private Ship ship;
     private ValueBar healthBar, shieldBar;
 
-    public LifeBar(Ship ship, int x, int y, int width, int height, bool mirrored = false, int shieldWidth = 4)
+    public LifeBar(Ship ship, Vector2 pos, int width, int height, bool mirrored = false, int shieldWidth = 4)
+      : base(Vector2.Zero)
     {
       this.ship = ship;
       shieldBar = new ValueBar(
-        new Rectangle(x, y, width, height),
+        Vector2.Zero,
+        width,
+        height,
         ship.maxShield,
-        ship.currentShield,
         AssetManager.GetTexture("blue_button05"),
         null,
         mirrored);
       healthBar = new ValueBar(
-        new Rectangle(x + shieldWidth, y + shieldWidth, width - shieldWidth * 2, height - shieldWidth * 2),
+        new Vector2(shieldWidth, shieldWidth),
+        width - shieldWidth * 2, 
+        height - shieldWidth * 2,
         ship.maxHealth,
-        ship.currentHealth,
         AssetManager.GetTexture("green_button05"),
         AssetManager.GetTexture("grey_button05"),
         mirrored);
+      shieldBar.Parent = this;
+      healthBar.Parent = this;
+      this.Pos = pos;
     }
     public void Update()
     {

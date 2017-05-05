@@ -39,7 +39,9 @@ namespace Planet
       parasiteLink = new List<Sprite>();
       for (int i = 0; i < 15; i++)
       {
-        parasiteLink.Add(new Sprite(Pos, AssetManager.GetTexture("proj1")));
+        Sprite link = new Sprite(Pos, AssetManager.GetTexture("proj1"));
+        link.layerDepth = layerDepth + 0.01f;
+        parasiteLink.Add(link);
       }
     }
     protected override void DoUpdate(GameTime gt)
@@ -47,6 +49,11 @@ namespace Planet
       lifeTimer.Update(gt);
       if (latchedShip != null)
       {
+        if (!(latchedShip.Controller is AIController))
+        {
+          Unlatch();
+          return;
+        }
         Pos = latchedShip.Pos;
         PullShip(latchedShip, ship, 0.2f);
         PullShip(ship, latchedShip, 0.1f);
@@ -57,6 +64,11 @@ namespace Planet
           latchedShip.IsActive = true;
           latchedShip.CollisionEnabled = false;
           ship.CollisionEnabled = false;
+          if (latchedShip.Disposed)
+          {
+            latchedShip.Disposed = false;
+            world.PostGameObj(latchedShip);
+          }
           PullShip(ship, latchedShip);
           if (Vector2.Distance(ship.Pos, latchedShip.Pos) < 10)
           {
@@ -66,8 +78,8 @@ namespace Planet
             Die();
           }
         }
-        else if (frame % 10 == 0)
-          latchedShip.TakeDamage(damage / 6);
+        else if (frame % 20 == 0)
+          latchedShip.TakeDamage(damage / 3);
         if (Vector2.Distance(ship.Pos, Pos) > leashRange)
           Unlatch();
       }

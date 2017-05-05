@@ -26,8 +26,8 @@ namespace Planet
 
       ability1 = new AbilityIcon(p1.Ship, new Vector2(50, Game1.ScreenHeight - 700));
       ability2 = new AbilityIcon(p2.Ship, new Vector2(Game1.ScreenWidth - 150, Game1.ScreenHeight - 700));
-      lifeBar1 = new LifeBar(p1.Ship, 45, 45, 310, 30);
-      lifeBar2 = new LifeBar(p2.Ship, Game1.ScreenWidth - 355, 45, 310, 30, true);
+      lifeBar1 = new LifeBar(p1.Ship, new Vector2(45, 45), 310, 30);
+      lifeBar2 = new LifeBar(p2.Ship, new Vector2(Game1.ScreenWidth - 355, 45), 310, 30, true);
     }
     public void Update(GameTime gameTime)
     {
@@ -37,9 +37,23 @@ namespace Planet
       {
         PossessorShip ps = (PossessorShip)p1.Ship;
         if (ps.PossessedShip != null)
-          lifeBar3 = new LifeBar(ps.PossessedShip, 45, 85, 150, 10, false, 2);
+        {
+          lifeBar3 = new LifeBar(ps.PossessedShip, new Vector2(45, 85), 150, 10, false, 2);
+          lifeBar3.Update();
+        }
         else
           lifeBar3 = null;
+      }
+      if (p2.Ship is PossessorShip)
+      {
+        PossessorShip ps = (PossessorShip)p2.Ship;
+        if (ps.PossessedShip != null)
+        {
+          lifeBar4 = new LifeBar(ps.PossessedShip, new Vector2(Game1.ScreenWidth - 355 + 160, 85), 150, 10, true, 2);
+          lifeBar4.Update();
+        }
+        else
+          lifeBar4 = null;
       }
       ability1.Update();
       ability2.Update();
@@ -51,6 +65,8 @@ namespace Planet
       lifeBar2.Draw(spriteBatch);
       if (lifeBar3 != null && lifeBar3.Ship != null && !lifeBar3.Ship.Disposed)
         lifeBar3.Draw(spriteBatch);
+      if (lifeBar4 != null && lifeBar4.Ship != null && !lifeBar4.Ship.Disposed)
+        lifeBar4.Draw(spriteBatch);
       ability1.Draw(spriteBatch);
       ability2.Draw(spriteBatch);
       spriteBatch.End();
