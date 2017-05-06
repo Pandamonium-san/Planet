@@ -14,7 +14,7 @@ namespace Planet
     public EnemyController1(World world) : base(world)
     {
       moveTimer = new Timer(1, StartChase, true);
-      chaseTimer = new Timer(2, null, false);
+      chaseTimer = new Timer(1.5, null, false);
     }
     void StartChase()
     {

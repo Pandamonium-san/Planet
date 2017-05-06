@@ -56,14 +56,17 @@ namespace Planet
     }
     public void Draw(SpriteBatch spriteBatch)
     {
+      back.LocalPos = Vector2.Zero;
+      icon.LocalPos = Vector2.Zero;
       back.spriteRec = new Rectangle(0, 0, back.tex.Width, back.tex.Height);
       icon.spriteRec = new Rectangle(0, 0, icon.tex.Width, icon.tex.Height);
-
       back.Draw(spriteBatch);
       icon.Draw(spriteBatch);
 
-      back.spriteRec = new Rectangle(0, 0, (int)(back.tex.Width * value), back.tex.Height);
-      icon.spriteRec = new Rectangle(0, 0, (int)(icon.tex.Width * value), icon.tex.Height);
+      back.LocalPos = new Vector2(0, (int)(back.tex.Height * (1 - value)));
+      icon.LocalPos = new Vector2(0, (int)(back.tex.Height * (1 - value)));
+      back.spriteRec = new Rectangle(0, (int)(back.tex.Height * (1 - value)), back.tex.Width, (int)(back.tex.Height * value));
+      icon.spriteRec = new Rectangle(0, (int)(icon.tex.Height * (1 - value)), icon.tex.Width, (int)(icon.tex.Height * value));
       back.Draw(spriteBatch);
       icon.Draw(spriteBatch);
     }

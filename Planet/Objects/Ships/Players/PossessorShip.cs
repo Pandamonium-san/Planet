@@ -34,7 +34,7 @@ namespace Planet
       AbilityCooldown = new Timer(5, null, false);
       player = pc;
 
-      WpnDesc desc = new WpnDesc(1, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 0.1f);           // laser
+      WpnDesc desc = new WpnDesc(1.5f, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 0.1f);           // laser
       LaserGun laser = new LaserGun(this, world, desc, 20, false);
       laser.SetMuzzle(new Vector2(0, -20));
       laser.Name = "Laser";

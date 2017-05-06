@@ -22,19 +22,19 @@ namespace Planet
       spawnQueue = new Queue<Spawn>();
       spawnTimer = new Timer(0, SpawnNext, false);
 
-      //for (int i = 0; i < 98; i++)
+      //for (int i = 0; i < 10; i++)
       //{
       //  float x = Utility.RandomFloat(0, 800);
       //  float y = Utility.RandomFloat(0, 600);
       //  float c = 50;
       //  if (i == 0)
-      //    QueueSpawn(new Enemy1(new Vector2(x, y - c), world), new AIController(world), 0);
+      //    QueueSpawn(new Enemy3(new Vector2(x, y - c), world), new EnemyController2(world), 0);
       //  else
-      //    QueueSpawn(new Enemy1(new Vector2(x, y - c), world), new AIController(world), 10);
-      //  QueueSpawn(new Enemy1(new Vector2(x, y), world), new AIController(world), 0);
-      //  QueueSpawn(new Enemy1(new Vector2(x + c, y), world), new AIController(world), 0);
-      //  QueueSpawn(new Enemy1(new Vector2(x, y + c), world), new AIController(world), 0);
-      //  QueueSpawn(new Enemy1(new Vector2(x - c, y), world), new AIController(world), 0);
+      //    QueueSpawn(new Enemy3(new Vector2(x, y - c), world), new EnemyController2(world), 0.1f);
+      //  //QueueSpawn(new Enemy1(new Vector2(x, y), world), new AIController(world), 0);
+      //  //QueueSpawn(new Enemy1(new Vector2(x + c, y), world), new AIController(world), 0);
+      //  //QueueSpawn(new Enemy1(new Vector2(x, y + c), world), new AIController(world), 0);
+      //  //QueueSpawn(new Enemy1(new Vector2(x - c, y), world), new AIController(world), 0);
       //}
 
       Vector2 spawnPos = new Vector2(100, 100);
@@ -42,10 +42,10 @@ namespace Planet
       {
         AIController aic;
         if (i % 2 == 0)
-          aic = new AIController(world);
+          aic = new EnemyController2(world);
         else
           aic = new EnemyController1(world);
-        QueueSpawn(new Enemy1(spawnPos, world), aic, 0.1);
+        QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
         spawnPos += new Vector2(50, 0);
       }
       for (int i = 0; i < 7; i++)
@@ -54,18 +54,18 @@ namespace Planet
         if (i % 2 == 0)
           aic = new AIController(world);
         else
-          aic = new EnemyController1(world);
-        QueueSpawn(new Enemy2(spawnPos, world), aic, 0.1);
+          aic = new EnemyController2(world);
+        QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
         spawnPos += new Vector2(0, 50);
       }
       for (int i = 0; i < 15; i++)
       {
         AIController aic;
-        if (i % 2 == 0)
-          aic = new AIController(world);
+        aic = new EnemyController2(world);
+        if (i % 3 == 0)
+          QueueSpawn(new Enemy3(spawnPos, world), aic, 1);
         else
-          aic = new EnemyController1(world);
-        QueueSpawn(new Enemy2(spawnPos, world), aic, 0.1);
+          QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
         spawnPos += new Vector2(-50, 0);
       }
       for (int i = 0; i < 7; i++)
@@ -75,7 +75,7 @@ namespace Planet
           aic = new AIController(world);
         else
           aic = new EnemyController1(world);
-        QueueSpawn(new Enemy2(spawnPos, world), aic, 0.1);
+        QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
         spawnPos += new Vector2(0, -50);
       }
       DequeueSpawn();
