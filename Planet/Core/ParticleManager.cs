@@ -9,11 +9,24 @@ namespace Planet
 {
   public class ParticleManager
   {
+    Texture2D[] starTex;
+    Texture2D[] explosionTex;
     List<Particle> particles;
 
     public ParticleManager()
     {
       particles = new List<Particle>();
+      starTex = new Texture2D[3] { AssetManager.GetTexture("star1"), AssetManager.GetTexture("star2"), AssetManager.GetTexture("star3") };
+      explosionTex = new Texture2D[9] {
+        AssetManager.GetTexture("explosion00"),
+        AssetManager.GetTexture("explosion01"),
+        AssetManager.GetTexture("explosion02"),
+        AssetManager.GetTexture("explosion03"),
+        AssetManager.GetTexture("explosion04"),
+        AssetManager.GetTexture("explosion05"),
+        AssetManager.GetTexture("explosion06"),
+        AssetManager.GetTexture("explosion07"),
+        AssetManager.GetTexture("explosion08") };
     }
     public void AddParticle(Particle p)
     {
@@ -38,18 +51,14 @@ namespace Planet
     }
     public Particle CreateExplosion(Vector2 pos, float lifeTime, float alpha, float scale)
     {
-      string texPath = "explosion0";
       int i = Utility.RandomInt(0, 9);
-      texPath += i.ToString();
-      Particle p = new Particle(pos, AssetManager.GetTexture(texPath), Vector2.Zero, lifeTime, Color.White, alpha, 0, scale);
+      Particle p = new Particle(pos, explosionTex[i], Vector2.Zero, lifeTime, Color.White, alpha, 0, scale);
       AddParticle(p);
       return p;
     }
     public Particle CreateStar(Vector2 pos, float lifeTime, float minSpeed, float maxSpeed, Color color, float alpha, float scale, float variation)
     {
-      string texPath = "star";
-      int i = Utility.RandomInt(1, 3);
-      texPath += i.ToString();
+      int i = Utility.RandomInt(0, 2);
       float r = 1 + Utility.RandomFloat(-variation, variation);
 
       float xVel = Utility.RandomFloat(minSpeed, maxSpeed);
@@ -58,7 +67,7 @@ namespace Planet
       color = color * r;
       color.A = 255;
 
-      Particle p = new Particle(pos, AssetManager.GetTexture(texPath), new Vector2(xVel, yVel) * r, lifeTime * r, color, alpha, 0, scale * r);
+      Particle p = new Particle(pos, starTex[i], new Vector2(xVel, yVel) * r, lifeTime * r, color, alpha, 0, scale * r);
       AddParticle(p);
       return p;
     }

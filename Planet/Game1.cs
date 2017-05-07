@@ -45,9 +45,10 @@ namespace Planet
     //debug variables
     public static bool debugMode;
     public static int frames;
-    int slowFrames;
     public static Vector2 intersectPoint;
     public static int collisionChecksPerFrame;
+    int slowFrames;
+    SpriteFont debugFont;
 
     public Game1()
     {
@@ -82,6 +83,7 @@ namespace Planet
       AssetManager.LoadContent(Content);
       gameStateManager = new GameStateManager();
       gameStateManager.Push(new GameStateTitleScreen(gameStateManager));
+      debugFont = AssetManager.GetFont("font1");
     }
 
     /// <summary>
@@ -130,16 +132,16 @@ namespace Planet
       if (debugMode)
       {
         spriteBatch.Begin();
-        spriteBatch.DrawString(AssetManager.GetFont("font1"), "FPS: " + fc.CurrentFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
+        spriteBatch.DrawString(debugFont, "FPS: " + fc.CurrentFramesPerSecond.ToString(), new Vector2(0, 0), Color.Red);
         if (fc.CurrentFramesPerSecond < 30)
         {
           slowFrames++;
         }
-        spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow: " + runningSlowly.ToString(), new Vector2(150, 0), Color.Red);
-        spriteBatch.DrawString(AssetManager.GetFont("font1"), "slow frames: " + slowFrames.ToString(), new Vector2(150, 20), Color.Red);
-        spriteBatch.DrawString(AssetManager.GetFont("font1"), "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
-        spriteBatch.DrawString(AssetManager.GetFont("font1"), "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
-        spriteBatch.DrawString(AssetManager.GetFont("font1"), "Game State: " + gameStateManager.Peek().ToString(), new Vector2(300, 0), Color.Red);
+        spriteBatch.DrawString(debugFont, "slow: " + runningSlowly.ToString(), new Vector2(150, 0), Color.Red);
+        spriteBatch.DrawString(debugFont, "slow frames: " + slowFrames.ToString(), new Vector2(150, 20), Color.Red);
+        spriteBatch.DrawString(debugFont, "Memory:" + GC.GetTotalMemory(false) / 1024, new Vector2(150, 40), Color.White);
+        spriteBatch.DrawString(debugFont, "Collision checks: " + (collisionChecksPerFrame).ToString(), new Vector2(0, 60), Color.Red);
+        spriteBatch.DrawString(debugFont, "Game State: " + gameStateManager.Peek().ToString(), new Vector2(300, 0), Color.Red);
         spriteBatch.End();
       }
       base.Draw(gameTime);

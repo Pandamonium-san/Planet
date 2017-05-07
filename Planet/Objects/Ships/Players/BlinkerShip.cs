@@ -37,8 +37,9 @@ namespace Planet
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);
       blinkTimer3 = new Timer(blinkDelay, Blink3, false);
 
-      WpnDesc desc = new WpnDesc(15, 1, 700, 12, 10, 100, 0, 1, 0, 0, 0, 1);              // burst shotgun
-      Weapon wpn = new Weapon(this, world, desc, "laserBlue07");
+      WpnDesc desc = new WpnDesc(16, 1, 700, 12, 10, 100, 0, 1, 0, 0, 0, 1);              // burst shotgun
+      Weapon wpn = new Weapon(this, world, desc, "laserBlue06");
+      wpn.Scale = 0.9f;
       wpn.Name = "Shotgun2";
       weapons.Add(wpn);
 

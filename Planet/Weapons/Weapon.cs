@@ -73,7 +73,7 @@ namespace Planet
         shootTimer.Start();
       }
     }
-    public void ResetShootTimer()
+    public virtual void ResetShootTimer()
     {
       shootTimer.Start();
     }
@@ -152,7 +152,7 @@ namespace Planet
       currentMagCount = desc.magSize;
       shootTimer = new Timer(100);
     }
-    public void SetShip(Ship ship)
+    public virtual void SetShip(Ship ship)
     {
       Vector2 localPos = LocalPos;
       float localRotation = LocalRotation;

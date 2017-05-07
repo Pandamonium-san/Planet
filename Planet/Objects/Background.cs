@@ -46,8 +46,7 @@ namespace Planet
     }
     public void Draw(SpriteBatch spriteBatch)
     {
-      //spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap);
-      spriteBatch.Draw(background, pos, null, new Rectangle(0, 0, Game1.ScreenWidth * 2, Game1.ScreenHeight * 2), null, 0.0f, null, new Color(50, 50, 50), SpriteEffects.None, 1.0f);
+      spriteBatch.Draw(background, pos, null, new Rectangle(0, 0, Game1.ScreenWidth * 2, Game1.ScreenHeight * 2), null, 0.0f, null, new Color(80, 80, 80), SpriteEffects.None, 1.0f);
     }
   }
 }

@@ -24,6 +24,7 @@ namespace Planet
     public float baseSpeed = 300;
     public float rotationSpeed = 10;
     public float damageModifier = 1.0f;
+    public float incomingDamageModifier = 1.0f;
     public float speedModifier = 1.0f;
     public float rotationModifier = 1.0f;
     public float currentHealth;
@@ -266,6 +267,7 @@ namespace Planet
     {
       if (Invulnerable)
         return;
+      amount *= incomingDamageModifier;
       shieldRechargeDelay.Start();
       recharging = false;
       if (currentShield > 0)
@@ -274,9 +276,15 @@ namespace Planet
         currentHealth -= amount;
       if (currentHealth <= 0)
         Die();
-      Flash(0.25f, Color.White, false, 0.8f);
       if (Layer == Layer.PLAYER_SHIP)
-        MakeInvulnerable(0.25f);
+      {
+        Flash(0.5f, Color.Red, false, 0.8f);
+        MakeInvulnerable(0.5f);
+      }
+      else
+      {
+        Flash(0.5f, Color.White, false, 0.8f);
+      }
     }
     public void TakeDamage(Projectile p)
     {
@@ -286,18 +294,13 @@ namespace Planet
       recharging = false;
       if (currentShield > 0)
       {
-        currentShield -= p.damage;
+        currentShield -= p.damage * incomingDamageModifier;
         CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos));
         MakeInvulnerable(0.25f);
       }
       else
       {
-        currentHealth -= p.damage;
-        Flash(0.5f, Color.White, false, 0.8f);
-        if (currentHealth <= 0)
-          Die();
-        if (Layer == Layer.PLAYER_SHIP)
-          MakeInvulnerable(0.5f);
+        TakeDamage(p.damage);
       }
     }
     protected void LeadShot(Ship target)

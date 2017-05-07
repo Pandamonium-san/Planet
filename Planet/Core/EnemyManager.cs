@@ -22,15 +22,14 @@ namespace Planet
       spawnQueue = new Queue<Spawn>();
       spawnTimer = new Timer(0, SpawnNext, false);
 
-      //for (int i = 0; i < 10; i++)
+      //for (int i = 0; i < 1; i++)
       //{
       //  float x = Utility.RandomFloat(0, 800);
       //  float y = Utility.RandomFloat(0, 600);
       //  float c = 50;
       //  if (i == 0)
-      //    QueueSpawn(new Enemy3(new Vector2(x, y - c), world), new EnemyController2(world), 0);
       //  else
-      //    QueueSpawn(new Enemy3(new Vector2(x, y - c), world), new EnemyController2(world), 0.1f);
+      //    QueueSpawn(new Enemy3(new Vector2(x, y - c), world), new AIController(world), 0.1f);
       //  //QueueSpawn(new Enemy1(new Vector2(x, y), world), new AIController(world), 0);
       //  //QueueSpawn(new Enemy1(new Vector2(x + c, y), world), new AIController(world), 0);
       //  //QueueSpawn(new Enemy1(new Vector2(x, y + c), world), new AIController(world), 0);
@@ -75,9 +74,13 @@ namespace Planet
           aic = new AIController(world);
         else
           aic = new EnemyController1(world);
-        QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
+        if (i % 3 == 0)
+          QueueSpawn(new Enemy4(spawnPos, world), aic, 1);
+        else
+          QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
         spawnPos += new Vector2(0, -50);
       }
+      QueueSpawn(new EnemyBoss(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), world), new EnemyControllerBoss(world), 20);
       DequeueSpawn();
     }
     public void Update(GameTime gt)
@@ -122,6 +125,9 @@ namespace Planet
     {
       public Ship enemy;
       public AIController controller;
+      /// <summary>
+      /// Once this object reaches the top of the queue, it will be delayed before spawning
+      /// </summary>
       public double timeToSpawn;
       public Spawn(Ship enemy, AIController controller, double time)
       {

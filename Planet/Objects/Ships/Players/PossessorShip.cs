@@ -130,6 +130,20 @@ namespace Planet
       possessedShip.color = Color.Turquoise;
       possessedShip.Switch();
 
+      if(possessedShip is EnemyBoss)
+      {
+        possessedShip.GetWeapon(0).Desc.magReloadTime = 1.0f;
+        possessedShip.GetWeapon(1).Desc.magReloadTime = 1.0f;
+        possessedShip.damageModifier = 3.0f;
+        possessedShip.speedModifier = 1.0f;
+        possessedShip.rotationModifier = 1.0f;
+        List<Weapon> xlaser = ((CompoundWeapon)(possessedShip.GetWeapon(2))).GetWeapons();
+        xlaser.RemoveRange(2, 3);
+        possessedShip.GetWeapon(2).Desc.damage = 30;
+        xlaser[0].Desc.damage = 1;
+        xlaser[1].Desc.damage = 1;
+      }
+
       IsActive = false;
       Visible = false;
     }

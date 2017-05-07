@@ -37,8 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controllers\EnemyController1.cs" />
-    <Compile Include="Controllers\EnemyController2.cs" />
+    <Compile Include="Controllers\ECChaser.cs" />
+    <Compile Include="Controllers\ECWanderer.cs" />
+    <Compile Include="Controllers\EnemyControllerBoss.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PlayerShipController.cs" />
     <Compile Include="Core\EnemyManager.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Objects\Ships\Players\BlinkerShip.cs" />
     <Compile Include="Utility\Timer.cs" />
     <Compile Include="Weapons\ChargeLaser.cs" />
+    <Compile Include="Weapons\CompoundWeapon.cs" />
     <Compile Include="Weapons\CycloneGun.cs" />
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Game1.cs" />

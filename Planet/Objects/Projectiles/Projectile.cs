@@ -67,13 +67,13 @@ namespace Planet
       {
         SetLayer(Layer.PLAYER_PROJECTILE);
         LayerMask = Layer.ENEMY_SHIP;
-        //color = Color.White;
+        color = new Color(210, 230, 255);
       }
       else if (instigator.Layer == Layer.ENEMY_SHIP)
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
         LayerMask = (Layer.PLAYER_SHIP);
-        color = new Color(255, 128, 128);
+        //color = new Color(255, 128, 128);
       }
       layerDepth = 0.8f;
     }

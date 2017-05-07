@@ -20,7 +20,7 @@ namespace Planet
       this.world = world;
       IsActive = true;
       targetRefreshTime = 1;
-      targetRefresher = new Timer(targetRefreshTime, FindNearestTarget, true);
+      targetRefresher = new Timer(targetRefreshTime, FindNearestTarget, true, true);
     }
     public void Update(GameTime gt)
     {
@@ -33,10 +33,7 @@ namespace Planet
     }
     protected virtual void DoUpdate(GameTime gt)
     {
-      if (targetRefresher.Counting)
-        targetRefresher.Update(gt);
-      else
-        targetRefresher.Start(targetRefreshTime);
+      targetRefresher.Update(gt);
       if (ship.Target != null && ship.Target.IsActive && !ship.Target.Untargetable)
       {
         ship.Fire1();

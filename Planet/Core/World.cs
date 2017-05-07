@@ -107,12 +107,12 @@ namespace Planet
     public void PostGameObj(GameObject go)
     {
       goToAdd.Enqueue(go);
-      go.layerDepth += 0.00001f * gameObjects.Count;
+      go.layerDepth += 0.00001f * gameObjects.Count + 0.00001f * goToAdd.Count;
     }
     public void PostProjectile(Projectile p)
     {
       pToAdd.Enqueue(p);
-      p.layerDepth += 0.00001f * projectiles.Count;
+      p.layerDepth += 0.00001f * projectiles.Count + 0.00001f * pToAdd.Count;
     }
     public void Draw(SpriteBatch spriteBatch)
     {
