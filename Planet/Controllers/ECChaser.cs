@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-  class EnemyController1 : AIController
+  class ECChaser : AIController
   {
     Timer chaseTimer;
     Timer moveTimer;
     bool chasing;
-    public EnemyController1(World world) : base(world)
+    public ECChaser(World world) : base(world)
     {
       moveTimer = new Timer(1, StartChase, true);
       chaseTimer = new Timer(1.5, null, false);

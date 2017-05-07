@@ -11,11 +11,14 @@ namespace Planet
   {
     public static float GlobalEnemyDamageModifier = 1.0f;
     public static float GlobalEnemyHealthModifier = 1.0f;
+
+    public float Cost { get { return baseCost; } }
+    protected float baseCost;
     public EnemyShip(Vector2 pos, World world, Texture2D tex)
         : base(pos, world, tex)
     {
       SetLayer(Layer.ENEMY_SHIP);
-      incomingDamageModifier = 1/GlobalEnemyHealthModifier;
+      incomingDamageModifier = 1 / GlobalEnemyHealthModifier;
       damageModifier = GlobalEnemyDamageModifier;
     }
   }
@@ -25,21 +28,22 @@ namespace Planet
       : base(pos, world, AssetManager.GetTexture(@"ships\red\enemy1"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\enemy1");
+
+      baseCost = 100;
+      rotationSpeed = 5;
+      baseSpeed = 100;
+      maxHealth = 100;
+      currentHealth = maxHealth;
+
       WpnDesc desc = new WpnDesc(5, 3f, 300, 1, 10, 10, 3, 9, 0, 0, 0, 5);
       Weapon wpn = new Weapon(this, world, desc, "laserRed10", "Pew");
       wpn.Scale = 0.4f;
-      //wpn.SetMuzzle(new Vector2(0, -10));
       weapons.Add(wpn);
 
       desc = new WpnDesc(1.5f, 10, 1000, 4, 1, 10, 1, 10, 3, 0, -4.5f, 3);
       wpn = new Weapon(this, world, desc, "laserBlue10", "Torrent");
       wpn.Scale = 0.4f;
       weapons.Add(wpn);
-
-      rotationSpeed = 5;
-      baseSpeed = 100;
-      maxHealth = 100;
-      currentHealth = maxHealth;
     }
   }
   class Enemy2 : EnemyShip
@@ -48,6 +52,13 @@ namespace Planet
       : base(pos, world, AssetManager.GetTexture(@"ships\red\enemy2"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\enemy2");
+
+      baseCost = 300;
+      rotationSpeed = 10;
+      baseSpeed = 100;
+      maxHealth = 300;
+      currentHealth = maxHealth;
+
       WpnDesc desc = new WpnDesc(10, 3f, 500, 1, 2, 0, 5, 3, 0, 0, 0, 3);
       Weapon wpn = new Weapon(this, world, desc, "laserRed07", "Rifle");
       wpn.Scale = 1.0f;
@@ -55,16 +66,10 @@ namespace Planet
       weapons.Add(wpn);
 
       desc = new WpnDesc(6, 1, 2500, 5, 0, 0, 0, 1, 0, 0, 0, 3);           //sniper
-      //desc = new WpnDesc(6, 2.0f, 800, 1, 0, 0, 1, 3, 0, 0, 0, 3, false, true);   //piercing rifle
-      wpn = new Weapon(this, world, desc, "laserBlue16", "Rifle+");
+      wpn = new Weapon(this, world, desc, "laserBlue16", "Sniper Rifle");
       wpn.Scale = 1.2f;
       wpn.LocalPos = new Vector2(0, -20);
       weapons.Add(wpn);
-
-      rotationSpeed = 10;
-      baseSpeed = 100;
-      maxHealth = 300;
-      currentHealth = maxHealth;
     }
   }
   class Enemy3 : EnemyShip
@@ -74,7 +79,13 @@ namespace Planet
     public Enemy3(Vector2 pos, World world)
       : base(pos, world, AssetManager.GetTexture(@"ships\red\ufoRed"))
     {
+      baseCost = 200;
       flashTex = AssetManager.GetTexture(@"ships\flash\ufoRed");
+
+      rotationSpeed = 4.0f;
+      baseSpeed = 100;
+      maxHealth = 150;
+      currentHealth = maxHealth;
 
       WpnDesc desc = new WpnDesc(8, 2f, 250, 4, 2, 0, 5, 6, 360 / 4, 360 / 4 / 6, 0, 10, true);
       Weapon wpn = new Weapon(this, world, desc, "laserRed08", "4way");
@@ -85,11 +96,6 @@ namespace Planet
       wpn = new Weapon(this, world, desc, "laserBlue08", "Spinny");
       wpn.Scale = 0.2f;
       weapons.Add(wpn);
-
-      rotationSpeed = 4.0f;
-      baseSpeed = 100;
-      maxHealth = 150;
-      currentHealth = maxHealth;
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -103,7 +109,15 @@ namespace Planet
     public Enemy4(Vector2 pos, World world)
       : base(pos, world, AssetManager.GetTexture(@"ships\red\enemy4"))
     {
-      flashTex = AssetManager.GetTexture(@"ships\flash\ufoRed");
+      flashTex = AssetManager.GetTexture(@"ships\flash\enemy4");
+
+      baseCost = 350;
+      rotationSpeed = 5;
+      baseSpeed = 70;
+      maxHealth = 500;
+      currentHealth = maxHealth;
+      maxShield = 50;
+      currentShield = maxShield;
 
       WpnDesc desc = new WpnDesc(25, 0.3f, 200, 1, 0, 0, 4, 1, 0, 0, 0, 15, false, true);
       Weapon wpn = new Weapon(this, world, desc, "laserRed08", "BFG");
@@ -114,13 +128,6 @@ namespace Planet
       wpn = new LaserGun(this, world, desc, 8, true);
       wpn.Name = "Scatter Laser";
       weapons.Add(wpn);
-
-      rotationSpeed = 5;
-      baseSpeed = 70;
-      maxHealth = 500;
-      currentHealth = maxHealth;
-      maxShield = 50;
-      currentShield = maxShield;
     }
   }
   class EnemyBoss : EnemyShip
@@ -129,6 +136,14 @@ namespace Planet
       : base(pos, world, AssetManager.GetTexture(@"ships\red\spaceShips_007"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_007");
+
+      baseCost = 5000;
+      rotationSpeed = 10;
+      baseSpeed = 350;
+      maxHealth = 5000;
+      currentHealth = maxHealth;
+      maxShield = 250;
+      currentShield = maxShield;
 
       WpnDesc desc = new WpnDesc(10, 8f, 500, 10, 5, 50, 2, 8, 180 / 9, 0, -180 / 9 * 10 / 2, 10, false, false);
       Weapon wpn = new Weapon(this, world, desc, "laserRed08", "Spread");
@@ -174,20 +189,12 @@ namespace Planet
       wpn.Name = "Right pew";
       cw.AddWeapon(wpn);
 
-      desc = new WpnDesc(20, 16f, 750, 15, 10, 0, 4, 6 * 16, 315 / 15, 0, 22.5f + 21/2, 10, false, false);
+      desc = new WpnDesc(20, 16f, 750, 15, 10, 0, 4, 6 * 16, 315 / 15, 0, 22.5f + 21 / 2, 10, false, false);
       wpn = new Weapon(this, world, desc, "laserRed08", "DeathZone");
       wpn.Scale = 0.7f;
       cw.AddWeapon(wpn);
 
       weapons.Add(cw);
-      cw.SetShip(this);
-
-      rotationSpeed = 10;
-      baseSpeed = 350;
-      maxHealth = 5000;
-      currentHealth = maxHealth;
-      maxShield = 250;
-      currentShield = maxShield;
     }
   }
 }

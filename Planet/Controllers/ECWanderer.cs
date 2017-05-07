@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework;
 
 namespace Planet
 {
-  class EnemyController2 : AIController
+  class ECWanderer : AIController
   {
     Vector2 targetPos;
-    public EnemyController2(World world) : base(world)
+    public ECWanderer(World world) : base(world)
     {
       targetPos = new Vector2(Utility.RandomFloat(100, Game1.ScreenWidth - 100), Utility.RandomFloat(100, Game1.ScreenHeight - 100));
     }

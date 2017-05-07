@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Planet
 {
-  class EnemyControllerBoss : AIController
+  class ECBoss : AIController
   {
     enum Phase
     {
@@ -19,7 +19,7 @@ namespace Planet
     Timer phaseTwoTimer;
     int cycles;
 
-    public EnemyControllerBoss(World world)
+    public ECBoss(World world)
       : base(world)
     {
       relocateTimer = new Timer(3, Relocate, false);

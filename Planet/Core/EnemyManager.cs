@@ -14,6 +14,14 @@ namespace Planet
     private Queue<Spawn> spawnQueue;
     private Spawn nextSpawn;
 
+    private Timer activationTimer;
+    private Ship justSpawned;
+
+    private Timer waveTimer;
+    private float resources;
+    private float resourcesPerSecond;
+    private float resourcesPerSecond2;
+
     public EnemyManager(World world)
     {
       this.world = world;
@@ -21,6 +29,13 @@ namespace Planet
       controllers = new List<AIController>();
       spawnQueue = new Queue<Spawn>();
       spawnTimer = new Timer(0, SpawnNext, false);
+
+      activationTimer = new Timer(3.0f, ActivateSpawned, false);
+
+      waveTimer = new Timer(0, MakeWave, true);
+      resources = 100;
+      resourcesPerSecond = 50;
+      resourcesPerSecond2 = 1;
 
       //for (int i = 0; i < 1; i++)
       //{
@@ -35,61 +50,65 @@ namespace Planet
       //  //QueueSpawn(new Enemy1(new Vector2(x, y + c), world), new AIController(world), 0);
       //  //QueueSpawn(new Enemy1(new Vector2(x - c, y), world), new AIController(world), 0);
       //}
-
-      Vector2 spawnPos = new Vector2(100, 100);
-      for (int i = 0; i < 15; i++)
-      {
-        AIController aic;
-        if (i % 2 == 0)
-          aic = new EnemyController2(world);
-        else
-          aic = new EnemyController1(world);
-        QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
-        spawnPos += new Vector2(50, 0);
-      }
-      for (int i = 0; i < 7; i++)
-      {
-        AIController aic;
-        if (i % 2 == 0)
-          aic = new AIController(world);
-        else
-          aic = new EnemyController2(world);
-        QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
-        spawnPos += new Vector2(0, 50);
-      }
-      for (int i = 0; i < 15; i++)
-      {
-        AIController aic;
-        aic = new EnemyController2(world);
-        if (i % 3 == 0)
-          QueueSpawn(new Enemy3(spawnPos, world), aic, 1);
-        else
-          QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
-        spawnPos += new Vector2(-50, 0);
-      }
-      for (int i = 0; i < 7; i++)
-      {
-        AIController aic;
-        if (i % 2 == 0)
-          aic = new AIController(world);
-        else
-          aic = new EnemyController1(world);
-        if (i % 3 == 0)
-          QueueSpawn(new Enemy4(spawnPos, world), aic, 1);
-        else
-          QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
-        spawnPos += new Vector2(0, -50);
-      }
-      QueueSpawn(new EnemyBoss(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), world), new EnemyControllerBoss(world), 20);
-      DequeueSpawn();
+      //Vector2 spawnPos = new Vector2(100, 100);
+      //for (int i = 0; i < 15; i++)
+      //{
+      //  AIController aic;
+      //  if (i % 2 == 0)
+      //    aic = new ECWanderer(world);
+      //  else
+      //    aic = new ECChaser(world);
+      //  QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
+      //  spawnPos += new Vector2(50, 0);
+      //}
+      //for (int i = 0; i < 7; i++)
+      //{
+      //  AIController aic;
+      //  if (i % 2 == 0)
+      //    aic = new AIController(world);
+      //  else
+      //    aic = new ECWanderer(world);
+      //  QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
+      //  spawnPos += new Vector2(0, 50);
+      //}
+      //for (int i = 0; i < 15; i++)
+      //{
+      //  AIController aic;
+      //  aic = new ECWanderer(world);
+      //  if (i % 3 == 0)
+      //    QueueSpawn(new Enemy3(spawnPos, world), aic, 1);
+      //  else
+      //    QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
+      //  spawnPos += new Vector2(-50, 0);
+      //}
+      //for (int i = 0; i < 7; i++)
+      //{
+      //  AIController aic;
+      //  if (i % 2 == 0)
+      //    aic = new AIController(world);
+      //  else
+      //    aic = new ECChaser(world);
+      //  if (i % 3 == 0)
+      //    QueueSpawn(new Enemy4(spawnPos, world), aic, 1);
+      //  else
+      //    QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
+      //  spawnPos += new Vector2(0, -50);
+      //}
+      //QueueSpawn(new EnemyBoss(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), world), new ECBoss(world), 20);
+      //DequeueSpawn();
     }
     public void Update(GameTime gt)
     {
+      activationTimer.Update(gt);
       spawnTimer.Update(gt);
       foreach (AIController aic in controllers)
       {
         aic.Update(gt);
       }
+
+      resources += resourcesPerSecond * (float)gt.ElapsedGameTime.TotalSeconds;
+      resourcesPerSecond += resourcesPerSecond2 * (float)gt.ElapsedGameTime.TotalSeconds;
+      waveTimer.Update(gt);
     }
     public void QueueSpawn(Ship enemy, AIController controller, double spawnTime)
     {
@@ -112,15 +131,113 @@ namespace Planet
       Type aic = nextSpawn.controller.GetType();
 
       Ship enemy = (Ship)Activator.CreateInstance(enemyType, new object[] { nextSpawn.enemy.Pos, world });
-      AIController sc = (AIController)Activator.CreateInstance(aic, world);
-      sc.SetShip(enemy);
-
-      controllers.Add(sc);
+      justSpawned = enemy;
+      enemy.Flash(3.0f, Color.White, false, 1.0f);
       world.PostGameObj(enemy);
 
+      AIController sc = (AIController)Activator.CreateInstance(aic, world);
+      sc.IsActive = false;
+      controllers.Add(sc);
+      sc.SetShip(enemy);
+
+      activationTimer.Start();
       DequeueSpawn();
     }
-
+    private void ActivateSpawned()
+    {
+      ((AIController)justSpawned.Controller).IsActive = true;
+    }
+    private void MakeWave()
+    {
+      int N = Utility.RandomInt(10, 100);
+      int nextWave = Utility.RandomInt(5, 20);
+      for (int i = 0; i < N; i++)
+      {
+        Spawn spawn;
+        float cost = MakeRandomSpawn(out spawn);
+        if (cost <= resources)
+        {
+          if (spawn.enemy is EnemyBoss)
+            nextWave += 20;
+          spawnQueue.Enqueue(spawn);
+          resources -= cost;
+        }
+      }
+      waveTimer.Start(nextWave);
+      DequeueSpawn();
+    }
+    private float MakeRandomSpawn(out Spawn spawn)
+    {
+      int ship = Utility.RandomInt(1, 3);
+      if (ship == 2)
+      {
+        ship = Utility.RandomInt(2, 5);
+        if (ship == 4)
+        {
+          ship = Utility.RandomInt(0, 5);
+          if (ship == 0)
+            ship = 5;
+          else
+            ship = 4;
+        }
+      }
+      int controller = Utility.RandomInt(1, 4);
+      int spawnTime = Utility.RandomInt(0, 4);
+      return MakeSpawn(out spawn, ship, controller, spawnTime);
+    }
+    private float MakeSpawn(out Spawn spawn, int shipType, int controllerType, double spawnTime = 1)
+    {
+      Vector2 pos = new Vector2(Utility.RandomFloat(100, Game1.ScreenWidth - 100), Utility.RandomFloat(100, Game1.ScreenHeight - 100));
+      Ship ship;
+      AIController controller;
+      float cost = 0;
+      switch (shipType)
+      {
+        case 1:
+        default:
+          ship = new Enemy1(pos, world);
+          cost += 100;
+          break;
+        case 2:
+          ship = new Enemy2(pos, world);
+          cost += 300;
+          break;
+        case 3:
+          ship = new Enemy3(pos, world);
+          controller = new ECWanderer(world);
+          cost += 200;
+          spawn = new Spawn(ship, controller, spawnTime);
+          return cost;
+        case 4:
+          ship = new Enemy4(pos, world);
+          cost += 500;
+          break;
+        case 5:
+          ship = new EnemyBoss(pos, world);
+          controller = new ECBoss(world);
+          cost += 5000;
+          spawn = new Spawn(ship, controller, spawnTime);
+          return cost;
+      }
+      switch (controllerType)
+      {
+        case 1:
+        default:
+          controller = new AIController(world);
+          cost *= 1.0f;
+          break;
+        case 2:
+          controller = new ECChaser(world);
+          cost *= 1.2f;
+          break;
+        case 3:
+          controller = new ECWanderer(world);
+          cost *= 1.2f;
+          break;
+      }
+      spawn = new Spawn(ship, controller, spawnTime);
+      return cost;
+    }
     class Spawn
     {
       public Ship enemy;

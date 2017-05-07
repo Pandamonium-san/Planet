@@ -39,7 +39,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ECChaser.cs" />
     <Compile Include="Controllers\ECWanderer.cs" />
-    <Compile Include="Controllers\EnemyControllerBoss.cs" />
+    <Compile Include="Controllers\ECBoss.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PlayerShipController.cs" />
     <Compile Include="Core\EnemyManager.cs" />
