@@ -37,7 +37,7 @@ namespace Planet
 
       PHitScan p = new PHitScan(
         world,
-        projTex,
+        ProjTex,
         Pos,
         direction,
         Damage,
@@ -45,6 +45,7 @@ namespace Planet
         width,
         range,
         ship,
+        this,
         desc.projLifeTime);
       p.onCollision = OnProjectileCollision;
       world.PostProjectile(p);

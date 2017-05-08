@@ -37,12 +37,12 @@ namespace Planet
 
       WpnDesc desc = new WpnDesc(5, 3f, 300, 1, 10, 10, 3, 9, 0, 0, 0, 5);
       Weapon wpn = new Weapon(this, world, desc, "laserRed10", "Pew");
-      wpn.Scale = 0.4f;
+      wpn.Scale = 0.6f;
       weapons.Add(wpn);
 
       desc = new WpnDesc(1.5f, 10, 1000, 4, 1, 10, 1, 10, 3, 0, -4.5f, 3);
       wpn = new Weapon(this, world, desc, "laserBlue10", "Torrent");
-      wpn.Scale = 0.4f;
+      wpn.Scale = 0.6f;
       weapons.Add(wpn);
     }
   }
@@ -59,7 +59,7 @@ namespace Planet
       maxHealth = 300;
       currentHealth = maxHealth;
 
-      WpnDesc desc = new WpnDesc(10, 3f, 500, 1, 2, 0, 5, 3, 0, 0, 0, 3);
+      WpnDesc desc = new WpnDesc(10, 3f, 500, 3, 2, 0, 5, 3, 15, 0, -15, 3);
       Weapon wpn = new Weapon(this, world, desc, "laserRed07", "Rifle");
       wpn.Scale = 1.0f;
       wpn.LocalPos = new Vector2(0, -20);

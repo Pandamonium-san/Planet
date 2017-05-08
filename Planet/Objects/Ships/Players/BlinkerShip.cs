@@ -30,24 +30,34 @@ namespace Planet
       maxShield = 20;
       currentShield = maxShield;
       LeadShots = true;
-      Hitbox.LocalScale = 0.5f;
+      Hitbox.LocalScale = 0.9f;
 
       AbilityCooldown = new Timer(3.5f, null, false);
       blinkTimer1 = new Timer(blinkDelay, Blink1, false);
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);
       blinkTimer3 = new Timer(blinkDelay, Blink3, false);
 
-      WpnDesc desc = new WpnDesc(16, 1, 700, 12, 10, 100, 0, 1, 0, 0, 0, 1);              // burst shotgun
+      WpnDesc desc = new WpnDesc(6, 3.0f, 700, 12, 8, 75, 1, 3, 0, 0, 0, 1);              // burst shotgun
       Weapon wpn = new Weapon(this, world, desc, "laserBlue06");
       wpn.Scale = 0.9f;
-      wpn.Name = "Shotgun2";
+      wpn.Name = "Burst";
       weapons.Add(wpn);
 
-      desc = new WpnDesc(5, 60, 500, 8, 10, 50, 1, 30, 360 / 8f, 360 / 30f, 0, 0.2f);                 // spinny projectile thing
-      wpn = new Weapon(this, world, desc, "laserBlue10");
+      desc = new WpnDesc(10, 30, 600, 1, 0, 0, 0.5f, 45, 0, 0, -105, 0.15f);
+      wpn = new LaserGun(this, world, desc, 40, true, 100, false);
+      wpn.ProjTex = AssetManager.GetTexture("spaceEffects_018");
+      wpn.LocalPos = new Vector2(-20, 0);
       wpn.Scale = 0.5f;
-      wpn.Name = "Spin";
-      weapons.Add(wpn);
+      wpn.Name = "Wing";
+      CompoundWeapon cw = new CompoundWeapon(wpn);
+      desc = new WpnDesc(10, 30, 600, 1, 0, 0, 0.5f, 45, 0, 0, 105, 0.15f);
+      wpn = new LaserGun(this, world, desc, 40, true, 100, false);
+      wpn.ProjTex = AssetManager.GetTexture("spaceEffects_018");
+      wpn.LocalPos = new Vector2(20, 0);
+      wpn.Scale = 0.5f;
+      wpn.Name = "Wing";
+      cw.AddWeapon(wpn);
+      weapons.Add(cw);
     }
     public override void Update(GameTime gt)
     {

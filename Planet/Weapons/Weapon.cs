@@ -13,8 +13,8 @@ namespace Planet
     public string Name { get; set; }
     public float Damage { get { return desc.damage * ship.damageModifier; } }
     public WpnDesc Desc { get { return desc; } }
+    public Texture2D ProjTex { get; set; }
 
-    protected Texture2D projTex;
     public Ship ship;
     protected World world;
     protected WpnDesc desc;
@@ -30,9 +30,9 @@ namespace Planet
     {
       Name = name;
       if (pTex == "")
-        projTex = null;
+        ProjTex = null;
       else
-        projTex = AssetManager.GetTexture(pTex);
+        ProjTex = AssetManager.GetTexture(pTex);
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
@@ -41,7 +41,7 @@ namespace Planet
     public Weapon(Weapon wpn) : base(wpn)
     {
       Name = wpn.Name;
-      projTex = wpn.projTex;
+      ProjTex = wpn.ProjTex;
       ship = wpn.ship;
       world = wpn.world;
       desc = wpn.Desc;
@@ -102,7 +102,7 @@ namespace Planet
       float sv = Utility.RandomFloat(-desc.speedVariance, desc.speedVariance);
       Projectile p = new Projectile(
         world,
-        projTex,
+        ProjTex,
         Pos,
         direction,
         sv + desc.projSpeed,
@@ -161,7 +161,7 @@ namespace Planet
       LocalPos = localPos;
       LocalRotation = localRotation;
       LocalScale = localScale;
-      
+
       this.ship = ship;
     }
   }

@@ -39,7 +39,7 @@ namespace Planet
       : base(pos, tex)
     {
       this.world = world;
-      Scale = .5f;
+      Scale = .75f;
       IsActive = true;
       CollisionEnabled = true;
     }

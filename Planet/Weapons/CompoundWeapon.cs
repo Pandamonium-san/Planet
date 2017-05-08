@@ -13,29 +13,25 @@ namespace Planet
       : base(wpn)
     {
       weapons = new List<Weapon>();
-      SetShip(wpn.ship);
+      weapons.Add(wpn);
     }
     public override void Update(GameTime gt)
     {
-      base.Update(gt);
       foreach (Weapon wpn in weapons)
         wpn.Update(gt);
     }
     public override void Fire()
     {
-      base.Fire();
       foreach (Weapon wpn in weapons)
         wpn.Fire();
     }
     public override void ResetShootTimer()
     {
-      base.ResetShootTimer();
       foreach (Weapon wpn in weapons)
         wpn.ResetShootTimer();
     }
     public override void SetShip(Ship ship)
     {
-      base.SetShip(ship);
       foreach (Weapon wpn in weapons)
         wpn.SetShip(ship);
     }

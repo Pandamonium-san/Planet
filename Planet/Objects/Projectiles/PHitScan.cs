@@ -11,18 +11,20 @@ namespace Planet
   {
     public Vector2 hitPos;
     public float length;
-    public bool stickToInstigator;
+    public bool stick;
 
+    private Weapon wpn;
     private int width;      // increases width on both sides so actual width is 2x bigger
 
-    public PHitScan(World world, Texture2D tex, Vector2 start, Vector2 dir, float damage, bool canPierce, int width, float length, Ship instigator, float lifeTime = 0.1f)
+    public PHitScan(World world, Texture2D tex, Vector2 start, Vector2 dir, float damage, bool canPierce, int width, float length, Ship instigator, Weapon wpn, float lifeTime = 0.1f)
       : base(world, tex, start, dir, 0, damage, instigator, lifeTime, null, null, canPierce)
     {
+      this.wpn = wpn;
       Rotation = Utility.Vector2ToAngle(dir);
       hitPos = Pos + dir * length;
       this.width = width;
       this.length = length;
-      stickToInstigator = true;
+      stick = true;
     }
     void RayCast()
     {
@@ -98,8 +100,8 @@ namespace Planet
     public override void Draw(SpriteBatch spriteBatch)
     {
       Vector2 start = Pos;
-      if (stickToInstigator)
-        start = instigator.Pos;
+      if (stick)
+        start = wpn.Pos;
       Vector2 end = hitPos;
       Vector2 edge = end - start;
       float angle = (float)-Math.Atan2(edge.X, edge.Y);

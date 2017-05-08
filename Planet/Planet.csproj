@@ -44,7 +44,9 @@
     <Compile Include="Controllers\PlayerShipController.cs" />
     <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\ParticleManager.cs" />
+    <Compile Include="Core\Spawn.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
+    <Compile Include="Core\Waves.cs" />
     <Compile Include="Objects\Background.cs" />
     <Compile Include="Objects\Particle.cs" />
     <Compile Include="Objects\Projectiles\Parasite.cs" />
@@ -65,7 +67,6 @@
     <Compile Include="Controllers\ShipController.cs" />
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Projectiles\PHitScan.cs" />
-    <Compile Include="Objects\Projectiles\PLightning.cs" />
     <Compile Include="UI\LifeBar.cs" />
     <Compile Include="UI\HUD.cs" />
     <Compile Include="UI\Menu.cs" />

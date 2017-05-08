@@ -35,6 +35,7 @@ namespace Planet
     public float shieldRechargeRate;
     public Timer shieldRechargeDelay;
     public bool recharging;
+    public bool unlockTarget;
 
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
@@ -58,8 +59,11 @@ namespace Planet
     }
     protected override void DoUpdate(GameTime gt)
     {
-      if (Target == null || !Target.IsActive || Target.Layer == Layer)
+      if (unlockTarget)
+        Target = null;
+      else if (Target == null || !Target.IsActive || Target.Layer == Layer)
         Target = NextTarget();
+      unlockTarget = false;
 
       if (movementDirection != Vector2.Zero)
         movementDirection.Normalize();
@@ -284,6 +288,7 @@ namespace Planet
       else
       {
         Flash(0.5f, Color.White, false, 0.8f);
+        MakeInvulnerable(0.01f);
       }
     }
     public void TakeDamage(Projectile p)

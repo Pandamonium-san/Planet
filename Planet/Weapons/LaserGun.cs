@@ -16,20 +16,20 @@ namespace Planet
     {
       if (red)
       {
-        projTex = AssetManager.GetTexture("laserRed_m");
+        ProjTex = AssetManager.GetTexture("laserRed_m");
         particle1 = AssetManager.GetTexture("laserRed08");
         particle2 = AssetManager.GetTexture("laserRed10");
       }
       else
       {
-        projTex = AssetManager.GetTexture("laserBlue_m");
+        ProjTex = AssetManager.GetTexture("laserBlue_m");
         particle1 = AssetManager.GetTexture("laserBlue08");
         particle2 = AssetManager.GetTexture("laserBlue10");
       }
     }
     public LaserGun(LaserGun other) : base(other)
     {
-      projTex = other.projTex;
+      ProjTex = other.ProjTex;
       prevRotation = other.prevRotation;
     }
     protected override void Shoot()

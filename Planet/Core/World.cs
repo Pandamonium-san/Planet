@@ -119,7 +119,7 @@ namespace Planet
       spriteBatch.Begin(
         SpriteSortMode.BackToFront,
         BlendState.AlphaBlend,
-        SamplerState.LinearWrap,
+        SamplerState.AnisotropicWrap,
         DepthStencilState.None,
         RasterizerState.CullCounterClockwise
         );

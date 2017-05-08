@@ -28,7 +28,7 @@ namespace Planet
       currentHealth = maxHealth;
       currentShield = maxShield;
       LeadShots = true;
-      Hitbox.LocalScale = 0.5f;
+      Hitbox.LocalScale = 0.9f;
 
       AbilityCooldown = new Timer(10, null, false);
       states = new FixedList<State>(RewindableFrames);

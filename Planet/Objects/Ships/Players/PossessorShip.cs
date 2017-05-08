@@ -29,7 +29,7 @@ namespace Planet
       maxShield = 30;
       currentShield = maxShield;
       LeadShots = true;
-      Hitbox.LocalScale = 0.5f;
+      Hitbox.LocalScale = 0.9f;
 
       AbilityCooldown = new Timer(5, null, false);
       player = pc;
@@ -130,7 +130,7 @@ namespace Planet
       possessedShip.color = Color.Turquoise;
       possessedShip.Switch();
 
-      if(possessedShip is EnemyBoss)
+      if (possessedShip is EnemyBoss)
       {
         possessedShip.GetWeapon(0).Desc.magReloadTime = 1.0f;
         possessedShip.GetWeapon(1).Desc.magReloadTime = 1.0f;
@@ -138,10 +138,10 @@ namespace Planet
         possessedShip.speedModifier = 1.0f;
         possessedShip.rotationModifier = 1.0f;
         List<Weapon> xlaser = ((CompoundWeapon)(possessedShip.GetWeapon(2))).GetWeapons();
-        xlaser.RemoveRange(2, 3);
-        possessedShip.GetWeapon(2).Desc.damage = 30;
-        xlaser[0].Desc.damage = 1;
+        xlaser.RemoveRange(3, 3);
+        xlaser[0].Desc.damage = 30;
         xlaser[1].Desc.damage = 1;
+        xlaser[2].Desc.damage = 1;
       }
 
       IsActive = false;
