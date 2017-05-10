@@ -32,68 +32,9 @@ namespace Planet
       resourcesPerWave = 500;
       resourcesPerWave2 = 500;
 
-      spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 4, 3, 1, 3));
+      //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 4, 3, 1, 3));
+      //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 5, 3));
       MakeWave();
-      //MakeSpawn(new Vector2(500, 500), 5, 4, 1, 3);
-      //for (int i = 0; i < 1; i++)
-      //{
-      //  float x = Utility.RandomFloat(0, 800);
-      //  float y = Utility.RandomFloat(0, 600);
-      //  float c = 50;
-      //  if (i == 0)
-      //  else
-      //    QueueSpawn(new Enemy3(new Vector2(x, y - c), world), new AIController(world), 0.1f);
-      //  //QueueSpawn(new Enemy1(new Vector2(x, y), world), new AIController(world), 0);
-      //  //QueueSpawn(new Enemy1(new Vector2(x + c, y), world), new AIController(world), 0);
-      //  //QueueSpawn(new Enemy1(new Vector2(x, y + c), world), new AIController(world), 0);
-      //  //QueueSpawn(new Enemy1(new Vector2(x - c, y), world), new AIController(world), 0);
-      //}
-      //Vector2 spawnPos = new Vector2(100, 100);
-      //for (int i = 0; i < 15; i++)
-      //{
-      //  AIController aic;
-      //  if (i % 2 == 0)
-      //    aic = new ECWanderer(world);
-      //  else
-      //    aic = new ECChaser(world);
-      //  QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
-      //  spawnPos += new Vector2(50, 0);
-      //}
-      //for (int i = 0; i < 7; i++)
-      //{
-      //  AIController aic;
-      //  if (i % 2 == 0)
-      //    aic = new AIController(world);
-      //  else
-      //    aic = new ECWanderer(world);
-      //  QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
-      //  spawnPos += new Vector2(0, 50);
-      //}
-      //for (int i = 0; i < 15; i++)
-      //{
-      //  AIController aic;
-      //  aic = new ECWanderer(world);
-      //  if (i % 3 == 0)
-      //    QueueSpawn(new Enemy3(spawnPos, world), aic, 1);
-      //  else
-      //    QueueSpawn(new Enemy1(spawnPos, world), aic, 1);
-      //  spawnPos += new Vector2(-50, 0);
-      //}
-      //for (int i = 0; i < 7; i++)
-      //{
-      //  AIController aic;
-      //  if (i % 2 == 0)
-      //    aic = new AIController(world);
-      //  else
-      //    aic = new ECChaser(world);
-      //  if (i % 3 == 0)
-      //    QueueSpawn(new Enemy4(spawnPos, world), aic, 1);
-      //  else
-      //    QueueSpawn(new Enemy2(spawnPos, world), aic, 1);
-      //  spawnPos += new Vector2(0, -50);
-      //}
-      //QueueSpawn(new EnemyBoss(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), world), new ECBoss(world), 20);
-      //DequeueSpawn();
     }
     public void Update(GameTime gt)
     {
@@ -104,7 +45,7 @@ namespace Planet
       }
       controllers.RemoveAll(ai => ai.GetShip() == null);
 
-      if (controllers.Count == 0 && spawnQueue.Count == 0)
+      if (controllers.Count == 0 && spawnQueue.Count == 0 && !spawnTimer.Counting)
       {
         resources += resourcesPerWave + resourcesPerWave2 * WaveCounter - 1;
         MakeWave();
@@ -124,13 +65,12 @@ namespace Planet
     private void SpawnNext()
     {
       Ship enemy = nextSpawn.enemy;
-      enemy.Flash(1.0f, Color.White, false, 1.0f);
       world.PostGameObj(enemy);
 
       AIController sc = nextSpawn.controller;
       sc.IsActive = false;
-      controllers.Add(sc);
       sc.SetShip(enemy);
+      controllers.Add(sc);
 
       DequeueSpawn();
     }
@@ -139,7 +79,7 @@ namespace Planet
       ++WaveCounter;
       if (WaveCounter == 10)
       {
-        spawnQueue.AddLast(MakeSpawn(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight), 5, 4, 1, 3));
+        spawnQueue.AddLast(MakeSpawn(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), 5, 4, 3, 2));
         resources -= 5000;
       }
       while (resources > 150)
@@ -169,7 +109,7 @@ namespace Planet
       else
         ship = 5;
       int controller = Utility.RandomInt(1, 4);
-      float spawnTime = Utility.RandomFloat(0.25f, 3.0f);
+      float spawnTime = Utility.RandomFloat(0.25f, .5f);
       if (ship == 5)
         spawnTime += 10;
       Vector2 pos = new Vector2(Utility.RandomFloat(100, Game1.ScreenWidth - 100), Utility.RandomFloat(100, Game1.ScreenHeight - 100));
@@ -178,7 +118,7 @@ namespace Planet
     public Spawn MakeSpawn(Vector2 pos, int shipType, int controllerType, double spawnTime = 1, double activationTime = 1)
     {
       float cost;
-      return MakeSpawn(out cost, pos, shipType, controllerType, spawnTime);
+      return MakeSpawn(out cost, pos, shipType, controllerType, spawnTime, activationTime);
     }
     public Spawn MakeSpawn(out float cost, Vector2 pos, int shipType, int controllerType, double spawnTime = 1, double activationTime = 1)
     {

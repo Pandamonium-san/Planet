@@ -164,19 +164,19 @@ namespace Planet
     }
     public static Weapon Spread(Ship ship, World world)
     {
-      WpnDesc desc = new WpnDesc(12, 8f, 500, 8, 5, 50, 2, 8, 90 / 7, 0, -45, 10, false, false);
+      WpnDesc desc = new WpnDesc(12, 8f, 500, 8, 3, 50, 2, 8, 90 / 7, 0, -45, 10, false, false);
       Weapon wpn = new Weapon(ship, world, desc, "laserRed08", "Spread");
       wpn.Scale = 0.6f;
       return wpn;
     }
     public static CompoundWeapon Spinny2(Ship ship, World world)
     {
-      WpnDesc desc = new WpnDesc(8, 10f, 500, 4, 2, 10, 2.0f, 20, 360 / 4, 360 / 4 / 10, 0, 5f, true);
+      WpnDesc desc = new WpnDesc(8, 12f, 500, 4, 2, 10, 2.0f, 24, 360 / 4, 360 / 4 / 10, 0, 5f, true);
       Weapon wpn = new Weapon(ship, world, desc, "laserRed08", "Spinny");
       wpn.Scale = 0.4f;
       CompoundWeapon cw = new CompoundWeapon(wpn);
 
-      desc = new WpnDesc(12, 5f, 500, 4, 5, 20, 2.0f, 10, 360 / 4, 360 / 4 / 5, -45, 5f, true);
+      desc = new WpnDesc(12, 7f, 500, 4, 5, 20, 2.0f, 14, 360 / 4, 360 / 4 / 5, -45, 5f, true);
       wpn = new Weapon(ship, world, desc, "laserRed10", "Spinny");
       wpn.Scale = 0.6f;
       cw.AddWeapon(wpn);
@@ -198,24 +198,24 @@ namespace Planet
       wpn.Name = "X Laser back";
       cw.AddWeapon(wpn);
 
-      desc = new WpnDesc(8, 6.0f, 400, 1, 5, 10, 4, 36, 0, 0, -10, 5);
+      desc = new WpnDesc(8, 3.0f, 400, 1, 5, 10, 4, 18, 0, 0, -10, 5);
       wpn = new Weapon(ship, world, desc, "laserRed08", "Pew");
       wpn.Scale = 0.4f;
       wpn.LocalPos = new Vector2(-15, 0);
       wpn.Name = "Left pew";
       cw.AddWeapon(wpn);
 
-      desc = new WpnDesc(8, 6.0f, 400, 1, 5, 10, 4, 36, 0, 0, 10, 5);
+      desc = new WpnDesc(8, 3.0f, 400, 1, 5, 10, 4, 18, 0, 0, 10, 5);
       wpn = new Weapon(ship, world, desc, "laserRed08", "Pew");
       wpn.Scale = 0.4f;
       wpn.LocalPos = new Vector2(15, 0);
       wpn.Name = "Right pew";
       cw.AddWeapon(wpn);
 
-      //desc = new WpnDesc(20, 16f, 750, 15, 10, 0, 4, 6 * 16, 315 / 15, 0, 22.5f + 21 / 2, 10, false, false);
-      //wpn = new Weapon(this, world, desc, "laserRed08", "DeathZone");
-      //wpn.Scale = 0.7f;
-      //cw.AddWeapon(wpn);
+      desc = new WpnDesc(12, 8f, 450, 15, 5, 0, 4, 6 * 8, 315 / 15, 0, 22.5f + 21 / 2, 10, false, false);
+      wpn = new Weapon(ship, world, desc, "laserRed08", "DeathZone");
+      wpn.Scale = 0.7f;
+      cw.AddWeapon(wpn);
 
       return cw;
     }

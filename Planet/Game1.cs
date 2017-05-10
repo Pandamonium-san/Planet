@@ -6,20 +6,21 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
+   *  - Add sound
+   *      - pew pews
+   *      - beep boops
+   *      - bgm
    *  - Design UI
+   *      - Title screen
+   *      - Show wave count
+   *      - Score
+   *      - Highscore list?
    *  - Make proper weapons
    *      - Missiles?
    *  - Enemies
-   *      - Enemy AI
-   *      - Survival Mode
    *      - VS Mode?
    *      - Waves/Levels?
-   *      - Enemy types
-   *  - Ships
-   *      - Rewinder
-   *      - Possessor
-   *      - Blinker
-   *  - Score?
+   *      - More enemy types
    *  - Effects/Shaders?
    */
 

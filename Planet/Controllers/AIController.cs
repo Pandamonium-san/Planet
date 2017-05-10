@@ -61,7 +61,7 @@ namespace Planet
       {
         if (!s.IsActive || s.Untargetable)
           continue;
-        float distance = Utility.DistanceSquared(s.Pos, this.ship.Pos);
+        float distance = Utility.Distance(s.Pos, this.ship.Pos);
         if (distance < nDistance)
         {
           nearest = s;
@@ -76,6 +76,7 @@ namespace Planet
     }
     public void SetShip(Ship ship)
     {
+      ship.Flash((float)activationTimer.Remaining, Color.White, false, 1.0f);
       if (this.ship != null)
         this.ship.Controller = null;
       if (ship != null)

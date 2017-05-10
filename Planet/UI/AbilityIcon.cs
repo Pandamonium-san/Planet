@@ -13,11 +13,12 @@ namespace Planet
     private Ship ship;
     Sprite back;
     Sprite icon;
-
+    SpriteFont font;
     public AbilityIcon(Ship ship, Vector2 pos)
       : base(Vector2.Zero)
     {
       this.ship = ship;
+      font = AssetManager.GetFont("future18");
       Texture2D iconTex = null;
       if (ship is RewinderShip)
         iconTex = AssetManager.GetTexture("rewind");
@@ -69,6 +70,10 @@ namespace Planet
       icon.spriteRec = new Rectangle(0, (int)(icon.tex.Height * (1 - value)), icon.tex.Width, (int)(icon.tex.Height * value));
       back.Draw(spriteBatch);
       icon.Draw(spriteBatch);
+      if (ship is BlinkerShip)
+      {
+        spriteBatch.DrawString(font, ((BlinkerShip)ship).AbilityCharges.ToString(), Pos + new Vector2(13, 5), Color.White, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0.0f);
+      }
     }
   }
 }

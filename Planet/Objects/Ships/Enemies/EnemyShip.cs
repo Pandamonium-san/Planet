@@ -112,7 +112,7 @@ namespace Planet
       baseCost = 5000;
       rotationSpeed = 10;
       baseSpeed = 350;
-      maxHealth = 5000;
+      maxHealth = 4000;
       currentHealth = maxHealth;
       maxShield = 250;
       currentShield = maxShield;

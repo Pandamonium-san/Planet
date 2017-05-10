@@ -120,7 +120,7 @@ namespace Planet
           dir = -dir;
         }
 
-        Projectile p = new Projectile(world, tex, pos, dir, speed, 25, this, lifeTime);
+        Projectile p = new Projectile(world, tex, pos, dir, speed, 20, this, lifeTime);
         p.Scale = scale;
         p.color = blinkColor;//Color.Transparent;
         p.Visible = false;
