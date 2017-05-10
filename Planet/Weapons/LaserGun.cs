@@ -11,8 +11,8 @@ namespace Planet
   {
     float prevRotation = 0f;
     Texture2D particle1, particle2;
-    public LaserGun(Ship ship, World world, WpnDesc desc, int width, bool canPierce, float range = 10000, bool red = false)
-      : base(ship, world, desc, width, canPierce, range)
+    public LaserGun(Ship ship, World world, WpnDesc desc, int width, float range = 10000, bool red = false)
+      : base(ship, world, desc, width, range)
     {
       if (red)
       {
@@ -47,12 +47,14 @@ namespace Planet
     }
     protected override void OnProjectileCollision(Projectile p, GameObject other)
     {
-      if (!(p is PHitScan) || other.frame % 2 == 0)
+      if (!(p is PHitScan))
         return;
       PHitScan ph = (PHitScan)p;
       Vector2 prPos = ph.hitPos;
       Particle pr = world.Particles.CreateParticle(prPos, particle2, Vector2.Zero, 0.1f, Color.White, 0.8f, 4f, 1.0f * width / 20f);
       pr.Rotation = prevRotation += (float)Math.PI / 24;
+      if (other.frame % 2 == 0)
+        return;
 
       Vector2 prDir = -ph.dir;
       ApplyInaccuracy(ref prDir, 65);

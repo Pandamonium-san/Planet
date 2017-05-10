@@ -15,6 +15,15 @@ namespace Planet
       weapons = new List<Weapon>();
       weapons.Add(wpn);
     }
+    public CompoundWeapon(CompoundWeapon wpn)
+      : base(wpn)
+    {
+      weapons = new List<Weapon>();
+      foreach (Weapon w in wpn.weapons)
+      {
+        weapons.Add(new Weapon(w));
+      }
+    }
     public override void Update(GameTime gt)
     {
       foreach (Weapon wpn in weapons)
@@ -29,6 +38,16 @@ namespace Planet
     {
       foreach (Weapon wpn in weapons)
         wpn.ResetShootTimer();
+    }
+    public override void FinishShootTimer()
+    {
+      foreach (Weapon wpn in weapons)
+        wpn.FinishShootTimer();
+    }
+    public override void Reload()
+    {
+      foreach (Weapon wpn in weapons)
+        wpn.Reload();
     }
     public override void SetShip(Ship ship)
     {

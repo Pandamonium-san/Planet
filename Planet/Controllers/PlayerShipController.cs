@@ -12,7 +12,7 @@ namespace Planet
   /// </summary>
   class PlayerShipController : PlayerController, ShipController
   {
-    public Ship Ship { get; set; }
+    protected Ship ship;
     public PlayerShipController(PlayerIndex index, Ship ship)
       : base(index)
     {
@@ -33,31 +33,35 @@ namespace Planet
     }
     public override void Update(GameTime gt)
     {
-      if (Ship != null && !Ship.Disposed)
+      if (ship != null && !ship.Disposed)
         base.Update(gt);
       else
-        Ship = null;
+        ship = null;
     }
-    private void Up() { Ship.Move(-Vector2.UnitY); }
-    private void Down() { Ship.Move(Vector2.UnitY); }
-    private void Left() { Ship.Move(-Vector2.UnitX); }
-    private void Right() { Ship.Move(Vector2.UnitX); }
-    private void Fire1() { Ship.Fire1(); }
-    private void Fire2() { Ship.Fire2(); }
-    private void UnlockTarget() { Ship.unlockTarget = true; }
-    private void SwitchTarget() { Ship.SwitchTarget(); }
-    private void DashPressed() { Ship.SetDash(true); }
-    private void DashReleased() { Ship.SetDash(false); }
-    private void Switch() { Ship.Switch(); }
+    private void Up() { ship.Move(-Vector2.UnitY); }
+    private void Down() { ship.Move(Vector2.UnitY); }
+    private void Left() { ship.Move(-Vector2.UnitX); }
+    private void Right() { ship.Move(Vector2.UnitX); }
+    private void Fire1() { ship.Fire1(); }
+    private void Fire2() { ship.Fire2(); }
+    private void UnlockTarget() { ship.freeAim = true; }
+    private void SwitchTarget() { ship.freeAim = false; ship.SwitchTarget(); }
+    private void DashPressed() { ship.SetDash(true); }
+    private void DashReleased() { ship.SetDash(false); }
+    private void Switch() { ship.Switch(); }
 
+    public Ship GetShip()
+    {
+      return ship;
+    }
     public void SetShip(Ship ship)
     {
-      if (Ship != null)
-        Ship.Controller = null;
+      if (ship != null)
+        ship.Controller = null;
       if (ship != null)
         ship.Controller = this;
-      this.Ship = ship;
-      Ship.ClampToScreen = true;
+      this.ship = ship;
+      ship.ClampToScreen = true;
     }
   }
 }

@@ -33,7 +33,7 @@ namespace Planet
 
     protected World world;
     // debug
-    protected bool drawHitbox = false;
+    protected bool drawHitbox = true;
 
     public GameObject(Vector2 pos, World world, Texture2D tex)
       : base(pos, tex)

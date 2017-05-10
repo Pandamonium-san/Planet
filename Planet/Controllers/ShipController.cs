@@ -8,6 +8,7 @@ namespace Planet
 {
   public interface ShipController
   {
+    Ship GetShip();
     void SetShip(Ship ship);
   }
 }

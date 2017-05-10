@@ -8,36 +8,33 @@ namespace Planet
 {
   class EnemyManager
   {
+    public int WaveCounter { get; private set; }
+
     private Timer spawnTimer;
     private World world;
     private List<AIController> controllers;
-    private Queue<Spawn> spawnQueue;
+    private LinkedList<Spawn> spawnQueue;
     private Spawn nextSpawn;
 
-    private Timer activationTimer;
-    private Ship justSpawned;
-
-    private Timer waveTimer;
     private float resources;
-    private float resourcesPerSecond;
-    private float resourcesPerSecond2;
+    private float resourcesPerWave;
+    private float resourcesPerWave2;
 
     public EnemyManager(World world)
     {
       this.world = world;
 
       controllers = new List<AIController>();
-      spawnQueue = new Queue<Spawn>();
+      spawnQueue = new LinkedList<Spawn>();
       spawnTimer = new Timer(0, SpawnNext, false);
 
-      activationTimer = new Timer(1.0f, ActivateSpawned, false);
+      resources = 500;
+      resourcesPerWave = 500;
+      resourcesPerWave2 = 500;
 
-      waveTimer = new Timer(0, MakeWave, true);
-      resources = 100;
-      resourcesPerSecond = 50;
-      resourcesPerSecond2 = 1;
-
-      QueueSpawn(new EnemyBoss(new Vector2(500,500), world), new ECBoss(world), 1);
+      spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 4, 3, 1, 3));
+      MakeWave();
+      //MakeSpawn(new Vector2(500, 500), 5, 4, 1, 3);
       //for (int i = 0; i < 1; i++)
       //{
       //  float x = Utility.RandomFloat(0, 800);
@@ -100,27 +97,25 @@ namespace Planet
     }
     public void Update(GameTime gt)
     {
-      activationTimer.Update(gt);
       spawnTimer.Update(gt);
       foreach (AIController aic in controllers)
       {
         aic.Update(gt);
       }
+      controllers.RemoveAll(ai => ai.GetShip() == null);
 
-      resources += resourcesPerSecond * (float)gt.ElapsedGameTime.TotalSeconds;
-      resourcesPerSecond += resourcesPerSecond2 * (float)gt.ElapsedGameTime.TotalSeconds;
-      waveTimer.Update(gt);
-    }
-    public void QueueSpawn(Ship enemy, AIController controller, double spawnTime)
-    {
-      Spawn s = new Spawn(enemy, controller, spawnTime);
-      spawnQueue.Enqueue(s);
+      if (controllers.Count == 0 && spawnQueue.Count == 0)
+      {
+        resources += resourcesPerWave + resourcesPerWave2 * WaveCounter - 1;
+        MakeWave();
+      }
     }
     private void DequeueSpawn()
     {
       if (spawnQueue.Count == 0)
         return;
-      nextSpawn = spawnQueue.Dequeue();
+      nextSpawn = spawnQueue.First();
+      spawnQueue.RemoveFirst();
       if (nextSpawn.timeToSpawn == 0)
         SpawnNext();
       else
@@ -128,76 +123,64 @@ namespace Planet
     }
     private void SpawnNext()
     {
-      Type enemyType = nextSpawn.enemy.GetType();
-      Type aic = nextSpawn.controller.GetType();
-
-      Ship enemy = (Ship)Activator.CreateInstance(enemyType, new object[] { nextSpawn.enemy.Pos, world });
-      justSpawned = enemy;
+      Ship enemy = nextSpawn.enemy;
       enemy.Flash(1.0f, Color.White, false, 1.0f);
       world.PostGameObj(enemy);
 
-      AIController sc = (AIController)Activator.CreateInstance(aic, world);
+      AIController sc = nextSpawn.controller;
       sc.IsActive = false;
       controllers.Add(sc);
       sc.SetShip(enemy);
 
-      activationTimer.Start();
       DequeueSpawn();
-    }
-    public void StartWave(Wave wave)
-    {
-
-    }
-    private void ActivateSpawned()
-    {
-      ((AIController)justSpawned.Controller).IsActive = true;
     }
     private void MakeWave()
     {
-      int N = Utility.RandomInt(10, 100);
-      float nextWave = Utility.RandomInt(2, 15) * (resourcesPerSecond / 100.0f);
-      nextWave = MathHelper.Clamp(nextWave, 3, 30);
-      for (int i = 0; i < N; i++)
+      ++WaveCounter;
+      if (WaveCounter == 10)
+      {
+        spawnQueue.AddLast(MakeSpawn(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight), 5, 4, 1, 3));
+        resources -= 5000;
+      }
+      while (resources > 150)
       {
         float cost;
         Spawn spawn = MakeRandomSpawn(out cost);
         if (cost <= resources)
         {
-          if (spawn.enemy is EnemyBoss)
-            nextWave += 20;
-          spawnQueue.Enqueue(spawn);
+          spawnQueue.AddLast(spawn);
           resources -= cost;
         }
       }
-      waveTimer.Start(nextWave);
       DequeueSpawn();
     }
     private Spawn MakeRandomSpawn(out float cost)
     {
-      int ship = Utility.RandomInt(1, 3);
-      if (ship == 2)
-      {
-        ship = Utility.RandomInt(2, 5);
-        if (ship == 4)
-        {
-          ship = Utility.RandomInt(0, 5);
-          if (ship == 0)
-            ship = 5;
-          else
-            ship = 4;
-        }
-      }
+      float P = Utility.RandomFloat(0, 1);
+      int ship;
+      if (P > 0.5f)
+        ship = 1;
+      else if (P > 0.30f)
+        ship = 2;
+      else if (P > 0.10f)
+        ship = 3;
+      else if (P > 0.05f)
+        ship = 4;
+      else
+        ship = 5;
       int controller = Utility.RandomInt(1, 4);
-      float spawnTime = 1.1f;
+      float spawnTime = Utility.RandomFloat(0.25f, 3.0f);
+      if (ship == 5)
+        spawnTime += 10;
       Vector2 pos = new Vector2(Utility.RandomFloat(100, Game1.ScreenWidth - 100), Utility.RandomFloat(100, Game1.ScreenHeight - 100));
       return MakeSpawn(out cost, pos, ship, controller, spawnTime);
     }
-    public Spawn MakeSpawn(Vector2 pos, int shipType, int controllerType, double spawnTime = 1)
+    public Spawn MakeSpawn(Vector2 pos, int shipType, int controllerType, double spawnTime = 1, double activationTime = 1)
     {
       float cost;
       return MakeSpawn(out cost, pos, shipType, controllerType, spawnTime);
     }
-    public Spawn MakeSpawn(out float cost, Vector2 pos, int shipType, int controllerType, double spawnTime = 1)
+    public Spawn MakeSpawn(out float cost, Vector2 pos, int shipType, int controllerType, double spawnTime = 1, double activationTime = 1)
     {
       Spawn spawn;
       Ship ship;
@@ -216,7 +199,7 @@ namespace Planet
           break;
         case 3:
           ship = new Enemy3(pos, world);
-          controller = new ECWanderer(world);
+          controller = new ECWanderer(world, activationTime);
           cost += 200;
           spawn = new Spawn(ship, controller, spawnTime);
           return spawn;
@@ -226,7 +209,7 @@ namespace Planet
           break;
         case 5:
           ship = new EnemyBoss(pos, world);
-          controller = new ECBoss(world);
+          controller = new ECBoss(world, activationTime);
           cost += 5000;
           spawn = new Spawn(ship, controller, spawnTime);
           return spawn;
@@ -235,15 +218,15 @@ namespace Planet
       {
         case 1:
         default:
-          controller = new AIController(world);
+          controller = new AIController(world, activationTime);
           cost *= 1.0f;
           break;
         case 2:
-          controller = new ECChaser(world);
+          controller = new ECChaser(world, activationTime);
           cost *= 1.2f;
           break;
         case 3:
-          controller = new ECWanderer(world);
+          controller = new ECWanderer(world, activationTime);
           cost *= 1.2f;
           break;
       }

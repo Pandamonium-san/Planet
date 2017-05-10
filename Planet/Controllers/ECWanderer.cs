@@ -9,7 +9,7 @@ namespace Planet
   class ECWanderer : AIController
   {
     Vector2 targetPos;
-    public ECWanderer(World world) : base(world)
+    public ECWanderer(World world, double activationTime = 0) : base(world, activationTime)
     {
       targetPos = new Vector2(Utility.RandomFloat(100, Game1.ScreenWidth - 100), Utility.RandomFloat(100, Game1.ScreenHeight - 100));
     }

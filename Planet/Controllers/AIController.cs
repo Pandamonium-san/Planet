@@ -14,16 +14,19 @@ namespace Planet
     protected World world;
     protected double targetRefreshTime;
     protected Timer targetRefresher;
+    protected Timer activationTimer;
 
-    public AIController(World world)
+    public AIController(World world, double activationTime = 0)
     {
+      IsActive = false;
+      activationTimer = new Timer(activationTime, () => IsActive = true, true, false);
       this.world = world;
-      IsActive = true;
       targetRefreshTime = 1;
       targetRefresher = new Timer(targetRefreshTime, FindNearestTarget, true, true);
     }
     public void Update(GameTime gt)
     {
+      activationTimer.Update(gt);
       if (ship != null && ship.Disposed)
         ship = null;
       if (ship == null || !ship.IsActive || !IsActive)
@@ -54,18 +57,22 @@ namespace Planet
       List<Ship> players = world.GetPlayers();
       Ship nearest = null;
       float nDistance = 1000000;
-      foreach (Ship ship in players)
+      foreach (Ship s in players)
       {
-        if (!ship.IsActive || ship.Untargetable)
+        if (!s.IsActive || s.Untargetable)
           continue;
-        float distance = Utility.DistanceSquared(ship.Pos, this.ship.Pos);
+        float distance = Utility.DistanceSquared(s.Pos, this.ship.Pos);
         if (distance < nDistance)
         {
-          nearest = ship;
+          nearest = s;
           nDistance = distance;
         }
       }
       ship.Target = nearest;
+    }
+    public Ship GetShip()
+    {
+      return ship;
     }
     public void SetShip(Ship ship)
     {

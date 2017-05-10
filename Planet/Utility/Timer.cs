@@ -40,7 +40,10 @@ namespace Planet
       Finished = other.Finished;
       Repeats = other.Repeats;
     }
-
+    public void ForceFinish()
+    {
+      elapsedSeconds = seconds;
+    }
     public void Start(double seconds = -1)
     {
       Counting = true;

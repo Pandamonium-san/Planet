@@ -10,14 +10,16 @@ namespace Planet
   class BlinkerShip : Ship, IPlayerShip
   {
     public Timer AbilityCooldown { get; set; }
+    public int AbilityCharges { get; private set; }
 
     private Color blinkColor = Color.DeepSkyBlue;
     private float blinkRange = 200;
-    private float blinkDelay = 0.5f;
+    private float blinkDelay = 0.3f;
     private Timer blinkTimer1;
     private Timer blinkTimer2;
     private Timer blinkTimer3;
     private Vector2 blinkDirection;
+    private int maxCharges = 3;
 
     public BlinkerShip(Vector2 pos, World world)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_001"))
@@ -25,39 +27,27 @@ namespace Planet
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_001");
       SetLayer(Layer.PLAYER_SHIP);
 
-      maxHealth = 100;
+      maxHealth = 60;
       currentHealth = maxHealth;
-      maxShield = 20;
+      maxShield = 40;
       currentShield = maxShield;
       LeadShots = true;
-      Hitbox.LocalScale = 0.9f;
+      Hitbox.LocalScale = 0.7f;
 
-      AbilityCooldown = new Timer(3.5f, null, false);
+      AbilityCharges = maxCharges;
+      AbilityCooldown = new Timer(4.0f, () =>
+      {
+        AbilityCharges = Math.Min(AbilityCharges + 1, maxCharges);
+        if (AbilityCharges < maxCharges)
+          AbilityCooldown.Start();
+      });
+
       blinkTimer1 = new Timer(blinkDelay, Blink1, false);
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);
       blinkTimer3 = new Timer(blinkDelay, Blink3, false);
 
-      WpnDesc desc = new WpnDesc(6, 3.0f, 700, 12, 8, 75, 1, 3, 0, 0, 0, 1);              // burst shotgun
-      Weapon wpn = new Weapon(this, world, desc, "laserBlue06");
-      wpn.Scale = 0.9f;
-      wpn.Name = "Burst";
-      weapons.Add(wpn);
-
-      desc = new WpnDesc(10, 30, 600, 1, 0, 0, 0.5f, 45, 0, 0, -105, 0.15f);
-      wpn = new LaserGun(this, world, desc, 40, true, 100, false);
-      wpn.ProjTex = AssetManager.GetTexture("spaceEffects_018");
-      wpn.LocalPos = new Vector2(-20, 0);
-      wpn.Scale = 0.5f;
-      wpn.Name = "Wing";
-      CompoundWeapon cw = new CompoundWeapon(wpn);
-      desc = new WpnDesc(10, 30, 600, 1, 0, 0, 0.5f, 45, 0, 0, 105, 0.15f);
-      wpn = new LaserGun(this, world, desc, 40, true, 100, false);
-      wpn.ProjTex = AssetManager.GetTexture("spaceEffects_018");
-      wpn.LocalPos = new Vector2(20, 0);
-      wpn.Scale = 0.5f;
-      wpn.Name = "Wing";
-      cw.AddWeapon(wpn);
-      weapons.Add(cw);
+      weapons.Add(WeaponList.Burst(this, world));
+      weapons.Add(WeaponList.Wing(this, world));
     }
     public override void Update(GameTime gt)
     {
@@ -67,16 +57,14 @@ namespace Planet
       blinkTimer2.Update(gt);
       blinkTimer3.Update(gt);
     }
-    public override void Fire1()
-    {
-      CurrentWeapon.Fire();
-    }
     // ship disappears, particles spawn
     public override void Fire2()
     {
-      if (blinkTimer1.Counting || blinkTimer2.Counting || AbilityCooldown.Counting)
+      if (blinkTimer1.Counting || blinkTimer2.Counting || AbilityCharges <= 0)//AbilityCooldown.Counting)
         return;
-      AbilityCooldown.Start();
+      AbilityCharges--;
+      if (!AbilityCooldown.Counting)
+        AbilityCooldown.Start();
       Flash(0.15f, blinkColor, false, 1.0f, true);
       blinkDirection = movementDirection;
       IsActive = false;
@@ -132,7 +120,7 @@ namespace Planet
           dir = -dir;
         }
 
-        Projectile p = new Projectile(world, tex, pos, dir, speed, 40, this, lifeTime);
+        Projectile p = new Projectile(world, tex, pos, dir, speed, 25, this, lifeTime);
         p.Scale = scale;
         p.color = blinkColor;//Color.Transparent;
         p.Visible = false;

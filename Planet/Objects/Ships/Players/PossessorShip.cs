@@ -24,29 +24,18 @@ namespace Planet
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_009");
       SetLayer(Layer.PLAYER_SHIP);
 
-      maxHealth = 70;
+      maxHealth = 80;
       currentHealth = maxHealth;
-      maxShield = 30;
+      maxShield = 20;
       currentShield = maxShield;
       LeadShots = true;
-      Hitbox.LocalScale = 0.9f;
+      Hitbox.LocalScale = 0.7f;
 
-      AbilityCooldown = new Timer(5, null, false);
+      AbilityCooldown = new Timer(18, null, false);
       player = pc;
 
-      WpnDesc desc = new WpnDesc(1.5f, 60, 1500, 1, 0.1f, 0, 0, 30, 0, 0, 0, 0.1f);           // laser
-      LaserGun laser = new LaserGun(this, world, desc, 20, false);
-      laser.SetMuzzle(new Vector2(0, -20));
-      laser.Name = "Laser";
-      weapons.Add(laser);
-
-      desc = new WpnDesc(20, 1.5f, 0, 1, 0, 0, 1, 3, 0, 0, 0, 10.0f);           // laser
-      desc = new WpnDesc(3000, 1, 2500, 5, 0, 0, 0, 1, 0, 0, 0, 3);           //sniper
-      ExplodeGun wpn = new ExplodeGun(this, world);
-      wpn.SetDesc(desc);
-      wpn.Scale = 2.0f;
-      wpn.Name = "Mines";
-      weapons.Add(wpn);
+      weapons.Add(WeaponList.Laser(this, world));
+      weapons.Add(WeaponList.Grenade(this, world));
     }
     public override void Update(GameTime gt)
     {
@@ -103,6 +92,15 @@ namespace Planet
       parasite.Scale *= Scale * 0.4f;
       world.PostProjectile(parasite);
     }
+    public override void Die()
+    {
+      base.Die();
+      if (parasite != null)
+      {
+        parasite.Unlatch();
+        parasite.Die();
+      }
+    }
     public override void SetDash(bool dash)
     {
       if (dash && parasite != null && parasite.Latched)
@@ -114,7 +112,7 @@ namespace Planet
       parasite = null;
 
       possessedShip = other;
-
+      possessedShip.Controller.SetShip(null);
       psc = new PlayerShipController(player.Index, possessedShip);
 
       possessedShip.SetLayer(Layer);
@@ -122,10 +120,9 @@ namespace Planet
       possessedShip.currentHealth = possessedShip.maxHealth;
       possessedShip.maxShield = maxShield;
       possessedShip.currentShield = currentShield;
-      possessedShip.damageModifier *= 5.0f;
-      possessedShip.speedModifier *= 3.0f;
+      possessedShip.damageModifier *= 2.0f;
+      possessedShip.speedModifier *= 1.5f;
       possessedShip.rotationModifier *= 1.2f;
-      possessedShip.GetWeapon(0).Desc.magReloadTime *= 0.2f;
       possessedShip.LeadShots = true;
       possessedShip.color = Color.Turquoise;
       possessedShip.Switch();
@@ -134,7 +131,9 @@ namespace Planet
       {
         possessedShip.GetWeapon(0).Desc.magReloadTime = 1.0f;
         possessedShip.GetWeapon(1).Desc.magReloadTime = 1.0f;
-        possessedShip.damageModifier = 3.0f;
+        possessedShip.maxHealth = 500;
+        possessedShip.currentHealth = possessedShip.maxHealth;
+        possessedShip.damageModifier = 1.0f;
         possessedShip.speedModifier = 1.0f;
         possessedShip.rotationModifier = 1.0f;
         List<Weapon> xlaser = ((CompoundWeapon)(possessedShip.GetWeapon(2))).GetWeapons();

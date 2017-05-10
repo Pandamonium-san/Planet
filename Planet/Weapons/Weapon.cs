@@ -14,10 +14,13 @@ namespace Planet
     public float Damage { get { return desc.damage * ship.damageModifier; } }
     public WpnDesc Desc { get { return desc; } }
     public Texture2D ProjTex { get; set; }
+    public bool DashUsable { get; set; }
+    public float ProjRotSpeed { get; set; }
 
     public Ship ship;
     protected World world;
     protected WpnDesc desc;
+    protected SoundEffectInstance sfx;
 
     // counter variables
     protected int currentMagCount;
@@ -33,12 +36,16 @@ namespace Planet
         ProjTex = null;
       else
         ProjTex = AssetManager.GetTexture(pTex);
+      ProjRotSpeed = 0;
       this.ship = ship;
       this.world = world;
       SetDesc(desc);
       SetMuzzle(Vector2.Zero);
+      sfx = AssetManager.GetSfx("laser2").CreateInstance();
+      sfx.Volume = 0.1f;
     }
-    public Weapon(Weapon wpn) : base(wpn)
+    public Weapon(Weapon wpn)
+      : base(wpn)
     {
       Name = wpn.Name;
       ProjTex = wpn.ProjTex;
@@ -63,10 +70,20 @@ namespace Planet
     {
       if (currentMagCount > 0 && CanShoot())
       {
-        //var sfx = AssetManager.GetSfx("Laser_Shoot").CreateInstance();
-        //sfx.Volume = 0.3f;
-        //if (ship is RewinderShip)
-        //  sfx.Play();
+        if (ship is RewinderShip)
+        {
+          //sfx.Stop();
+          if (sfx.State != SoundState.Playing)
+          {
+            sfx = AssetManager.GetSfx("menu_scroll").CreateInstance();
+            sfx.Volume = 0.5f;
+            sfx.Play();
+          }
+        }
+        else
+        {
+          AudioManager.PlaySound("pew", 0.05f);
+        }
         Shoot();
         currentShotAngle += MathHelper.ToRadians(desc.degreesBetweenShots);
         currentMagCount--;
@@ -77,7 +94,11 @@ namespace Planet
     {
       shootTimer.Start();
     }
-    public void Reload()
+    public virtual void FinishShootTimer()
+    {
+      shootTimer.ForceFinish();
+    }
+    public virtual void Reload()
     {
       currentMagCount = desc.magSize;
       currentShotAngle = 0;
@@ -118,8 +139,13 @@ namespace Planet
     }
     protected virtual void BulletPattern(Projectile p, GameTime gt)
     {
+      if (p.lifeTimer.Remaining < 0.5)  //Fade-out effect
+        p.alpha = (float)(0.25 + p.lifeTimer.Remaining / 0.5);
       p.Pos += p.velocity * (float)gt.ElapsedGameTime.TotalSeconds;
-      p.Rotation = Utility.Vector2ToAngle(p.velocity);
+      if (ProjRotSpeed > 0)
+        p.Rotation += ProjRotSpeed * (float)gt.ElapsedGameTime.TotalSeconds;
+      else
+        p.Rotation = Utility.Vector2ToAngle(p.velocity);
     }
     protected virtual void OnProjectileCollision(Projectile p, GameObject other)
     {

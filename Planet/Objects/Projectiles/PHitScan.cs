@@ -25,6 +25,7 @@ namespace Planet
       this.width = width;
       this.length = length;
       stick = true;
+      CollisionEnabled = false;
     }
     void RayCast()
     {

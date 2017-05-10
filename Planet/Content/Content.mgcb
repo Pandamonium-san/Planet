@@ -121,12 +121,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts\future48.spritefont
 
-#begin Sfx/Laser_Shoot.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/Laser_Shoot.wav
-
 #begin Textures/laserBlue16.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1482,4 +1476,88 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/spaceEffects_018.png
+
+#begin Sfx/Laser_Shoot2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/Laser_Shoot2.wav
+
+#begin Sfx/Laser_Shoot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/Laser_Shoot.wav
+
+#begin Sfx/Laser_Shoot3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/Laser_Shoot3.wav
+
+#begin Sfx/menu_scroll.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/menu_scroll.wav
+
+#begin Sfx/plick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/plick.wav
+
+#begin Sfx/laser2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/laser2.wav
+
+#begin Sfx/laser.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/laser.wav
+
+#begin Sfx/lasergun.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/lasergun.wav
+
+#begin Sfx/explosion1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/explosion1.wav
+
+#begin Sfx/explosion2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/explosion2.wav
+
+#begin Sfx/explosion3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/explosion3.wav
+
+#begin Sfx/explosion4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/explosion4.wav
+
+#begin Sfx/plick2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/plick2.wav
+
+#begin Sfx/pew.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/pew.wav
 

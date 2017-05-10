@@ -11,15 +11,15 @@ namespace Planet
     Timer chaseTimer;
     Timer moveTimer;
     bool chasing;
-    public ECChaser(World world) : base(world)
+    public ECChaser(World world, double activationTime = 0) : base(world, activationTime)
     {
-      moveTimer = new Timer(1, StartChase, true);
-      chaseTimer = new Timer(1.5, null, false);
+      moveTimer = new Timer(1.2f, StartChase, true);
+      chaseTimer = new Timer(0.75, null, false);
     }
     void StartChase()
     {
       chasing = true;
-      chaseTimer.Start(Utility.RandomFloat(2, 3));
+      chaseTimer.Start(Utility.RandomFloat(0.75f, 1));
     }
     void StopChase()
     {

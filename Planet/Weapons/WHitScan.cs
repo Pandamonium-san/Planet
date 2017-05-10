@@ -10,20 +10,17 @@ namespace Planet
   {
     protected int width;
     protected float range;
-    protected bool canPierce;
-    public WHitScan(Ship ship, World world, WpnDesc desc, int width, bool canPierce, float range = 10000)
+    public WHitScan(Ship ship, World world, WpnDesc desc, int width, float range = 10000)
       : base(ship, world, desc)
     {
       this.width = width;
       this.range = range;
-      this.canPierce = canPierce;
       this.desc.projSpeed = 10000;
     }
     public WHitScan(WHitScan other) : base(other)
     {
       width = other.width;
       range = other.range;
-      canPierce = other.canPierce;
       desc.projSpeed = 10000;
     }
     protected override void CreateBullet()
@@ -41,7 +38,7 @@ namespace Planet
         Pos,
         direction,
         Damage,
-        canPierce,
+        desc.piercing,
         width,
         range,
         ship,

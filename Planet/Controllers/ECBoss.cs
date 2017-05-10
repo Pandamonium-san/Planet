@@ -19,8 +19,8 @@ namespace Planet
     Timer phaseTwoTimer;
     int cycles;
 
-    public ECBoss(World world)
-      : base(world)
+    public ECBoss(World world, double activationTime = 0)
+      : base(world, activationTime)
     {
       relocateTimer = new Timer(3, Relocate, false);
       phaseTwoTimer = new Timer(20, InitPhaseOne, false);

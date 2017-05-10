@@ -42,11 +42,11 @@
     <Compile Include="Controllers\ECBoss.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PlayerShipController.cs" />
+    <Compile Include="Core\AudioManager.cs" />
     <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\ParticleManager.cs" />
     <Compile Include="Core\Spawn.cs" />
     <Compile Include="Core\SpriteRegions.cs" />
-    <Compile Include="Core\Waves.cs" />
     <Compile Include="Objects\Background.cs" />
     <Compile Include="Objects\Particle.cs" />
     <Compile Include="Objects\Projectiles\Parasite.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="Weapons\NewTestWeapon.cs" />
     <Compile Include="Weapons\TurretGun.cs" />
     <Compile Include="Weapons\Weapon.cs" />
+    <Compile Include="Weapons\WeaponList.cs" />
     <Compile Include="Weapons\WpnDesc.cs" />
     <Compile Include="Weapons\WHitScan.cs" />
   </ItemGroup>

@@ -26,7 +26,6 @@ namespace Planet
     {
       SetDesc(other.desc);
     }
-
     protected override void Shoot()
     {
       currentBulletAngle = MathHelper.ToRadians(desc.startingAngleDegrees);

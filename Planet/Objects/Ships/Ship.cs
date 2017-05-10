@@ -35,7 +35,7 @@ namespace Planet
     public float shieldRechargeRate;
     public Timer shieldRechargeDelay;
     public bool recharging;
-    public bool unlockTarget;
+    public bool freeAim;
 
     protected Vector2 movementDirection;
     protected float currentRotationSpeed;
@@ -48,22 +48,20 @@ namespace Planet
     public Ship(Vector2 pos, World world, Texture2D tex)
       : base(pos, world, tex)
     {
+      SetTexture(tex);
       weapons = new List<Weapon>();
       weaponIndex = 0;
       maxHealth = 10;
       currentHealth = maxHealth;
 
-      shieldRechargeRate = 5;
+      shieldRechargeRate = 7.5f;
       shieldRechargeDelay = new Timer(3, () => recharging = true, false, false);
       invulnerabilityTimer = new Timer(0.0, () => Invulnerable = false, false);
     }
     protected override void DoUpdate(GameTime gt)
     {
-      if (unlockTarget)
-        Target = null;
-      else if (Target == null || !Target.IsActive || Target.Layer == Layer)
+      if (Target == null || !Target.IsActive || Target.Layer == Layer)
         Target = NextTarget();
-      unlockTarget = false;
 
       if (movementDirection != Vector2.Zero)
         movementDirection.Normalize();
@@ -86,7 +84,7 @@ namespace Planet
       }
       else
       {
-        if (movementDirection != Vector2.Zero && Target == null)
+        if (freeAim || (movementDirection != Vector2.Zero && Target == null))
           TurnTowards(Pos + movementDirection);
         else if (Target != null)
         {
@@ -144,7 +142,7 @@ namespace Planet
     }
     public virtual void Fire1()
     {
-      if (IsActive && !Dashing)
+      if (IsActive && (!Dashing || CurrentWeapon.DashUsable))
         CurrentWeapon.Fire();
     }
     public virtual void Fire2()
@@ -214,6 +212,7 @@ namespace Planet
     {
       base.Die();
       world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
+      AudioManager.PlayExplosion(0.2f);
     }
     public void MakeInvulnerable(float invulnerabilityTime)
     {
@@ -282,13 +281,12 @@ namespace Planet
         Die();
       if (Layer == Layer.PLAYER_SHIP)
       {
-        Flash(0.5f, Color.Red, false, 0.8f);
-        MakeInvulnerable(0.5f);
+        Flash(0.75f, Color.Red, false, 0.8f);
+        MakeInvulnerable(0.75f);
       }
       else
       {
-        Flash(0.5f, Color.White, false, 0.8f);
-        MakeInvulnerable(0.01f);
+        Flash(0.25f, Color.White, false, 0.8f);
       }
     }
     public void TakeDamage(Projectile p)
@@ -300,8 +298,15 @@ namespace Planet
       if (currentShield > 0)
       {
         currentShield -= p.damage * incomingDamageModifier;
-        CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos));
-        MakeInvulnerable(0.25f);
+        if (Layer == Layer.PLAYER_SHIP)
+        {
+          CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.5f);
+          MakeInvulnerable(0.5f);
+        }
+        else
+        {
+          CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
+        }
       }
       else
       {
@@ -327,7 +332,7 @@ namespace Planet
       else
         TurnTowards(Pos + v);
     }
-    private void CreateShieldParticle(float rotation)
+    private void CreateShieldParticle(float rotation, float duration)
     {
       string shieldTex;
       float f = currentShield / maxShield;
@@ -341,14 +346,14 @@ namespace Planet
         Pos,
         AssetManager.GetTexture(shieldTex),
         Vector2.Zero,
-        0.25f,
+        duration,
         Color.Turquoise,
         1.2f * (f + 0.5f),
         0,
         Scale,
         rotation);
       shield.Parent = this;
-      Flash(0.25f, Color.Turquoise, false, 0.5f * (f + 0.5f));
+      Flash(duration, Color.Turquoise, false, 0.5f * (f + 0.5f));
     }
     private void Separate(GameObject other)
     {

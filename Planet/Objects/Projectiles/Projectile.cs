@@ -80,8 +80,6 @@ namespace Planet
     protected override void DoUpdate(GameTime gt)
     {
       lifeTimer.Update(gt);
-      if (lifeTimer.Remaining < 0.5)  //Fade-out effect
-        alpha = (float)(0.25 + lifeTimer.Remaining / 0.5);
 
       if (IsOutsideScreen())
         Die();
@@ -94,7 +92,6 @@ namespace Planet
         LocalPos += velocity * (float)gt.ElapsedGameTime.TotalSeconds;
         LocalRotation = Utility.Vector2ToAngle(velocity);
       }
-
       base.DoUpdate(gt);
     }
     private bool IsOutsideScreen()

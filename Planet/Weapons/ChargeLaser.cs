@@ -12,8 +12,8 @@ namespace Planet
     // magazine size = max charge level
     float chargeLevel;
     bool holding;
-    public ChargeLaser(Ship ship, World world, WpnDesc desc, int width, bool canPierce = true, float range = 10000)
-      : base(ship, world, desc, width, canPierce, range)
+    public ChargeLaser(Ship ship, World world, WpnDesc desc, int width, float range = 10000)
+      : base(ship, world, desc, width, range)
     {
     }
     public ChargeLaser(ChargeLaser other)
