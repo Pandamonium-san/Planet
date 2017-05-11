@@ -28,7 +28,11 @@ namespace Planet
 
       SetBinding(PlayerInput.Start, Confirm, InputType.Pressed);
       SetBinding(PlayerInput.Yellow, Confirm, InputType.Pressed);
+#if DEBUG
       SetBinding(PlayerInput.Red, Cancel, InputType.Pressed);
+#else
+      SetBinding(PlayerInput.Green, Cancel, InputType.Pressed);
+#endif
     }
     public MenuCursor GetCursor()
     {

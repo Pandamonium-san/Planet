@@ -1669,3 +1669,9 @@
 /processorParam:Quality=Best
 /build:Sfx/tick.wav
 
+#begin Sfx/switch28.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/switch28.wav
+

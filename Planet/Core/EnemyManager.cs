@@ -33,7 +33,7 @@ namespace Planet
       resourcesPerWave2 = 500;
 
       //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 4, 3, 1, 3));
-      spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 5, 3));
+      //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 5, 3));
       MakeWave();
     }
     public void Update(GameTime gt)
@@ -131,7 +131,7 @@ namespace Planet
         case 1:
         default:
           ship = new Enemy1(pos, world);
-          cost += 100;
+          cost += 150;
           break;
         case 2:
           ship = new Enemy2(pos, world);
@@ -140,12 +140,12 @@ namespace Planet
         case 3:
           ship = new Enemy3(pos, world);
           controller = new ECWanderer(world, activationTime);
-          cost += 200;
+          cost += 250;
           spawn = new Spawn(ship, controller, spawnTime);
           return spawn;
         case 4:
           ship = new Enemy4(pos, world);
-          cost += 500;
+          cost += 450;
           break;
         case 5:
           ship = new EnemyBoss(pos, world);

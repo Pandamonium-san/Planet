@@ -156,6 +156,10 @@ namespace Planet
       if (++weaponIndex >= weapons.Count())
         weaponIndex = 0;
       CurrentWeapon.ResetShootTimer();
+      if(Layer == Layer.PLAYER_SHIP)
+      {
+        AudioManager.PlaySound("switch28", 0.07f);
+      }
     }
     public virtual void SwitchTarget()
     {

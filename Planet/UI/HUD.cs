@@ -48,7 +48,6 @@ namespace Planet
         if (lifeBars[i] != null)
           lifeBars[i].Update();
       }
-
       ability1.Update();
       ability2.Update();
       score1.Set((((int)p1.Score / 10) * 10).ToString("D10"));

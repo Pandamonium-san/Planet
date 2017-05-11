@@ -49,13 +49,23 @@ namespace Planet
       SetBinding(PlayerInput.Left, Left, InputType.Down);
       SetBinding(PlayerInput.Right, Right, InputType.Down);
 
+#if DEBUG
       SetBinding(PlayerInput.Yellow, Fire1, InputType.Down);
-      SetBinding(PlayerInput.B, Fire2, InputType.Pressed);
+      SetBinding(PlayerInput.A, Fire2, InputType.Pressed);
       SetBinding(PlayerInput.Blue, UnlockTarget, InputType.Down);
       SetBinding(PlayerInput.Blue, SwitchTarget, InputType.Released);
       SetBinding(PlayerInput.Red, DashPressed, InputType.Down);
       SetBinding(PlayerInput.Red, DashReleased, InputType.Up);
-      SetBinding(PlayerInput.A, Switch, InputType.Pressed);
+      SetBinding(PlayerInput.Green, Switch, InputType.Pressed);
+#else
+      SetBinding(PlayerInput.Yellow, Fire1, InputType.Down);
+      SetBinding(PlayerInput.A, Fire2, InputType.Pressed);
+      SetBinding(PlayerInput.Blue, UnlockTarget, InputType.Down);
+      SetBinding(PlayerInput.Blue, SwitchTarget, InputType.Released);
+      SetBinding(PlayerInput.Green, DashPressed, InputType.Down);
+      SetBinding(PlayerInput.Green, DashReleased, InputType.Up);
+      SetBinding(PlayerInput.Red, Switch, InputType.Pressed);
+#endif
     }
     private void Up() { ship.Move(-Vector2.UnitY); }
     private void Down() { ship.Move(Vector2.UnitY); }

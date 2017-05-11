@@ -7,15 +7,14 @@ namespace Planet
 {
   /*  TO DO
    *  - Add sound
-   *      - pew pews
-   *      - beep boops
-   *      - bgm
+   *      - find more fitting bgm?
    *  - Design UI
    *      - Title screen
    *      - Pause menu
    *      - Character select
    *      - Highscore list
    *      - Credits
+   *  - Fancify the background
    *  - Make proper weapons
    *      - Missiles?
    *  - Enemies
