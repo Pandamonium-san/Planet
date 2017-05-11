@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -35,11 +36,11 @@ namespace Planet
       mainMenu.AddSelection(0, b);
 
       b = new Button(new Vector2(Game1.ScreenWidth / 2f, 400), "Options");
-      b.AddText(AssetManager.GetFont("future18"), "Options");
+      b.AddText(AssetManager.GetFont("future18"), "Music +Vol-");
       mainMenu.AddSelection(1, b);
 
-      b = new Button(new Vector2(Game1.ScreenWidth / 2f, 500), "Exit");
-      b.AddText(AssetManager.GetFont("future18"), "Exit");
+      b = new Button(new Vector2(Game1.ScreenWidth / 2f, 500), "Credits");
+      b.AddText(AssetManager.GetFont("future18"), "Sound +Vol-");
       mainMenu.AddSelection(2, b);
 
       cursor1 = new MenuCursor(mainMenu, AssetManager.GetTexture("grey_sliderRight"), false);
@@ -59,16 +60,30 @@ namespace Planet
           //gsm.Push(new GameStatePlaying(gsm));
           break;
         case "Options":
-          gsm.Push(new GameStateCharacterSelect(gsm));
+          MediaPlayer.Volume += 0.01f;
+          //gsm.Push(new GameStateCharacterSelect(gsm));
           //push options state to gsm
           break;
-        case "Exit":
+        case "Credits":
+          SoundEffect.MasterVolume = Math.Min(SoundEffect.MasterVolume + 0.01f, 1.0f);
           // ???
           break;
       }
     }
     public void Cancel(MenuController mc)
     {
+      switch (mc.GetSelected().Name)
+      {
+        case "Options":
+          MediaPlayer.Volume -= 0.01f;
+          //gsm.Push(new GameStateCharacterSelect(gsm));
+          //push options state to gsm
+          break;
+        case "Credits":
+          SoundEffect.MasterVolume = Math.Max(SoundEffect.MasterVolume - 0.01f, 0.0f);
+          // ???
+          break;
+      }
     }
     public override void Update(GameTime gameTime)
     {

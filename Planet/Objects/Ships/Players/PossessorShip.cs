@@ -77,7 +77,6 @@ namespace Planet
       }
       if (AbilityCooldown.Counting || (parasite != null && !parasite.Disposed))
         return;
-
       parasite = new Parasite(
       this,
       world,
@@ -94,6 +93,7 @@ namespace Planet
       parasite.color = Color.Red;
       parasite.Scale *= Scale * 0.4f;
       world.PostProjectile(parasite);
+      AudioManager.PlaySound("parasite4", 0.1f);
     }
     public override void Die()
     {
@@ -152,6 +152,7 @@ namespace Planet
 
       IsActive = false;
       Visible = false;
+      AudioManager.PlaySound("parasite", 0.15f);
     }
     private void Release()
     {

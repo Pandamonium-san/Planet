@@ -46,7 +46,7 @@ namespace Planet
     }
     public static Song GetSong(string name)
     {
-      if (!soundEffects.ContainsKey(name))
+      if (!songs.ContainsKey(name))
         LoadSong(name, name);
       return songs[name];
     }

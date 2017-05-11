@@ -16,11 +16,14 @@ namespace Planet
     public Texture2D ProjTex { get; set; }
     public bool DashUsable { get; set; }
     public float ProjRotSpeed { get; set; }
+    public SoundEffect SFX { get; set; }
+    public float Volume { get; set; }
+    public int ShotsPerSFX { get; set; }
+    private int sfxShotsCounter;
 
     public Ship ship;
     protected World world;
     protected WpnDesc desc;
-    protected SoundEffectInstance sfx;
 
     // counter variables
     protected int currentMagCount;
@@ -28,7 +31,7 @@ namespace Planet
     protected float currentShotAngle;
     protected Timer shootTimer;
 
-    public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon")
+    public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon", string sfx = "pew", float volume = 0.08f)
       : base(Vector2.Zero, 0, 1.0f, ship)
     {
       Name = name;
@@ -41,8 +44,8 @@ namespace Planet
       this.world = world;
       SetDesc(desc);
       SetMuzzle(Vector2.Zero);
-      sfx = AssetManager.GetSfx("laser2").CreateInstance();
-      sfx.Volume = 0.1f;
+      SFX = AssetManager.GetSfx(sfx);
+      Volume = volume;
     }
     public Weapon(Weapon wpn)
       : base(wpn)
@@ -70,19 +73,12 @@ namespace Planet
     {
       if (currentMagCount > 0 && CanShoot())
       {
-        if (ship is RewinderShip)
+        if (SFX != null && sfxShotsCounter-- <= 0)
         {
-          //sfx.Stop();
-          if (sfx.State != SoundState.Playing)
-          {
-            sfx = AssetManager.GetSfx("menu_scroll").CreateInstance();
-            sfx.Volume = 0.5f;
-            sfx.Play();
-          }
-        }
-        else
-        {
-          AudioManager.PlaySound("pew", 0.05f);
+          sfxShotsCounter = ShotsPerSFX;
+          SoundEffectInstance sei = SFX.CreateInstance();
+          sei.Volume = Volume;
+          sei.Play();
         }
         Shoot();
         currentShotAngle += MathHelper.ToRadians(desc.degreesBetweenShots);

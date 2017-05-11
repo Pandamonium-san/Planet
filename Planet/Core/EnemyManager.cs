@@ -98,13 +98,13 @@ namespace Planet
     {
       float P = Utility.RandomFloat(0, 1);
       int ship;
-      if (P > 0.5f)
+      if (P > 0.6f)
         ship = 1;
-      else if (P > 0.30f)
+      else if (P > 0.40f)
         ship = 2;
-      else if (P > 0.10f)
+      else if (P > 0.20f)
         ship = 3;
-      else if (P > 0.05f)
+      else if (P > 0.10f)
         ship = 4;
       else
         ship = 5;

@@ -1591,3 +1591,81 @@
 /processorParam:Quality=Best
 /build:Bgm/PerituneMaterial_Splash.mp3
 
+#begin Bgm/Kubbi - Firelight.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Bgm/Kubbi - Firelight.mp3
+
+#begin Bgm/Aethernaut-Shine Get.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Bgm/Aethernaut-Shine Get.mp3
+
+#begin Sfx/blink.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/blink.wav
+
+#begin Sfx/blink2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/blink2.wav
+
+#begin Sfx/hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/hit.wav
+
+#begin Sfx/hit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/hit2.wav
+
+#begin Sfx/laser9.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/laser9.wav
+
+#begin Sfx/laser3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/laser3.wav
+
+#begin Sfx/parasite.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/parasite.wav
+
+#begin Sfx/parasite2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/parasite2.wav
+
+#begin Sfx/parasite3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/parasite3.wav
+
+#begin Sfx/parasite4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/parasite4.wav
+
+#begin Sfx/tick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/tick.wav
+

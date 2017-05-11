@@ -97,6 +97,7 @@ namespace Planet
       Flash(0.5f, rewindColor, false, 0.8f, true, false);
       for (int i = 0; i < 10; i++)
         world.Particles.CreateStar(Pos, 0.5f, -70, 70, rewindColor, 0.5f, 0.7f, 0.4f);
+      AudioManager.PlaySound("blink", 0.35f);
     }
     private void StopRewind()
     {
@@ -117,12 +118,15 @@ namespace Planet
       Flash(0.5f, rewindColor, false);
       for (int i = 0; i < 20; i++)
         world.Particles.CreateStar(Pos, 0.5f, -100, 100, rewindColor, 0.5f, 0.7f, 0.4f);
+      AudioManager.PlaySound("blink2", 0.35f);
     }
     public override void Update(GameTime gt)
     {
       if (rewinding && states.Count > 0)
       {
-        if (states.Count / 2 % 2 == 0)
+        if (states.Count / 2 % 15 == 0)
+          AudioManager.PlaySound("tick", 0.35f);
+        if (states.Count / 2 % 2 == 0)  //divide by two because two states are popped each time
           Flash(0.3f, rewindColor, false, 0.3f, true, true);
         for (int i = 0; i < 2; i++)
         {

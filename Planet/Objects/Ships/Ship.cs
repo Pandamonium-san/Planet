@@ -84,9 +84,9 @@ namespace Planet
       }
       else
       {
-        if (freeAim || (movementDirection != Vector2.Zero && Target == null))
+        if (movementDirection != Vector2.Zero && (Target == null || freeAim))
           TurnTowards(Pos + movementDirection);
-        else if (Target != null)
+        else if (Target != null && !freeAim)
         {
           if (LeadShots)
             LeadShot((Ship)Target);
@@ -130,12 +130,17 @@ namespace Planet
       if (flashParticle != null)
         flashParticle.Draw(spriteBatch);
 
-      if (Layer != Layer.PLAYER_SHIP)
+      if (Layer != Layer.PLAYER_SHIP || !(Controller is PlayerShipController))
         return;
       if (Target != null)
       {
+        Color color;
+        if (((PlayerShipController)Controller).Player.Index == PlayerIndex.One)
+          color = Color.PaleTurquoise;
+        else
+          color = Color.CornflowerBlue;
         Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
-        spriteBatch.Draw(circle, Target.Pos, null, Color.Green * 0.5f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
+        spriteBatch.Draw(circle, Target.Pos, null, color * 0.75f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
       }
     }
     public virtual void Fire1()
@@ -285,10 +290,12 @@ namespace Planet
       {
         Flash(0.75f, Color.Red, false, 0.8f);
         MakeInvulnerable(0.75f);
+        AudioManager.PlaySound("hit", 0.25f);
       }
       else
       {
         Flash(0.25f, Color.White, false, 0.8f);
+        AudioManager.PlaySound("plick", 0.1f);
       }
     }
     public void TakeDamage(Projectile p)
@@ -303,11 +310,13 @@ namespace Planet
         if (Layer == Layer.PLAYER_SHIP)
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.5f);
+          AudioManager.PlaySound("hit2", 0.15f);
           MakeInvulnerable(0.5f);
         }
         else
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
+          AudioManager.PlaySound("plick2", 0.1f);
         }
       }
       else

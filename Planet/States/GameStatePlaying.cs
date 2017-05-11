@@ -55,7 +55,7 @@ namespace Planet
     }
     public override void Entered()
     {
-
+      AudioManager.PlayBgm("Kubbi - Firelight", 0.02f);
     }
     public override void Leaving()
     {

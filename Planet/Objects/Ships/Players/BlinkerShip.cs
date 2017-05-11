@@ -45,7 +45,7 @@ namespace Planet
         AbilityCharges = Math.Min(AbilityCharges + 1, maxCharges);
         if (AbilityCharges < maxCharges)
           AbilityCooldown.Start();
-      });
+      }, false);
 
       blinkTimer1 = new Timer(blinkDelay, Blink1, false);
       blinkTimer2 = new Timer(blinkDelay, Blink2, false);
@@ -78,6 +78,7 @@ namespace Planet
       CreateBlinkParticle(false);
       CreateBlinkParticle2();
       blinkTimer1.Start();
+      AudioManager.PlaySound("blink", 0.35f);
     }
     // particles reappear
     private void Blink1()
@@ -89,6 +90,7 @@ namespace Planet
 
       CreateBlinkParticle(true);
       blinkTimer2.Start();
+      AudioManager.PlaySound("blink2", 0.35f);
     }
     // ship reappears
     private void Blink2()

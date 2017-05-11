@@ -121,6 +121,7 @@ namespace Planet
       Visible = false;
       Pos = ship.Pos;
       this.ship.speedModifier *= 0.9f;
+      AudioManager.PlaySound("parasite3", 0.20f);
     }
     public void Unlatch()
     {
@@ -128,6 +129,7 @@ namespace Planet
       latchedShip = null;
       Visible = true;
       this.ship.speedModifier /= 0.9f;
+      AudioManager.PlaySound("parasite3", 0.20f);
     }
     public override void DoCollision(GameObject other)
     {
