@@ -1573,3 +1573,21 @@
 /processorParam:TextureFormat=Color
 /build:Textures/grey_button13_big.png
 
+#begin Textures/bg_planet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/bg_planet.png
+
+#begin Bgm/PerituneMaterial_Splash.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Bgm/PerituneMaterial_Splash.mp3
+

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Planet
   {
     private GameStateManager gsm;
 
+    private Background bg;
     private MenuCursor cursor1, cursor2;
     private MenuController mc1, mc2;
     private Text titleText;
@@ -20,6 +22,10 @@ namespace Planet
     public GameStateTitleScreen(GameStateManager gameStateManager)
     {
       gsm = gameStateManager;
+      AudioManager.PlayBgm("PerituneMaterial_splash");
+      bg = new Background(1.0f, 20, 100);
+      bg.DriftSpeed = 20;
+      bg.StarDensity = 100;
 
       titleText = new Text(AssetManager.GetFont("future48"), "Planet", new Vector2(Game1.ScreenWidth / 2f, 200), Color.White);
       mainMenu = new Menu(3);
@@ -66,12 +72,14 @@ namespace Planet
     }
     public override void Update(GameTime gameTime)
     {
+      bg.Update(gameTime);
       mc1.Update(gameTime);
       mc2.Update(gameTime);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
+      bg.Draw(spriteBatch);
       cursor1.Draw(spriteBatch);
       cursor2.Draw(spriteBatch);
       titleText.Draw(spriteBatch);
@@ -84,15 +92,14 @@ namespace Planet
     }
     public override void Leaving()
     {
-
     }
     public override void Revealed()
     {
-
+      AudioManager.Resume();
     }
     public override void Obscuring()
     {
-
+      AudioManager.Pause();
     }
   }
 }

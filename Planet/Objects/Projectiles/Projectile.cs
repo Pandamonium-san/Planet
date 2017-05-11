@@ -76,7 +76,6 @@ namespace Planet
         LayerMask = (Layer.PLAYER_SHIP);
         color = new Color(255, 210, 210);
       }
-      layerDepth = 0.8f;
     }
     protected override void DoUpdate(GameTime gt)
     {

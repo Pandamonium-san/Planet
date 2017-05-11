@@ -24,8 +24,8 @@ namespace Planet
       world = new World();
       p1 = new Player(PlayerIndex.One);
       p2 = new Player(PlayerIndex.Two);
-      SetPlayerShip(p1).Pos = new Vector2(500, 500);
-      SetPlayerShip(p2).Pos = new Vector2(1000, 500);
+      SetPlayerShip(p1).Pos = new Vector2(Game1.ScreenWidth * 0.33f, 700);
+      SetPlayerShip(p2).Pos = new Vector2(Game1.ScreenWidth * 0.66f, 700);
       enemyManager = new EnemyManager(world);
       hud = new HUD(world, p1, p2, enemyManager);
     }

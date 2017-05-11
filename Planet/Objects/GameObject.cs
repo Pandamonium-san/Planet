@@ -96,11 +96,11 @@ namespace Planet
           LayerMask = Layer.ENEMY_SHIP | Layer.ENEMY_PROJECTILE;
           break;
         case Layer.ENEMY_SHIP:
-          layerDepth = 0.3f;
+          layerDepth = 0.2f;
           LayerMask = Layer.PLAYER_SHIP | Layer.ENEMY_SHIP | Layer.PLAYER_PROJECTILE;
           break;
         case Layer.ENEMY_PROJECTILE:
-          layerDepth = 0.2f;
+          layerDepth = 0.3f;
           LayerMask = Layer.PLAYER_SHIP | Layer.PLAYER_PROJECTILE;
           break;
         default:

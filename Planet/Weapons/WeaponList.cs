@@ -75,17 +75,17 @@ namespace Planet
     }
     public static Weapon Wing(Ship ship, World world, string texture = "spaceEffects_018")
     {
-      WpnDesc desc = new WpnDesc(6, 30, 600, 1, 0, 0, 0.5f, 45, 0, 0, -105, 0.15f, false, true);
+      WpnDesc desc = new WpnDesc(6, 30, 600, 1, 0, 0, 0, 45, 0, 0, -105, 0.15f, false, true);
       Weapon wpn = new LaserGun(ship, world, desc, 40, 100, false);
       wpn.ProjTex = AssetManager.GetTexture(texture);
-      wpn.LocalPos = new Vector2(-30, 0);
+      wpn.LocalPos = new Vector2(-25, 0);
       wpn.Scale = 0.5f;
       wpn.Name = "Wing";
       CompoundWeapon cw = new CompoundWeapon(wpn);
-      desc = new WpnDesc(6, 30, 600, 1, 0, 0, 0.5f, 45, 0, 0, 105, 0.15f, false, true);
+      desc = new WpnDesc(6, 30, 600, 1, 0, 0, 0, 45, 0, 0, 105, 0.15f, false, true);
       wpn = new LaserGun(ship, world, desc, 40, 100, false);
       wpn.ProjTex = AssetManager.GetTexture(texture);
-      wpn.LocalPos = new Vector2(30, 0);
+      wpn.LocalPos = new Vector2(25, 0);
       wpn.Scale = 0.5f;
       wpn.Name = "Wing";
       cw.AddWeapon(wpn);
@@ -135,7 +135,7 @@ namespace Planet
     }
     public static Weapon Spinny(Ship ship, World world, string texture = "laserBlue08")
     {
-      WpnDesc desc = new WpnDesc(2.0f, 40f, 500, 4, 0, 0, 0, 7, 360 / 4, 360 / 4 / 7, 0, 0.4f, true);
+      WpnDesc desc = new WpnDesc(3.0f, 40f, 500, 4, 0, 0, 0, 7, 360 / 4, 360 / 4 / 7, 0, 0.5f, true);
       Weapon wpn = new Weapon(ship, world, desc, texture, "Spinny");
       wpn.Scale = 0.4f;
       wpn.DashUsable = true;

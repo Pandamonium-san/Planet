@@ -24,6 +24,8 @@ namespace Planet
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_009");
       SetLayer(Layer.PLAYER_SHIP);
       Player = player;
+      Flash(2.0f, Color.White, false);
+      MakeInvulnerable(2.0f);
 
       maxHealth = 80;
       currentHealth = maxHealth;
@@ -142,6 +144,10 @@ namespace Planet
         xlaser[0].Desc.damage = 30;
         xlaser[1].Desc.damage = 1;
         xlaser[2].Desc.damage = 1;
+      }
+      if(possessedShip is Enemy3)
+      {
+        ((Enemy3)possessedShip).AutoRotate = false;
       }
 
       IsActive = false;

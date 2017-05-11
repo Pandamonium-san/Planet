@@ -122,7 +122,7 @@ namespace Planet
         angle,
         new Vector2(tex.Width / 2f, 0),
         SpriteEffects.None,
-        1);
+        layerDepth);
     }
   }
 }

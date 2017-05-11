@@ -15,6 +15,7 @@ namespace Planet
    *      - Pause menu
    *      - Character select
    *      - Highscore list
+   *      - Credits
    *  - Make proper weapons
    *      - Missiles?
    *  - Enemies
@@ -123,7 +124,7 @@ namespace Planet
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-      GraphicsDevice.Clear(Color.SlateGray);
+      GraphicsDevice.Clear(Color.Black);
       fc.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
       gameStateManager.Draw(spriteBatch);

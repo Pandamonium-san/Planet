@@ -58,6 +58,7 @@ namespace Planet
   }
   class Enemy3 : EnemyShip
   {
+    public bool AutoRotate { get; set; }
     float rotation = 0.0f;
 
     public Enemy3(Vector2 pos, World world)
@@ -66,6 +67,7 @@ namespace Planet
       baseCost = 200;
       flashTex = AssetManager.GetTexture(@"ships\flash\ufoRed");
 
+      AutoRotate = true;
       rotationSpeed = 4.0f;
       baseSpeed = 200;
       maxHealth = 150;
@@ -79,6 +81,8 @@ namespace Planet
     protected override void DoUpdate(GameTime gt)
     {
       base.DoUpdate(gt);
+      if (!AutoRotate)
+        return;
       rotation += rotationSpeed * (float)gt.ElapsedGameTime.TotalSeconds;
       Rotation = rotation;
     }

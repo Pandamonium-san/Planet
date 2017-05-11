@@ -137,8 +137,6 @@ namespace Planet
         Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
         spriteBatch.Draw(circle, Target.Pos, null, Color.Green * 0.5f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
       }
-      Text weaponText = new Text(AssetManager.GetFont("font1"), CurrentWeapon.Name, Pos + Vector2.UnitY * 30, Color.Green);
-      weaponText.Draw(spriteBatch);
     }
     public virtual void Fire1()
     {

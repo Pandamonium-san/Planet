@@ -24,6 +24,8 @@ namespace Planet
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_002");
       SetLayer(Layer.PLAYER_SHIP);
       Player = player;
+      Flash(2.0f, Color.White, false);
+      MakeInvulnerable(2.0f);
 
       maxHealth = 70;
       maxShield = 30;

@@ -34,7 +34,7 @@ namespace Planet
       pToAdd = new Queue<Projectile>();
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
-      background = new Background(this);
+      background = new Background(0.8f);
     }
 
     public void Update(GameTime gameTime)
