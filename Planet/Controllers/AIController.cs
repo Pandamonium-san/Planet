@@ -76,11 +76,13 @@ namespace Planet
     }
     public void SetShip(Ship ship)
     {
-      ship.Flash((float)activationTimer.Remaining, Color.White, false, 1.0f);
       if (this.ship != null)
         this.ship.Controller = null;
       if (ship != null)
+      {
+        ship.Flash((float)activationTimer.Remaining, Color.White, false, 1.0f);
         ship.Controller = this;
+      }
       this.ship = ship;
     }
   }

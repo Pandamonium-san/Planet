@@ -14,6 +14,7 @@ namespace Planet
   {
     public PlayerIndex Index { get; private set; }
     public Ship Ship { get; private set; }
+    public float Score { get; set; }
 
     private PlayerShipController pc;
 
@@ -29,7 +30,7 @@ namespace Planet
     public void SetShip(Ship ship)
     {
       Ship = ship;
-      pc = new PlayerShipController(Index, ship);
+      pc = new PlayerShipController(this, ship);
     }
   }
 }

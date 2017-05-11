@@ -10,6 +10,7 @@ namespace Planet
   class RewinderShip : Ship, IPlayerShip
   {
     public Timer AbilityCooldown { get; set; }
+    public Player Player { get; set; }
 
     private readonly int RewindableFrames = 300;
     private FixedList<State> states;
@@ -17,17 +18,19 @@ namespace Planet
     private bool rewinding;
     private Color rewindColor = Color.Turquoise;// new Color(93, 50, 234);
 
-    public RewinderShip(Vector2 pos, World world)
+    public RewinderShip(Vector2 pos, World world, Player player)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_002"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_002");
       SetLayer(Layer.PLAYER_SHIP);
+      Player = player;
 
       maxHealth = 70;
       maxShield = 30;
       currentHealth = maxHealth;
       currentShield = maxShield;
       LeadShots = true;
+      Scale = 0.7f;
       Hitbox.LocalScale = 0.7f;
 
       AbilityCooldown = new Timer(12, null, false);

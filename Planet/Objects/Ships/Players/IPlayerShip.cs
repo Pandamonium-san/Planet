@@ -8,6 +8,6 @@ namespace Planet
   interface IPlayerShip
   {
     Timer AbilityCooldown { get; set; }
-
+    Player Player { get; set; }
   }
 }

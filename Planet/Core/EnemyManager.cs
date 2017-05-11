@@ -33,7 +33,7 @@ namespace Planet
       resourcesPerWave2 = 500;
 
       //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 4, 3, 1, 3));
-      //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 5, 3));
+      spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 5, 3));
       MakeWave();
     }
     public void Update(GameTime gt)
@@ -109,7 +109,7 @@ namespace Planet
       else
         ship = 5;
       int controller = Utility.RandomInt(1, 4);
-      float spawnTime = Utility.RandomFloat(0.25f, .5f);
+      float spawnTime = Utility.RandomFloat(0.25f, 3.0f);
       if (ship == 5)
         spawnTime += 10;
       Vector2 pos = new Vector2(Utility.RandomFloat(100, Game1.ScreenWidth - 100), Utility.RandomFloat(100, Game1.ScreenHeight - 100));

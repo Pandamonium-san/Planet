@@ -12,12 +12,38 @@ namespace Planet
   /// </summary>
   class PlayerShipController : PlayerController, ShipController
   {
+    public Player Player { get; private set; }
     protected Ship ship;
-    public PlayerShipController(PlayerIndex index, Ship ship)
-      : base(index)
-    {
-      SetShip(ship);
 
+    public PlayerShipController(Player p, Ship ship)
+      : base(p.Index)
+    {
+      Player = p;
+      SetShip(ship);
+    }
+    public override void Update(GameTime gt)
+    {
+      if (ship != null && !ship.Disposed)
+        base.Update(gt);
+      else
+        ship = null;
+    }
+    public Ship GetShip()
+    {
+      return ship;
+    }
+    public void SetShip(Ship ship)
+    {
+      if (ship != null)
+        ship.Controller = null;
+      if (ship != null)
+        ship.Controller = this;
+      this.ship = ship;
+      InitBindings();
+      ship.ClampToScreen = true;
+    }
+    private void InitBindings()
+    {
       SetBinding(PlayerInput.Up, Up, InputType.Down);
       SetBinding(PlayerInput.Down, Down, InputType.Down);
       SetBinding(PlayerInput.Left, Left, InputType.Down);
@@ -31,13 +57,6 @@ namespace Planet
       SetBinding(PlayerInput.Red, DashReleased, InputType.Up);
       SetBinding(PlayerInput.A, Switch, InputType.Pressed);
     }
-    public override void Update(GameTime gt)
-    {
-      if (ship != null && !ship.Disposed)
-        base.Update(gt);
-      else
-        ship = null;
-    }
     private void Up() { ship.Move(-Vector2.UnitY); }
     private void Down() { ship.Move(Vector2.UnitY); }
     private void Left() { ship.Move(-Vector2.UnitX); }
@@ -49,19 +68,5 @@ namespace Planet
     private void DashPressed() { ship.SetDash(true); }
     private void DashReleased() { ship.SetDash(false); }
     private void Switch() { ship.Switch(); }
-
-    public Ship GetShip()
-    {
-      return ship;
-    }
-    public void SetShip(Ship ship)
-    {
-      if (ship != null)
-        ship.Controller = null;
-      if (ship != null)
-        ship.Controller = this;
-      this.ship = ship;
-      ship.ClampToScreen = true;
-    }
   }
 }

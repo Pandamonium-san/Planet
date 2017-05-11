@@ -61,12 +61,12 @@ namespace Planet
       wpn.LocalScale = 3.5f;
       wpn.LocalPos = new Vector2(20, -10);
       cw.AddWeapon(wpn);
-      desc = new WpnDesc(4, 1, 400, 15, 5, 300, 3, 1, 0, 0, 0, 2, false, false);
+      desc = new WpnDesc(4, 1, 400, 10, 5, 300, 3, 1, 0, 0, 0, 2, false, false);
       wpn = new Weapon(ship, world, desc, "laserBlue09", "Trail");
       wpn.ProjRotSpeed = 8.0f;
       wpn.LocalScale = 0.5f;
       cw.AddWeapon(wpn);
-      desc = new WpnDesc(4, 1, 400, 15, 5, 300, 3, 1, 0, 0, 0, 2, false, false);
+      desc = new WpnDesc(4, 1, 400, 10, 5, 300, 3, 1, 0, 0, 0, 2, false, false);
       wpn = new Weapon(ship, world, desc, "laserBlue10", "Trail");
       wpn.ProjRotSpeed = 8.0f;
       wpn.LocalScale = 0.5f;
@@ -164,7 +164,7 @@ namespace Planet
     }
     public static Weapon Spread(Ship ship, World world)
     {
-      WpnDesc desc = new WpnDesc(12, 8f, 500, 8, 3, 50, 2, 8, 90 / 7, 0, -45, 10, false, false);
+      WpnDesc desc = new WpnDesc(12, 8f, 500, 8, 0, 50, 2, 8, 90 / 7, 0, -45, 10, false, false);
       Weapon wpn = new Weapon(ship, world, desc, "laserRed08", "Spread");
       wpn.Scale = 0.6f;
       return wpn;
@@ -212,11 +212,26 @@ namespace Planet
       wpn.Name = "Right pew";
       cw.AddWeapon(wpn);
 
-      desc = new WpnDesc(12, 8f, 450, 15, 5, 0, 4, 6 * 8, 315 / 15, 0, 22.5f + 21 / 2, 10, false, false);
+      desc = new WpnDesc(12, 4f, 450, 15, 10, 0, 4, 6 * 4, 315 / 15, 0, 22.5f + 21 / 2, 10, false, false);
       wpn = new Weapon(ship, world, desc, "laserRed08", "DeathZone");
       wpn.Scale = 0.7f;
       cw.AddWeapon(wpn);
 
+      return cw;
+    }
+    public static CompoundWeapon Nova(Ship ship, World world)
+    {
+      WpnDesc desc = new WpnDesc(12, 0.5f, 200, 16, 0, 0, 0, 1, 360 / 15, 0, 0, 15f, false);
+      Weapon wpn = new Weapon(ship, world, desc, "laserRed10", "Nova");
+      wpn.Scale = 0.8f;
+      CompoundWeapon cw = new CompoundWeapon(wpn);
+
+      desc = new WpnDesc(5, 0.5f, 225, 12, 8, 175, 0, 1, 0, 0, 0, 10, false, false);
+      wpn = new Weapon(ship, world, desc, "laserRed09", "Trail");
+      wpn.ProjRotSpeed = 8.0f;
+      wpn.LocalScale = 0.6f;
+      cw.AddWeapon(wpn);
+      cw.DashUsable = true;
       return cw;
     }
     #endregion

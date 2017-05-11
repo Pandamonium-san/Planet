@@ -18,6 +18,7 @@ namespace Planet
     Timer relocateTimer;
     Timer phaseTwoTimer;
     int cycles;
+    int relocations;
 
     public ECBoss(World world, double activationTime = 0)
       : base(world, activationTime)
@@ -37,23 +38,38 @@ namespace Planet
             if (Vector2.DistanceSquared(ship.Pos, targetPos) < 50)
             {
               MoveTowards(targetPos, false);
+              if (relocations > 0)
+              {
+                relocations--;
+                relocateTimer.Start(0.3f);
+                if (relocations == 0)
+                  relocateTimer.Start(2.0f);
+                return;
+              }
               if (cycles++ == 6)
               {
                 InitPhaseTwo();
                 return;
               }
-              int wpn = Utility.RandomInt(0, 2);
+              int wpn = Utility.RandomInt(0, 3);
               ship.SetWeapon(wpn);
               if (wpn == 0)
                 relocateTimer.Start(2.7f);
-              else
+              else if (wpn == 1)
                 relocateTimer.Start(3.5f);
+              else
+              {
+                ship.SetWeapon(3);
+                relocations = 3;
+                relocateTimer.Start(0.3f);
+              }
             }
           }
           else
           {
             relocateTimer.Update(gt);
-            ship.Fire1();
+            if (relocations <= 0)
+              ship.Fire1();
           }
           break;
         case Phase.Two:
@@ -102,9 +118,24 @@ namespace Planet
     }
     void Relocate()
     {
-      while (Vector2.Distance(ship.Pos, targetPos) < 300)
+      float d;
+      do
+      {
         targetPos = new Vector2(Utility.RandomFloat(300, Game1.ScreenWidth - 300), Utility.RandomFloat(300, Game1.ScreenHeight - 300));
+        d = Vector2.Distance(ship.Pos, targetPos);
+      } while (d < 300 && d > 1000);
       FindNearestTarget();
+      ship.Rotation = Utility.Vector2ToAngle(targetPos - ship.Pos);
+      FireNova();
+    }
+    void FireNova()
+    {
+      int i = ship.GetWeaponIndex();
+      ship.SetWeapon(3);
+      ship.CurrentWeapon.FinishShootTimer();
+      ship.Fire1();
+      ship.SetWeapon(i);
+      ship.CurrentWeapon.FinishShootTimer();
     }
   }
 }

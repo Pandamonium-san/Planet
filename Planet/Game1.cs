@@ -12,16 +12,15 @@ namespace Planet
    *      - bgm
    *  - Design UI
    *      - Title screen
-   *      - Show wave count
-   *      - Score
-   *      - Highscore list?
+   *      - Pause menu
+   *      - Character select
+   *      - Highscore list
    *  - Make proper weapons
    *      - Missiles?
    *  - Enemies
    *      - VS Mode?
    *      - Waves/Levels?
    *      - More enemy types
-   *  - Effects/Shaders?
    */
 
   /// <summary>

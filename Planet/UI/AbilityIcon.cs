@@ -29,13 +29,13 @@ namespace Planet
 
       icon = new Sprite(Vector2.Zero, iconTex);
       icon.color = Color.AliceBlue;
-      icon.Scale = 0.9f;
       icon.Parent = this;
 
-      back = new Sprite(Vector2.Zero, AssetManager.GetTexture("grey_button13"));
+      back = new Sprite(Vector2.Zero, AssetManager.GetTexture("grey_button13_big"));
       back.color = Color.AliceBlue;
       back.Parent = this;
 
+      Scale = 1.0f;
       Pos = pos;
     }
     public void Update()
@@ -49,11 +49,10 @@ namespace Planet
       }
       else
       {
-        icon.alpha = 0.3f;
-        back.alpha = 0.2f;
+        icon.alpha = 0.2f;
+        back.alpha = 0.125f;
         value = cd.Fraction;
       }
-
     }
     public void Draw(SpriteBatch spriteBatch)
     {
@@ -64,15 +63,15 @@ namespace Planet
       back.Draw(spriteBatch);
       icon.Draw(spriteBatch);
 
-      back.LocalPos = new Vector2(0, (int)(back.tex.Height * (1 - value)));
-      icon.LocalPos = new Vector2(0, (int)(back.tex.Height * (1 - value)));
+      back.LocalPos = new Vector2(0, (int)(back.tex.Height * (1 - value) * back.Scale));
+      icon.LocalPos = new Vector2(0, (int)(icon.tex.Height * (1 - value) * icon.Scale));
       back.spriteRec = new Rectangle(0, (int)(back.tex.Height * (1 - value)), back.tex.Width, (int)(back.tex.Height * value));
       icon.spriteRec = new Rectangle(0, (int)(icon.tex.Height * (1 - value)), icon.tex.Width, (int)(icon.tex.Height * value));
       back.Draw(spriteBatch);
       icon.Draw(spriteBatch);
       if (ship is BlinkerShip)
       {
-        spriteBatch.DrawString(font, ((BlinkerShip)ship).AbilityCharges.ToString(), Pos + new Vector2(13, 5), Color.White, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0.0f);
+        spriteBatch.DrawString(font, ((BlinkerShip)ship).AbilityCharges.ToString(), Pos + new Vector2(17, 12), Color.White, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0.0f);
       }
     }
   }

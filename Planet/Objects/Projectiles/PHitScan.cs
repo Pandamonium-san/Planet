@@ -86,7 +86,15 @@ namespace Planet
     {
       if (other is Ship)
       {
-        ((Ship)other).TakeDamage(damage);
+        Ship s = (Ship)other;
+        s.TakeDamage(this);
+        if (instigator.Controller is PlayerShipController)
+        {
+          PlayerShipController ps = (PlayerShipController)instigator.Controller;
+          ps.Player.Score += (damage * 10);
+          if (other.Disposed)
+            ps.Player.Score += (s.maxHealth * 10);
+        }
       }
       if (onCollision != null)
         onCollision(this, other);

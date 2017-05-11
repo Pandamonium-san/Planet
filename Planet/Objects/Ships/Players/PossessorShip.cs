@@ -12,27 +12,28 @@ namespace Planet
   {
     public Timer AbilityCooldown { get; set; }
     public Ship PossessedShip { get { return possessedShip; } }
+    public Player Player { get; set; }
 
     private Parasite parasite;
-    private Player player;
     private Ship possessedShip;
     private PlayerShipController psc;
 
-    public PossessorShip(Vector2 pos, World world, Player pc)
+    public PossessorShip(Vector2 pos, World world, Player player)
       : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_009"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_009");
       SetLayer(Layer.PLAYER_SHIP);
+      Player = player;
 
       maxHealth = 80;
       currentHealth = maxHealth;
       maxShield = 20;
       currentShield = maxShield;
       LeadShots = true;
+      Scale = 0.65f;
       Hitbox.LocalScale = 0.7f;
 
       AbilityCooldown = new Timer(18, null, false);
-      player = pc;
 
       weapons.Add(WeaponList.Laser(this, world));
       weapons.Add(WeaponList.Grenade(this, world));
@@ -113,7 +114,7 @@ namespace Planet
 
       possessedShip = other;
       possessedShip.Controller.SetShip(null);
-      psc = new PlayerShipController(player.Index, possessedShip);
+      psc = new PlayerShipController(Player, possessedShip);
 
       possessedShip.SetLayer(Layer);
       possessedShip.maxHealth = possessedShip.maxHealth / 4;

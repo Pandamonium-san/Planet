@@ -9,17 +9,18 @@ namespace Planet
 {
   public class Projectile : GameObject
   {
-    public bool Piercing { get; private set; }
+    public bool Piercing { get; set; }
     private List<GameObject> hitObjects;
 
     public float damage;
     public Ship instigator;
 
-    public Vector2 dir;
     public Vector2 velocity;
+    public Vector2 dir;
     public float speed;
     public float initialLifeTime;
     public Timer lifeTimer;
+
     public delegate void Pattern(Projectile p, GameTime gt);
     public Pattern pattern;
     public delegate void OnCollision(Projectile p, GameObject other);
@@ -73,7 +74,7 @@ namespace Planet
       {
         SetLayer(Layer.ENEMY_PROJECTILE);
         LayerMask = (Layer.PLAYER_SHIP);
-        //color = new Color(255, 128, 128);
+        color = new Color(255, 210, 210);
       }
       layerDepth = 0.8f;
     }
@@ -113,10 +114,20 @@ namespace Planet
     {
       if (Piercing && hitObjects.Contains(other))
         return;
+
       if (other is Ship)
       {
-        ((Ship)other).TakeDamage(this);
+        Ship s = (Ship)other;
+        s.TakeDamage(this);
+        if (instigator.Controller is PlayerShipController)
+        {
+          PlayerShipController ps = (PlayerShipController)instigator.Controller;
+          ps.Player.Score += (damage * 10);
+          if (other.Disposed)
+            ps.Player.Score += (s.maxHealth * 10);
+        }
       }
+
       if (onCollision != null)
         onCollision(this, other);
       else
@@ -126,6 +137,7 @@ namespace Planet
           world.Particles.CreateStar(Pos, 0.3f, -100, 100, color, 0.5f, 0.5f, 0.3f);
         }
       }
+
       if (!Piercing)
         Die();
       else

@@ -11,6 +11,7 @@ namespace Planet
   {
     public Timer AbilityCooldown { get; set; }
     public int AbilityCharges { get; private set; }
+    public Player Player { get; set; }
 
     private Color blinkColor = Color.DeepSkyBlue;
     private float blinkRange = 200;
@@ -21,17 +22,19 @@ namespace Planet
     private Vector2 blinkDirection;
     private int maxCharges = 3;
 
-    public BlinkerShip(Vector2 pos, World world)
+    public BlinkerShip(Vector2 pos, World world, Player player)
         : base(pos, world, AssetManager.GetTexture(@"ships\blue\spaceShips_001"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\spaceShips_001");
       SetLayer(Layer.PLAYER_SHIP);
+      Player = player;
 
       maxHealth = 60;
       currentHealth = maxHealth;
       maxShield = 40;
       currentShield = maxShield;
       LeadShots = true;
+      Scale = 0.65f;
       Hitbox.LocalScale = 0.7f;
 
       AbilityCharges = maxCharges;

@@ -120,6 +120,7 @@ namespace Planet
       weapons.Add(WeaponList.Spread(this, world));
       weapons.Add(WeaponList.Spinny2(this, world));
       weapons.Add(WeaponList.XLaser(this, world));
+      weapons.Add(WeaponList.Nova(this, world));
     }
   }
 }

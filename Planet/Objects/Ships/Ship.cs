@@ -173,6 +173,10 @@ namespace Planet
       else
         ToggleDash();
     }
+    public int GetWeaponIndex()
+    {
+      return weaponIndex;
+    }
     public Weapon GetWeapon(int index)
     {
       index = MathHelper.Clamp(index, 0, weapons.Count());
@@ -336,6 +340,8 @@ namespace Planet
     {
       string shieldTex;
       float f = currentShield / maxShield;
+      if (f < 0)
+        f = 0;
       if (f > 0.7f)
         shieldTex = "shield3";
       else if (f > 0.4f)

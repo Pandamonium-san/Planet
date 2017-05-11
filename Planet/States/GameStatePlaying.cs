@@ -27,7 +27,7 @@ namespace Planet
       SetPlayerShip(p1).Pos = new Vector2(500, 500);
       SetPlayerShip(p2).Pos = new Vector2(1000, 500);
       enemyManager = new EnemyManager(world);
-      hud = new HUD(world, p1, p2);
+      hud = new HUD(world, p1, p2, enemyManager);
     }
     Ship SetPlayerShip(Player p)
     {
@@ -45,9 +45,9 @@ namespace Planet
       switch (shipType)
       {
         case "RewinderShip":
-          return new RewinderShip(Vector2.Zero, world);
+          return new RewinderShip(Vector2.Zero, world, p);
         case "BlinkerShip":
-          return new BlinkerShip(Vector2.Zero, world);
+          return new BlinkerShip(Vector2.Zero, world, p);
         case "PossessorShip":
           return new PossessorShip(Vector2.Zero, world, p);
       }
