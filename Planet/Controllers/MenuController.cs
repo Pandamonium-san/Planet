@@ -13,9 +13,9 @@ namespace Planet
   /// </summary>
   class MenuController : PlayerController
   {
-    IMenuGameState gs;
+    MenuGameState gs;
     MenuCursor cursor;
-    public MenuController(PlayerIndex index, MenuCursor cursor, IMenuGameState gs)
+    public MenuController(PlayerIndex index, MenuCursor cursor, MenuGameState gs)
       : base(index)
     {
       this.gs = gs;

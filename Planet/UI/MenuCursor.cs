@@ -48,6 +48,7 @@ namespace Planet
         selectedIndex = 0;
       this.Parent = GetSelected();
       LocalPos = Vector2.UnitX * (GetSelected().tex.Width / 2 + tex.Width) * (isRight ? 1 : -1); 
+      AudioManager.PlaySound("click4");
     }
     public void Previous()
     {
@@ -57,6 +58,7 @@ namespace Planet
         selectedIndex = menu.Length - 1;
       this.Parent = GetSelected();
       LocalPos = Vector2.UnitX * (GetSelected().tex.Width / 2 + tex.Width) * (isRight ? 1: -1);
+      AudioManager.PlaySound("click4");
     }
   }
 }

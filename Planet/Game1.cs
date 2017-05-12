@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
+   *  - Sound issue after playing for a while. Most likely a monogames bug
    *  - Add sound
    *      - find more fitting bgm?
    *  - Design UI
@@ -43,9 +44,8 @@ namespace Planet
     private GameStateManager gameStateManager;
 
     //debug variables
+    int frames;
     public static bool debugMode;
-    public static int frames;
-    public static Vector2 intersectPoint;
     public static int collisionChecksPerFrame;
     int slowFrames;
     SpriteFont debugFont;
@@ -82,9 +82,9 @@ namespace Planet
 #endif
       Microsoft.Xna.Framework.Audio.SoundEffect.MasterVolume = 0.5f;
       AssetManager.LoadContent(Content);
+      debugFont = AssetManager.GetFont("font1");
       gameStateManager = new GameStateManager();
       gameStateManager.Push(new GameStateTitleScreen(gameStateManager));
-      debugFont = AssetManager.GetFont("font1");
     }
 
     /// <summary>
@@ -112,10 +112,14 @@ namespace Planet
       {
         debugMode = !debugMode;
       }
-      collisionChecksPerFrame = 0;
-      runningSlowly = gameTime.IsRunningSlowly;
+      if (debugMode)
+      {
+        collisionChecksPerFrame = 0;
+        runningSlowly = gameTime.IsRunningSlowly;
+      }
+      Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f;
+      Timer.UpdateGlobalTimers(gameTime);
       gameStateManager.Update(gameTime);
-
       base.Update(gameTime);
     }
     /// <summary>

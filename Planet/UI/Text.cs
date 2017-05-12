@@ -61,9 +61,9 @@ namespace Planet
           break;
       }
     }
-    public override void Draw(SpriteBatch sb)
+    public override void Draw(SpriteBatch sb, float a = 1.0f)
     {
-      sb.DrawString(font, text, Pos, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+      sb.DrawString(font, text, Pos, color * alpha * a, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
     }
   }
 }

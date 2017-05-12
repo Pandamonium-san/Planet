@@ -8,6 +8,7 @@ namespace Planet
   class GameSettings
   {
     public string p1StarterShip, p2StarterShip;
+    public bool startGame;
     public GameSettings()
     {
 

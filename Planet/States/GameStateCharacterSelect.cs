@@ -7,20 +7,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
-  class GameStateCharacterSelect : GameState, IMenuGameState
+  class GameStateCharacterSelect : MenuGameState
   {
     private GameStateManager gsm;
-    private GameSettings gameSettings;
+    private GameSettings settings;
     private MenuCursor cursor1, cursor2;
     private MenuController mc1, mc2;
     private Menu characterMenu;
 
-    public GameStateCharacterSelect(GameStateManager gsm)
+    public GameStateCharacterSelect(GameStateManager gsm, GameSettings settings)
       : base()
     {
       this.gsm = gsm;
+      this.settings = settings;
       characterMenu = new Menu(3);
-      gameSettings = new GameSettings();
 
       Button b = new Button(new Vector2(Game1.ScreenWidth / 2f, 300), "Rewinder");
       b.AddText(AssetManager.GetFont("future18"), "Rewinder");
@@ -42,8 +42,12 @@ namespace Planet
       cursor2.color = Color.CornflowerBlue;
       mc2 = new MenuController(PlayerIndex.Two, cursor2, this);
     }
-    public void Confirm(MenuController mc)
+    public override void Confirm(MenuController mc)
     {
+      if (fadeTimer.Counting)
+        return;
+      if (mc.GetCursor().Locked)
+        return;
       switch (mc.GetSelected().Name)
       {
         case "Rewinder":
@@ -59,46 +63,56 @@ namespace Planet
       mc.GetCursor().alpha = 0.5f;
       mc.GetCursor().Lock();
       if (cursor1.Locked && cursor2.Locked)
-        gsm.Push(new GameStatePlaying(gsm, gameSettings));
-    }
-    public void SetPlayerShip(PlayerIndex pi, string shipType)
-    {
-      switch (pi)
       {
-        case PlayerIndex.One:
-          gameSettings.p1StarterShip = shipType;
-          break;
-        case PlayerIndex.Two:
-          gameSettings.p2StarterShip = shipType;
-          break;
+        settings.startGame = true;
+        FadeTransition(1.0f, gsm.Pop, false);
       }
+      AudioManager.PlaySound("confirm");
     }
-    public void Cancel(MenuController mc)
+    public override void Cancel(MenuController mc)
     {
+      if (fadeTimer.Counting)
+        return;
       if (mc.GetCursor().Locked)
       {
         mc.GetCursor().alpha = 1.0f;
         mc.GetCursor().Unlock();
       }
       else
-        gsm.Pop();
+      {
+        FadeTransition(1.0f, gsm.Pop, false);
+      }
+      AudioManager.PlaySound("cancel");
     }
-    public override void Update(GameTime gt)
+    public override void Update(GameTime gameTime)
     {
-      mc1.Update(gt);
-      mc2.Update(gt);
+      base.Update(gameTime);
+      mc1.Update(gameTime);
+      mc2.Update(gameTime);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
-      cursor1.Draw(spriteBatch);
-      cursor2.Draw(spriteBatch);
-      characterMenu.Draw(spriteBatch);
+      cursor1.Draw(spriteBatch, a);
+      cursor2.Draw(spriteBatch, a);
+      characterMenu.Draw(spriteBatch, a);
       spriteBatch.End();
     }
-
+    public void SetPlayerShip(PlayerIndex pi, string shipType)
+    {
+      switch (pi)
+      {
+        case PlayerIndex.One:
+          settings.p1StarterShip = shipType;
+          break;
+        case PlayerIndex.Two:
+          settings.p2StarterShip = shipType;
+          break;
+      }
+    }
     public override void Entered()
     {
+      FadeTransition(1.0f);
     }
 
     public override void Leaving()
@@ -111,6 +125,7 @@ namespace Planet
 
     public override void Revealed()
     {
+      FadeTransition(1.0f);
       cursor1.Unlock();
       cursor2.Unlock();
       cursor1.alpha = 1.0f;

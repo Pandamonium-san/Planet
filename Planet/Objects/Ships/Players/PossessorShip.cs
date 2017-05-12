@@ -54,9 +54,9 @@ namespace Planet
         }
       }
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
     }
     public override void Fire1()
     {

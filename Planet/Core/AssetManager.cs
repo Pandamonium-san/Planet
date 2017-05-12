@@ -11,6 +11,8 @@ namespace Planet
 {
   public static class AssetManager
   {
+    public static Texture2D Pixel { get; private set; }
+
     private static ContentManager Content;
     private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
     private static Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
@@ -21,6 +23,7 @@ namespace Planet
     public static void LoadContent(ContentManager content)
     {
       AssetManager.Content = content;
+      Pixel = GetTexture("pixel");
 
       LoadFont("font1", "font1");
       LoadFont("future48", "future48");

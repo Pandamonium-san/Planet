@@ -37,10 +37,10 @@ namespace Planet
         spriteRec = new Rectangle(0, 0, tex.Width, tex.Height);
       origin = new Vector2((float)spriteRec.Width / 2.0f, (float)spriteRec.Height / 2.0f);
     }
-    public virtual void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
       if (Visible && tex != null)
-        spriteBatch.Draw(tex, Pos, spriteRec, color * alpha, Rotation, origin, Scale, spriteEffects, layerDepth);
+        spriteBatch.Draw(tex, Pos, spriteRec, color * alpha * a, Rotation, origin, Scale, spriteEffects, layerDepth);
     }
   }
 }

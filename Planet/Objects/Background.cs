@@ -36,7 +36,7 @@ namespace Planet
       for (int i = 0; i < StarDensity; i++)
       {
         Vector2 pos = new Vector2(Utility.RandomFloat(0, Game1.ScreenWidth), Utility.RandomFloat(0, Game1.ScreenHeight));
-        Particle p = CreateStar(pos, 600.0f, 0, DriftSpeed + 25, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
+        Particle p = CreateStar(pos, 60.0f, 0, DriftSpeed + 25, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
         p.Velocity = Vector2.One * p.Velocity.Length();
         p.layerDepth = 1.0f;
         stars.Add(p);
@@ -45,7 +45,7 @@ namespace Planet
     private void GenerateStar()
     {
       Vector2 pos = new Vector2(Utility.RandomFloat(-Game1.ScreenWidth + Game1.ScreenWidth - Game1.ScreenHeight, Game1.ScreenWidth - Game1.ScreenHeight), Utility.RandomFloat(-Game1.ScreenHeight, 0));
-      Particle p = CreateStar(pos, 600.0f, 0, DriftSpeed + 30, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
+      Particle p = CreateStar(pos, 60.0f, 0, DriftSpeed + 30, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
       p.Velocity = Vector2.One * p.Velocity.Length();
       p.layerDepth = 1.0f;
       stars.Add(p);
@@ -68,6 +68,7 @@ namespace Planet
     {
       foreach (Particle star in stars)
         star.Update(gameTime);
+      stars.RemoveAll(x => x.Disposed);
       starGenerator.Update(gameTime);
       this.pos += new Vector2(DriftSpeed, DriftSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds;
       if (pos.X > 0 || pos.Y > 0)

@@ -133,14 +133,6 @@ namespace Planet
         p.Draw(spriteBatch);
       }
       Particles.Draw(spriteBatch);
-
-      //debug
-      if (Game1.debugMode)
-      {
-        spriteBatch.DrawString(future18, "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
-        spriteBatch.DrawString(future18, "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
-      }
-
       spriteBatch.End();
     }
 

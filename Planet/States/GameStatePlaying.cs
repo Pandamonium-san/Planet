@@ -33,7 +33,7 @@ namespace Planet
     {
       if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true))
       {
-        gsm.Pop();
+        gsm.Push(new GameStatePaused(gsm));
       }
       p1.Update(gameTime);
       p2.Update(gameTime);
@@ -71,10 +71,11 @@ namespace Planet
     }
     public override void Revealed()
     {
-
+      UpdateEnabled = true;
     }
     public override void Obscuring()
     {
+      UpdateEnabled = false;
     }
     private void RespawnShip(Player p, float healthPercentage = 1.0f)
     {

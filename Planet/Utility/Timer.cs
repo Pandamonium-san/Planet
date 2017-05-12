@@ -8,6 +8,22 @@ namespace Planet
 {
   public class Timer
   {
+    static List<Timer> globalTimers = new List<Timer>();
+    /// <summary>
+    /// Creates a fire-and-forget timer and updates it globally. Finished timers are removed from the list.
+    /// </summary>
+    public static Timer OneShotTimer(double timeInSeconds, Action action = null, bool start = true, bool repeat = false)
+    {
+      Timer t = new Timer(timeInSeconds, action, start, repeat);
+      globalTimers.Add(t);
+      return t;
+    }
+    public static void UpdateGlobalTimers(GameTime gt)
+    {
+      foreach (Timer t in globalTimers)
+        t.Update(gt);
+      globalTimers.RemoveAll(t => t.Finished);
+    }
     public double Fraction { get { return elapsedSeconds / seconds; } }
     public double Remaining { get { return seconds - elapsedSeconds; } }
 

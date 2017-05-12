@@ -23,11 +23,11 @@ namespace Planet
     {
       buttons[index] = button;
     }
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
       for (int i = 0; i < buttons.Length; i++)
       {
-        buttons[i].Draw(spriteBatch);
+        buttons[i].Draw(spriteBatch, a);
       }
     }
   }

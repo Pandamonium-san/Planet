@@ -21,11 +21,11 @@ namespace Planet
       this.text.Parent = this;
       this.text.layerDepth = layerDepth + 0.01f;
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
       if (text != null)
-        text.Draw(spriteBatch);
+        text.Draw(spriteBatch, a);
     }
   }
 }

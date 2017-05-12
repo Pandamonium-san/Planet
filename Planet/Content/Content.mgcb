@@ -1675,3 +1675,21 @@
 /processorParam:Quality=Best
 /build:Sfx/switch28.wav
 
+#begin Sfx/cancel.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/cancel.wav
+
+#begin Sfx/confirm.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/confirm.wav
+
+#begin Sfx/click4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/click4.wav
+

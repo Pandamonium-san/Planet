@@ -9,47 +9,55 @@ namespace Planet
 {
   class GameStateManager
   {
-    Stack<GameState> stateStack;
+    LinkedList<GameState> stateStack;
 
     public GameStateManager()
     {
-      stateStack = new Stack<GameState>();
+      stateStack = new LinkedList<GameState>();
     }
     public void ChangeState(GameState state)
     {
       Pop();
       Push(state);
     }
-    public GameState Pop()
+    public void Pop()
     {
       if (stateStack.Count() == 0)
         throw new Exception("Attempted to pop from an empty game stack");
-      GameState popped = stateStack.Pop();
+      GameState popped = stateStack.First(); stateStack.RemoveFirst();
       popped.Leaving();
       if (stateStack.Count() != 0)
-        stateStack.Peek().Revealed();
-      return popped;
+        stateStack.First().Revealed();
     }
     public void Push(GameState state)
     {
       if (stateStack.Count() != 0)
-        stateStack.Peek().Obscuring();
-      stateStack.Push(state);
+        stateStack.First().Obscuring();
+      stateStack.AddFirst(state);
       state.Entered();
     }
     public GameState Peek()
     {
       if (stateStack.Count() == 0)
         return null;
-      return stateStack.Peek();
+      return stateStack.First();
     }
     public void Update(GameTime gt)
     {
-      Peek().Update(gt);
+      foreach (GameState state in stateStack.ToList())
+      {
+        if (state.UpdateEnabled)
+          state.Update(gt);
+      }
     }
     public void Draw(SpriteBatch spriteBatch)
     {
-      Peek().Draw(spriteBatch);
+      foreach (GameState state in stateStack.Reverse())
+      {
+        if (state.DrawEnabled)
+          state.Draw(spriteBatch);
+      }
     }
+
   }
 }

@@ -137,11 +137,11 @@ namespace Planet
         return;
       Latch((Ship)other);
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
       foreach (Sprite sp in parasiteLink)
-        sp.Draw(spriteBatch);
+        sp.Draw(spriteBatch, a);
     }
   }
 }

@@ -148,11 +148,11 @@ namespace Planet
         base.Update(gt);
       }
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
       if (states.Count > 0)
-        spriteBatch.Draw(tex, states.Last.Value.pos, spriteRec, Color.Gray * 0.15f, states.Last.Value.rotation, origin, Scale, SpriteEffects.None, layerDepth + 0.1f);
+        spriteBatch.Draw(tex, states.Last.Value.pos, spriteRec, Color.Gray * 0.15f * a, states.Last.Value.rotation, origin, Scale, SpriteEffects.None, layerDepth + 0.1f);
     }
     private void LoadState(State state)
     {

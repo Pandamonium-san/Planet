@@ -42,6 +42,7 @@ namespace Planet
     protected Timer invulnerabilityTimer;
     protected Particle flashParticle;
     protected Texture2D flashTex;
+    protected Texture2D crosshair;
     protected List<Weapon> weapons;
     protected int weaponIndex;
 
@@ -49,6 +50,7 @@ namespace Planet
       : base(pos, world, tex)
     {
       SetTexture(tex);
+      crosshair = AssetManager.GetTexture("crosshair_white_large");
       weapons = new List<Weapon>();
       weaponIndex = 0;
       maxHealth = 10;
@@ -122,13 +124,13 @@ namespace Planet
         flashParticle.Update(gt);
       invulnerabilityTimer.Update(gt);
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
       if (!Visible)
         return;
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
       if (flashParticle != null)
-        flashParticle.Draw(spriteBatch);
+        flashParticle.Draw(spriteBatch, a);
 
       if (Layer != Layer.PLAYER_SHIP || !(Controller is PlayerShipController))
         return;
@@ -139,8 +141,7 @@ namespace Planet
           color = Color.PaleTurquoise;
         else
           color = Color.CornflowerBlue;
-        Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
-        spriteBatch.Draw(circle, Target.Pos, null, color * 0.75f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
+        spriteBatch.Draw(crosshair, Target.Pos, null, color * 0.75f * a, (float)Math.PI / 4, new Vector2(crosshair.Width / 2, crosshair.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
       }
     }
     public virtual void Fire1()
@@ -336,6 +337,13 @@ namespace Planet
       else
       {
         TakeDamage(p.damage, forceInvuln);
+      }
+      if (p.instigator.Controller is PlayerShipController)
+      {
+        PlayerShipController ps = (PlayerShipController)p.instigator.Controller;
+        ps.Player.Score += (p.damage * 10);
+        if (Disposed)
+          ps.Player.Score += (maxHealth * 10);
       }
     }
     protected void LeadShot(Ship target)

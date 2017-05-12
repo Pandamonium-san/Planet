@@ -58,9 +58,11 @@
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\GameStateCharacterSelect.cs" />
     <Compile Include="States\GameStateManager.cs" />
+    <Compile Include="States\GameStateMenuMain.cs" />
+    <Compile Include="States\GameStatePaused.cs" />
     <Compile Include="States\GameStatePlaying.cs" />
     <Compile Include="States\GameStateTitleScreen.cs" />
-    <Compile Include="States\IMenuGameState.cs" />
+    <Compile Include="States\MenuGameState.cs" />
     <Compile Include="UI\AbilityIcon.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="Controllers\AIController.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuCursor.cs" />
     <Compile Include="UI\Score.cs" />
+    <Compile Include="UI\TitleText.cs" />
     <Compile Include="UI\ValueBar.cs" />
     <Compile Include="UI\Text.cs" />
     <Compile Include="Utility\DebugFunc.cs" />

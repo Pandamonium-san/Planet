@@ -12,7 +12,14 @@ namespace Planet
     public static void PlayBgm(string name, float volume = 0.1f)
     {
       MediaPlayer.Play(AssetManager.GetSong(name));
-      MediaPlayer.Volume = volume;
+      try
+      {
+        MediaPlayer.Volume = volume;
+      }
+      catch (NullReferenceException)
+      {
+        // song changed while changing volume
+      }
       MediaPlayer.IsRepeating = true;
     }
     public static void Resume()
