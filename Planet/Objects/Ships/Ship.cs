@@ -158,7 +158,7 @@ namespace Planet
       CurrentWeapon.ResetShootTimer();
       if(Layer == Layer.PLAYER_SHIP)
       {
-        AudioManager.PlaySound("switch28", 0.07f);
+        AudioManager.PlaySound("switch28", 0.14f);
       }
     }
     public virtual void SwitchTarget()
@@ -294,12 +294,12 @@ namespace Planet
       {
         Flash(0.75f, Color.Red, false, 0.8f);
         MakeInvulnerable(0.75f);
-        AudioManager.PlaySound("hit", 0.25f);
+        AudioManager.PlaySound("hit", 0.50f);
       }
       else
       {
         Flash(0.25f, Color.White, false, 0.8f);
-        AudioManager.PlaySound("plick", 0.1f);
+        AudioManager.PlaySound("plick", 0.20f);
       }
     }
     public void TakeDamage(Projectile p)
@@ -314,13 +314,13 @@ namespace Planet
         if (Layer == Layer.PLAYER_SHIP)
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.5f);
-          AudioManager.PlaySound("hit2", 0.15f);
+          AudioManager.PlaySound("hit2", 0.30f);
           MakeInvulnerable(0.5f);
         }
         else
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
-          AudioManager.PlaySound("plick2", 0.1f);
+          AudioManager.PlaySound("plick2", 0.20f);
         }
       }
       else

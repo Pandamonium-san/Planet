@@ -80,6 +80,7 @@ namespace Planet
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 #endif
+      Microsoft.Xna.Framework.Audio.SoundEffect.MasterVolume = 0.5f;
       AssetManager.LoadContent(Content);
       gameStateManager = new GameStateManager();
       gameStateManager.Push(new GameStateTitleScreen(gameStateManager));

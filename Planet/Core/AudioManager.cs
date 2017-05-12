@@ -9,8 +9,6 @@ namespace Planet
 {
   class AudioManager
   {
-    static Song bgm;
-
     public static void PlayBgm(string name, float volume = 0.1f)
     {
       MediaPlayer.Play(AssetManager.GetSong(name));

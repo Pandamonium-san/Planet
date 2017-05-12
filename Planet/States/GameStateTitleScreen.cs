@@ -13,16 +13,19 @@ namespace Planet
   class GameStateTitleScreen : GameState, IMenuGameState
   {
     private GameStateManager gsm;
-
+    private SpriteFont future18;
     private Background bg;
     private MenuCursor cursor1, cursor2;
     private MenuController mc1, mc2;
     private Text titleText;
     private Menu mainMenu;
 
+    private Text bgmVol, sfxVol;
+
     public GameStateTitleScreen(GameStateManager gameStateManager)
     {
       gsm = gameStateManager;
+      future18 = AssetManager.GetFont("future18");
       AudioManager.PlayBgm("PerituneMaterial_splash");
       bg = new Background(1.0f, 20, 100);
       bg.DriftSpeed = 20;
@@ -32,15 +35,15 @@ namespace Planet
       mainMenu = new Menu(3);
 
       Button b = new Button(new Vector2(Game1.ScreenWidth / 2f, 300), "Play");
-      b.AddText(AssetManager.GetFont("future18"), "Play");
+      b.AddText(future18, "Play");
       mainMenu.AddSelection(0, b);
 
       b = new Button(new Vector2(Game1.ScreenWidth / 2f, 400), "Options");
-      b.AddText(AssetManager.GetFont("future18"), "Music +Vol-");
+      b.AddText(future18, "Music +Vol-");
       mainMenu.AddSelection(1, b);
 
       b = new Button(new Vector2(Game1.ScreenWidth / 2f, 500), "Credits");
-      b.AddText(AssetManager.GetFont("future18"), "Sound +Vol-");
+      b.AddText(future18, "Sound +Vol-");
       mainMenu.AddSelection(2, b);
 
       cursor1 = new MenuCursor(mainMenu, AssetManager.GetTexture("grey_sliderRight"), false);
@@ -50,6 +53,11 @@ namespace Planet
       cursor2 = new MenuCursor(mainMenu, AssetManager.GetTexture("grey_sliderRight"), true);
       cursor2.color = Color.CornflowerBlue;
       mc2 = new MenuController(PlayerIndex.Two, cursor2, this);
+
+      bgmVol = new Text(future18, "", Vector2.Zero, Color.White, Text.Align.Left);
+      sfxVol = new Text(future18, "", new Vector2(0, 30), Color.White, Text.Align.Left);
+      bgmVol.Set("BGM: " + MediaPlayer.Volume.ToString("N2"));
+      sfxVol.Set("SFX: " + SoundEffect.MasterVolume.ToString("N2"));
     }
     public void Confirm(MenuController mc)
     {
@@ -61,11 +69,13 @@ namespace Planet
           break;
         case "Options":
           MediaPlayer.Volume += 0.01f;
+          bgmVol.Set("BGM: " + MediaPlayer.Volume.ToString("N2"));
           //gsm.Push(new GameStateCharacterSelect(gsm));
           //push options state to gsm
           break;
         case "Credits":
-          SoundEffect.MasterVolume = Math.Min(SoundEffect.MasterVolume + 0.01f, 1.0f);
+          SoundEffect.MasterVolume = Math.Min(SoundEffect.MasterVolume + 0.05f, 1.0f);
+          sfxVol.Set("SFX: " + SoundEffect.MasterVolume.ToString("N2"));
           // ???
           break;
       }
@@ -76,11 +86,13 @@ namespace Planet
       {
         case "Options":
           MediaPlayer.Volume -= 0.01f;
+          bgmVol.Set("BGM: " + MediaPlayer.Volume.ToString("N2"));
           //gsm.Push(new GameStateCharacterSelect(gsm));
           //push options state to gsm
           break;
         case "Credits":
-          SoundEffect.MasterVolume = Math.Max(SoundEffect.MasterVolume - 0.01f, 0.0f);
+          SoundEffect.MasterVolume = Math.Max(SoundEffect.MasterVolume - 0.05f, 0.0f);
+          sfxVol.Set("SFX: " + SoundEffect.MasterVolume.ToString("N2"));
           // ???
           break;
       }
@@ -99,6 +111,8 @@ namespace Planet
       cursor2.Draw(spriteBatch);
       titleText.Draw(spriteBatch);
       mainMenu.Draw(spriteBatch);
+      bgmVol.Draw(spriteBatch);
+      sfxVol.Draw(spriteBatch);
       spriteBatch.End();
     }
     public override void Entered()
