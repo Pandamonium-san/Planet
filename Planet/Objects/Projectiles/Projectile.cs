@@ -10,6 +10,7 @@ namespace Planet
   public class Projectile : GameObject
   {
     public bool Piercing { get; set; }
+    public float InvulnOnHit { get; set; }
     private List<GameObject> hitObjects;
 
     public float damage;
@@ -117,7 +118,7 @@ namespace Planet
       if (other is Ship)
       {
         Ship s = (Ship)other;
-        s.TakeDamage(this);
+        s.TakeDamage(this, InvulnOnHit);
         if (instigator.Controller is PlayerShipController)
         {
           PlayerShipController ps = (PlayerShipController)instigator.Controller;

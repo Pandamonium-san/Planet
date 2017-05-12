@@ -277,7 +277,7 @@ namespace Planet
 
       currentRotationSpeed += rotation;
     }
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, float forceInvuln = 0.0f)
     {
       if (Invulnerable)
         return;
@@ -299,10 +299,15 @@ namespace Planet
       else
       {
         Flash(0.25f, Color.White, false, 0.8f);
+        if (forceInvuln != 0.0f)
+        {
+          MakeInvulnerable(forceInvuln);
+          Flash(forceInvuln, Color.Red, false, 0.8f);
+        }
         AudioManager.PlaySound("plick", 0.20f);
       }
     }
-    public void TakeDamage(Projectile p)
+    public void TakeDamage(Projectile p, float forceInvuln = 0.0f)
     {
       if (Invulnerable)
         return;
@@ -319,13 +324,18 @@ namespace Planet
         }
         else
         {
+          if (forceInvuln != 0.0f)
+          {
+            MakeInvulnerable(forceInvuln);
+            Flash(forceInvuln, Color.Blue, false, 0.8f);
+          }
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
           AudioManager.PlaySound("plick2", 0.20f);
         }
       }
       else
       {
-        TakeDamage(p.damage);
+        TakeDamage(p.damage, forceInvuln);
       }
     }
     protected void LeadShot(Ship target)

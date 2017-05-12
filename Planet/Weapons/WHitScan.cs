@@ -45,6 +45,7 @@ namespace Planet
         this,
         desc.projLifeTime);
       p.onCollision = OnProjectileCollision;
+      p.InvulnOnHit = InvulnOnHit;
       world.PostProjectile(p);
     }
   }

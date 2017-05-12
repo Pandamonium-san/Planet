@@ -71,6 +71,7 @@
     <Compile Include="UI\HUD.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuCursor.cs" />
+    <Compile Include="UI\Score.cs" />
     <Compile Include="UI\ValueBar.cs" />
     <Compile Include="UI\Text.cs" />
     <Compile Include="Utility\DebugFunc.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="Objects\Projectiles\PMissile.cs" />
     <Compile Include="Core\Player.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Objects\Projectiles\Projectile.cs" />

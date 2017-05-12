@@ -86,8 +86,9 @@ namespace Planet
     }
     public static Weapon Wing(Ship ship, World world, string texture = "spaceEffects_018")
     {
-      WpnDesc desc = new WpnDesc(6, 30, 600, 1, 0, 0, 0.5f, 90, 0, 0, -105, 0.15f, false, true);
+      WpnDesc desc = new WpnDesc(60, 30, 600, 1, 0, 0, 0, 90, 0, 0, -105, 0.15f, false, true);
       Weapon wpn = new LaserGun(ship, world, desc, 40, 100, false);
+      wpn.InvulnOnHit = 0.4f;
       wpn.ProjTex = AssetManager.GetTexture(texture);
       wpn.SFX = AssetManager.GetSfx("lasergun");
       wpn.ShotsPerSFX = 5;
@@ -96,8 +97,9 @@ namespace Planet
       wpn.Scale = 0.5f;
       wpn.Name = "Wing";
       CompoundWeapon cw = new CompoundWeapon(wpn);
-      desc = new WpnDesc(6, 30, 600, 1, 0, 0, 0.5f, 90, 0, 0, 105, 0.15f, false, true);
+      desc = new WpnDesc(60, 30, 600, 1, 0, 0, 0, 90, 0, 0, 105, 0.15f, false, true);
       wpn = new LaserGun(ship, world, desc, 40, 100, false);
+      wpn.InvulnOnHit = 0.4f;
       wpn.SFX = null;
       wpn.ProjTex = AssetManager.GetTexture(texture);
       wpn.LocalPos = new Vector2(25, 0);

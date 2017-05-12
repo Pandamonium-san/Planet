@@ -14,6 +14,7 @@ namespace Planet
     public float Damage { get { return desc.damage * ship.damageModifier; } }
     public WpnDesc Desc { get { return desc; } }
     public Texture2D ProjTex { get; set; }
+    public float InvulnOnHit { get; set; }
     public bool DashUsable { get; set; }
     public float ProjRotSpeed { get; set; }
     public SoundEffect SFX { get; set; }
@@ -21,7 +22,7 @@ namespace Planet
     public int ShotsPerSFX { get; set; }
     private int sfxShotsCounter;
 
-    public Ship ship;
+    protected Ship ship;
     protected World world;
     protected WpnDesc desc;
 
@@ -130,6 +131,7 @@ namespace Planet
         OnProjectileCollision,
         desc.piercing
         );
+      p.InvulnOnHit = InvulnOnHit;
       p.Scale *= Scale;
       world.PostProjectile(p);
     }

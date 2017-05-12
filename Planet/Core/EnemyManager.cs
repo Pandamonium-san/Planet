@@ -34,7 +34,7 @@ namespace Planet
 
       //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 4, 3, 1, 3));
       //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 5, 3));
-      MakeWave();
+      //SendNextWave();
     }
     public void Update(GameTime gt)
     {
@@ -44,12 +44,10 @@ namespace Planet
         aic.Update(gt);
       }
       controllers.RemoveAll(ai => ai.GetShip() == null);
-
-      if (controllers.Count == 0 && spawnQueue.Count == 0 && !spawnTimer.Counting)
-      {
-        resources += resourcesPerWave + resourcesPerWave2 * WaveCounter - 1;
-        MakeWave();
-      }
+    }
+    public bool WaveDefeated()
+    {
+      return controllers.Count == 0 && spawnQueue.Count == 0 && !spawnTimer.Counting;
     }
     private void DequeueSpawn()
     {
@@ -62,20 +60,9 @@ namespace Planet
       else
         spawnTimer.Start(nextSpawn.timeToSpawn);
     }
-    private void SpawnNext()
+    public void SendNextWave(float delay = 0.0f)
     {
-      Ship enemy = nextSpawn.enemy;
-      world.PostGameObj(enemy);
-
-      AIController sc = nextSpawn.controller;
-      sc.IsActive = false;
-      sc.SetShip(enemy);
-      controllers.Add(sc);
-
-      DequeueSpawn();
-    }
-    private void MakeWave()
-    {
+      resources += resourcesPerWave + resourcesPerWave2 * WaveCounter - 1;
       ++WaveCounter;
       if (WaveCounter == 10)
       {
@@ -92,6 +79,19 @@ namespace Planet
           resources -= cost;
         }
       }
+      spawnQueue.First.Value.timeToSpawn += delay;
+      DequeueSpawn();
+    }
+    private void SpawnNext()
+    {
+      Ship enemy = nextSpawn.enemy;
+      world.PostGameObj(enemy);
+
+      AIController sc = nextSpawn.controller;
+      sc.IsActive = false;
+      sc.SetShip(enemy);
+      controllers.Add(sc);
+
       DequeueSpawn();
     }
     private Spawn MakeRandomSpawn(out float cost)

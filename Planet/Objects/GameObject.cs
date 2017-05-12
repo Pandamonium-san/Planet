@@ -63,7 +63,6 @@ namespace Planet
     {
       Disposed = true;
       IsActive = false;
-      CollisionEnabled = false;
     }
     public virtual void DoCollision(GameObject other)
     {

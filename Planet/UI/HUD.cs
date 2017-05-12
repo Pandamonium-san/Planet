@@ -15,9 +15,12 @@ namespace Planet
     private EnemyManager em;
     private LifeBar[] lifeBars;
     private AbilityIcon ability1, ability2;
-    private Text score1, score2;
+
+    private Score score1, score2;
+
     private Text wpn1, wpn2;
     private Text waveCounter;
+    private Timer waveTextFlash;
 
     public HUD(World world, Player p1, Player p2, EnemyManager em)
     {
@@ -28,16 +31,17 @@ namespace Planet
       this.em = em;
 
       lifeBars = new LifeBar[4];
-      lifeBars[0] = new LifeBar(p1.Ship, new Vector2(25, Game1.ScreenHeight - 60), 500, 30);
-      lifeBars[1] = new LifeBar(p2.Ship, new Vector2(Game1.ScreenWidth - 25 - 500, Game1.ScreenHeight - 60), 500, 30, true);
-      ability1 = new AbilityIcon(p1.Ship, new Vector2(585, Game1.ScreenHeight - 60));
-      ability2 = new AbilityIcon(p2.Ship, new Vector2(Game1.ScreenWidth - 585, Game1.ScreenHeight - 60));
+      lifeBars[0] = new LifeBar(p1.Ship, new Vector2(30, Game1.ScreenHeight - 60), 500, 30);
+      lifeBars[1] = new LifeBar(p2.Ship, new Vector2(Game1.ScreenWidth - 30 - 500, Game1.ScreenHeight - 60), 500, 30, true);
+      ability1 = new AbilityIcon(p1.Ship, new Vector2(590, Game1.ScreenHeight - 60));
+      ability2 = new AbilityIcon(p2.Ship, new Vector2(Game1.ScreenWidth - 590, Game1.ScreenHeight - 60));
       wpn1 = new Text(future18, "", lifeBars[0].Pos + new Vector2(5, -30), Color.White, Text.Align.Left);
       wpn2 = new Text(future18, "", lifeBars[1].Pos + new Vector2(500 - 5, -30), Color.White, Text.Align.Right);
 
-      score1 = new Text(future18, "test", new Vector2(25, 15), Color.White, Text.Align.Left);
-      score2 = new Text(future18, "test", new Vector2(Game1.ScreenWidth - 25, 15), Color.White, Text.Align.Right);
-      waveCounter = new Text(future18, "", new Vector2(Game1.ScreenWidth / 2, 30), Color.White);
+      score1 = new Score(p1, new Text(future18, "test", new Vector2(25, 20), Color.White, Text.Align.Left));
+      score2 = new Score(p2, new Text(future18, "test", new Vector2(Game1.ScreenWidth - 25, 20), Color.White, Text.Align.Right));
+      waveCounter = new Text(future18, "", new Vector2(Game1.ScreenWidth / 2, 35), Color.White);
+      waveTextFlash = new Timer(0, null, false);
     }
     public void Update(GameTime gameTime)
     {
@@ -50,8 +54,9 @@ namespace Planet
       }
       ability1.Update();
       ability2.Update();
-      score1.Set((((int)p1.Score / 10) * 10).ToString("D10"));
-      score2.Set((((int)p2.Score / 10) * 10).ToString("D10"));
+      score1.Update(gameTime);
+      score2.Update(gameTime);
+
       if (p1.Ship is PossessorShip && ((PossessorShip)p1.Ship).PossessedShip != null)
         wpn1.Set(((PossessorShip)p1.Ship).PossessedShip.CurrentWeapon.Name);
       else
@@ -60,7 +65,19 @@ namespace Planet
         wpn2.Set(((PossessorShip)p2.Ship).PossessedShip.CurrentWeapon.Name);
       else
         wpn2.Set(p2.Ship.CurrentWeapon.Name);
+
       waveCounter.Set("Wave " + em.WaveCounter.ToString());
+      if (waveTextFlash.Counting)
+      {
+        waveCounter.Scale = 1.4f + (float)Math.Sin(waveTextFlash.elapsedSeconds * Math.PI * 2 - Math.PI / 2) * 0.4f;
+        waveCounter.alpha = 0.80f + (float)Math.Sin(waveTextFlash.elapsedSeconds * Math.PI * 2 - Math.PI / 2) * 0.20f;
+      }
+      else
+      {
+        waveCounter.Scale = 1.0f;
+        waveCounter.alpha = 0.7f;
+      }
+      waveTextFlash.Update(gameTime);
     }
     public void Draw(SpriteBatch spriteBatch)
     {
@@ -78,6 +95,10 @@ namespace Planet
       wpn2.Draw(spriteBatch);
       waveCounter.Draw(spriteBatch);
       spriteBatch.End();
+    }
+    public void FlashWaveText(double seconds)
+    {
+      waveTextFlash.Start(seconds);
     }
     private void MakePossessedShipLifeBar(Player p)
     {

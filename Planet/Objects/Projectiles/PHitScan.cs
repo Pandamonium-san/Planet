@@ -87,7 +87,7 @@ namespace Planet
       if (other is Ship)
       {
         Ship s = (Ship)other;
-        s.TakeDamage(this);
+        s.TakeDamage(this, InvulnOnHit);
         if (instigator.Controller is PlayerShipController)
         {
           PlayerShipController ps = (PlayerShipController)instigator.Controller;

@@ -63,7 +63,7 @@ namespace Planet
     }
     public override void Draw(SpriteBatch sb)
     {
-      sb.DrawString(font, text, Pos, color, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+      sb.DrawString(font, text, Pos, color * alpha, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
     }
   }
 }

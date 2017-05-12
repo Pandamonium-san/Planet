@@ -47,5 +47,9 @@ namespace Planet
       shieldBar.Draw(spriteBatch);
       healthBar.Draw(spriteBatch);
     }
+    public void SetShip(Ship ship)
+    {
+      this.ship = ship;
+    }
   }
 }
