@@ -68,7 +68,12 @@ namespace Planet
             RespawnShip(pc, hp);
         }
       }
-      if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true))
+      if ((InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) &&
+        InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true) &&
+        gsm.P1.Joined) ||
+        (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Start, false) &&
+        InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.Start, true) &&
+        gsm.P2.Joined))
       {
         gsm.Push(new GameStatePaused(gsm));
       }

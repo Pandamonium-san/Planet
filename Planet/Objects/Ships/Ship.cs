@@ -136,11 +136,7 @@ namespace Planet
         return;
       if (Target != null)
       {
-        Color color;
-        if (((PlayerShipController)Controller).Player.Index == PlayerIndex.One)
-          color = Color.PaleTurquoise;
-        else
-          color = Color.CornflowerBlue;
+        Color color = ((PlayerShipController)Controller).Player.Color;
         spriteBatch.Draw(crosshair, Target.Pos, null, color * 0.75f * a, (float)Math.PI / 4, new Vector2(crosshair.Width / 2, crosshair.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
       }
     }

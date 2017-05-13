@@ -18,15 +18,17 @@ namespace Planet
     {
       this.menu = menu;
       this.color = color;
+      Scale = 1.2f;
       selectedIndex = 0;
       UpdateSpacing();
     }
     private void UpdateSpacing()
     {
-      Parent = GetSelected();
+      SelectionBox selected = GetSelected();
+      Parent = selected;
       LocalPos = Vector2.Zero;
-      Width = GetSelected().tex.Width / 2;
-      Height = GetSelected().tex.Height / 2;
+      Width = selected.tex.Width / 2 * selected.Scale;
+      Height = selected.tex.Height / 2 * selected.Scale;
     }
     public void SetMenu(Menu menu)
     {
@@ -38,8 +40,8 @@ namespace Planet
     {
       if (Locked)
         return;
-      Width *= 0.95f;
-      Height *= 0.95f;
+      Width *= 0.85f;
+      Height *= 0.85f;
       alpha = 0.75f;
       Locked = true;
     }
@@ -47,8 +49,8 @@ namespace Planet
     {
       if (!Locked)
         return;
-      Width /= 0.95f;
-      Height /= 0.95f;
+      Width /= 0.85f;
+      Height /= 0.85f;
       alpha = 1.0f;
       Locked = false;
     }

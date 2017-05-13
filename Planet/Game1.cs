@@ -10,12 +10,11 @@ namespace Planet
    *  - Add sound
    *      - find more fitting bgm?
    *  - Design UI
-   *      - Title screen
-   *      - Pause menu
-   *      - Character select
+   *      - Game Over
+   *      - Weapon Select?
    *      - Highscore list
    *      - Credits
-   *  - Fancify the background
+   *  - Fancify the background?
    *  - Make proper weapons
    *      - Missiles?
    *  - Enemies

@@ -33,7 +33,8 @@ namespace Planet
       resourcesPerWave2 = 500;
 
       //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 4, 3, 1, 3));
-      //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 5, 3));
+      //spawnQueue.AddFirst(MakeSpawn(new Vector2(500, 500), 5, 4, 1, 3));
+      //DequeueSpawn();
       //SendNextWave();
     }
     public void Update(GameTime gt)

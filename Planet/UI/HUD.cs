@@ -55,15 +55,9 @@ namespace Planet
     }
     public void Update(GameTime gameTime)
     {
-      for (int i = 0; i < lifeBars.Length; i++)
-      {
-        if (lifeBars[i] != null)
-          lifeBars[i].Update();
-      }
-
       if (p1 != null)
       {
-        MakePossessedShipLifeBar(p1);
+        MakePossessedShipLifeBar(pc1);
         ability1.Update();
         score1.Update(gameTime);
         if (pc1.Ship is PossessorShip && ((PossessorShip)pc1.Ship).PossessedShip != null)
@@ -73,13 +67,19 @@ namespace Planet
       }
       if (p2 != null)
       {
-        MakePossessedShipLifeBar(p2);
+        MakePossessedShipLifeBar(pc2);
         ability2.Update();
         score2.Update(gameTime);
         if (pc2.Ship is PossessorShip && ((PossessorShip)pc2.Ship).PossessedShip != null)
           wpn2.Set(((PossessorShip)pc2.Ship).PossessedShip.CurrentWeapon.Name);
         else
           wpn2.Set(pc2.Ship.CurrentWeapon.Name);
+      }
+
+      for (int i = 0; i < lifeBars.Length; i++)
+      {
+        if (lifeBars[i] != null)
+          lifeBars[i].Update();
       }
 
       waveCounter.Set("Wave " + em.WaveCounter.ToString());
@@ -123,17 +123,17 @@ namespace Planet
     {
       waveTextFlash.Start(seconds);
     }
-    private void MakePossessedShipLifeBar(Player p)
+    private void MakePossessedShipLifeBar(PlayerShipController pc)
     {
-      if (!(p.GetShip() is PossessorShip))
+      if (!(pc.Ship is PossessorShip))
         return;
       LifeBar lb = null;
-      PossessorShip ps = (PossessorShip)p.GetShip();
+      PossessorShip ps = (PossessorShip)pc.GetShip();
       if (ps.PossessedShip != null)
       {
         Vector2 pos = Vector2.Zero;
         bool mirrored;
-        if (p.Index == PlayerIndex.One)
+        if (pc.Player.Index == PlayerIndex.One)
         {
           pos = lifeBars[0].Pos + new Vector2(275, -20);
           mirrored = false;
@@ -146,7 +146,7 @@ namespace Planet
         lb = new LifeBar(ps.PossessedShip, pos, 200, 15, mirrored, 2);
       }
 
-      if (p.Index == PlayerIndex.One)
+      if (pc.Player.Index == PlayerIndex.One)
         lifeBars[2] = lb;
       else
         lifeBars[3] = lb;

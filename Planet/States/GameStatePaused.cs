@@ -27,12 +27,12 @@ namespace Planet
 
       if (gsm.P1.Joined)
       {
-        cursor1 = new MenuCursor(menu, Color.PaleTurquoise);
+        cursor1 = new MenuCursor(menu, gsm.P1.Color);
         mc1 = new MenuController(gsm.P1, cursor1, this);
       }
       if (gsm.P2.Joined)
       {
-        cursor2 = new MenuCursor(menu, Color.CornflowerBlue);
+        cursor2 = new MenuCursor(menu, gsm.P2.Color);
         mc2 = new MenuController(gsm.P2, cursor2, this);
       }
 
@@ -70,10 +70,18 @@ namespace Planet
     public override void Update(GameTime gameTime)
     {
       base.Update(gameTime);
+      foreach (SelectionBox sb in menu.GetBoxes())
+        sb.alpha = 0.6f;
       if (mc1 != null)
+      {
         mc1.Update(gameTime);
+        mc1.GetSelected().alpha = 0.9f;
+      }
       if (mc2 != null)
+      {
         mc2.Update(gameTime);
+        mc2.GetSelected().alpha = 0.9f;
+      }
     }
     public override void Draw(SpriteBatch spriteBatch)
     {

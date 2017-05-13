@@ -23,6 +23,10 @@ namespace Planet
     {
       this.Index = index;
       SelectedShip = "Rewinder";
+      if (index == PlayerIndex.One)
+        Color = new Color(73, 231, 108);
+      else if (index == PlayerIndex.Two)
+        Color = new Color(0, 148, 255);
     }
     public Ship GetShip()
     {

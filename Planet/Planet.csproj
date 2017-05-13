@@ -46,7 +46,6 @@
     <Compile Include="Core\EnemyManager.cs" />
     <Compile Include="Core\ParticleManager.cs" />
     <Compile Include="Core\Spawn.cs" />
-    <Compile Include="Core\SpriteRegions.cs" />
     <Compile Include="Objects\Background.cs" />
     <Compile Include="Objects\Particle.cs" />
     <Compile Include="Objects\Projectiles\Parasite.cs" />
@@ -76,6 +75,7 @@
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuCursor.cs" />
     <Compile Include="UI\Score.cs" />
+    <Compile Include="UI\ShipInfo.cs" />
     <Compile Include="UI\StyledText.cs" />
     <Compile Include="UI\TitleText.cs" />
     <Compile Include="UI\ValueBar.cs" />

@@ -16,8 +16,12 @@ namespace Planet
     private Background bg;
     private GameSettings settings;
     private Text start1, start2;
+    private Sprite sb1, sb2;
     private StylableText titleText;
 
+    private bool showHowTo = true;
+    private Sprite howTo;
+    private Timer howToAlphaTimer;
     public GameStateTitleScreen(GameStateManager gameStateManager)
     {
       this.gsm = gameStateManager;
@@ -25,27 +29,59 @@ namespace Planet
 
       bg = new Background(1.0f, 20, 100);
       bg.DriftSpeed = 20;
-      bg.StarDensity = 100;
+      bg.StarDensity = 500;
 
       titleText = new StylableText(AssetManager.GetFont("title"), "Planet", new Vector2(Game1.ScreenWidth / 2f, 200), 150, Color.White);
 
-      start1 = new Text(AssetManager.GetFont("future48"), "Press start", new Vector2(Game1.ScreenWidth / 4, Game1.ScreenHeight - 100), Color.White);
-      start1.Scale = 0.8f;
-      start2 = new Text(AssetManager.GetFont("future48"), "Press start", new Vector2(Game1.ScreenWidth / 4 * 3, Game1.ScreenHeight - 100), Color.White);
-      start2.Scale = 0.8f;
+      start1 = new Text(AssetManager.GetFont("future48"), "Press ", new Vector2(Game1.ScreenWidth / 4, Game1.ScreenHeight - 100), Color.White);
+
+      sb1 = new Sprite(start1.Pos + new Vector2(100, 0), AssetManager.GetTexture("p1start"));
+      sb1.Parent = start1;
+      start1.Scale = 0.5f;
+      sb1.Scale = 0.7f;
+
+      start2 = new Text(AssetManager.GetFont("future48"), "Press ", new Vector2(Game1.ScreenWidth / 4 * 3, Game1.ScreenHeight - 100), Color.White);
+      sb2 = new Sprite(start2.Pos + new Vector2(100, 0), AssetManager.GetTexture("p2start"));
+      sb2.Parent = start2;
+      start2.Scale = 0.5f;
+      sb2.Scale = 0.7f;
+
+      howTo = new Sprite(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight - 80), AssetManager.GetTexture("howToplay"));
+      howTo.alpha = 0.0f;
+      howTo.Scale = 0.8f;
+      showHowTo = false;
+      howToAlphaTimer = new Timer(1.0, null, false);
+      howToAlphaTimer.ForceFinish();
     }
     public override void Update(GameTime gameTime)
     {
+      if ((InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side) &&
+        InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Side, true)) ||
+        (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side) &&
+        InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.Side, true)) &&
+        !howToAlphaTimer.Counting)
+      {
+        showHowTo = !showHowTo;
+        howToAlphaTimer.Start(1.0f);
+      }
+      howToAlphaTimer.Update(gameTime);
+      if (showHowTo)
+        howTo.alpha = (float)howToAlphaTimer.Fraction;
+      else
+        howTo.alpha = 1 - (float)howToAlphaTimer.Fraction;
+
       bg.Update(gameTime);
       UpdateTitleTextEffects(gameTime);
-      CheckInputAndUpdateText(gsm.P1, start1, gameTime);
-      CheckInputAndUpdateText(gsm.P2, start2, gameTime);
+      CheckInputAndUpdateText(gsm.P1, start1, sb1, gameTime);
+      CheckInputAndUpdateText(gsm.P2, start2, sb2, gameTime);
     }
     public void Join(Player player)
     {
       GameStateMenuMain menu = new GameStateMenuMain(gsm);
       menu.Join(player);
       gsm.Push(menu);
+      showHowTo = true;
+      howToAlphaTimer.Start(2.0f);
     }
     private void UpdateTitleTextEffects(GameTime gameTime)
     {
@@ -62,7 +98,7 @@ namespace Planet
             0.7f + 0.15f * (float)Math.Sin(0.6f * i));
       }
     }
-    private void CheckInputAndUpdateText(Player player, Text start, GameTime gt)
+    private void CheckInputAndUpdateText(Player player, Text start, Sprite sb, GameTime gt)
     {
       if (!(gsm.Peek() is IJoinable))
         return;
@@ -76,14 +112,20 @@ namespace Planet
         start.alpha = 0.5f + 0.5f * (float)Math.Sin(gt.TotalGameTime.TotalSeconds * AudioManager.SplashSinCycle * 4);
       else
         start.alpha = 0;
+      sb.alpha = start.alpha;
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
       bg.Draw(spriteBatch);
       titleText.Draw(spriteBatch);
+      howTo.Draw(spriteBatch);
+
       start1.Draw(spriteBatch);
+      sb1.Draw(spriteBatch);
       start2.Draw(spriteBatch);
+      sb2.Draw(spriteBatch);
+
       spriteBatch.End();
     }
     public override void Entered()
@@ -103,10 +145,17 @@ namespace Planet
         titleText.Visible = false;
         gsm.Push(new GameStatePlaying(gsm));
 
-        start1 = new Text(AssetManager.GetFont("future18"), "Press start", new Vector2(Game1.ScreenWidth / 6, Game1.ScreenHeight - 50), Color.White);
+        start1 = new Text(AssetManager.GetFont("future18"), "Press", new Vector2(Game1.ScreenWidth / 6, Game1.ScreenHeight - 50), Color.White);
         start1.Scale = 1.2f;
-        start2 = new Text(AssetManager.GetFont("future18"), "Press start", new Vector2(Game1.ScreenWidth / 6 * 5, Game1.ScreenHeight - 50), Color.White);
+        sb1.Scale = 0.5f;
+        sb2.Parent = start1;
+        sb1.LocalPos = new Vector2(90, 0);
+
+        start2 = new Text(AssetManager.GetFont("future18"), "Press", new Vector2(Game1.ScreenWidth / 6 * 5, Game1.ScreenHeight - 50), Color.White);
         start2.Scale = 1.2f;
+        sb2.Scale = 0.5f;
+        sb2.Parent = start2;
+        sb2.LocalPos = new Vector2(90, 0);
       }
     }
     public override void Obscuring()

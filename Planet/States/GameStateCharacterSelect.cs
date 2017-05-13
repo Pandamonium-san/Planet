@@ -12,6 +12,7 @@ namespace Planet
     private GameStateManager gsm;
     private MenuCursor cursor1, cursor2;
     private MenuController mc1, mc2;
+    private ShipInfo shi1, shi2;
     private Menu characterMenu;
 
     public GameStateCharacterSelect(GameStateManager gsm)
@@ -28,12 +29,12 @@ namespace Planet
     {
       if (player.Index == PlayerIndex.One)
       {
-        cursor1 = new MenuCursor(characterMenu, Color.PaleTurquoise);
+        cursor1 = new MenuCursor(characterMenu, player.Color);
         mc1 = new MenuController(player, cursor1, this);
       }
       else
       {
-        cursor2 = new MenuCursor(characterMenu, Color.CornflowerBlue);
+        cursor2 = new MenuCursor(characterMenu, player.Color);
         mc2 = new MenuController(player, cursor2, this);
       }
     }
@@ -67,10 +68,20 @@ namespace Planet
     public override void Update(GameTime gameTime)
     {
       base.Update(gameTime);
+      foreach (SelectionBox sb in characterMenu.GetBoxes())
+        sb.alpha = 0.6f;
       if (mc1 != null)
+      {
         mc1.Update(gameTime);
+        mc1.GetSelected().alpha = 0.9f;
+        shi1 = new ShipInfo(mc1.GetSelected().Name, new Vector2(Game1.ScreenWidth / 4, Game1.ScreenHeight / 3 * 2 + 50), gsm.P1.Color);
+      }
       if (mc2 != null)
+      {
         mc2.Update(gameTime);
+        mc2.GetSelected().alpha = 0.9f;
+        shi2 = new ShipInfo(mc2.GetSelected().Name, new Vector2(Game1.ScreenWidth / 4 * 3, Game1.ScreenHeight / 3 * 2 + 50), gsm.P2.Color);
+      }
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
@@ -79,6 +90,10 @@ namespace Planet
         cursor1.Draw(spriteBatch, a);
       if (cursor2 != null)
         cursor2.Draw(spriteBatch, a);
+      if (shi1 != null)
+        shi1.Draw(spriteBatch, a);
+      if (shi2 != null)
+        shi2.Draw(spriteBatch, a);
       characterMenu.Draw(spriteBatch, a);
       spriteBatch.End();
     }
