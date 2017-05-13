@@ -10,14 +10,15 @@ namespace Planet
   /// <summary>
   /// Handles bindings for players
   /// </summary>
-  abstract class PlayerController
+  public abstract class PlayerController
   {
-    public PlayerIndex PIndex { get; private set; }
+    public Player Player { get; private set; }
     private List<KeyBinding> bindings;
 
-    public PlayerController(PlayerIndex index)
+    public PlayerController(Player player)
     {
-      this.PIndex = index;
+      this.Player = player;
+      player.Controller = this;
       bindings = new List<KeyBinding>();
     }
     public virtual void Update(GameTime gt)
@@ -31,9 +32,9 @@ namespace Planet
     {
       KeyBinding kb = bindings.Find(x => x.input == input && x.type == inputType);
       if (kb == null)
-        bindings.Add(new KeyBinding(this.PIndex, input, action, inputType));
+        bindings.Add(new KeyBinding(Player.Index, input, action, inputType));
       else
-        kb = new KeyBinding(this.PIndex, input, action, inputType);
+        kb = new KeyBinding(Player.Index, input, action, inputType);
     }
 
     class KeyBinding

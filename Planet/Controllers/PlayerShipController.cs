@@ -12,25 +12,21 @@ namespace Planet
   /// </summary>
   class PlayerShipController : PlayerController, ShipController
   {
-    public Player Player { get; private set; }
-    protected Ship ship;
+    public Ship Ship { get; private set; }
 
-    public PlayerShipController(Player p, Ship ship)
-      : base(p.Index)
+    public PlayerShipController(Player player, Ship ship)
+      : base(player)
     {
-      Player = p;
       SetShip(ship);
     }
     public override void Update(GameTime gt)
     {
-      if (ship != null && !ship.Disposed)
+      if (Ship != null && !Ship.Disposed)
         base.Update(gt);
-      else
-        ship = null;
     }
     public Ship GetShip()
     {
-      return ship;
+      return Ship;
     }
     public void SetShip(Ship ship)
     {
@@ -38,7 +34,7 @@ namespace Planet
         ship.Controller = null;
       if (ship != null)
         ship.Controller = this;
-      this.ship = ship;
+      this.Ship = ship;
       InitBindings();
       ship.ClampToScreen = true;
     }
@@ -67,16 +63,16 @@ namespace Planet
       SetBinding(PlayerInput.Red, Switch, InputType.Pressed);
 #endif
     }
-    private void Up() { ship.Move(-Vector2.UnitY); }
-    private void Down() { ship.Move(Vector2.UnitY); }
-    private void Left() { ship.Move(-Vector2.UnitX); }
-    private void Right() { ship.Move(Vector2.UnitX); }
-    private void Fire1() { ship.Fire1(); }
-    private void Fire2() { ship.Fire2(); }
-    private void UnlockTarget() { ship.freeAim = true; }
-    private void SwitchTarget() { ship.freeAim = false; ship.SwitchTarget(); }
-    private void DashPressed() { ship.SetDash(true); }
-    private void DashReleased() { ship.SetDash(false); }
-    private void Switch() { ship.Switch(); }
+    private void Up() { Ship.Move(-Vector2.UnitY); }
+    private void Down() { Ship.Move(Vector2.UnitY); }
+    private void Left() { Ship.Move(-Vector2.UnitX); }
+    private void Right() { Ship.Move(Vector2.UnitX); }
+    private void Fire1() { Ship.Fire1(); }
+    private void Fire2() { Ship.Fire2(); }
+    private void UnlockTarget() { Ship.freeAim = true; }
+    private void SwitchTarget() { Ship.freeAim = false; Ship.SwitchTarget(); }
+    private void DashPressed() { Ship.SetDash(true); }
+    private void DashReleased() { Ship.SetDash(false); }
+    private void Switch() { Ship.Switch(); }
   }
 }

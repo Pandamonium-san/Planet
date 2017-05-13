@@ -12,25 +12,24 @@ namespace Planet
   /// </summary>
   public class Player
   {
+    public bool Joined { get; set; }
+    public string SelectedShip { get; set; }
+    public Color Color { get; set; }
     public PlayerIndex Index { get; private set; }
-    public Ship Ship { get; private set; }
     public float Score { get; set; }
-
-    private PlayerShipController pc;
+    public PlayerController Controller { get; set; }
 
     public Player(PlayerIndex index)
     {
       this.Index = index;
+      SelectedShip = "Rewinder";
     }
-
-    public void Update(GameTime gt)
+    public Ship GetShip()
     {
-      pc.Update(gt);
-    }
-    public void SetShip(Ship ship)
-    {
-      Ship = ship;
-      pc = new PlayerShipController(this, ship);
+      if (Controller is PlayerShipController)
+        return ((PlayerShipController)Controller).Ship;
+      else
+        return null;
     }
   }
 }

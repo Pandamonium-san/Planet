@@ -39,6 +39,8 @@ namespace Planet
     }
     public static SpriteFont GetFont(string name)
     {
+      if (!fonts.ContainsKey(name))
+        LoadFont(name, name);
       return fonts[name];
     }
     public static SoundEffect GetSfx(string name)

@@ -9,6 +9,18 @@ namespace Planet
 {
   class AudioManager
   {
+    //86bpm
+    //double bpm = 86;
+    //double beatsPerCycle = 8;
+    //double bps = bpm / 60;
+    //double cycleTime = bps * beatsPerCycle;
+    //double cyclesPerSecond = Math.PI * 2 / cycleTime;
+
+    /// <summary>
+    /// Cycles per seconds to match bpm of 86, one cycle every 8 beats
+    /// </summary>
+    public static readonly float SplashSinCycle = 0.54795220702147551f;
+
     public static void PlayBgm(string name, float volume = 0.1f)
     {
       MediaPlayer.Play(AssetManager.GetSong(name));

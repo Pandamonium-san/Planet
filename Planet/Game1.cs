@@ -84,7 +84,6 @@ namespace Planet
       AssetManager.LoadContent(Content);
       debugFont = AssetManager.GetFont("font1");
       gameStateManager = new GameStateManager();
-      gameStateManager.Push(new GameStateTitleScreen(gameStateManager));
     }
 
     /// <summary>

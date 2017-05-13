@@ -9,11 +9,30 @@ namespace Planet
 {
   class GameStateManager
   {
-    LinkedList<GameState> stateStack;
+    public Player P1 { get; set; }
+    public Player P2 { get; set; }
+    private LinkedList<GameState> stateStack;
+    public GameSettings Settings { get; private set; }
 
     public GameStateManager()
     {
       stateStack = new LinkedList<GameState>();
+      Settings = new GameSettings();
+      P1 = new Player(PlayerIndex.One);
+      P2 = new Player(PlayerIndex.Two);
+      Push(new GameStateTitleScreen(this));
+    }
+    public void Reset()
+    {
+      stateStack = new LinkedList<GameState>();
+      Settings = new GameSettings();
+      P1 = new Player(PlayerIndex.One);
+      P2 = new Player(PlayerIndex.Two);
+      Push(new GameStateTitleScreen(this));
+    }
+    public LinkedList<GameState> GetStates()
+    {
+      return stateStack;
     }
     public void ChangeState(GameState state)
     {

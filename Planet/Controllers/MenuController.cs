@@ -14,12 +14,12 @@ namespace Planet
   class MenuController : PlayerController
   {
     MenuGameState gs;
-    MenuCursor cursor;
-    public MenuController(PlayerIndex index, MenuCursor cursor, MenuGameState gs)
-      : base(index)
+    public MenuCursor Cursor { get; set; }
+    public MenuController(Player player, MenuCursor cursor, MenuGameState gs)
+      : base(player)
     {
       this.gs = gs;
-      this.cursor = cursor;
+      this.Cursor = cursor;
 
       SetBinding(PlayerInput.Up, Previous, InputType.Pressed);
       SetBinding(PlayerInput.Down, Next, InputType.Pressed);
@@ -34,25 +34,17 @@ namespace Planet
       SetBinding(PlayerInput.Green, Cancel, InputType.Pressed);
 #endif
     }
-    public MenuCursor GetCursor()
+    public SelectionBox GetSelected()
     {
-      return cursor;
-    }
-    public void SetCursor(MenuCursor cursor)
-    {
-      this.cursor = cursor;
-    }
-    public Button GetSelected()
-    {
-      return cursor.GetSelected();
+      return Cursor.GetSelected();
     }
     public void Next()
     {
-      cursor.Next();
+      Cursor.Next();
     }
     public void Previous()
     {
-      cursor.Previous();
+      Cursor.Previous();
     }
     private void Confirm() { gs.Confirm(this); }
     private void Cancel() { gs.Cancel(this); }

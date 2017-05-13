@@ -23,23 +23,18 @@ namespace Planet
       future18 = AssetManager.GetFont("future18");
 
       titleText = new Text(AssetManager.GetFont("future48"), "Planet", new Vector2(Game1.ScreenWidth / 2f, 200), Color.White);
-      menu = new Menu(2);
+      menu = Menu.Pause();
 
-      Button b = new Button(new Vector2(Game1.ScreenWidth / 2f, 300), "Resume");
-      b.AddText(future18, "Resume");
-      menu.AddSelection(0, b);
-
-      b = new Button(new Vector2(Game1.ScreenWidth / 2f, 400), "Main Menu");
-      b.AddText(future18, "Main Menu");
-      menu.AddSelection(1, b);
-
-      cursor1 = new MenuCursor(menu, AssetManager.GetTexture("grey_sliderRight"), false);
-      cursor1.color = Color.PaleTurquoise;
-      mc1 = new MenuController(PlayerIndex.One, cursor1, this);
-
-      cursor2 = new MenuCursor(menu, AssetManager.GetTexture("grey_sliderRight"), true);
-      cursor2.color = Color.CornflowerBlue;
-      mc2 = new MenuController(PlayerIndex.Two, cursor2, this);
+      if (gsm.P1.Joined)
+      {
+        cursor1 = new MenuCursor(menu, Color.PaleTurquoise);
+        mc1 = new MenuController(gsm.P1, cursor1, this);
+      }
+      if (gsm.P2.Joined)
+      {
+        cursor2 = new MenuCursor(menu, Color.CornflowerBlue);
+        mc2 = new MenuController(gsm.P2, cursor2, this);
+      }
 
       overlay = new Sprite(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), AssetManager.Pixel);
       overlay.Scale = 2000;
@@ -59,32 +54,35 @@ namespace Planet
           FadeTransition(0.5f, ToMenu, false);
           break;
       }
-      AudioManager.PlaySound("confirm");
+      AudioManager.PlaySound("boop");
     }
     public override void Cancel(MenuController mc)
     {
       if (fadeTimer.Counting)
         return;
       FadeTransition(0.5f, gsm.Pop, false);
-      AudioManager.PlaySound("cancel");
+      AudioManager.PlaySound("boop2");
     }
     private void ToMenu()
     {
-      gsm.Pop();
-      gsm.ChangeState(new GameStateTitleScreen(gsm));
+      gsm.Reset();
     }
     public override void Update(GameTime gameTime)
     {
       base.Update(gameTime);
-      mc1.Update(gameTime);
-      mc2.Update(gameTime);
+      if (mc1 != null)
+        mc1.Update(gameTime);
+      if (mc2 != null)
+        mc2.Update(gameTime);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
       overlay.Draw(spriteBatch, a);
-      cursor1.Draw(spriteBatch, a);
-      cursor2.Draw(spriteBatch, a);
+      if (cursor1 != null)
+        cursor1.Draw(spriteBatch, a);
+      if (cursor2 != null)
+        cursor2.Draw(spriteBatch, a);
       titleText.Draw(spriteBatch, a);
       menu.Draw(spriteBatch, a);
       spriteBatch.End();

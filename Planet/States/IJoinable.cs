@@ -6,12 +6,8 @@ using System.Text;
 
 namespace Planet
 {
-  class GameSettings
+  interface IJoinable
   {
-    public bool startGame;
-    public GameSettings()
-    {
-
-    }
+    void Join(Player player);
   }
 }

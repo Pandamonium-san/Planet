@@ -9,45 +9,33 @@ using System.Text;
 
 namespace Planet
 {
-  class GameStateMenuMain : MenuGameState
+  class GameStateMenuMain : MenuGameState, IJoinable
   {
     private GameStateManager gsm;
-    private GameSettings settings;
     private SpriteFont future18;
     private MenuCursor cursor1, cursor2;
     private MenuController mc1, mc2;
-    private Text titleText;
-    private Menu mainMenu;
+    private Menu menuMain;
 
-
-    public GameStateMenuMain(GameStateManager gameStateManager, GameSettings settings)
+    public GameStateMenuMain(GameStateManager gameStateManager)
     {
       gsm = gameStateManager;
-      this.settings = settings;
       future18 = AssetManager.GetFont("future18");
 
-      titleText = new Text(AssetManager.GetFont("future48"), "Planet", new Vector2(Game1.ScreenWidth / 2f, 200), Color.White);
-      mainMenu = new Menu(3);
-
-      Button b = new Button(new Vector2(Game1.ScreenWidth / 2f, 300), "Play");
-      b.AddText(future18, "Play");
-      mainMenu.AddSelection(0, b);
-
-      b = new Button(new Vector2(Game1.ScreenWidth / 2f, 400), "Options");
-      b.AddText(future18, "Options");
-      mainMenu.AddSelection(1, b);
-
-      b = new Button(new Vector2(Game1.ScreenWidth / 2f, 500), "Credits");
-      b.AddText(future18, "Credits");
-      mainMenu.AddSelection(2, b);
-
-      cursor1 = new MenuCursor(mainMenu, AssetManager.GetTexture("grey_sliderRight"), false);
-      cursor1.color = Color.PaleTurquoise;
-      mc1 = new MenuController(PlayerIndex.One, cursor1, this);
-
-      cursor2 = new MenuCursor(mainMenu, AssetManager.GetTexture("grey_sliderRight"), true);
-      cursor2.color = Color.CornflowerBlue;
-      mc2 = new MenuController(PlayerIndex.Two, cursor2, this);
+      menuMain = Menu.Main();
+    }
+    public void Join(Player player)
+    {
+      if (player.Index == PlayerIndex.One)
+      {
+        cursor1 = new MenuCursor(menuMain, Color.PaleTurquoise);
+        mc1 = new MenuController(player, cursor1, this);
+      }
+      else
+      {
+        cursor2 = new MenuCursor(menuMain, Color.CornflowerBlue);
+        mc2 = new MenuController(player, cursor2, this);
+      }
     }
     public override void Confirm(MenuController mc)
     {
@@ -56,7 +44,8 @@ namespace Planet
       switch (mc.GetSelected().Name)
       {
         case "Play":
-          FadeTransition(1.0f, ToCharacterSelect, false);
+          FadeTransition(0.5f, ToCharacterSelect, false);
+      AudioManager.PlaySound("boop");
           break;
         case "Options":
           //gsm.Push(new GameStateCharacterSelect(gsm));
@@ -66,37 +55,26 @@ namespace Planet
           // ???
           break;
       }
-      AudioManager.PlaySound("confirm");
     }
     public override void Cancel(MenuController mc)
     {
-      if (fadeTimer.Counting)
-        return;
-      switch (mc.GetSelected().Name)
-      {
-        case "Options":
-          //gsm.Push(new GameStateCharacterSelect(gsm));
-          //push options state to gsm
-          break;
-        case "Credits":
-          // ???
-          break;
-      }
-      AudioManager.PlaySound("cancel");
     }
     public override void Update(GameTime gameTime)
     {
       base.Update(gameTime);
-      mc1.Update(gameTime);
-      mc2.Update(gameTime);
+      if (mc1 != null)
+        mc1.Update(gameTime);
+      if (mc2 != null)
+        mc2.Update(gameTime);
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
-      cursor1.Draw(spriteBatch, a);
-      cursor2.Draw(spriteBatch, a);
-      titleText.Draw(spriteBatch, a);
-      mainMenu.Draw(spriteBatch, a);
+      if (cursor1 != null)
+        cursor1.Draw(spriteBatch, a);
+      if (cursor2 != null)
+        cursor2.Draw(spriteBatch, a);
+      menuMain.Draw(spriteBatch, a);
       spriteBatch.End();
     }
     public override void Entered()
@@ -108,9 +86,9 @@ namespace Planet
     }
     public override void Revealed()
     {
-      if (settings.startGame)
+      if (gsm.Settings.startGame)
         gsm.Pop();
-      FadeTransition(1.0f);
+      FadeTransition(0.5f);
       UpdateEnabled = true;
       DrawEnabled = true;
     }
@@ -121,7 +99,7 @@ namespace Planet
     }
     private void ToCharacterSelect()
     {
-      gsm.Push(new GameStateCharacterSelect(gsm, settings));
+      gsm.Push(new GameStateCharacterSelect(gsm));
     }
   }
 }

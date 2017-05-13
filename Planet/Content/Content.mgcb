@@ -115,12 +115,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts\future18.spritefont
 
-#begin Fonts\future48.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts\future48.spritefont
-
 #begin Textures/laserBlue16.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1692,4 +1686,58 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sfx/click4.wav
+
+#begin Textures/cursor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/cursor.png
+
+#begin Fonts/future48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/future48.spritefont
+
+#begin Fonts/title.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/title.spritefont
+
+#begin Sfx/whoosh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/whoosh.wav
+
+#begin Sfx/whoosh2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/whoosh2.wav
+
+#begin Sfx/whoosh3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/whoosh3.wav
+
+#begin Sfx/boop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/boop.wav
+
+#begin Sfx/boop2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/boop2.wav
 

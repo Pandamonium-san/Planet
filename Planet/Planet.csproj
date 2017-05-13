@@ -62,6 +62,7 @@
     <Compile Include="States\GameStatePaused.cs" />
     <Compile Include="States\GameStatePlaying.cs" />
     <Compile Include="States\GameStateTitleScreen.cs" />
+    <Compile Include="States\IJoinable.cs" />
     <Compile Include="States\MenuGameState.cs" />
     <Compile Include="UI\AbilityIcon.cs" />
     <Compile Include="UI\Button.cs" />
@@ -69,11 +70,13 @@
     <Compile Include="Controllers\ShipController.cs" />
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Projectiles\PHitScan.cs" />
+    <Compile Include="UI\Cursor.cs" />
     <Compile Include="UI\LifeBar.cs" />
     <Compile Include="UI\HUD.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuCursor.cs" />
     <Compile Include="UI\Score.cs" />
+    <Compile Include="UI\StyledText.cs" />
     <Compile Include="UI\TitleText.cs" />
     <Compile Include="UI\ValueBar.cs" />
     <Compile Include="UI\Text.cs" />

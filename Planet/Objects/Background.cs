@@ -18,7 +18,6 @@ namespace Planet
     private Timer starGenerator;
     private List<Particle> stars;
     private Sprite planet;
-    private double a;
 
     public Background(float alpha = 1.0f, float driftSpeed = 75, int starDensity = 150)
     {
@@ -74,17 +73,7 @@ namespace Planet
       if (pos.X > 0 || pos.Y > 0)
         pos = new Vector2(-Game1.ScreenWidth, -Game1.ScreenHeight);
 
-      //86bpm
-      // 86/60
-      // full lap every 8 beats
-      double bpm = 86;
-      double beatsPerCycle = 8;
-
-      double bps = bpm / 60;
-      double cycleTime = bps * beatsPerCycle;
-      double cyclesPerSecond = Math.PI * 2 / cycleTime;
-      a += cyclesPerSecond * gameTime.ElapsedGameTime.TotalSeconds;
-      float v = 0.55f + (float)Math.Sin(a) * 0.15f;
+      float v = 0.55f + (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * AudioManager.SplashSinCycle) * 0.15f;
       planet.color = new Color(v, v, v);
     }
     public void Draw(SpriteBatch spriteBatch)

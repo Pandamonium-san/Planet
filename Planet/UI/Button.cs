@@ -7,19 +7,30 @@ using System.Text;
 
 namespace Planet
 {
-  class Button : Sprite
+  public class SelectionBox : Sprite
   {
     public string Name { get; set; }
     protected Text text;
-    public Button(Vector2 pos, string name) : base(pos, AssetManager.GetTexture("blue_button04"))
+    public SelectionBox(Texture2D texture, Vector2 pos, string name) : base(pos, texture)
     {
       this.Name = name;
     }
-    public void AddText(SpriteFont font, string text)
+    public Text GetText()
+    {
+      return text;
+    }
+    public void SetText(SpriteFont font, string text)
     {
       this.text = new Text(font, text, Pos, color);
       this.text.Parent = this;
-      this.text.layerDepth = layerDepth + 0.01f;
+      this.text.LocalPos = Vector2.Zero;
+      this.text.LocalScale = 1.0f;
+      this.text.LocalRotation = 0.0f;
+      this.text.layerDepth = layerDepth + 0.001f;
+    }
+    public void SetText(Text text)
+    {
+      this.text = text;
     }
     public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
