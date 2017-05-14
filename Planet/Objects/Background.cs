@@ -113,12 +113,12 @@ namespace Planet
       float v = 0.55f + (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * AudioManager.SplashSinCycle) * 0.15f;
       planet.color = new Color(v, v, v);
     }
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      spriteBatch.Draw(background, pos, null, new Rectangle(0, 0, Game1.ScreenWidth * 2, Game1.ScreenHeight * 2), null, 0.0f, null, new Color(100, 100, 100), SpriteEffects.None, 1.0f);
+      spriteBatch.Draw(background, pos, null, new Rectangle(0, 0, Game1.ScreenWidth * 2, Game1.ScreenHeight * 2), null, 0.0f, null, new Color(100, 100, 100) * a, SpriteEffects.None, 1.0f);
       foreach (Particle star in stars)
-        star.Draw(spriteBatch);
-      planet.Draw(spriteBatch);
+        star.Draw(spriteBatch, a);
+      planet.Draw(spriteBatch, a);
     }
   }
 }

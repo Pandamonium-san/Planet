@@ -9,8 +9,8 @@ namespace Planet
 {
   class StylableText : Text
   {
-    float spacing;
-    Text[] array;
+    protected float spacing;
+    protected Text[] array;
 
     public StylableText(SpriteFont font, string text, Vector2 pos, float spacing, Color color)
       : base(font, text, pos, color, Align.Center)
@@ -31,6 +31,10 @@ namespace Planet
     {
       //float w = Font.MeasureString(array.First().Get() + array.Last().Get()).X / 2;
       return (array.Length - 1) * spacing;
+    }
+    public Text Get(int index)
+    {
+      return array[index];
     }
     public Text[] GetArray()
     {

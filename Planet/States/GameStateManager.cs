@@ -13,9 +13,13 @@ namespace Planet
     public Player P2 { get; set; }
     private LinkedList<GameState> stateStack;
     public GameSettings Settings { get; private set; }
+    public HighScoreDisplay Highscores { get; set; }
 
     public GameStateManager()
     {
+      //load highscores
+      Highscores = new HighScoreDisplay(Vector2.Zero);
+
       stateStack = new LinkedList<GameState>();
       Settings = new GameSettings();
       P1 = new Player(PlayerIndex.One);

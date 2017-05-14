@@ -13,6 +13,7 @@ namespace Planet
   public abstract class PlayerController
   {
     public Player Player { get; private set; }
+    public bool IsActive { get; set; }
     private List<KeyBinding> bindings;
 
     public PlayerController(Player player)
@@ -20,13 +21,15 @@ namespace Planet
       this.Player = player;
       player.Controller = this;
       bindings = new List<KeyBinding>();
+      IsActive = true;
     }
     public virtual void Update(GameTime gt)
     {
-      foreach (KeyBinding kb in bindings)
-      {
-        kb.Update();
-      }
+      if (IsActive)
+        foreach (KeyBinding kb in bindings)
+        {
+          kb.Update();
+        }
     }
     public void SetBinding(PlayerInput input, Action action, InputType inputType)
     {
@@ -76,8 +79,8 @@ namespace Planet
   /// <summary>
   /// Defines what type of interaction with the key will activate the binding.
   /// </summary>
-  public enum InputType 
-  { 
+  public enum InputType
+  {
     /// <summary> Key is pressed from a released state </summary>
     Pressed,
     /// <summary> Key is released from a pressed state </summary>

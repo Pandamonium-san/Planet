@@ -36,10 +36,11 @@ namespace Planet
         mc2 = new MenuController(player, cursor2, this);
       }
     }
-    public override void Confirm(MenuController mc)
+    public override void Confirm(PlayerController pc)
     {
       if (fadeTimer.Counting)
         return;
+      MenuController mc = (MenuController)pc;
       switch (mc.GetSelected().Name)
       {
         case "Play":
@@ -55,7 +56,7 @@ namespace Planet
           break;
       }
     }
-    public override void Cancel(MenuController mc)
+    public override void Cancel(PlayerController mc)
     {
     }
     public override void Update(GameTime gameTime)

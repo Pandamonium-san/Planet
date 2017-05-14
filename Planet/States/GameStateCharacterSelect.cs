@@ -38,9 +38,12 @@ namespace Planet
         mc2 = new MenuController(player, cursor2, this);
       }
     }
-    public override void Confirm(MenuController mc)
+    public override void Confirm(PlayerController pc)
     {
-      if (fadeTimer.Counting || mc.Cursor.Locked)
+      if (fadeTimer.Counting)
+        return;
+      MenuController mc = (MenuController)pc;
+      if (mc.Cursor.Locked)
         return;
       mc.Player.SelectedShip = mc.GetSelected().Name;
       mc.Cursor.Lock();
@@ -51,9 +54,12 @@ namespace Planet
       }
       AudioManager.PlaySound("boop");
     }
-    public override void Cancel(MenuController mc)
+    public override void Cancel(PlayerController pc)
     {
       if (fadeTimer.Counting)
+        return;
+      MenuController mc = (MenuController)pc;
+      if (mc.Cursor.Locked)
         return;
       if (mc.Cursor.Locked)
       {

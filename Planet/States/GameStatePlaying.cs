@@ -64,7 +64,7 @@ namespace Planet
       }
       if (PlayersAreDead())
       {
-        gsm.Push(new GameStateGameOver(gsm));
+        gsm.Push(new GameStateInputName(gsm, enemyManager.WaveCounter));
       }
 
       if ((InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) &&

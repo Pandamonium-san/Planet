@@ -22,6 +22,7 @@ namespace Planet
     private bool showHowTo = true;
     private Sprite howTo;
     private Timer howToAlphaTimer;
+
     public GameStateTitleScreen(GameStateManager gameStateManager)
     {
       this.gsm = gameStateManager;
@@ -33,7 +34,7 @@ namespace Planet
 
       titleText = new StylableText(AssetManager.GetFont("title"), "Planet", new Vector2(Game1.ScreenWidth / 2f, 200), 150, Color.White);
 
-      start1 = new Text(AssetManager.GetFont("future48"), "Press ", new Vector2(Game1.ScreenWidth / 4, Game1.ScreenHeight - 100), Color.White);
+      start1 = new Text(AssetManager.GetFont("future48"), "Press ", new Vector2(Game1.ScreenWidth / 4 - 50, Game1.ScreenHeight - 100), Color.White);
 
       sb1 = new Sprite(start1.Pos + new Vector2(100, 0), AssetManager.GetTexture("p1start"));
       sb1.Parent = start1;
@@ -55,6 +56,7 @@ namespace Planet
     }
     public override void Update(GameTime gameTime)
     {
+      base.Update(gameTime);
       if ((InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side) &&
         InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Side, true)) ||
         (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side) &&
@@ -117,19 +119,20 @@ namespace Planet
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
-      bg.Draw(spriteBatch);
-      titleText.Draw(spriteBatch);
-      howTo.Draw(spriteBatch);
+      bg.Draw(spriteBatch, a);
+      titleText.Draw(spriteBatch, a);
+      howTo.Draw(spriteBatch, a);
 
-      start1.Draw(spriteBatch);
-      sb1.Draw(spriteBatch);
-      start2.Draw(spriteBatch);
-      sb2.Draw(spriteBatch);
+      start1.Draw(spriteBatch, a);
+      sb1.Draw(spriteBatch, a);
+      start2.Draw(spriteBatch,a);
+      sb2.Draw(spriteBatch,a);
 
       spriteBatch.End();
     }
     public override void Entered()
     {
+      FadeTransition(5.0f);
       AudioManager.PlayBgm("PerituneMaterial_Splash");
     }
     public override void Leaving()

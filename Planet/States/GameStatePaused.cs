@@ -41,10 +41,11 @@ namespace Planet
       overlay.color = Color.Black;
       overlay.alpha = 0.5f;
     }
-    public override void Confirm(MenuController mc)
+    public override void Confirm(PlayerController pc)
     {
       if (fadeTimer.Counting)
         return;
+      MenuController mc = (MenuController)pc;
       switch (mc.GetSelected().Name)
       {
         case "Resume":
@@ -56,7 +57,7 @@ namespace Planet
       }
       AudioManager.PlaySound("boop");
     }
-    public override void Cancel(MenuController mc)
+    public override void Cancel(PlayerController mc)
     {
       if (fadeTimer.Counting)
         return;
