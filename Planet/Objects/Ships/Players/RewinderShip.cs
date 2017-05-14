@@ -67,7 +67,6 @@ namespace Planet
       if (!rewinding && !AbilityCooldown.Counting)
       {
         StartRewind();
-        AbilityCooldown.Start();
       }
       else if (rewinding)
       {
@@ -101,6 +100,7 @@ namespace Planet
     }
     private void StopRewind()
     {
+      AbilityCooldown.Start();
       rewinding = false;
       Untargetable = false;
       CollisionEnabled = true;

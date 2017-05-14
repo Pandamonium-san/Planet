@@ -101,11 +101,13 @@ namespace Planet
       int ship;
       if (P > 0.6f)
         ship = 1;
-      else if (P > 0.40f)
+      else if (P > 0.45f)
         ship = 2;
-      else if (P > 0.20f)
+      else if (P > 0.30f)
         ship = 3;
-      else if (P > 0.10f)
+      else if (P > 0.15f)
+        ship = 6;
+      else if (P > 0.075f)
         ship = 4;
       else
         ship = 5;
@@ -152,6 +154,12 @@ namespace Planet
           ship = new EnemyBoss(pos, world);
           controller = new ECBoss(world, activationTime);
           cost += 5000;
+          spawn = new Spawn(ship, controller, spawnTime);
+          return spawn;
+        case 6:
+          ship = new Enemy5(pos, world);
+          controller = new ECChaser(world, activationTime, 0.05f, 5.0f, 60);
+          cost += 40;
           spawn = new Spawn(ship, controller, spawnTime);
           return spawn;
       }

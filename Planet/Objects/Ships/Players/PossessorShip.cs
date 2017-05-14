@@ -149,6 +149,13 @@ namespace Planet
       {
         ((Enemy3)possessedShip).AutoRotate = false;
       }
+      if(possessedShip is Enemy5)
+      {
+        possessedShip.maxHealth = 20;
+        possessedShip.currentHealth = possessedShip.maxHealth;
+        possessedShip.baseSpeed = 300;
+        possessedShip.rotationSpeed = 9;
+      }
 
       IsActive = false;
       Visible = false;

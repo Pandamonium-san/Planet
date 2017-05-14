@@ -14,6 +14,7 @@ namespace Planet
    *      - Weapon Select?
    *      - Highscore list
    *      - Credits
+   *  - Smarter enemy spawn logic
    *  - Fancify the background?
    *  - Make proper weapons
    *      - Missiles?

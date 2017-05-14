@@ -106,10 +106,10 @@ namespace Planet
         start = wpn.Pos;
       Vector2 end = hitPos;
       Vector2 edge = end - start;
-      float angle = (float)-Math.Atan2(edge.X, edge.Y);
+      float angle = (float)(-Math.Atan2(edge.X, edge.Y)+Math.PI);
       spriteBatch.Draw(
         tex,
-        new Rectangle((int)start.X, (int)start.Y, width, (int)edge.Length()),
+        new Rectangle((int)end.X, (int)end.Y, width, (int)edge.Length()),
         null,
         color * alpha * a,
         angle,

@@ -94,7 +94,7 @@ namespace Planet
       wpn.ShotsPerSFX = 5;
       wpn.Volume = 0.20f;
       wpn.LocalPos = new Vector2(-25, 0);
-      wpn.Scale = 0.5f;
+      wpn.Scale = 0.25f;
       wpn.Name = "Wing";
       CompoundWeapon cw = new CompoundWeapon(wpn);
       desc = new WpnDesc(60, 30, 600, 1, 0, 0, 0, 90, 0, 0, 105, 0.15f, false, true);
@@ -103,7 +103,7 @@ namespace Planet
       wpn.SFX = null;
       wpn.ProjTex = AssetManager.GetTexture(texture);
       wpn.LocalPos = new Vector2(25, 0);
-      wpn.Scale = 0.5f;
+      wpn.Scale = 0.25f;
       wpn.Name = "Wing";
       cw.AddWeapon(wpn);
       cw.DashUsable = true;
@@ -177,6 +177,31 @@ namespace Planet
       WpnDesc desc = new WpnDesc(0.5f, 30, 1500, 3, 0.1f, 0, 0, 30, 5, 0, -5, 0.1f);
       Weapon wpn = new LaserGun(ship, world, desc, 8, 10000, red);
       wpn.Name = "Scatter Laser";
+      return wpn;
+    }
+    public static Weapon Dagger(Ship ship, World world, bool red = false)
+    {
+      WpnDesc desc = new WpnDesc(12, 30, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0.15f, false, true);
+      Weapon wpn = new LaserGun(ship, world, desc, 20, 50, true);
+      wpn.LocalPos = new Vector2(0, -10);
+      wpn.InvulnOnHit = 0.1f;
+      wpn.ProjTex = AssetManager.GetTexture("fire11");
+      wpn.SFX = AssetManager.GetSfx("lasergun");
+      wpn.ShotsPerSFX = 5;
+      wpn.Volume = 0.10f;
+      wpn.Scale = 0.5f;
+      wpn.DashUsable = true;
+      wpn.Name = "Dagger";
+      return wpn;
+    }
+    public static Weapon Sword(Ship ship, World world, bool red = false)
+    {
+      WpnDesc desc = new WpnDesc(50, 1, 500, 3, 0, 0, 0, 1, 0, 0, 0, 0.35f, false, true);
+      Weapon wpn = new Weapon(ship, world, desc, "spaceEffects_018", "Sword", "whoosh3");
+      wpn.InvulnOnHit = 0.1f;
+      wpn.Volume = 0.10f;
+      wpn.Scale = 2.5f;
+      wpn.DashUsable = true;
       return wpn;
     }
     public static Weapon Spread(Ship ship, World world)

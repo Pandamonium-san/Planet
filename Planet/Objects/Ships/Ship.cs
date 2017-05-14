@@ -80,9 +80,9 @@ namespace Planet
         Velocity = Acceleration;
         //dash trail
         Particle pr = world.Particles.CreateParticle(Pos + Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
-        pr.Rotation = Rotation;
+        pr.Rotation = Rotation - (float)Math.PI;
         pr = world.Particles.CreateParticle(Pos - Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
-        pr.Rotation = Rotation;
+        pr.Rotation = Rotation - (float)Math.PI;
       }
       else
       {

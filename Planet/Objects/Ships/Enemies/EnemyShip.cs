@@ -106,6 +106,26 @@ namespace Planet
       weapons.Add(WeaponList.Scatter(this, world));
     }
   }
+  class Enemy5 : EnemyShip
+  {
+    public Enemy5(Vector2 pos, World world)
+      : base(pos, world, AssetManager.GetTexture(@"ships\red\playerShip2"))
+    {
+      flashTex = AssetManager.GetTexture(@"ships\flash\playerShip2");
+
+      baseCost = 40;
+      rotationSpeed = 3;
+      baseSpeed = 200;
+      maxHealth = 50;
+      currentHealth = maxHealth;
+      maxShield = 5;
+      currentShield = maxShield;
+      Scale = 0.5f;
+
+      weapons.Add(WeaponList.Dagger(this, world));
+      weapons.Add(WeaponList.Sword(this, world));
+    }
+  }
   class EnemyBoss : EnemyShip
   {
     public EnemyBoss(Vector2 pos, World world)

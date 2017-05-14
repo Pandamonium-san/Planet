@@ -130,7 +130,7 @@ namespace Planet
     }
     public override void Entered()
     {
-      AudioManager.PlayBgm("PerituneMaterial_splash");
+      AudioManager.PlayBgm("PerituneMaterial_Splash");
     }
     public override void Leaving()
     {
@@ -139,19 +139,19 @@ namespace Planet
     {
       if (gsm.Settings.startGame)
       {
-        AudioManager.PlayBgm("Kubbi - Firelight", 0.02f);
+        AudioManager.PlayBgm("Kubbi_Firelight", 0.02f);
         bg.DriftSpeed = 75;
         bg.StarDensity = 150;
         titleText.Visible = false;
         gsm.Push(new GameStatePlaying(gsm));
 
-        start1 = new Text(AssetManager.GetFont("future18"), "Press", new Vector2(Game1.ScreenWidth / 6, Game1.ScreenHeight - 50), Color.White);
+        start1 = new Text(AssetManager.GetFont("future18"), "Press", new Vector2(Game1.ScreenWidth / 6, Game1.ScreenHeight - 75), Color.White);
         start1.Scale = 1.2f;
         sb1.Scale = 0.5f;
-        sb2.Parent = start1;
+        sb1.Parent = start1;
         sb1.LocalPos = new Vector2(90, 0);
 
-        start2 = new Text(AssetManager.GetFont("future18"), "Press", new Vector2(Game1.ScreenWidth / 6 * 5, Game1.ScreenHeight - 50), Color.White);
+        start2 = new Text(AssetManager.GetFont("future18"), "Press", new Vector2(Game1.ScreenWidth / 6 * 5, Game1.ScreenHeight - 75), Color.White);
         start2.Scale = 1.2f;
         sb2.Scale = 0.5f;
         sb2.Parent = start2;

@@ -51,12 +51,6 @@ namespace Planet
       world.Update(gameTime);
       hud.Update(gameTime);
 
-      foreach (PlayerShipController pc in pcs)
-      {
-        if (!pc.Ship.Disposed)
-          break;
-        //game over
-      }
       if (enemyManager.WaveDefeated())
       {
         enemyManager.SendNextWave(5.5f);
@@ -68,6 +62,11 @@ namespace Planet
             RespawnShip(pc, hp);
         }
       }
+      if (PlayersAreDead())
+      {
+        gsm.Push(new GameStateGameOver(gsm));
+      }
+
       if ((InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) &&
         InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true) &&
         gsm.P1.Joined) ||
@@ -97,6 +96,15 @@ namespace Planet
     public override void Obscuring()
     {
       UpdateEnabled = false;
+    }
+    private bool PlayersAreDead()
+    {
+      foreach (PlayerShipController pc in pcs)
+      {
+        if (!pc.Ship.Disposed)
+          return false;
+      }
+      return true;
     }
     private float GetHighestHealthPercentage()
     {
