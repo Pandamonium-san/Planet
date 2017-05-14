@@ -11,15 +11,17 @@ namespace Planet
   {
     public static float GlobalEnemyDamageModifier = 1.0f;
     public static float GlobalEnemyHealthModifier = 1.0f;
-
-    public float Cost { get { return baseCost; } }
+    public float CostModifier { get; set; }
+    public float Cost { get { return baseCost * CostModifier; } }
     protected float baseCost;
+
     public EnemyShip(Vector2 pos, World world, Texture2D tex)
         : base(pos, world, tex)
     {
       SetLayer(Layer.ENEMY_SHIP);
       incomingDamageModifier = 1 / GlobalEnemyHealthModifier;
       damageModifier = GlobalEnemyDamageModifier;
+      CostModifier = 1.0f;
     }
   }
   class Enemy1 : EnemyShip
@@ -28,8 +30,7 @@ namespace Planet
       : base(pos, world, AssetManager.GetTexture(@"ships\red\enemy1"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\enemy1");
-
-      baseCost = 100;
+      baseCost = 125;
       rotationSpeed = 5;
       baseSpeed = 200;
       maxHealth = 150;
@@ -64,9 +65,9 @@ namespace Planet
     public Enemy3(Vector2 pos, World world)
       : base(pos, world, AssetManager.GetTexture(@"ships\red\ufoRed"))
     {
-      baseCost = 200;
       flashTex = AssetManager.GetTexture(@"ships\flash\ufoRed");
 
+      baseCost = 250;
       AutoRotate = true;
       rotationSpeed = 4.0f;
       baseSpeed = 200;
@@ -94,7 +95,7 @@ namespace Planet
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\enemy4");
 
-      baseCost = 350;
+      baseCost = 450;
       rotationSpeed = 5;
       baseSpeed = 150;
       maxHealth = 700;
@@ -115,7 +116,7 @@ namespace Planet
 
       baseCost = 40;
       rotationSpeed = 3;
-      baseSpeed = 200;
+      baseSpeed = 175;
       maxHealth = 50;
       currentHealth = maxHealth;
       maxShield = 5;

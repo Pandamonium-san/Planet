@@ -41,14 +41,14 @@ namespace Planet
     }
     public void Up()
     {
-      if (--name[Index] == 31)
-        name[Index] = (char)126;
+      if (++name[Index] == 127)
+        name[Index] = (char)32;
       array[Index].Set(name[Index].ToString());
     }
     public void Down()
     {
-      if (++name[Index] == 127)
-        name[Index] = (char)32;
+      if (--name[Index] == 31)
+        name[Index] = (char)126;
       array[Index].Set(name[Index].ToString());
     }
     public void Left()

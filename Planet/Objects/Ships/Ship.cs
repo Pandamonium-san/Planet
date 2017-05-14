@@ -155,7 +155,7 @@ namespace Planet
       CurrentWeapon.ResetShootTimer();
       if(Layer == Layer.PLAYER_SHIP)
       {
-        AudioManager.PlaySound("switch28", 0.14f);
+        AudioManager.PlaySound("switch28", 0.21f);
       }
     }
     public virtual void SwitchTarget()
@@ -220,7 +220,7 @@ namespace Planet
     {
       base.Die();
       world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
-      AudioManager.PlayExplosion(0.2f);
+      AudioManager.PlayExplosion(0.4f);
     }
     public void MakeInvulnerable(float invulnerabilityTime)
     {
@@ -291,7 +291,7 @@ namespace Planet
       {
         Flash(0.75f, Color.Red, false, 0.8f);
         MakeInvulnerable(0.75f);
-        AudioManager.PlaySound("hit", 0.50f);
+        AudioManager.PlaySound("hit", 0.75f);
       }
       else
       {
@@ -301,7 +301,7 @@ namespace Planet
           MakeInvulnerable(forceInvuln);
           Flash(forceInvuln, Color.Red, false, 0.8f);
         }
-        AudioManager.PlaySound("plick", 0.20f);
+        AudioManager.PlaySound("plick", 0.30f);
       }
     }
     public void TakeDamage(Projectile p, float forceInvuln = 0.0f)
@@ -316,7 +316,7 @@ namespace Planet
         if (Layer == Layer.PLAYER_SHIP)
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.5f);
-          AudioManager.PlaySound("hit2", 0.30f);
+          AudioManager.PlaySound("hit2", 0.45f);
           MakeInvulnerable(0.5f);
         }
         else
@@ -327,7 +327,7 @@ namespace Planet
             Flash(forceInvuln, Color.Blue, false, 0.8f);
           }
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
-          AudioManager.PlaySound("plick2", 0.20f);
+          AudioManager.PlaySound("plick2", 0.30f);
         }
       }
       else

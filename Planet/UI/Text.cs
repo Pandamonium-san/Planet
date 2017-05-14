@@ -24,9 +24,10 @@ namespace Planet
     private Align alignment;
     private string text;
 
-    public Text(SpriteFont font, string text, Vector2 pos, Color color, Align align = Align.Center)
+    public Text(SpriteFont font, string text, Vector2 pos, Color color, Align align = Align.Center, float scale = 1.0f)
       : base(pos, null)
     {
+      this.Scale = scale;
       this.Font = font;
       this.alignment = align;
       this.color = color;

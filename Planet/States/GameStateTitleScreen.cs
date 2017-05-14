@@ -76,6 +76,15 @@ namespace Planet
       UpdateTitleTextEffects(gameTime);
       CheckInputAndUpdateText(gsm.P1, start1, sb1, gameTime);
       CheckInputAndUpdateText(gsm.P2, start2, sb2, gameTime);
+      if (gsm.Settings.startGame && MediaPlayer.State == MediaState.Stopped)
+      {
+        int i = Utility.RandomInt(0, 2);
+        if (i == 0)
+          AudioManager.PlayBgm("Aethernaut_Shine_Get", 0.025f);
+        else
+          AudioManager.PlayBgm("Kubbi_Firelight", 0.03f);
+        MediaPlayer.IsRepeating = false;
+      }
     }
     public void Join(Player player)
     {
@@ -125,15 +134,15 @@ namespace Planet
 
       start1.Draw(spriteBatch, a);
       sb1.Draw(spriteBatch, a);
-      start2.Draw(spriteBatch,a);
-      sb2.Draw(spriteBatch,a);
+      start2.Draw(spriteBatch, a);
+      sb2.Draw(spriteBatch, a);
 
       spriteBatch.End();
     }
     public override void Entered()
     {
       FadeTransition(5.0f);
-      AudioManager.PlayBgm("PerituneMaterial_Splash");
+      AudioManager.PlayBgm("PerituneMaterial_Splash", 0.05f);
     }
     public override void Leaving()
     {
@@ -142,7 +151,8 @@ namespace Planet
     {
       if (gsm.Settings.startGame)
       {
-        AudioManager.PlayBgm("Kubbi_Firelight", 0.02f);
+        AudioManager.PlayBgm("Kubbi_Firelight", 0.03f);
+        MediaPlayer.IsRepeating = false;
         bg.DriftSpeed = 75;
         bg.StarDensity = 150;
         titleText.Visible = false;

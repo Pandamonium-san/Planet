@@ -14,7 +14,7 @@ namespace Planet
       WpnDesc desc = new WpnDesc(4, 3.0f, 600, 12, 8, 75, 1, 3, 0, 0, 0, 2);
       Weapon wpn = new Weapon(ship, world, desc, texture);
       wpn.SFX = AssetManager.GetSfx("laser9");
-      wpn.Volume = 0.20f;
+      wpn.Volume = 0.30f;
       wpn.Scale = 0.9f;
       wpn.Name = "Burst";
       return wpn;
@@ -33,7 +33,7 @@ namespace Planet
       Weapon wpn = new Weapon(ship, world, desc, texture);
       wpn.SetMuzzle(new Vector2(0, -20));
       wpn.SFX = AssetManager.GetSfx("laser_shoot2");
-      wpn.Volume = 0.20f;
+      wpn.Volume = 0.30f;
       wpn.Name = "Gatling";
       wpn.Scale = .7f;
       return wpn;
@@ -43,7 +43,7 @@ namespace Planet
       Weapon wpn = new ExplodeGun(ship, world);
       wpn.ProjTex = AssetManager.GetTexture(texture);
       wpn.SFX = AssetManager.GetSfx("laser3");
-      wpn.Volume = 0.40f;
+      wpn.Volume = 0.60f;
       wpn.Name = "Grenade";
       wpn.Scale = 1.0f;
       return wpn;
@@ -54,7 +54,7 @@ namespace Planet
       LaserGun wpn = new LaserGun(ship, world, desc, 20, 700, red);
       wpn.SFX = AssetManager.GetSfx("lasergun");
       wpn.ShotsPerSFX = 5;
-      wpn.Volume = 0.20f;
+      wpn.Volume = 0.30f;
       wpn.SetMuzzle(new Vector2(0, -20));
       wpn.Name = "Laser";
       return wpn;
@@ -64,7 +64,7 @@ namespace Planet
       WpnDesc desc = new WpnDesc(35, 1, 800, 1, 0, 0, 3, 1, 0, 0, 0, 4, false, true);
       Weapon wpn = new Weapon(ship, world, desc, texture, "Volcano");
       wpn.SFX = AssetManager.GetSfx("laser2");
-      wpn.Volume = 0.30f;
+      wpn.Volume = 0.45f;
       wpn.LocalScale = 3.5f;
       wpn.LocalPos = new Vector2(-20, -10);
       CompoundWeapon cw = new CompoundWeapon(wpn);
@@ -92,7 +92,7 @@ namespace Planet
       wpn.ProjTex = AssetManager.GetTexture(texture);
       wpn.SFX = AssetManager.GetSfx("lasergun");
       wpn.ShotsPerSFX = 5;
-      wpn.Volume = 0.20f;
+      wpn.Volume = 0.30f;
       wpn.LocalPos = new Vector2(-25, 0);
       wpn.Scale = 0.25f;
       wpn.Name = "Wing";
@@ -188,7 +188,7 @@ namespace Planet
       wpn.ProjTex = AssetManager.GetTexture("fire11");
       wpn.SFX = AssetManager.GetSfx("lasergun");
       wpn.ShotsPerSFX = 5;
-      wpn.Volume = 0.10f;
+      wpn.Volume = 0.15f;
       wpn.Scale = 0.5f;
       wpn.DashUsable = true;
       wpn.Name = "Dagger";
@@ -199,7 +199,7 @@ namespace Planet
       WpnDesc desc = new WpnDesc(50, 1, 500, 3, 0, 0, 0, 1, 0, 0, 0, 0.35f, false, true);
       Weapon wpn = new Weapon(ship, world, desc, "spaceEffects_018", "Sword", "whoosh3");
       wpn.InvulnOnHit = 0.1f;
-      wpn.Volume = 0.10f;
+      wpn.Volume = 0.15f;
       wpn.Scale = 2.5f;
       wpn.DashUsable = true;
       return wpn;

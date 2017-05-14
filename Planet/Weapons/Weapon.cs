@@ -32,7 +32,7 @@ namespace Planet
     protected float currentShotAngle;
     protected Timer shootTimer;
 
-    public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon", string sfx = "pew", float volume = 0.16f)
+    public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon", string sfx = "pew", float volume = 0.24f)
       : base(Vector2.Zero, 0, 1.0f, ship)
     {
       Name = name;

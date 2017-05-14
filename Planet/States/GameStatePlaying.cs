@@ -15,6 +15,7 @@ namespace Planet
     private HUD hud;
     private EnemyManager enemyManager;
     private List<PlayerShipController> pcs;
+    private Sprite overlay;
 
     public GameStatePlaying(GameStateManager gameStateManager)
     {
@@ -28,6 +29,11 @@ namespace Planet
         Join(gsm.P1);
       if (gsm.P2.Joined)
         Join(gsm.P2);
+
+      overlay = new Sprite(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), AssetManager.Pixel);
+      overlay.Scale = 2000;
+      overlay.color = Color.Black;
+      overlay.alpha = 1.0f;
     }
     public void Join(Player player)
     {
@@ -43,6 +49,7 @@ namespace Planet
     }
     public override void Update(GameTime gameTime)
     {
+      base.Update(gameTime);
       foreach (PlayerShipController pc in pcs)
       {
         pc.Update(gameTime);
@@ -58,15 +65,18 @@ namespace Planet
         float hp = GetHighestHealthPercentage();
         foreach (PlayerShipController pc in pcs)
         {
+          pc.Player.Score += enemyManager.WaveCounter * 2000 / pcs.Count;
           if (pc.Ship.Disposed)
             RespawnShip(pc, hp);
         }
       }
+
+      if (fadeTimer.Counting || fadeTimer.Finished)
+        return;
       if (PlayersAreDead())
       {
         gsm.Push(new GameStateInputName(gsm, enemyManager.WaveCounter));
       }
-
       if ((InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) &&
         InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true) &&
         gsm.P1.Joined) ||
@@ -81,6 +91,11 @@ namespace Planet
     {
       world.Draw(spriteBatch);
       hud.Draw(spriteBatch);
+
+      spriteBatch.Begin();
+      if (fadeTimer.Counting)
+        overlay.Draw(spriteBatch, a);
+      spriteBatch.End();
     }
     public override void Entered()
     {
@@ -92,6 +107,10 @@ namespace Planet
     public override void Revealed()
     {
       UpdateEnabled = true;
+      if (PlayersAreDead())
+      {
+        FadeTransition(2.0f, gsm.Reset, true);
+      }
     }
     public override void Obscuring()
     {
@@ -108,7 +127,6 @@ namespace Planet
     }
     private float GetHighestHealthPercentage()
     {
-      //Ship healthiest = null;
       float highest = -1;
       foreach (PlayerShipController pc in pcs)
       {
@@ -116,7 +134,6 @@ namespace Planet
         if (percentage > highest)
         {
           highest = percentage;
-          //healthiest = pc.Ship;
         }
       }
       return highest;
@@ -129,7 +146,7 @@ namespace Planet
       pc.Ship.currentHealth = pc.Ship.maxHealth * healthPercentage;
       pc.Ship.Flash(2.0f, Color.White, false);
       pc.Ship.MakeInvulnerable(2.0f);
-      pc.Player.Score -= 25000;
+      pc.Player.Score -= 30000;
       pc.SetShip(pc.Ship);
       world.PostGameObj(pc.Ship);
     }

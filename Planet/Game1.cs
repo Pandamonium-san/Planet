@@ -6,14 +6,10 @@ using Microsoft.Xna.Framework.Input;
 namespace Planet
 {
   /*  TO DO
-   *  - Sound issue after playing for a while. Most likely a monogames bug
    *  - Add sound
    *      - find more fitting bgm?
    *  - Design UI
-   *      - Game Over
-   *      - Weapon Select?
-   *      - Highscore list
-   *      - Credits
+   *      - Weapon Select
    *  - Smarter enemy spawn logic
    *  - Fancify the background?
    *  - Make proper weapons
@@ -22,6 +18,11 @@ namespace Planet
    *      - VS Mode?
    *      - Waves/Levels?
    *      - More enemy types
+   */
+
+  /* BUGS
+   * - MAJOR! Sound effect issues after playing for a while. Most likely a monogames bug.
+   * - SpriteFont.MeasureString() sometimes returns weird values
    */
 
   /// <summary>
@@ -116,7 +117,6 @@ namespace Planet
         collisionChecksPerFrame = 0;
         runningSlowly = gameTime.IsRunningSlowly;
       }
-      Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f;
       Timer.UpdateGlobalTimers(gameTime);
       gameStateManager.Update(gameTime);
       base.Update(gameTime);

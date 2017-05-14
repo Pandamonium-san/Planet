@@ -57,6 +57,7 @@
     <Compile Include="States\GameSettings.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\GameStateCharacterSelect.cs" />
+    <Compile Include="States\GameStateCredits.cs" />
     <Compile Include="States\GameStateInputName.cs" />
     <Compile Include="States\GameStateManager.cs" />
     <Compile Include="States\GameStateMenuMain.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Projectiles\PHitScan.cs" />
     <Compile Include="UI\Cursor.cs" />
-    <Compile Include="UI\HighScoreData.cs" />
+    <Compile Include="UI\HighScoreList.cs" />
     <Compile Include="UI\HighScoreEntry.cs" />
     <Compile Include="UI\HighScoreDisplay.cs" />
     <Compile Include="UI\LifeBar.cs" />

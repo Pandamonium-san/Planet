@@ -51,7 +51,7 @@ namespace Planet
       totalScore = new Text(future48, total.ToString("D10"), new Vector2(Game1.ScreenWidth / 2, 300), Color.White);
       totalScore.Scale = 1.0f;
 
-      if (((int)gsm.P1.Score) / 10 * 10 + ((int)gsm.P2.Score) / 10 * 10 > gsm.Highscores.GetLowestScore())
+      if (((int)gsm.P1.Score) / 10 * 10 + ((int)gsm.P2.Score) / 10 * 10 > GetLowestScore(gsm.Highscores))
       {
         sendScore = true;
       }
@@ -112,11 +112,18 @@ namespace Planet
     }
     public override void Revealed()
     {
+      gsm.Pop();
     }
     public override void Obscuring()
     {
       UpdateEnabled = false;
       DrawEnabled = false;
+    }
+    private int GetLowestScore(HighScoreList scores)
+    {
+      if (scores.Count < 10)
+        return int.MinValue;
+      return scores.Last.TotalScore;
     }
     private void ToScoreScreen()
     {

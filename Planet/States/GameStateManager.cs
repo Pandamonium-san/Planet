@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -13,12 +14,13 @@ namespace Planet
     public Player P2 { get; set; }
     private LinkedList<GameState> stateStack;
     public GameSettings Settings { get; private set; }
-    public HighScoreDisplay Highscores { get; set; }
+    public HighScoreList Highscores { get; set; }
+
 
     public GameStateManager()
     {
-      //load highscores
-      Highscores = new HighScoreDisplay(Vector2.Zero);
+      Highscores = new HighScoreList();
+      Highscores.LoadHighScores();
 
       stateStack = new LinkedList<GameState>();
       Settings = new GameSettings();

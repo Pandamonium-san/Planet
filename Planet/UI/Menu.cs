@@ -47,10 +47,10 @@ namespace Planet
       b.color = new Color(200, 200, 200);
       menu.AddSelection(0, b);
 
-      b = new SelectionBox(tex, new Vector2(Game1.ScreenWidth / 2f, 525), "Options");
+      b = new SelectionBox(tex, new Vector2(Game1.ScreenWidth / 2f, 525), "Highscore");
       b.Scale = 1.3f;
       b.alpha = 0.7f;
-      b.SetText(future18, "Options");
+      b.SetText(future18, "Highscore");
       b.color = new Color(200, 200, 200);
       menu.AddSelection(1, b);
 
@@ -69,18 +69,12 @@ namespace Planet
       Texture2D tex = AssetManager.GetTexture("blue_Button05");
 
       SelectionBox b = new SelectionBox(AssetManager.GetTexture(@"ships\blue\spaceShips_002"), new Vector2(Game1.ScreenWidth / 2f - 250, Game1.ScreenHeight / 2f), "Rewinder");
-      //b.SetText(future18, "Rewinder");
-      //b.GetText().LocalPos += new Vector2(0, 60);
       menu.AddSelection(0, b);
 
       b = new SelectionBox(AssetManager.GetTexture(@"ships\blue\spaceShips_001"), new Vector2(Game1.ScreenWidth / 2f, Game1.ScreenHeight / 2f), "Blinker");
-      //b.SetText(future18, "Blinker");
-      //b.GetText().LocalPos += new Vector2(0, 60);
       menu.AddSelection(1, b);
 
       b = new SelectionBox(AssetManager.GetTexture(@"ships\blue\spaceShips_009"), new Vector2(Game1.ScreenWidth / 2f + 250, Game1.ScreenHeight / 2f), "Possessor");
-      //b.SetText(future18, "Possessor");
-      //b.GetText().LocalPos += new Vector2(0, 60);
       menu.AddSelection(2, b);
       return menu;
     }

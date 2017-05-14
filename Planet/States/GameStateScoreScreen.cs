@@ -20,15 +20,17 @@ namespace Planet
     public GameStateScoreScreen(GameStateManager gsm, HighScoreEntry entry) : base()
     {
       this.gsm = gsm;
-      hsd = gsm.Highscores;
-      hsd.Pos = new Vector2(Game1.ScreenWidth / 2, 150);
       if (entry != null)
-        hsd.AddEntry(entry);
+      {
+        gsm.Highscores.AddEntry(entry);
+        gsm.Highscores.SaveHighScores();
+      }
+      hsd = new HighScoreDisplay(gsm.Highscores, new Vector2(Game1.ScreenWidth / 2, 150), entry);
 
       titleText = new Text(AssetManager.GetFont("future48"), "Highscores", new Vector2(Game1.ScreenWidth / 2f, 75), Color.White);
 
       menu = new Menu(1);
-      SelectionBox sb = new SelectionBox(AssetManager.GetTexture("blue_button05"), new Vector2(Game1.ScreenWidth / 2f, 900), "Continue");
+      SelectionBox sb = new SelectionBox(AssetManager.GetTexture("blue_button05"), new Vector2(Game1.ScreenWidth / 2f, 950), "Continue");
       sb.SetText(new Text(AssetManager.GetFont("future18"), "Continue", sb.Pos, Color.White));
       sb.Scale = 1.5f;
       menu.AddSelection(0, sb);
@@ -54,12 +56,13 @@ namespace Planet
     {
       if (fadeTimer.Counting)
         return;
-      FadeTransition(2.0f, gsm.Reset, false);
+      FadeTransition(1.0f, gsm.Pop, false);
       AudioManager.PlaySound("boop");
     }
     public override void Cancel(PlayerController pi)
     {
-      FadeTransition(2.0f, gsm.Reset, false);
+      FadeTransition(1.0f, gsm.Pop, false);
+      AudioManager.PlaySound("boop");
     }
     public override void Update(GameTime gameTime)
     {

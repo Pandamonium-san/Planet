@@ -45,16 +45,15 @@ namespace Planet
       {
         case "Play":
           FadeTransition(0.5f, ToCharacterSelect, false);
-          AudioManager.PlaySound("boop");
           break;
-        case "Options":
-          //gsm.Push(new GameStateCharacterSelect(gsm));
-          //push options state to gsm
+        case "Highscore":
+          FadeTransition(0.5f, ToScoreScreen, false);
           break;
         case "Credits":
-          // ???
+          FadeTransition(0.5f, ToCredits, false);
           break;
       }
+      AudioManager.PlaySound("boop");
     }
     public override void Cancel(PlayerController mc)
     {
@@ -108,6 +107,14 @@ namespace Planet
     private void ToCharacterSelect()
     {
       gsm.Push(new GameStateCharacterSelect(gsm));
+    }
+    private void ToScoreScreen()
+    {
+      gsm.Push(new GameStateScoreScreen(gsm, null));
+    }
+    private void ToCredits()
+    {
+      gsm.Push(new GameStateCredits(gsm));
     }
   }
 }

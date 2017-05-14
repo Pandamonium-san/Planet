@@ -93,7 +93,7 @@ namespace Planet
       parasite.color = Color.Red;
       parasite.Scale *= Scale * 0.4f;
       world.PostProjectile(parasite);
-      AudioManager.PlaySound("parasite4", 0.20f);
+      AudioManager.PlaySound("parasite4", 0.30f);
     }
     public override void Die()
     {
@@ -159,7 +159,7 @@ namespace Planet
 
       IsActive = false;
       Visible = false;
-      AudioManager.PlaySound("parasite", 0.30f);
+      AudioManager.PlaySound("parasite", 0.45f);
     }
     private void Release()
     {

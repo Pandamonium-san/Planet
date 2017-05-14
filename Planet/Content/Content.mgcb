@@ -247,54 +247,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/explosion04.png
 
-#begin Textures/explosion05.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/explosion05.png
-
-#begin Textures/explosion06.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/explosion06.png
-
-#begin Textures/explosion07.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/explosion07.png
-
-#begin Textures/explosion08.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/explosion08.png
-
 #begin Textures/Ships/blue/enemy1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1363,30 +1315,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/spaceEffects_018.png
 
-#begin Sfx/Laser_Shoot2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/Laser_Shoot2.wav
-
-#begin Sfx/Laser_Shoot.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/Laser_Shoot.wav
-
-#begin Sfx/Laser_Shoot3.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/Laser_Shoot3.wav
-
-#begin Sfx/menu_scroll.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/menu_scroll.wav
-
 #begin Sfx/plick.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1398,12 +1326,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sfx/laser2.wav
-
-#begin Sfx/laser.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/laser.wav
 
 #begin Sfx/lasergun.wav
 /importer:WavImporter
@@ -1513,12 +1435,6 @@
 /processorParam:Quality=Best
 /build:Sfx/parasite.wav
 
-#begin Sfx/parasite2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/parasite2.wav
-
 #begin Sfx/parasite3.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1542,18 +1458,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sfx/switch28.wav
-
-#begin Sfx/cancel.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/cancel.wav
-
-#begin Sfx/confirm.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/confirm.wav
 
 #begin Sfx/click4.wav
 /importer:WavImporter
@@ -1590,12 +1494,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sfx/whoosh.wav
-
-#begin Sfx/whoosh2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sfx/whoosh2.wav
 
 #begin Sfx/whoosh3.wav
 /importer:WavImporter
@@ -1716,4 +1614,70 @@
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
 /build:Fonts/future48_nk.spritefont
+
+#begin Fonts/future24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/future24.spritefont
+
+#begin Sfx/Laser_Shoot2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/Laser_Shoot2.wav
+
+#begin Sfx/whoosh2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/whoosh2.wav
+
+#begin Textures/explosion06.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/explosion06.png
+
+#begin Textures/explosion07.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/explosion07.png
+
+#begin Textures/explosion08.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/explosion08.png
+
+#begin Textures/explosion05.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/explosion05.png
 
