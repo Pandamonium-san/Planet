@@ -81,7 +81,7 @@ namespace Planet
       float result = 0;
       foreach (GameObject go in world.GetGameObjects())
       {
-        if (go is EnemyShip)
+        if (go is EnemyShip && go.Layer == Layer.ENEMY_SHIP)
         {
           result += ((EnemyShip)go).Cost;
         }
@@ -114,7 +114,7 @@ namespace Planet
       sc.IsActive = false;
       sc.SetShip(enemy);
       controllers.Add(sc);
-      AudioManager.PlaySound("whoosh2", 0.2f);
+      AudioManager.PlaySound("whoosh2", 0.25f);
 
       DequeueSpawn();
     }
@@ -170,7 +170,7 @@ namespace Planet
           break;
         case 6:
           ship = new Enemy5(pos, world);
-          controller = new ECChaser(world, activationTime, 0.05f, 5.0f, 60);
+          controller = new ECChaser(world, activationTime, 0.01f, 30.0f, -1);
           break;
       }
       if (controller == null)

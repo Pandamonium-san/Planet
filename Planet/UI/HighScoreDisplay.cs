@@ -49,7 +49,7 @@ namespace Planet
         T.Scale = 0.8f;
         T.Draw(spriteBatch, a);
 
-        T = new Text(future48nk, scores[i].TotalScore.ToString("D10"), Score.Pos + new Vector2(-55, 5 + 65 * (i + 1)), color, Text.Align.Left);
+        T = new StylableText(future48nk, scores[i].TotalScore.ToString("D10"), Score.Pos + new Vector2(135, 32 + 65 * (i + 1)), 40, color);
         T.Scale = 0.7f;
         T.Draw(spriteBatch, a);
 

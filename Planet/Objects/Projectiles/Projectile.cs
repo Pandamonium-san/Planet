@@ -118,6 +118,8 @@ namespace Planet
       if (other is Ship)
       {
         Ship s = (Ship)other;
+        if (s.Invulnerable)
+          return;
         s.TakeDamage(this, InvulnOnHit);
       }
 

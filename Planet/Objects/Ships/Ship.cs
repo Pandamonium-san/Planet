@@ -155,7 +155,7 @@ namespace Planet
       CurrentWeapon.ResetShootTimer();
       if(Layer == Layer.PLAYER_SHIP)
       {
-        AudioManager.PlaySound("switch28", 0.21f);
+        AudioManager.PlaySound("switch28", 0.28f);
       }
     }
     public virtual void SwitchTarget()
@@ -220,7 +220,7 @@ namespace Planet
     {
       base.Die();
       world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
-      AudioManager.PlayExplosion(0.4f);
+      AudioManager.PlayExplosion(0.5f);
     }
     public void MakeInvulnerable(float invulnerabilityTime)
     {
@@ -291,7 +291,7 @@ namespace Planet
       {
         Flash(0.75f, Color.Red, false, 0.8f);
         MakeInvulnerable(0.75f);
-        AudioManager.PlaySound("hit", 0.75f);
+        AudioManager.PlaySound("hit", 1.00f);
       }
       else
       {
@@ -316,17 +316,17 @@ namespace Planet
         if (Layer == Layer.PLAYER_SHIP)
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.5f);
-          AudioManager.PlaySound("hit2", 0.45f);
+          AudioManager.PlaySound("hit2", 0.60f);
           MakeInvulnerable(0.5f);
         }
         else
         {
+          CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
           if (forceInvuln != 0.0f)
           {
             MakeInvulnerable(forceInvuln);
             Flash(forceInvuln, Color.Blue, false, 0.8f);
           }
-          CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
           AudioManager.PlaySound("plick2", 0.30f);
         }
       }

@@ -63,6 +63,8 @@ namespace Planet
     {
       Disposed = true;
       IsActive = false;
+      if (Parent != null)
+        Parent.RemoveChild(this);
     }
     public virtual void DoCollision(GameObject other)
     {

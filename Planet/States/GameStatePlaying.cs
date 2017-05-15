@@ -60,8 +60,6 @@ namespace Planet
 
       if (enemyManager.WaveDefeated())
       {
-        enemyManager.SendNextWave(5.5f);
-        hud.FlashWaveText(5.0f);
         float hp = GetHighestHealthPercentage();
         foreach (PlayerShipController pc in pcs)
         {
@@ -69,6 +67,8 @@ namespace Planet
           if (pc.Ship.Disposed)
             RespawnShip(pc, hp);
         }
+        enemyManager.SendNextWave(5.5f);
+        hud.FlashWaveText(5.0f);
       }
 
       if (fadeTimer.Counting || fadeTimer.Finished)

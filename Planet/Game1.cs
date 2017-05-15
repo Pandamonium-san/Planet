@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Planet
 {
@@ -81,7 +83,7 @@ namespace Planet
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 #endif
-      Microsoft.Xna.Framework.Audio.SoundEffect.MasterVolume = 0.5f;
+      Microsoft.Xna.Framework.Audio.SoundEffect.MasterVolume = 1.0f;
       AssetManager.LoadContent(Content);
       debugFont = AssetManager.GetFont("font1");
       gameStateManager = new GameStateManager();
@@ -114,9 +116,34 @@ namespace Planet
       }
       if (debugMode)
       {
+        if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side, true) &&
+          InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.A, true) &&
+          InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.A, false))
+        {
+          MediaPlayer.Volume = Math.Min(1.0f, MediaPlayer.Volume + 0.1f);
+        }
+        if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side, true) &&
+          InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.A, true) &&
+          InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.A, false))
+        {
+          MediaPlayer.Volume = Math.Max(0.0f, MediaPlayer.Volume - 0.1f);
+        }
+        if (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side, true) &&
+          InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.A, true) &&
+          InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.A, false))
+        {
+          SoundEffect.MasterVolume = Math.Min(1.0f, SoundEffect.MasterVolume + 0.1f);
+        }
+        if (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side, true) &&
+          InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.A, true) &&
+          InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.A, false))
+        {
+          SoundEffect.MasterVolume = Math.Max(0.0f, SoundEffect.MasterVolume - 0.1f);
+        }
         collisionChecksPerFrame = 0;
         runningSlowly = gameTime.IsRunningSlowly;
       }
+      AudioManager.GC();
       Timer.UpdateGlobalTimers(gameTime);
       gameStateManager.Update(gameTime);
       base.Update(gameTime);

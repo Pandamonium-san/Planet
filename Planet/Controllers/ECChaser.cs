@@ -46,6 +46,8 @@ namespace Planet
       {
         if (chasingTimer.Counting)
         {
+          if (ship.CurrentWeapon.DashUsable)
+            ship.Fire1();
           MoveTowards(ship.Target.Pos, true);
           if (Vector2.Distance(ship.Target.Pos, ship.Pos) < Range || chasingTimer.Finished)
             StopChase();

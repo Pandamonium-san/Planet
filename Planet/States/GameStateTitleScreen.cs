@@ -80,9 +80,9 @@ namespace Planet
       {
         int i = Utility.RandomInt(0, 2);
         if (i == 0)
-          AudioManager.PlayBgm("Aethernaut_Shine_Get", 0.025f);
+          AudioManager.PlayBgm("Aethernaut_Shine_Get", 0.25f);
         else
-          AudioManager.PlayBgm("Kubbi_Firelight", 0.03f);
+          AudioManager.PlayBgm("Kubbi_Firelight", 0.3f);
         MediaPlayer.IsRepeating = false;
       }
     }
@@ -142,7 +142,7 @@ namespace Planet
     public override void Entered()
     {
       FadeTransition(5.0f);
-      AudioManager.PlayBgm("PerituneMaterial_Splash", 0.05f);
+      AudioManager.PlayBgm("PerituneMaterial_Splash", 0.5f);
     }
     public override void Leaving()
     {
@@ -151,7 +151,7 @@ namespace Planet
     {
       if (gsm.Settings.startGame)
       {
-        AudioManager.PlayBgm("Kubbi_Firelight", 0.03f);
+        AudioManager.PlayBgm("Kubbi_Firelight", 0.3f);
         MediaPlayer.IsRepeating = false;
         bg.DriftSpeed = 75;
         bg.StarDensity = 150;

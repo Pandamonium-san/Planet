@@ -54,7 +54,7 @@ namespace Planet
       currentHealth = maxHealth;
 
       weapons.Add(WeaponList.Split(this, world));
-      weapons.Add(WeaponList.Sniper(this, world));
+      weapons.Add(WeaponList.Beam(this, world));
     }
   }
   class Enemy3 : EnemyShip

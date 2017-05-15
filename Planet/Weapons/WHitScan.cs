@@ -8,11 +8,13 @@ namespace Planet
 {
   class WHitScan : Weapon
   {
+    public bool OriginSticks { get; set; }
     protected int width;
     protected float range;
     public WHitScan(Ship ship, World world, WpnDesc desc, int width, float range = 10000)
       : base(ship, world, desc)
     {
+      OriginSticks = true;
       this.width = width;
       this.range = range;
       this.desc.projSpeed = 10000;
@@ -44,6 +46,7 @@ namespace Planet
         ship,
         this,
         desc.projLifeTime);
+      p.stick = OriginSticks;
       p.onCollision = OnProjectileCollision;
       p.InvulnOnHit = InvulnOnHit;
       world.PostProjectile(p);

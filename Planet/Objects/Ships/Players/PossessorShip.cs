@@ -93,7 +93,7 @@ namespace Planet
       parasite.color = Color.Red;
       parasite.Scale *= Scale * 0.4f;
       world.PostProjectile(parasite);
-      AudioManager.PlaySound("parasite4", 0.30f);
+      AudioManager.PlaySound("parasite4", 0.40f);
     }
     public override void Die()
     {
@@ -145,11 +145,11 @@ namespace Planet
         xlaser[1].Desc.damage = 1;
         xlaser[2].Desc.damage = 1;
       }
-      if(possessedShip is Enemy3)
+      if (possessedShip is Enemy3)
       {
         ((Enemy3)possessedShip).AutoRotate = false;
       }
-      if(possessedShip is Enemy5)
+      if (possessedShip is Enemy5)
       {
         possessedShip.maxHealth = 20;
         possessedShip.currentHealth = possessedShip.maxHealth;
@@ -159,22 +159,24 @@ namespace Planet
 
       IsActive = false;
       Visible = false;
-      AudioManager.PlaySound("parasite", 0.45f);
+      AudioManager.PlaySound("parasite", 0.60f);
     }
     private void Release()
     {
       if (possessedShip != null)
       {
+        AbilityCooldown.Start(AbilityCooldown.seconds * possessedShip.maxHealth / possessedShip.currentHealth);
+        MakeInvulnerable(1.0f);
         Pos = possessedShip.Pos;
         Rotation = possessedShip.Rotation;
         currentShield = possessedShip.currentShield;
         IsActive = true;
         Visible = true;
         CollisionEnabled = true;
+        Player.Score += possessedShip.maxHealth * 10;
         possessedShip.Die();
         possessedShip = null;
         psc = null;
-        AbilityCooldown.Start();
       }
     }
   }

@@ -78,7 +78,7 @@ namespace Planet
       CreateBlinkParticle(false);
       CreateBlinkParticle2();
       blinkTimer1.Start();
-      AudioManager.PlaySound("blink", 0.95f);
+      AudioManager.PlaySound("blink", 1.00f);
     }
     // particles reappear
     private void Blink1()
@@ -90,7 +90,7 @@ namespace Planet
 
       CreateBlinkParticle(true);
       blinkTimer2.Start();
-      AudioManager.PlaySound("blink2", 0.95f);
+      AudioManager.PlaySound("blink2", 1.00f);
     }
     // ship reappears
     private void Blink2()

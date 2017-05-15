@@ -13,6 +13,14 @@ namespace Planet
     public int Index { get; set; }
     public Cursor Cursor { get; set; }
 
+    Dictionary<int, int> charFromToDown = new Dictionary<int, int>
+    {
+      {31, 95 },
+    };
+    Dictionary<int, int> charFromToUp = new Dictionary<int, int>
+    {
+      {96, 32 },
+    };
     char[] name;
 
     public NameInput(SpriteFont font, Vector2 pos, float spacing, Color color, float scale = 1.0f)
@@ -41,14 +49,18 @@ namespace Planet
     }
     public void Up()
     {
-      if (++name[Index] == 127)
-        name[Index] = (char)32;
+      ++name[Index];
+      int c = name[Index];
+      if (charFromToUp.ContainsKey(c))
+        name[Index] = (char)charFromToUp[c];
       array[Index].Set(name[Index].ToString());
     }
     public void Down()
     {
-      if (--name[Index] == 31)
-        name[Index] = (char)126;
+      --name[Index];
+      int c = name[Index];
+      if (charFromToDown.ContainsKey(c))
+        name[Index] = (char)charFromToDown[c];
       array[Index].Set(name[Index].ToString());
     }
     public void Left()

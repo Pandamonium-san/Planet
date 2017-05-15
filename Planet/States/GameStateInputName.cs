@@ -63,6 +63,8 @@ namespace Planet
     }
     public override void Confirm(PlayerController mc)
     {
+      if (fadeTimer.Counting)
+        return;
       mc.IsActive = false;
       ((NameInputController)mc).NameInput.HideCursor = true;
       if ((nic1 == null || !nic1.IsActive) && (nic2 == null || !nic2.IsActive) || !sendScore)
@@ -77,6 +79,7 @@ namespace Planet
     public override void Update(GameTime gameTime)
     {
       base.Update(gameTime);
+      nic1.IsActive = true;
       if (nic1 != null)
         nic1.Update(gameTime);
       if (nic2 != null)

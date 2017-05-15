@@ -43,6 +43,7 @@ namespace Planet
         link.layerDepth = layerDepth + 0.01f;
         parasiteLink.Add(link);
       }
+      damagePerSecond /= 6;
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -78,8 +79,8 @@ namespace Planet
             Die();
           }
         }
-        else if (frame % 20 == 0)
-          latchedShip.TakeDamage(damage / 3);
+        else if (frame % 10 == 0)
+          latchedShip.TakeDamage(this);
         if (Vector2.Distance(ship.Pos, Pos) > leashRange)
           Unlatch();
       }
@@ -121,7 +122,7 @@ namespace Planet
       Visible = false;
       Pos = ship.Pos;
       this.ship.speedModifier *= 0.9f;
-      AudioManager.PlaySound("parasite3", 0.60f);
+      AudioManager.PlaySound("parasite3", 0.80f);
     }
     public void Unlatch()
     {
@@ -129,7 +130,7 @@ namespace Planet
       latchedShip = null;
       Visible = true;
       this.ship.speedModifier /= 0.9f;
-      AudioManager.PlaySound("parasite3", 0.60f);
+      AudioManager.PlaySound("parasite3", 0.80f);
     }
     public override void DoCollision(GameObject other)
     {
