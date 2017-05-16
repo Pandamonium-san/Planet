@@ -47,7 +47,7 @@ namespace Planet
       start2.Scale = 0.5f;
       sb2.Scale = 0.7f;
 
-      howTo = new Sprite(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight - 80), AssetManager.GetTexture("howToplay"));
+      howTo = new Sprite(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight - 80), AssetManager.GetTexture("howToPlay"));
       howTo.alpha = 0.0f;
       howTo.Scale = 0.8f;
       showHowTo = false;

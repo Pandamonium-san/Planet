@@ -30,7 +30,7 @@ namespace Planet
       titleText = new Text(AssetManager.GetFont("future48"), "Highscores", new Vector2(Game1.ScreenWidth / 2f, 75), Color.White);
 
       menu = new Menu(1);
-      SelectionBox sb = new SelectionBox(AssetManager.GetTexture("blue_button05"), new Vector2(Game1.ScreenWidth / 2f, 950), "Continue");
+      SelectionBox sb = new SelectionBox(AssetManager.GetTexture("blueButton05"), new Vector2(Game1.ScreenWidth / 2f, 950), "Continue");
       sb.SetText(new Text(AssetManager.GetFont("future18"), "Continue", sb.Pos, Color.White));
       sb.Scale = 1.5f;
       menu.AddSelection(0, sb);

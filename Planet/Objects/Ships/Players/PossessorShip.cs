@@ -165,7 +165,8 @@ namespace Planet
     {
       if (possessedShip != null)
       {
-        AbilityCooldown.Start(AbilityCooldown.seconds * possessedShip.maxHealth / possessedShip.currentHealth);
+        AbilityCooldown.Start();
+        AbilityCooldown.SetElapsedSeconds(AbilityCooldown.seconds * (0.90f * (possessedShip.currentHealth / possessedShip.maxHealth)));
         MakeInvulnerable(1.0f);
         Pos = possessedShip.Pos;
         Rotation = possessedShip.Rotation;

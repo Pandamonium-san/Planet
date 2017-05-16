@@ -57,30 +57,35 @@ namespace Planet
     }
     public static Texture2D GetTexture(string name)
     {
+      name = name.ToLower();
       if (!textures.ContainsKey(name))
         LoadTexture(name, name);
       return textures[name];
     }
     public static SpriteFont GetFont(string name)
     {
+      name = name.ToLower();
       if (!fonts.ContainsKey(name))
         LoadFont(name, name);
       return fonts[name];
     }
     public static SoundEffect GetSfx(string name)
     {
+      name = name.ToLower();
       if (!soundEffects.ContainsKey(name))
         LoadSfx(name, name);
       return soundEffects[name];
     }
     public static Song GetSong(string name)
     {
+      name = name.ToLower();
       if (!songs.ContainsKey(name))
         LoadSong(name, name);
       return songs[name];
     }
     public static Effect GetEffect(string name)
     {
+      name = name.ToLower();
       return effects[name];
     }
 
@@ -114,7 +119,7 @@ namespace Planet
       FileInfo[] files = dir.GetFiles("*.*");
       foreach (FileInfo file in files)
       {
-        string key = Path.GetFileNameWithoutExtension(file.Name);
+        string key = Path.GetFileNameWithoutExtension(file.Name).ToLower();
         result[key] = contentManager.Load<T>(contentFolder + "/" + key);
       }
       return result;

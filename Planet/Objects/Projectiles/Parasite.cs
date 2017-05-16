@@ -43,7 +43,7 @@ namespace Planet
         link.layerDepth = layerDepth + 0.01f;
         parasiteLink.Add(link);
       }
-      damagePerSecond /= 6;
+      damage = damagePerSecond / 6;
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -62,11 +62,11 @@ namespace Planet
         if (latchedShip.currentHealth < 20)
         {
           ((AIController)latchedShip.Controller).IsActive = false;
-          latchedShip.IsActive = true;
           latchedShip.CollisionEnabled = false;
           ship.CollisionEnabled = false;
           if (latchedShip.Disposed)
           {
+            latchedShip.IsActive = true;
             latchedShip.Disposed = false;
             world.PostGameObj(latchedShip);
           }
@@ -126,6 +126,11 @@ namespace Planet
     }
     public void Unlatch()
     {
+      if (latchedShip != null && latchedShip.currentHealth < 20)
+      {
+        latchedShip.Die();
+      }
+      ship.CollisionEnabled = true;
       extensionTime = 0;
       latchedShip = null;
       Visible = true;

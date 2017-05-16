@@ -38,7 +38,7 @@ namespace Planet
     {
       Menu menu = new Menu(3);
       SpriteFont future18 = AssetManager.GetFont("future18");
-      Texture2D tex = AssetManager.GetTexture("blue_Button05");
+      Texture2D tex = AssetManager.GetTexture("blueButton05");
 
       SelectionBox b = new SelectionBox(tex, new Vector2(Game1.ScreenWidth / 2f, 400), "Play");
       b.Scale = 1.3f;
@@ -66,7 +66,7 @@ namespace Planet
     {
       Menu menu = new Menu(3);
       SpriteFont future18 = AssetManager.GetFont("future18");
-      Texture2D tex = AssetManager.GetTexture("blue_Button05");
+      Texture2D tex = AssetManager.GetTexture("blueButton05");
 
       SelectionBox b = new SelectionBox(AssetManager.GetTexture(@"ships\blue\spaceShips_002"), new Vector2(Game1.ScreenWidth / 2f - 250, Game1.ScreenHeight / 2f), "Rewinder");
       menu.AddSelection(0, b);
@@ -82,7 +82,7 @@ namespace Planet
     {
       Menu menu = new Menu(2);
       SpriteFont future18 = AssetManager.GetFont("future18");
-      Texture2D tex = AssetManager.GetTexture("blue_Button05");
+      Texture2D tex = AssetManager.GetTexture("blueButton05");
 
       SelectionBox b = new SelectionBox(tex, new Vector2(Game1.ScreenWidth / 2f, 300), "Resume");
       b.SetText(future18, "Resume");

@@ -22,7 +22,7 @@ namespace Planet
         width,
         height,
         ship.maxShield,
-        AssetManager.GetTexture("blue_button05"),
+        AssetManager.GetTexture("blueButton05"),
         null,
         mirrored);
       healthBar = new ValueBar(
@@ -30,8 +30,8 @@ namespace Planet
         width - shieldWidth * 2, 
         height - shieldWidth * 2,
         ship.maxHealth,
-        AssetManager.GetTexture("green_button05"),
-        AssetManager.GetTexture("grey_button05"),
+        AssetManager.GetTexture("greenButton05"),
+        AssetManager.GetTexture("greyButton05"),
         mirrored);
       shieldBar.Parent = this;
       healthBar.Parent = this;

@@ -56,6 +56,14 @@ namespace Planet
       Finished = other.Finished;
       Repeats = other.Repeats;
     }
+    public void SetSeconds(double seconds)
+    {
+      this.seconds = seconds;
+    }
+    public void SetElapsedSeconds(double elapsed)
+    {
+      elapsedSeconds = elapsed;
+    }
     public void ForceFinish()
     {
       elapsedSeconds = seconds;

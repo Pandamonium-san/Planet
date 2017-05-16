@@ -79,7 +79,6 @@ namespace Planet
     public override void Update(GameTime gameTime)
     {
       base.Update(gameTime);
-      nic1.IsActive = true;
       if (nic1 != null)
         nic1.Update(gameTime);
       if (nic2 != null)
