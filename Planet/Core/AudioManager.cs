@@ -21,8 +21,6 @@ namespace Planet
     /// </summary>
     public static readonly float SplashSinCycle = 0.54795220702147551f;
 
-    static List<SoundEffectInstance> played = new List<SoundEffectInstance>();
-
     public static void PlayBgm(string name, float volume = 1.0f)
     {
       MediaPlayer.Play(AssetManager.GetSong(name));
@@ -60,7 +58,6 @@ namespace Planet
       SoundEffectInstance si = AssetManager.GetSfx(path).CreateInstance();
       si.Volume = volume;
       si.Play();
-      played.Add(si);
       return si;
     }
     public static SoundEffectInstance PlaySound(string path, float volume = 1.0f)
@@ -68,19 +65,8 @@ namespace Planet
       SoundEffectInstance si = AssetManager.GetSfx(path).CreateInstance();
       si.Volume = volume;
       si.Play();
-      played.Add(si);
       return si;
     }
-    public static void GC()
-    {
-      for (int i = played.Count - 1; i >= 0; i--)
-      {
-        if (played[i].State == SoundState.Stopped)
-        {
-          played[i].Dispose();
-          played.RemoveAt(i);
-        }
-      }
-    }
+
   }
 }

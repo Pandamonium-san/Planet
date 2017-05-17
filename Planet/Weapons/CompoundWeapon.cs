@@ -21,7 +21,9 @@ namespace Planet
       weapons = new List<Weapon>();
       foreach (Weapon w in wpn.weapons)
       {
-        weapons.Add(new Weapon(w));
+        Type wType = w.GetType();
+        Weapon wp = (Weapon)Activator.CreateInstance(wType, w);
+        weapons.Add(wp);
       }
     }
     public override void Update(GameTime gt)

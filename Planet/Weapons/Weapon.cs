@@ -53,6 +53,13 @@ namespace Planet
     {
       Name = wpn.Name;
       ProjTex = wpn.ProjTex;
+      InvulnOnHit = wpn.InvulnOnHit;
+      DashUsable = wpn.DashUsable;
+      ProjRotSpeed = wpn.ProjRotSpeed;
+      SFX = wpn.SFX;
+      Volume = wpn.Volume;
+      ShotsPerSFX = wpn.ShotsPerSFX;
+      sfxShotsCounter = wpn.sfxShotsCounter;
       ship = wpn.ship;
       world = wpn.world;
       desc = wpn.Desc;

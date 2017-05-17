@@ -143,7 +143,6 @@ namespace Planet
         collisionChecksPerFrame = 0;
         runningSlowly = gameTime.IsRunningSlowly;
       }
-      AudioManager.GC();
       Timer.UpdateGlobalTimers(gameTime);
       gameStateManager.Update(gameTime);
       base.Update(gameTime);

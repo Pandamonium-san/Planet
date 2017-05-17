@@ -29,7 +29,8 @@ namespace Planet
     }
     public LaserGun(LaserGun other) : base(other)
     {
-      ProjTex = other.ProjTex;
+      particle1 = other.particle1;
+      particle2 = other.particle2;
       prevRotation = other.prevRotation;
     }
     protected override void Shoot()
