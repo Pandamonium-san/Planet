@@ -7,36 +7,54 @@ using System.Text;
 
 namespace Planet
 {
-  class MenuCursor : Sprite
+  public class MenuCursor : Cursor
   {
     public bool Locked { get; private set; }
 
-    private bool isRight;
     private Menu menu;
     private int selectedIndex;
 
-    public MenuCursor(Menu menu, Texture2D tex, bool right) : base(Vector2.Zero, tex)
+    public MenuCursor(Menu menu, Color color) : base()
     {
       this.menu = menu;
-      this.isRight = right;
-      if (right)
-        spriteEffects = SpriteEffects.FlipHorizontally;
-      selectedIndex = -1;
-      Next();
+      this.color = color;
+      Scale = 1.2f;
+      selectedIndex = 0;
+      UpdateSpacing();
     }
-    public void Update(GameTime gt)
+    private void UpdateSpacing()
     {
-
+      SelectionBox selected = GetSelected();
+      Parent = selected;
+      LocalPos = Vector2.Zero;
+      Width = selected.tex.Width / 2 * selected.Scale;
+      Height = selected.tex.Height / 2 * selected.Scale;
+    }
+    public void SetMenu(Menu menu)
+    {
+      this.menu = menu;
+      selectedIndex = 0;
+      UpdateSpacing();
     }
     public void Lock()
     {
+      if (Locked)
+        return;
+      Width *= 0.85f;
+      Height *= 0.85f;
+      alpha = 0.75f;
       Locked = true;
     }
     public void Unlock()
     {
+      if (!Locked)
+        return;
+      Width /= 0.85f;
+      Height /= 0.85f;
+      alpha = 1.0f;
       Locked = false;
     }
-    public Button GetSelected()
+    public SelectionBox GetSelected()
     {
       return menu.GetButton(selectedIndex);
     }
@@ -46,8 +64,8 @@ namespace Planet
         return;
       if (++selectedIndex == menu.Length)
         selectedIndex = 0;
-      this.Parent = GetSelected();
-      LocalPos = Vector2.UnitX * (GetSelected().tex.Width / 2 + tex.Width) * (isRight ? 1 : -1); 
+      UpdateSpacing();
+      AudioManager.PlaySound("click4");
     }
     public void Previous()
     {
@@ -55,8 +73,8 @@ namespace Planet
         return;
       if (--selectedIndex < 0)
         selectedIndex = menu.Length - 1;
-      this.Parent = GetSelected();
-      LocalPos = Vector2.UnitX * (GetSelected().tex.Width / 2 + tex.Width) * (isRight ? 1: -1);
+      UpdateSpacing();
+      AudioManager.PlaySound("click4");
     }
   }
 }

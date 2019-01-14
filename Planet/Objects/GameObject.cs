@@ -63,7 +63,8 @@ namespace Planet
     {
       Disposed = true;
       IsActive = false;
-      CollisionEnabled = false;
+      if (Parent != null)
+        Parent.RemoveChild(this);
     }
     public virtual void DoCollision(GameObject other)
     {
@@ -107,11 +108,11 @@ namespace Planet
           break;
       }
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
       if (tex != null && IsActive)
       {
-        base.Draw(spriteBatch);
+        base.Draw(spriteBatch, a);
 
         if (drawHitbox)
           Hitbox.Draw(spriteBatch);

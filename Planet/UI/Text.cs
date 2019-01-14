@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Planet
 {
-  class Text : Sprite
+  public class Text : Sprite
   {
     public enum Align
     {
@@ -15,27 +15,24 @@ namespace Planet
       Center,
       Right
     }
-    public Align alignment { get; set; }
-    public SpriteFont font;
+    public Align Alignment
+    {
+      get { return alignment; }
+      set { alignment = value; UpdateAlignment(); }
+    }
+    public SpriteFont Font { get; set; }
+    private Align alignment;
     private string text;
 
-    public Text(SpriteFont font, string text, Vector2 pos, Color color, Align align = Align.Center)
-      : base(pos, (Texture2D)null)
+    public Text(SpriteFont font, string text, Vector2 pos, Color color, Align align = Align.Center, float scale = 1.0f)
+      : base(pos, null)
     {
-      this.color = color;
-      this.font = font;
+      this.Scale = scale;
+      this.Font = font;
       this.alignment = align;
+      this.color = color;
       Set(text);
       layerDepth = 0.0f;
-    }
-    public Align GetAlignment()
-    {
-      return alignment;
-    }
-    public void SetAlignment(Align align)
-    {
-      this.alignment = align;
-      UpdateAlignment();
     }
     public string Get()
     {
@@ -48,22 +45,22 @@ namespace Planet
     }
     private void UpdateAlignment()
     {
-      switch (alignment)
+      switch (Alignment)
       {
         case Align.Left:
           origin = Vector2.Zero;
           break;
         case Align.Center:
-          origin = font.MeasureString(text) / 2f;
+          origin = Font.MeasureString(text) / 2f;
           break;
         case Align.Right:
-          origin = new Vector2(font.MeasureString(text).X, 0);
+          origin = new Vector2(Font.MeasureString(text).X, 0);
           break;
       }
     }
-    public override void Draw(SpriteBatch sb)
+    public override void Draw(SpriteBatch sb, float a = 1.0f)
     {
-      sb.DrawString(font, text, Pos, color, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
+      sb.DrawString(Font, text, Pos, color * alpha * a, Rotation, origin, Scale, SpriteEffects.None, layerDepth);
     }
   }
 }

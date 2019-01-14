@@ -6,9 +6,8 @@ using System.Text;
 
 namespace Planet
 {
-  interface IMenuGameState
+  interface IJoinable
   {
-    void Confirm(MenuController pi);
-    void Cancel(MenuController pi);
+    void Join(Player player);
   }
 }

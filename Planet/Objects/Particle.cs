@@ -32,6 +32,8 @@ namespace Planet
     public void Die()
     {
       Disposed = true;
+      if (Parent != null)
+        Parent.RemoveChild(this);
     }
     public void Update(GameTime gameTime)
     {

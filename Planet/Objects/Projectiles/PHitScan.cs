@@ -87,14 +87,7 @@ namespace Planet
       if (other is Ship)
       {
         Ship s = (Ship)other;
-        s.TakeDamage(this);
-        if (instigator.Controller is PlayerShipController)
-        {
-          PlayerShipController ps = (PlayerShipController)instigator.Controller;
-          ps.Player.Score += (damage * 10);
-          if (other.Disposed)
-            ps.Player.Score += (s.maxHealth * 10);
-        }
+        s.TakeDamage(this, InvulnOnHit);
       }
       if (onCollision != null)
         onCollision(this, other);
@@ -106,19 +99,19 @@ namespace Planet
         }
       }
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
       Vector2 start = Pos;
       if (stick)
         start = wpn.Pos;
       Vector2 end = hitPos;
       Vector2 edge = end - start;
-      float angle = (float)-Math.Atan2(edge.X, edge.Y);
+      float angle = (float)(-Math.Atan2(edge.X, edge.Y)+Math.PI);
       spriteBatch.Draw(
         tex,
-        new Rectangle((int)start.X, (int)start.Y, width, (int)edge.Length()),
+        new Rectangle((int)end.X, (int)end.Y, width, (int)edge.Length()),
         null,
-        color * alpha,
+        color * alpha * a,
         angle,
         new Vector2(tex.Width / 2f, 0),
         SpriteEffects.None,

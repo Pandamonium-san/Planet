@@ -42,6 +42,7 @@ namespace Planet
     protected Timer invulnerabilityTimer;
     protected Particle flashParticle;
     protected Texture2D flashTex;
+    protected Texture2D crosshair;
     protected List<Weapon> weapons;
     protected int weaponIndex;
 
@@ -49,6 +50,7 @@ namespace Planet
       : base(pos, world, tex)
     {
       SetTexture(tex);
+      crosshair = AssetManager.GetTexture("crosshair_white_large");
       weapons = new List<Weapon>();
       weaponIndex = 0;
       maxHealth = 10;
@@ -78,9 +80,9 @@ namespace Planet
         Velocity = Acceleration;
         //dash trail
         Particle pr = world.Particles.CreateParticle(Pos + Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
-        pr.Rotation = Rotation;
+        pr.Rotation = Rotation - (float)Math.PI;
         pr = world.Particles.CreateParticle(Pos - Right * 10 - Forward * 25, AssetManager.GetTexture("fire15"), Vector2.Zero, 0.2f, Color.White, 1.0f);
-        pr.Rotation = Rotation;
+        pr.Rotation = Rotation - (float)Math.PI;
       }
       else
       {
@@ -122,25 +124,20 @@ namespace Planet
         flashParticle.Update(gt);
       invulnerabilityTimer.Update(gt);
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
       if (!Visible)
         return;
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
       if (flashParticle != null)
-        flashParticle.Draw(spriteBatch);
+        flashParticle.Draw(spriteBatch, a);
 
       if (Layer != Layer.PLAYER_SHIP || !(Controller is PlayerShipController))
         return;
       if (Target != null)
       {
-        Color color;
-        if (((PlayerShipController)Controller).Player.Index == PlayerIndex.One)
-          color = Color.PaleTurquoise;
-        else
-          color = Color.CornflowerBlue;
-        Texture2D circle = AssetManager.GetTexture("crosshair_white_large");
-        spriteBatch.Draw(circle, Target.Pos, null, color * 0.75f, (float)Math.PI / 4, new Vector2(circle.Width / 2, circle.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
+        Color color = ((PlayerShipController)Controller).Player.Color;
+        spriteBatch.Draw(crosshair, Target.Pos, null, color * 0.75f * a, (float)Math.PI / 4, new Vector2(crosshair.Width / 2, crosshair.Height / 2), 3.0f * Target.Scale, SpriteEffects.None, 0.0f);
       }
     }
     public virtual void Fire1()
@@ -158,7 +155,7 @@ namespace Planet
       CurrentWeapon.ResetShootTimer();
       if(Layer == Layer.PLAYER_SHIP)
       {
-        AudioManager.PlaySound("switch28", 0.14f);
+        AudioManager.PlaySound("switch28", 0.28f);
       }
     }
     public virtual void SwitchTarget()
@@ -223,7 +220,7 @@ namespace Planet
     {
       base.Die();
       world.Particles.CreateExplosion(Pos, 0.3f, 0.8f, 0.3f * Scale);
-      AudioManager.PlayExplosion(0.2f);
+      AudioManager.PlayExplosion(0.5f);
     }
     public void MakeInvulnerable(float invulnerabilityTime)
     {
@@ -277,7 +274,7 @@ namespace Planet
 
       currentRotationSpeed += rotation;
     }
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, float forceInvuln = 0.0f)
     {
       if (Invulnerable)
         return;
@@ -294,15 +291,20 @@ namespace Planet
       {
         Flash(0.75f, Color.Red, false, 0.8f);
         MakeInvulnerable(0.75f);
-        AudioManager.PlaySound("hit", 0.50f);
+        AudioManager.PlaySound("hit", 1.00f);
       }
       else
       {
         Flash(0.25f, Color.White, false, 0.8f);
-        AudioManager.PlaySound("plick", 0.20f);
+        if (forceInvuln != 0.0f)
+        {
+          MakeInvulnerable(forceInvuln);
+          Flash(forceInvuln, Color.Red, false, 0.8f);
+        }
+        AudioManager.PlaySound("plick", 0.30f);
       }
     }
-    public void TakeDamage(Projectile p)
+    public void TakeDamage(Projectile p, float forceInvuln = 0.0f)
     {
       if (Invulnerable)
         return;
@@ -314,18 +316,30 @@ namespace Planet
         if (Layer == Layer.PLAYER_SHIP)
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.5f);
-          AudioManager.PlaySound("hit2", 0.30f);
+          AudioManager.PlaySound("hit2", 0.60f);
           MakeInvulnerable(0.5f);
         }
         else
         {
           CreateShieldParticle(Utility.Vector2ToAngle(p.Pos - Pos), 0.25f);
-          AudioManager.PlaySound("plick2", 0.20f);
+          if (forceInvuln != 0.0f)
+          {
+            MakeInvulnerable(forceInvuln);
+            Flash(forceInvuln, Color.Blue, false, 0.8f);
+          }
+          AudioManager.PlaySound("plick2", 0.30f);
         }
       }
       else
       {
-        TakeDamage(p.damage);
+        TakeDamage(p.damage, forceInvuln);
+      }
+      if (p.instigator.Controller is PlayerShipController)
+      {
+        PlayerShipController ps = (PlayerShipController)p.instigator.Controller;
+        ps.Player.Score += (p.damage * 10);
+        if (Disposed)
+          ps.Player.Score += (maxHealth * 10);
       }
     }
     protected void LeadShot(Ship target)

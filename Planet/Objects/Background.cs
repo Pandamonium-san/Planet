@@ -10,45 +10,81 @@ namespace Planet
   class Background
   {
     public float Alpha { get; set; }
-    public float DriftSpeed { get; set; }
-    public int StarDensity { get; set; }
+    public float DriftSpeed
+    {
+      get { return driftSpeed; }
+      set
+      {
+        driftSpeed = value;
+        starGenerator = new Timer(Game1.ScreenHeight / (StarDensity * DriftSpeed), GenerateStar, true, true);
+      }
+    }
+    public int StarDensity
+    {
+      get { return starDensity; }
+      set
+      {
+        starDensity = value;
+        starGenerator = new Timer(Game1.ScreenHeight / (StarDensity * DriftSpeed), GenerateStar, true, true);
+      }
+    }
+
+    private int starsToSpawn;
+    private int starDensity;
+    private float driftSpeed;
+
     private Vector2 pos = new Vector2(-Game1.ScreenWidth, -Game1.ScreenHeight);
     private Texture2D background;
     private Texture2D[] starTex;
     private Timer starGenerator;
     private List<Particle> stars;
     private Sprite planet;
-    private double a;
 
     public Background(float alpha = 1.0f, float driftSpeed = 75, int starDensity = 150)
     {
       Alpha = alpha;
-      DriftSpeed = driftSpeed;
-      StarDensity = starDensity;
+      this.driftSpeed = driftSpeed;
+      this.starDensity = starDensity;
+      starsToSpawn = 1;
+
       background = AssetManager.GetTexture("bg_blue");
       planet = new Sprite(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight - 300), AssetManager.GetTexture("bg_planet"));
       planet.color = new Color(100, 100, 100);
       planet.layerDepth = 0.99f;
+
       stars = new List<Particle>();
       starTex = new Texture2D[3] { AssetManager.GetTexture("star1"), AssetManager.GetTexture("star2"), AssetManager.GetTexture("star3") };
+      starGenerator = new Timer(0, GenerateStar, true, true);
+      CalibrateStarGenerator();
 
-      starGenerator = new Timer(Game1.ScreenHeight / (StarDensity * DriftSpeed), GenerateStar, true, true);
       for (int i = 0; i < StarDensity; i++)
       {
         Vector2 pos = new Vector2(Utility.RandomFloat(0, Game1.ScreenWidth), Utility.RandomFloat(0, Game1.ScreenHeight));
-        Particle p = CreateStar(pos, 600.0f, 0, DriftSpeed + 25, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
+        Particle p = CreateStar(pos, 60.0f, 0, DriftSpeed + 25, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
         p.Velocity = Vector2.One * p.Velocity.Length();
         p.layerDepth = 1.0f;
         stars.Add(p);
       }
     }
+    private void CalibrateStarGenerator()
+    {
+      starGenerator.Start(0.5f * Game1.ScreenHeight / (StarDensity * DriftSpeed));
+      while (starGenerator.seconds < 1 / 60)
+      {
+        starGenerator.Start(starGenerator.seconds * 2);
+        starsToSpawn *= 2;
+      }
+    }
     private void GenerateStar()
     {
-      Vector2 pos = new Vector2(Utility.RandomFloat(-Game1.ScreenWidth + Game1.ScreenWidth - Game1.ScreenHeight, Game1.ScreenWidth - Game1.ScreenHeight), Utility.RandomFloat(-Game1.ScreenHeight, 0));
-      Particle p = CreateStar(pos, 600.0f, 0, DriftSpeed + 30, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
-      p.Velocity = Vector2.One * p.Velocity.Length();
-      p.layerDepth = 1.0f;
-      stars.Add(p);
+      for (int i = 0; i < starsToSpawn; i++)
+      {
+        Vector2 pos = new Vector2(Utility.RandomFloat(-Game1.ScreenWidth + Game1.ScreenWidth - Game1.ScreenHeight, Game1.ScreenWidth - Game1.ScreenHeight), Utility.RandomFloat(-Game1.ScreenHeight, 0));
+        Particle p = CreateStar(pos, 60.0f, 0, DriftSpeed + 30, Color.White, 0.1f * Alpha, 0.5f, 0.5f);
+        p.Velocity = Vector2.One * p.Velocity.Length();
+        p.layerDepth = 1.0f;
+        stars.Add(p);
+      }
     }
     private Particle CreateStar(Vector2 pos, float lifeTime, float minSpeed, float maxSpeed, Color color, float alpha, float scale, float variation)
     {
@@ -68,30 +104,21 @@ namespace Planet
     {
       foreach (Particle star in stars)
         star.Update(gameTime);
+      stars.RemoveAll(x => x.Disposed);
       starGenerator.Update(gameTime);
       this.pos += new Vector2(DriftSpeed, DriftSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds;
       if (pos.X > 0 || pos.Y > 0)
         pos = new Vector2(-Game1.ScreenWidth, -Game1.ScreenHeight);
 
-      //86bpm
-      // 86/60
-      // full lap every 8 beats
-      double bpm = 86;
-      double beatsPerCycle = 8;
-
-      double bps = bpm / 60;
-      double cycleTime = bps * beatsPerCycle;
-      double cyclesPerSecond = Math.PI * 2 / cycleTime;
-      a += cyclesPerSecond * gameTime.ElapsedGameTime.TotalSeconds;
-      float v = 0.55f + (float)Math.Sin(a) * 0.15f;
+      float v = 0.55f + (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * AudioManager.SplashSinCycle) * 0.15f;
       planet.color = new Color(v, v, v);
     }
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      spriteBatch.Draw(background, pos, null, new Rectangle(0, 0, Game1.ScreenWidth * 2, Game1.ScreenHeight * 2), null, 0.0f, null, new Color(100, 100, 100), SpriteEffects.None, 1.0f);
+      spriteBatch.Draw(background, pos, null, new Rectangle(0, 0, Game1.ScreenWidth * 2, Game1.ScreenHeight * 2), null, 0.0f, null, new Color(100, 100, 100) * a, SpriteEffects.None, 1.0f);
       foreach (Particle star in stars)
-        star.Draw(spriteBatch);
-      planet.Draw(spriteBatch);
+        star.Draw(spriteBatch, a);
+      planet.Draw(spriteBatch, a);
     }
   }
 }

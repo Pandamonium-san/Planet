@@ -55,8 +55,8 @@ namespace Planet
       }
     }
     public Vector2 LocalPos { get { return localPos; } set { localPos = value; Update(); } }
-    public float LocalRotation { get { return localRotation; } set { localRotation = value;  Update(); } }
-    public float LocalScale { get { return localScale; } set { localScale = value;  Update(); } }
+    public float LocalRotation { get { return localRotation; } set { localRotation = value; Update(); } }
+    public float LocalScale { get { return localScale; } set { localScale = value; Update(); } }
 
     // member variables
     private Transform parent;
@@ -88,7 +88,10 @@ namespace Planet
       worldScale = other.worldScale;
       localOrigin = other.localOrigin;
     }
-
+    public void RemoveChild(Transform child)
+    {
+      children.Remove(child);
+    }
     private void AppendChild(Transform child)
     {
       if (children == null)
@@ -101,10 +104,7 @@ namespace Planet
         return;
       for (int i = 0; i < children.Count(); ++i)
       {
-        if (children[i] == null)
-          children.RemoveAt(i--);
-        else
-          children[i].Update();
+        children[i].Update();
       }
     }
     private void Update()

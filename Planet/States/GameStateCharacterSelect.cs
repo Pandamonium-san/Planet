@@ -7,98 +7,109 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Planet
 {
-  class GameStateCharacterSelect : GameState, IMenuGameState
+  class GameStateCharacterSelect : MenuGameState, IJoinable
   {
     private GameStateManager gsm;
-    private GameSettings gameSettings;
     private MenuCursor cursor1, cursor2;
     private MenuController mc1, mc2;
+    private ShipInfo shi1, shi2;
     private Menu characterMenu;
 
     public GameStateCharacterSelect(GameStateManager gsm)
       : base()
     {
       this.gsm = gsm;
-      characterMenu = new Menu(3);
-      gameSettings = new GameSettings();
-
-      Button b = new Button(new Vector2(Game1.ScreenWidth / 2f, 300), "Rewinder");
-      b.AddText(AssetManager.GetFont("future18"), "Rewinder");
-      characterMenu.AddSelection(0, b);
-
-      b = new Button(new Vector2(Game1.ScreenWidth / 2f, 400), "Blinker");
-      b.AddText(AssetManager.GetFont("future18"), "Blinker");
-      characterMenu.AddSelection(1, b);
-
-      b = new Button(new Vector2(Game1.ScreenWidth / 2f, 500), "Possessor");
-      b.AddText(AssetManager.GetFont("future18"), "Possessor");
-      characterMenu.AddSelection(2, b);
-
-      cursor1 = new MenuCursor(characterMenu, AssetManager.GetTexture("grey_sliderRight"), false);
-      cursor1.color = Color.PaleTurquoise;
-      mc1 = new MenuController(PlayerIndex.One, cursor1, this);
-
-      cursor2 = new MenuCursor(characterMenu, AssetManager.GetTexture("grey_sliderRight"), true);
-      cursor2.color = Color.CornflowerBlue;
-      mc2 = new MenuController(PlayerIndex.Two, cursor2, this);
+      characterMenu = Menu.CharSelect();
+      if (gsm.P1.Joined)
+        Join(gsm.P1);
+      if (gsm.P2.Joined)
+        Join(gsm.P2);
     }
-    public void Confirm(MenuController mc)
+    public void Join(Player player)
     {
-      switch (mc.GetSelected().Name)
+      if (player.Index == PlayerIndex.One)
       {
-        case "Rewinder":
-          SetPlayerShip(mc.PIndex, "RewinderShip");
-          break;
-        case "Blinker":
-          SetPlayerShip(mc.PIndex, "BlinkerShip");
-          break;
-        case "Possessor":
-          SetPlayerShip(mc.PIndex, "PossessorShip");
-          break;
-      }
-      mc.GetCursor().alpha = 0.5f;
-      mc.GetCursor().Lock();
-      if (cursor1.Locked && cursor2.Locked)
-        gsm.Push(new GameStatePlaying(gsm, gameSettings));
-    }
-    public void SetPlayerShip(PlayerIndex pi, string shipType)
-    {
-      switch (pi)
-      {
-        case PlayerIndex.One:
-          gameSettings.p1StarterShip = shipType;
-          break;
-        case PlayerIndex.Two:
-          gameSettings.p2StarterShip = shipType;
-          break;
-      }
-    }
-    public void Cancel(MenuController mc)
-    {
-      if (mc.GetCursor().Locked)
-      {
-        mc.GetCursor().alpha = 1.0f;
-        mc.GetCursor().Unlock();
+        cursor1 = new MenuCursor(characterMenu, player.Color);
+        mc1 = new MenuController(player, cursor1, this);
       }
       else
-        gsm.Pop();
+      {
+        cursor2 = new MenuCursor(characterMenu, player.Color);
+        mc2 = new MenuController(player, cursor2, this);
+      }
     }
-    public override void Update(GameTime gt)
+    public override void Confirm(PlayerController pc)
     {
-      mc1.Update(gt);
-      mc2.Update(gt);
+      if (fadeTimer.Counting)
+        return;
+      MenuController mc = (MenuController)pc;
+      if (mc.Cursor.Locked)
+        return;
+      mc.Player.SelectedShip = mc.GetSelected().Name;
+      mc.Cursor.Lock();
+      if ((cursor1 == null || cursor1.Locked) && (cursor2 == null || cursor2.Locked))
+      {
+        gsm.Settings.startGame = true;
+        FadeTransition(1.0f, gsm.Pop, false);
+      }
+      AudioManager.PlaySound("boop");
+    }
+    public override void Cancel(PlayerController pc)
+    {
+      if (fadeTimer.Counting)
+        return;
+      MenuController mc = (MenuController)pc;
+      if (mc.Cursor.Locked)
+        return;
+      if (mc.Cursor.Locked)
+      {
+        mc.Cursor.Unlock();
+      }
+      else
+      {
+        FadeTransition(1.0f, gsm.Pop, false);
+      }
+      AudioManager.PlaySound("boop2");
+    }
+    public override void Update(GameTime gameTime)
+    {
+      base.Update(gameTime);
+      foreach (SelectionBox sb in characterMenu.GetBoxes())
+        sb.alpha = 0.6f;
+      if (mc1 != null)
+      {
+        mc1.Update(gameTime);
+        mc1.GetSelected().alpha = 0.9f;
+        shi1 = new ShipInfo(mc1.GetSelected().Name, new Vector2(Game1.ScreenWidth / 4, Game1.ScreenHeight / 3 * 2 + 50), gsm.P1.Color);
+      }
+      if (mc2 != null)
+      {
+        mc2.Update(gameTime);
+        mc2.GetSelected().alpha = 0.9f;
+        shi2 = new ShipInfo(mc2.GetSelected().Name, new Vector2(Game1.ScreenWidth / 4 * 3, Game1.ScreenHeight / 3 * 2 + 50), gsm.P2.Color);
+      }
     }
     public override void Draw(SpriteBatch spriteBatch)
     {
       spriteBatch.Begin();
-      cursor1.Draw(spriteBatch);
-      cursor2.Draw(spriteBatch);
-      characterMenu.Draw(spriteBatch);
+      if (cursor1 != null)
+        cursor1.Draw(spriteBatch, a);
+      if (cursor2 != null)
+        cursor2.Draw(spriteBatch, a);
+      if (shi1 != null)
+        shi1.Draw(spriteBatch, a);
+      if (shi2 != null)
+        shi2.Draw(spriteBatch, a);
+      characterMenu.Draw(spriteBatch, a);
       spriteBatch.End();
     }
-
+    public void SetPlayerShip(Player player, string shipType)
+    {
+      player.SelectedShip = shipType;
+    }
     public override void Entered()
     {
+      FadeTransition(0.5f);
     }
 
     public override void Leaving()
@@ -111,6 +122,7 @@ namespace Planet
 
     public override void Revealed()
     {
+      FadeTransition(0.5f);
       cursor1.Unlock();
       cursor2.Unlock();
       cursor1.alpha = 1.0f;

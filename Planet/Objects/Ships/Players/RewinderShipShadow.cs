@@ -34,7 +34,7 @@ namespace Planet
       foreach (Weapon wpn in rsWeapons)
       {
         Type wType = wpn.GetType();
-        Weapon wp = (Weapon)Activator.CreateInstance(wType, wpn);
+        Weapon wp = (Weapon)Activator.CreateInstance(wType, wpn); 
         wp.SetShip(this);
         weapons.Add(wp);
       }

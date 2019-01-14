@@ -43,6 +43,7 @@ namespace Planet
         link.layerDepth = layerDepth + 0.01f;
         parasiteLink.Add(link);
       }
+      damage = damagePerSecond / 6;
     }
     protected override void DoUpdate(GameTime gt)
     {
@@ -61,11 +62,11 @@ namespace Planet
         if (latchedShip.currentHealth < 20)
         {
           ((AIController)latchedShip.Controller).IsActive = false;
-          latchedShip.IsActive = true;
           latchedShip.CollisionEnabled = false;
           ship.CollisionEnabled = false;
           if (latchedShip.Disposed)
           {
+            latchedShip.IsActive = true;
             latchedShip.Disposed = false;
             world.PostGameObj(latchedShip);
           }
@@ -78,8 +79,8 @@ namespace Planet
             Die();
           }
         }
-        else if (frame % 20 == 0)
-          latchedShip.TakeDamage(damage / 3);
+        else if (frame % 10 == 0)
+          latchedShip.TakeDamage(this);
         if (Vector2.Distance(ship.Pos, Pos) > leashRange)
           Unlatch();
       }
@@ -121,15 +122,20 @@ namespace Planet
       Visible = false;
       Pos = ship.Pos;
       this.ship.speedModifier *= 0.9f;
-      AudioManager.PlaySound("parasite3", 0.40f);
+      AudioManager.PlaySound("parasite3", 0.80f);
     }
     public void Unlatch()
     {
+      if (latchedShip != null && latchedShip.currentHealth < 20)
+      {
+        latchedShip.Die();
+      }
+      ship.CollisionEnabled = true;
       extensionTime = 0;
       latchedShip = null;
       Visible = true;
       this.ship.speedModifier /= 0.9f;
-      AudioManager.PlaySound("parasite3", 0.40f);
+      AudioManager.PlaySound("parasite3", 0.80f);
     }
     public override void DoCollision(GameObject other)
     {
@@ -137,11 +143,11 @@ namespace Planet
         return;
       Latch((Ship)other);
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
       foreach (Sprite sp in parasiteLink)
-        sp.Draw(spriteBatch);
+        sp.Draw(spriteBatch, a);
     }
   }
 }

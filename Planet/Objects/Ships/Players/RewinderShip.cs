@@ -67,7 +67,6 @@ namespace Planet
       if (!rewinding && !AbilityCooldown.Counting)
       {
         StartRewind();
-        AbilityCooldown.Start();
       }
       else if (rewinding)
       {
@@ -97,10 +96,11 @@ namespace Planet
       Flash(0.5f, rewindColor, false, 0.8f, true, false);
       for (int i = 0; i < 10; i++)
         world.Particles.CreateStar(Pos, 0.5f, -70, 70, rewindColor, 0.5f, 0.7f, 0.4f);
-      AudioManager.PlaySound("blink", 0.70f);
+      AudioManager.PlaySound("blink", 0.95f);
     }
     private void StopRewind()
     {
+      AbilityCooldown.Start();
       rewinding = false;
       Untargetable = false;
       CollisionEnabled = true;
@@ -118,14 +118,14 @@ namespace Planet
       Flash(0.5f, rewindColor, false);
       for (int i = 0; i < 20; i++)
         world.Particles.CreateStar(Pos, 0.5f, -100, 100, rewindColor, 0.5f, 0.7f, 0.4f);
-      AudioManager.PlaySound("blink2", 0.70f);
+      AudioManager.PlaySound("blink2", 0.95f);
     }
     public override void Update(GameTime gt)
     {
       if (rewinding && states.Count > 0)
       {
         if (states.Count / 2 % 15 == 0)
-          AudioManager.PlaySound("tick", 0.70f);
+          AudioManager.PlaySound("tick", 0.95f);
         if (states.Count / 2 % 2 == 0)  //divide by two because two states are popped each time
           Flash(0.3f, rewindColor, false, 0.3f, true, true);
         for (int i = 0; i < 2; i++)
@@ -148,11 +148,11 @@ namespace Planet
         base.Update(gt);
       }
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch, float a = 1.0f)
     {
-      base.Draw(spriteBatch);
+      base.Draw(spriteBatch, a);
       if (states.Count > 0)
-        spriteBatch.Draw(tex, states.Last.Value.pos, spriteRec, Color.Gray * 0.15f, states.Last.Value.rotation, origin, Scale, SpriteEffects.None, layerDepth + 0.1f);
+        spriteBatch.Draw(tex, states.Last.Value.pos, spriteRec, Color.Gray * 0.15f * a, states.Last.Value.rotation, origin, Scale, SpriteEffects.None, layerDepth + 0.1f);
     }
     private void LoadState(State state)
     {

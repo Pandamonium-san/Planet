@@ -11,9 +11,9 @@ namespace Planet
   {
     private double value;
     private Ship ship;
-    Sprite back;
-    Sprite icon;
-    SpriteFont font;
+    private Sprite back, icon;
+    private SpriteFont font;
+
     public AbilityIcon(Ship ship, Vector2 pos)
       : base(Vector2.Zero)
     {
@@ -31,7 +31,7 @@ namespace Planet
       icon.color = Color.AliceBlue;
       icon.Parent = this;
 
-      back = new Sprite(Vector2.Zero, AssetManager.GetTexture("grey_button13_big"));
+      back = new Sprite(Vector2.Zero, AssetManager.GetTexture("greyButton13_big"));
       back.color = Color.AliceBlue;
       back.Parent = this;
 
@@ -73,6 +73,10 @@ namespace Planet
       {
         spriteBatch.DrawString(font, ((BlinkerShip)ship).AbilityCharges.ToString(), Pos + new Vector2(17, 12), Color.White, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0.0f);
       }
+    }
+    public void SetShip(Ship ship)
+    {
+      this.ship = ship;
     }
   }
 }

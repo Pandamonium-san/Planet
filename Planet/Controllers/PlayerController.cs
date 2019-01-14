@@ -10,30 +10,34 @@ namespace Planet
   /// <summary>
   /// Handles bindings for players
   /// </summary>
-  abstract class PlayerController
+  public abstract class PlayerController
   {
-    public PlayerIndex PIndex { get; private set; }
+    public Player Player { get; private set; }
+    public bool IsActive { get; set; }
     private List<KeyBinding> bindings;
 
-    public PlayerController(PlayerIndex index)
+    public PlayerController(Player player)
     {
-      this.PIndex = index;
+      this.Player = player;
+      player.Controller = this;
       bindings = new List<KeyBinding>();
+      IsActive = true;
     }
     public virtual void Update(GameTime gt)
     {
-      foreach (KeyBinding kb in bindings)
-      {
-        kb.Update();
-      }
+      if (IsActive)
+        foreach (KeyBinding kb in bindings)
+        {
+          kb.Update();
+        }
     }
     public void SetBinding(PlayerInput input, Action action, InputType inputType)
     {
       KeyBinding kb = bindings.Find(x => x.input == input && x.type == inputType);
       if (kb == null)
-        bindings.Add(new KeyBinding(this.PIndex, input, action, inputType));
+        bindings.Add(new KeyBinding(Player.Index, input, action, inputType));
       else
-        kb = new KeyBinding(this.PIndex, input, action, inputType);
+        kb = new KeyBinding(Player.Index, input, action, inputType);
     }
 
     class KeyBinding
@@ -75,8 +79,8 @@ namespace Planet
   /// <summary>
   /// Defines what type of interaction with the key will activate the binding.
   /// </summary>
-  public enum InputType 
-  { 
+  public enum InputType
+  {
     /// <summary> Key is pressed from a released state </summary>
     Pressed,
     /// <summary> Key is released from a pressed state </summary>

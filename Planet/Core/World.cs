@@ -24,7 +24,6 @@ namespace Planet
     private List<Projectile> projectiles;
     private Queue<GameObject> goToAdd;
     private Queue<Projectile> pToAdd;
-    private Background background;
 
     public World()
     {
@@ -34,12 +33,10 @@ namespace Planet
       pToAdd = new Queue<Projectile>();
       gameObjects = new List<GameObject>();
       projectiles = new List<Projectile>();
-      background = new Background(0.8f);
     }
 
     public void Update(GameTime gameTime)
     {
-      background.Update(gameTime);
       while (goToAdd.Count > 0)
         gameObjects.Add(goToAdd.Dequeue());
       while (pToAdd.Count > 0)
@@ -123,7 +120,6 @@ namespace Planet
         DepthStencilState.None,
         RasterizerState.CullCounterClockwise
         );
-      background.Draw(spriteBatch);
       foreach (GameObject go in gameObjects)
       {
         go.Draw(spriteBatch);
@@ -133,14 +129,6 @@ namespace Planet
         p.Draw(spriteBatch);
       }
       Particles.Draw(spriteBatch);
-
-      //debug
-      if (Game1.debugMode)
-      {
-        spriteBatch.DrawString(future18, "Objects: " + (this.gameObjects.Count()).ToString(), new Vector2(0, 20), Color.Red);
-        spriteBatch.DrawString(future18, "Projectiles: " + (this.projectiles.Count()).ToString(), new Vector2(0, 40), Color.Red);
-      }
-
       spriteBatch.End();
     }
 

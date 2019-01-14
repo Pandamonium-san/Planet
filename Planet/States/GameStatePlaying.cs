@@ -8,54 +8,97 @@ using System.Text;
 
 namespace Planet
 {
-  class GameStatePlaying : GameState
+  class GameStatePlaying : GameState, IJoinable
   {
     private GameStateManager gsm;
-    private GameSettings gameSettings;
     private World world;
     private HUD hud;
     private EnemyManager enemyManager;
-    private Player p1, p2;
+    private List<PlayerShipController> pcs;
+    private Sprite overlay;
 
-    public GameStatePlaying(GameStateManager gameStateManager, GameSettings gameSettings)
+    public GameStatePlaying(GameStateManager gameStateManager)
     {
       gsm = gameStateManager;
-      this.gameSettings = gameSettings;
+      pcs = new List<PlayerShipController>();
       world = new World();
-      p1 = new Player(PlayerIndex.One);
-      p2 = new Player(PlayerIndex.Two);
-      SetPlayerShip(p1).Pos = new Vector2(Game1.ScreenWidth * 0.33f, 700);
-      SetPlayerShip(p2).Pos = new Vector2(Game1.ScreenWidth * 0.66f, 700);
       enemyManager = new EnemyManager(world);
-      hud = new HUD(world, p1, p2, enemyManager);
+      hud = new HUD(world, enemyManager);
+
+      if (gsm.P1.Joined)
+        Join(gsm.P1);
+      if (gsm.P2.Joined)
+        Join(gsm.P2);
+
+      overlay = new Sprite(new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2), AssetManager.Pixel);
+      overlay.Scale = 2000;
+      overlay.color = Color.Black;
+      overlay.alpha = 1.0f;
     }
-    Ship SetPlayerShip(Player p)
+    public void Join(Player player)
     {
-      Ship ship = null;
-      if (p.Index == PlayerIndex.One)
-        ship = InstantiateShip(gameSettings.p1StarterShip, p);
-      else if (p.Index == PlayerIndex.Two)
-        ship = InstantiateShip(gameSettings.p2StarterShip, p);
-      p.SetShip(ship);
-      world.PostGameObj(ship);
-      return ship;
+      PlayerShipController pc = new PlayerShipController(player, CreatePlayerShip(player));
+      hud.BuildHUD(player, (PlayerShipController)player.Controller);
+      if (player.Index == PlayerIndex.One)
+        pc.Ship.Pos = new Vector2(Game1.ScreenWidth * 0.33f, 700);
+      else
+        pc.Ship.Pos = new Vector2(Game1.ScreenWidth * 0.66f, 700);
+      if (pcs.Count != 0)
+        pc.Ship.currentHealth *= GetHighestHealthPercentage();
+      pcs.Add(pc);
     }
-    Ship InstantiateShip(string shipType, Player p)
+    public override void Update(GameTime gameTime)
     {
-      switch (shipType)
+      base.Update(gameTime);
+      foreach (PlayerShipController pc in pcs)
       {
-        case "RewinderShip":
-          return new RewinderShip(Vector2.Zero, world, p);
-        case "BlinkerShip":
-          return new BlinkerShip(Vector2.Zero, world, p);
-        case "PossessorShip":
-          return new PossessorShip(Vector2.Zero, world, p);
+        pc.Update(gameTime);
       }
-      throw new Exception("Ship type '" + shipType + "' is not implemented");
+      enemyManager.Update(gameTime);
+      world.Update(gameTime);
+      hud.Update(gameTime);
+
+      if (enemyManager.WaveDefeated())
+      {
+        float hp = GetHighestHealthPercentage();
+        foreach (PlayerShipController pc in pcs)
+        {
+          pc.Player.Score += enemyManager.WaveCounter * 2000 / pcs.Count;
+          if (pc.Ship.Disposed)
+            RespawnShip(pc, hp);
+        }
+        enemyManager.SendNextWave(5.5f);
+        hud.FlashWaveText(5.0f);
+      }
+
+      if (fadeTimer.Counting || fadeTimer.Finished)
+        return;
+      if (PlayersAreDead())
+      {
+        gsm.Push(new GameStateInputName(gsm, enemyManager.WaveCounter));
+      }
+      if ((InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) &&
+        InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true) &&
+        gsm.P1.Joined) ||
+        (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Start, false) &&
+        InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.Start, true) &&
+        gsm.P2.Joined))
+      {
+        gsm.Push(new GameStatePaused(gsm));
+      }
+    }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+      world.Draw(spriteBatch);
+      hud.Draw(spriteBatch);
+
+      spriteBatch.Begin();
+      if (fadeTimer.Counting)
+        overlay.Draw(spriteBatch, a);
+      spriteBatch.End();
     }
     public override void Entered()
     {
-      AudioManager.PlayBgm("Kubbi - Firelight", 0.02f);
     }
     public override void Leaving()
     {
@@ -63,27 +106,69 @@ namespace Planet
     }
     public override void Revealed()
     {
-
+      UpdateEnabled = true;
+      if (PlayersAreDead())
+      {
+        FadeTransition(2.0f, gsm.Reset, true);
+      }
     }
     public override void Obscuring()
     {
+      UpdateEnabled = false;
     }
-    public override void Update(GameTime gameTime)
+    private bool PlayersAreDead()
     {
-      if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Start, false) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Start, true))
+      foreach (PlayerShipController pc in pcs)
       {
-        gsm.Pop();
+        if (!pc.Ship.Disposed)
+          return false;
       }
-      p1.Update(gameTime);
-      p2.Update(gameTime);
-      enemyManager.Update(gameTime);
-      world.Update(gameTime);
-      hud.Update(gameTime);
+      return true;
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    private float GetHighestHealthPercentage()
     {
-      world.Draw(spriteBatch);
-      hud.Draw(spriteBatch);
+      float highest = -1;
+      foreach (PlayerShipController pc in pcs)
+      {
+        float percentage = pc.Ship.currentHealth / pc.Ship.maxHealth;
+        if (percentage > highest)
+        {
+          highest = percentage;
+        }
+      }
+      return highest;
+    }
+    private void RespawnShip(PlayerShipController pc, float healthPercentage = 1.0f)
+    {
+      pc.Ship.IsActive = true;
+      pc.Ship.Disposed = false;
+      pc.Ship.Pos = new Vector2(Game1.ScreenWidth * 0.5f, 700);
+      pc.Ship.currentHealth = pc.Ship.maxHealth * healthPercentage;
+      pc.Ship.Flash(2.0f, Color.White, false);
+      pc.Ship.MakeInvulnerable(2.0f);
+      pc.Player.Score -= 30000;
+      pc.SetShip(pc.Ship);
+      world.PostGameObj(pc.Ship);
+    }
+    private Ship CreatePlayerShip(Player p)
+    {
+      Ship ship;
+      switch (p.SelectedShip)
+      {
+        case "Rewinder":
+          ship = new RewinderShip(Vector2.Zero, world, p);
+          break;
+        case "Blinker":
+          ship = new BlinkerShip(Vector2.Zero, world, p);
+          break;
+        case "Possessor":
+          ship = new PossessorShip(Vector2.Zero, world, p);
+          break;
+        default:
+          throw new Exception("Ship type '" + p.SelectedShip + "' is not implemented");
+      }
+      world.PostGameObj(ship);
+      return ship;
     }
   }
 }

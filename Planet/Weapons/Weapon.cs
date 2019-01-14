@@ -14,6 +14,7 @@ namespace Planet
     public float Damage { get { return desc.damage * ship.damageModifier; } }
     public WpnDesc Desc { get { return desc; } }
     public Texture2D ProjTex { get; set; }
+    public float InvulnOnHit { get; set; }
     public bool DashUsable { get; set; }
     public float ProjRotSpeed { get; set; }
     public SoundEffect SFX { get; set; }
@@ -21,7 +22,7 @@ namespace Planet
     public int ShotsPerSFX { get; set; }
     private int sfxShotsCounter;
 
-    public Ship ship;
+    protected Ship ship;
     protected World world;
     protected WpnDesc desc;
 
@@ -31,7 +32,7 @@ namespace Planet
     protected float currentShotAngle;
     protected Timer shootTimer;
 
-    public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon", string sfx = "pew", float volume = 0.16f)
+    public Weapon(Ship ship, World world, WpnDesc desc, string pTex = "proj1", string name = "Unnamed Weapon", string sfx = "pew", float volume = 0.32f)
       : base(Vector2.Zero, 0, 1.0f, ship)
     {
       Name = name;
@@ -52,6 +53,13 @@ namespace Planet
     {
       Name = wpn.Name;
       ProjTex = wpn.ProjTex;
+      InvulnOnHit = wpn.InvulnOnHit;
+      DashUsable = wpn.DashUsable;
+      ProjRotSpeed = wpn.ProjRotSpeed;
+      SFX = wpn.SFX;
+      Volume = wpn.Volume;
+      ShotsPerSFX = wpn.ShotsPerSFX;
+      sfxShotsCounter = wpn.sfxShotsCounter;
       ship = wpn.ship;
       world = wpn.world;
       desc = wpn.Desc;
@@ -130,6 +138,7 @@ namespace Planet
         OnProjectileCollision,
         desc.piercing
         );
+      p.InvulnOnHit = InvulnOnHit;
       p.Scale *= Scale;
       world.PostProjectile(p);
     }

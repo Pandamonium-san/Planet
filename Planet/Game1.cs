@@ -1,41 +1,22 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using System;
 
 namespace Planet
 {
-  /*  TO DO
-   *  - Add sound
-   *      - find more fitting bgm?
-   *  - Design UI
-   *      - Title screen
-   *      - Pause menu
-   *      - Character select
-   *      - Highscore list
-   *      - Credits
-   *  - Fancify the background
-   *  - Make proper weapons
-   *      - Missiles?
-   *  - Enemies
-   *      - VS Mode?
-   *      - Waves/Levels?
-   *      - More enemy types
-   */
-
   /// <summary>
   /// This is the main type for your game.
   /// </summary>
   public class Game1 : Game
   {
-#if (!ARCADE)
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-#else
-    public override string GameDisplayName { get { return "Planet"; } }
-#endif
     public static readonly int ScreenWidth = 1920;
     public static readonly int ScreenHeight = 1080;
+
+    GraphicsDeviceManager graphics;
+    SpriteBatch spriteBatch;
 
     private FrameCounter fc = new FrameCounter();
     private bool runningSlowly;
@@ -43,19 +24,21 @@ namespace Planet
     private GameStateManager gameStateManager;
 
     //debug variables
+    int frames;
     public static bool debugMode;
-    public static int frames;
-    public static Vector2 intersectPoint;
     public static int collisionChecksPerFrame;
     int slowFrames;
     SpriteFont debugFont;
 
     public Game1()
     {
-#if (!ARCADE)
-            graphics = new GraphicsDeviceManager(this);
-#endif
+      graphics = new GraphicsDeviceManager(this);
+      graphics.PreferredBackBufferWidth = ScreenWidth;
+      graphics.PreferredBackBufferHeight = ScreenHeight;
+      Content.RootDirectory = "Content";
+      InputHandler.InitializeBindings();
     }
+
     /// <summary>
     /// Allows the game to perform any initialization it needs to before starting to run.
     /// This is where it can query for any required services and load any non-graphic
@@ -64,7 +47,6 @@ namespace Planet
     /// </summary>
     protected override void Initialize()
     {
-      Content.RootDirectory = "Content";
       // TODO: Add your initialization logic here
 
       base.Initialize();
@@ -76,15 +58,11 @@ namespace Planet
     /// </summary>
     protected override void LoadContent()
     {
-#if (!ARCADE)
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-#endif
-      Microsoft.Xna.Framework.Audio.SoundEffect.MasterVolume = 0.5f;
+      spriteBatch = new SpriteBatch(GraphicsDevice);
+      Microsoft.Xna.Framework.Audio.SoundEffect.MasterVolume = 1.0f;
       AssetManager.LoadContent(Content);
-      gameStateManager = new GameStateManager();
-      gameStateManager.Push(new GameStateTitleScreen(gameStateManager));
       debugFont = AssetManager.GetFont("font1");
+      gameStateManager = new GameStateManager();
     }
 
     /// <summary>
@@ -93,6 +71,7 @@ namespace Planet
     /// </summary>
     protected override void UnloadContent()
     {
+      // TODO: Unload any non ContentManager content here
     }
 
     /// <summary>
@@ -102,22 +81,49 @@ namespace Planet
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Update(GameTime gameTime)
     {
-#if (!ARCADE)
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-#endif
+      InputHandler.Update();
+      if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+        Exit();
       ++frames;
-      if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Side, true) &&
-      InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side) && InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.Side, true))
+      //if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side) && InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.Side, true) &&
+      //InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side) && InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.Side, true))
+      //{
+      //  debugMode = !debugMode;
+      //}
+      if (debugMode)
       {
-        debugMode = !debugMode;
+        //if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side, true) &&
+        //  InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.A, true) &&
+        //  InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.A, false))
+        //{
+        //  MediaPlayer.Volume = Math.Min(1.0f, MediaPlayer.Volume + 0.1f);
+        //}
+        //if (InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.Side, true) &&
+        //  InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.A, true) &&
+        //  InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.A, false))
+        //{
+        //  MediaPlayer.Volume = Math.Max(0.0f, MediaPlayer.Volume - 0.1f);
+        //}
+        //if (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side, true) &&
+        //  InputHandler.IsButtonDown(PlayerIndex.One, PlayerInput.A, true) &&
+        //  InputHandler.IsButtonUp(PlayerIndex.One, PlayerInput.A, false))
+        //{
+        //  SoundEffect.MasterVolume = Math.Min(1.0f, SoundEffect.MasterVolume + 0.1f);
+        //}
+        //if (InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.Side, true) &&
+        //  InputHandler.IsButtonDown(PlayerIndex.Two, PlayerInput.A, true) &&
+        //  InputHandler.IsButtonUp(PlayerIndex.Two, PlayerInput.A, false))
+        //{
+        //  SoundEffect.MasterVolume = Math.Max(0.0f, SoundEffect.MasterVolume - 0.1f);
+        //}
+        collisionChecksPerFrame = 0;
+        runningSlowly = gameTime.IsRunningSlowly;
       }
-      collisionChecksPerFrame = 0;
-      runningSlowly = gameTime.IsRunningSlowly;
+      Timer.UpdateGlobalTimers(gameTime);
       gameStateManager.Update(gameTime);
-
       base.Update(gameTime);
     }
+
     /// <summary>
     /// This is called when the game should draw itself.
     /// </summary>

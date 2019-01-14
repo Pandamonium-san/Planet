@@ -10,16 +10,18 @@ namespace Planet
   abstract class EnemyShip : Ship
   {
     public static float GlobalEnemyDamageModifier = 1.0f;
-    public static float GlobalEnemyHealthModifier = 1.0f;
-
-    public float Cost { get { return baseCost; } }
+    public static float GlobalEnemyHealthModifier = 0.8f;
+    public float CostModifier { get; set; }
+    public float Cost { get { return baseCost * CostModifier; } }
     protected float baseCost;
+
     public EnemyShip(Vector2 pos, World world, Texture2D tex)
         : base(pos, world, tex)
     {
       SetLayer(Layer.ENEMY_SHIP);
       incomingDamageModifier = 1 / GlobalEnemyHealthModifier;
       damageModifier = GlobalEnemyDamageModifier;
+      CostModifier = 1.0f;
     }
   }
   class Enemy1 : EnemyShip
@@ -28,8 +30,7 @@ namespace Planet
       : base(pos, world, AssetManager.GetTexture(@"ships\red\enemy1"))
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\enemy1");
-
-      baseCost = 100;
+      baseCost = 125;
       rotationSpeed = 5;
       baseSpeed = 200;
       maxHealth = 150;
@@ -53,7 +54,7 @@ namespace Planet
       currentHealth = maxHealth;
 
       weapons.Add(WeaponList.Split(this, world));
-      weapons.Add(WeaponList.Sniper(this, world));
+      weapons.Add(WeaponList.Beam(this, world));
     }
   }
   class Enemy3 : EnemyShip
@@ -64,9 +65,9 @@ namespace Planet
     public Enemy3(Vector2 pos, World world)
       : base(pos, world, AssetManager.GetTexture(@"ships\red\ufoRed"))
     {
-      baseCost = 200;
       flashTex = AssetManager.GetTexture(@"ships\flash\ufoRed");
 
+      baseCost = 250;
       AutoRotate = true;
       rotationSpeed = 4.0f;
       baseSpeed = 200;
@@ -94,7 +95,7 @@ namespace Planet
     {
       flashTex = AssetManager.GetTexture(@"ships\flash\enemy4");
 
-      baseCost = 350;
+      baseCost = 450;
       rotationSpeed = 5;
       baseSpeed = 150;
       maxHealth = 700;
@@ -104,6 +105,26 @@ namespace Planet
 
       weapons.Add(WeaponList.BFG(this, world));
       weapons.Add(WeaponList.Scatter(this, world));
+    }
+  }
+  class Enemy5 : EnemyShip
+  {
+    public Enemy5(Vector2 pos, World world)
+      : base(pos, world, AssetManager.GetTexture(@"ships\red\playerShip2"))
+    {
+      flashTex = AssetManager.GetTexture(@"ships\flash\playerShip2");
+
+      baseCost = 40;
+      rotationSpeed = 3;
+      baseSpeed = 175;
+      maxHealth = 50;
+      currentHealth = maxHealth;
+      maxShield = 5;
+      currentShield = maxShield;
+      Scale = 0.5f;
+
+      weapons.Add(WeaponList.Dagger(this, world));
+      weapons.Add(WeaponList.Sword(this, world));
     }
   }
   class EnemyBoss : EnemyShip
@@ -116,7 +137,7 @@ namespace Planet
       baseCost = 5000;
       rotationSpeed = 10;
       baseSpeed = 350;
-      maxHealth = 4000;
+      maxHealth = 2000;
       currentHealth = maxHealth;
       maxShield = 250;
       currentShield = maxShield;

@@ -9,10 +9,29 @@ namespace Planet
 {
   class AudioManager
   {
-    public static void PlayBgm(string name, float volume = 0.1f)
+    //86bpm
+    //double bpm = 86;
+    //double beatsPerCycle = 8;
+    //double bps = bpm / 60;
+    //double cycleTime = bps * beatsPerCycle;
+    //double cyclesPerSecond = Math.PI * 2 / cycleTime;
+
+    /// <summary>
+    /// Cycles per seconds to match bpm of 86, one cycle every 8 beats
+    /// </summary>
+    public static readonly float SplashSinCycle = 0.54795220702147551f;
+
+    public static void PlayBgm(string name, float volume = 1.0f)
     {
       MediaPlayer.Play(AssetManager.GetSong(name));
-      MediaPlayer.Volume = volume;
+      try
+      {
+        MediaPlayer.Volume = volume;
+      }
+      catch (NullReferenceException)
+      {
+        // song changed while changing volume
+      }
       MediaPlayer.IsRepeating = true;
     }
     public static void Resume()
@@ -48,5 +67,6 @@ namespace Planet
       si.Play();
       return si;
     }
+
   }
 }

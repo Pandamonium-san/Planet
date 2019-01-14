@@ -1,3 +1,0 @@
-Planet
-Planet.dll
-Planet.Game1

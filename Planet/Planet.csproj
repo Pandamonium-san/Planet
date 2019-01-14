@@ -1,130 +1,139 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0B1AE269-BB0A-47A8-84D6-5103B0818261}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{86A850EF-B77C-434E-AA5C-6E00F2F0D039}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Planet</RootNamespace>
     <AssemblyName>Planet</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Windows\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;WINDOWS;ARCADE</DefineConstants>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildExtensionsPath)\MAHArcadeSystem\V2.1\MAHArcadeDevCore.exe</StartProgram>
-    <StartArguments>"$(MSBuildProjectDirectory)\bin\Windows\Debug\"</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Windows\Release\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS;ARCADE</DefineConstants>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AIController.cs" />
+    <Compile Include="Controllers\ECBoss.cs" />
     <Compile Include="Controllers\ECChaser.cs" />
     <Compile Include="Controllers\ECWanderer.cs" />
-    <Compile Include="Controllers\ECBoss.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\NameInputController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\PlayerShipController.cs" />
+    <Compile Include="Controllers\ShipController.cs" />
+    <Compile Include="Core\AssetManager.cs" />
     <Compile Include="Core\AudioManager.cs" />
     <Compile Include="Core\EnemyManager.cs" />
+    <Compile Include="Core\Input.cs" />
     <Compile Include="Core\ParticleManager.cs" />
+    <Compile Include="Core\Player.cs" />
     <Compile Include="Core\Spawn.cs" />
-    <Compile Include="Core\SpriteRegions.cs" />
+    <Compile Include="Core\World.cs" />
+    <Compile Include="Game1.cs" />
     <Compile Include="Objects\Background.cs" />
+    <Compile Include="Objects\GameObject.cs" />
+    <Compile Include="Objects\Hitbox.cs" />
     <Compile Include="Objects\Particle.cs" />
     <Compile Include="Objects\Projectiles\Parasite.cs" />
+    <Compile Include="Objects\Projectiles\PHitScan.cs" />
+    <Compile Include="Objects\Projectiles\Projectile.cs" />
+    <Compile Include="Objects\Ships\Enemies\EnemyShip.cs" />
+    <Compile Include="Objects\Ships\Players\BlinkerShip.cs" />
     <Compile Include="Objects\Ships\Players\IPlayerShip.cs" />
     <Compile Include="Objects\Ships\Players\PossessorShip.cs" />
+    <Compile Include="Objects\Ships\Players\RewinderShip.cs" />
     <Compile Include="Objects\Ships\Players\RewinderShipShadow.cs" />
+    <Compile Include="Objects\Ships\Ship.cs" />
     <Compile Include="Objects\Sprite.cs" />
+    <Compile Include="Objects\Transform.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\GameSettings.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\GameStateCharacterSelect.cs" />
+    <Compile Include="States\GameStateCredits.cs" />
+    <Compile Include="States\GameStateInputName.cs" />
     <Compile Include="States\GameStateManager.cs" />
+    <Compile Include="States\GameStateMenuMain.cs" />
+    <Compile Include="States\GameStatePaused.cs" />
     <Compile Include="States\GameStatePlaying.cs" />
+    <Compile Include="States\GameStateScoreScreen.cs" />
     <Compile Include="States\GameStateTitleScreen.cs" />
-    <Compile Include="States\IMenuGameState.cs" />
+    <Compile Include="States\IJoinable.cs" />
+    <Compile Include="States\MenuGameState.cs" />
     <Compile Include="UI\AbilityIcon.cs" />
     <Compile Include="UI\Button.cs" />
-    <Compile Include="Controllers\AIController.cs" />
-    <Compile Include="Controllers\ShipController.cs" />
-    <Compile Include="Objects\Hitbox.cs" />
-    <Compile Include="Objects\Projectiles\PHitScan.cs" />
-    <Compile Include="UI\LifeBar.cs" />
+    <Compile Include="UI\Cursor.cs" />
+    <Compile Include="UI\HighScoreDisplay.cs" />
+    <Compile Include="UI\HighScoreEntry.cs" />
+    <Compile Include="UI\HighScoreList.cs" />
     <Compile Include="UI\HUD.cs" />
+    <Compile Include="UI\LifeBar.cs" />
     <Compile Include="UI\Menu.cs" />
     <Compile Include="UI\MenuCursor.cs" />
-    <Compile Include="UI\ValueBar.cs" />
+    <Compile Include="UI\NameInput.cs" />
+    <Compile Include="UI\Score.cs" />
+    <Compile Include="UI\ShipInfo.cs" />
+    <Compile Include="UI\StyledText.cs" />
     <Compile Include="UI\Text.cs" />
+    <Compile Include="UI\TitleText.cs" />
+    <Compile Include="UI\ValueBar.cs" />
     <Compile Include="Utility\DebugFunc.cs" />
     <Compile Include="Utility\FixedList.cs" />
-    <Compile Include="Objects\Ships\Players\BlinkerShip.cs" />
+    <Compile Include="Utility\FrameCounter.cs" />
     <Compile Include="Utility\Timer.cs" />
+    <Compile Include="Utility\Utility.cs" />
     <Compile Include="Weapons\ChargeLaser.cs" />
     <Compile Include="Weapons\CompoundWeapon.cs" />
     <Compile Include="Weapons\CycloneGun.cs" />
-    <Compile Include="Utility\FrameCounter.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="Objects\Projectiles\PMissile.cs" />
-    <Compile Include="Core\Player.cs" />
-    <Compile Include="Controllers\PlayerController.cs" />
-    <Compile Include="Objects\Projectiles\Projectile.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Objects\Ships\Enemies\EnemyShip.cs" />
-    <Compile Include="Objects\Ships\Ship.cs" />
-    <Compile Include="Core\AssetManager.cs" />
-    <Compile Include="Objects\Ships\Players\RewinderShip.cs" />
-    <Compile Include="Objects\Transform.cs" />
-    <Compile Include="Utility\Utility.cs" />
-    <Compile Include="Core\World.cs" />
     <Compile Include="Weapons\ExplodeGun.cs" />
     <Compile Include="Weapons\LaserGun.cs" />
     <Compile Include="Weapons\NewTestWeapon.cs" />
     <Compile Include="Weapons\TurretGun.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WeaponList.cs" />
-    <Compile Include="Weapons\WpnDesc.cs" />
     <Compile Include="Weapons\WHitScan.cs" />
+    <Compile Include="Weapons\WpnDesc.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
-      <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\MAHArcade\MonoGame.Framework.dll</HintPath>
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
-    <Content Include="AssemblyInfo.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Effects\ColorChanger.fx" />
-    <Content Include="Settings.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Fonts\font1.spritefont" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
